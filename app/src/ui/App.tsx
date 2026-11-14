@@ -118,8 +118,8 @@ function Route({ s }: { s: Sparks }) {
   const es = s.url.lang === 'es';
   return (
     <div className="route">
-      <Leg n={1} id="l1" title={es ? 'Elige un astro en el mapa del cielo' : 'Pick a target on the sky map'}>
-        <SkyMap s={s} />
+      <Leg n={1} id="l1" title={es ? 'Apunta el telescopio a un astro' : 'Aim the telescope at a target'}>
+        <SkyScope s={s} />
         <form
           className="seek"
           role="search"
@@ -182,43 +182,112 @@ function Route({ s }: { s: Sparks }) {
   );
 }
 
-/** The five targets on an equirectangular map of the sky, at their real RA/Dec. */
-function SkyMap({ s }: { s: Sparks }) {
+/**
+ * The five targets seen through a telescope eyepiece: a polar view of the
+ * whole sky, north celestial pole at the centre, the equator as a ring, the
+ * south pole on the rim; right ascension runs around the edge in hours.
+ * Picking a target slews the reticle onto it.
+ */
+function SkyScope({ s }: { s: Sparks }) {
   const { t } = s;
+  const es = s.url.lang === 'es';
   const fields = (s.fields ?? []).slice(0, 5);
-  const W = 720;
-  const H = 300;
-  // RA grows to the left on sky maps (east left)
-  const x = (ra: number) => W - 20 - (ra / 360) * (W - 40);
-  const y = (dec: number) => H / 2 - (dec / 90) * (H / 2 - 20);
+  const C = 300; // centre of a 600 x 600 view
+  const R = 270; // radius where Dec = -90 sits
+  const pos = (ra: number, dec: number) => {
+    const r = ((90 - dec) / 180) * R;
+    const a = (ra * Math.PI) / 180; // 0h at the top, growing anticlockwise (east)
+    return { x: C - r * Math.sin(a), y: C - r * Math.cos(a) };
+  };
+  const pct = (v: number) => `${(v / 600) * 100}%`;
+  const sel = s.selected ? pos(s.selected.ra, s.selected.dec) : { x: C, y: C };
+  const ring = (dec: number) => ((90 - dec) / 180) * R;
   return (
-    <figure className="skymap">
-      <svg viewBox={`0 0 ${W} ${H}`} className="skymap__svg" aria-hidden="true">
-        <rect x="20" y="20" width={W - 40} height={H - 40} rx="18" className="skymap__frame" />
-        <line x1="20" x2={W - 20} y1={H / 2} y2={H / 2} className="skymap__eq" />
-        {[0, 6, 12, 18, 24].map(h => (
-          <text key={h} x={x(h * 15)} y={H - 4} className="skymap__tick">{h}h</text>
-        ))}
-        {[60, 30, 0, -30, -60].map(d => (
-          <text key={d} x="4" y={y(d) + 4} className="skymap__tick skymap__tick--l">{d > 0 ? `+${d}` : d}°</text>
-        ))}
-      </svg>
-      <ul className="skymap__pins">
-        {fields.map(f => {
-          const on = s.selected?.id === f.id;
-          const ready = f.id === 'barnard';
-          return (
-            <li key={f.id} style={{ left: `${(x(f.ra) / W) * 100}%`, top: `${(y(f.dec) / H) * 100}%` }}>
-              <button type="button" className={`pin${on ? ' is-on' : ''}${ready ? ' is-ready' : ''}`} aria-pressed={on} onClick={() => s.pickField(f)}>
-                <span className="pin__star" aria-hidden="true" />
-                <span className="pin__name">{t.targets[f.id]?.short ?? f.name}</span>
-                <span className="pin__meta">{ready ? `${toHms(f.ra).slice(0, 6)} ${toDms(f.dec).slice(0, 4)}` : t.search.soonTag}</span>
-              </button>
-            </li>
-          );
-        })}
-      </ul>
-      <figcaption className="skymap__cap">{s.url.lang === 'es' ? 'Mapa de todo el cielo: cada punto está en su posición real (RA, Dec). La línea del medio es el ecuador celeste.' : 'Map of the whole sky: each dot sits at its real position (RA, Dec). The middle line is the celestial equator.'}</figcaption>
+    <figure className="scope">
+      <div className="scope__lens">
+        <svg viewBox="0 0 600 600" className="scope__svg" aria-hidden="true">
+          {/* declination rings */}
+          {[60, 30, -30, -60].map(d => (
+            <circle key={d} cx={C} cy={C} r={ring(d)} className="scope__ring" />
+          ))}
+          <circle cx={C} cy={C} r={ring(0)} className="scope__eq" />
+          <circle cx={C} cy={C} r={R} className="scope__rim" />
+          {/* reticle */}
+          <line x1={C - R} x2={C + R} y1={C} y2={C} className="scope__cross" />
+          <line x1={C} x2={C} y1={C - R} y2={C + R} className="scope__cross" />
+          <circle cx={C} cy={C} r="5" className="scope__pole" />
+          {/* hour ticks on the rim */}
+          {Array.from({ length: 24 }, (_, h) => {
+            const a = (h * 15 * Math.PI) / 180;
+            const r1 = R;
+            const r2 = R - (h % 6 === 0 ? 14 : 7);
+            return (
+              <line key={h} x1={C - r1 * Math.sin(a)} y1={C - r1 * Math.cos(a)} x2={C - r2 * Math.sin(a)} y2={C - r2 * Math.cos(a)} className="scope__tick" />
+            );
+          })}
+          {[0, 3, 6, 9, 12, 15, 18, 21].map(h => {
+            const a = (h * 15 * Math.PI) / 180;
+            const r = R + 18;
+            return (
+              <text key={h} x={C - r * Math.sin(a)} y={C - r * Math.cos(a) + 4} className="scope__hour">{h}h</text>
+            );
+          })}
+          {[60, 30, 0, -30, -60].map(d => (
+            <text key={d} x={C + 6} y={C - ring(d) - 5} className="scope__dec">{d > 0 ? `+${d}` : d === 0 ? '0' : `−${-d}`}°</text>
+          ))}
+        </svg>
+        <span className="scope__vignette" aria-hidden="true" />
+        <span className="scope__aim" style={{ left: pct(sel.x), top: pct(sel.y) }} aria-hidden="true" />
+        <ul className="scope__pins">
+          {fields.map(f => {
+            const on = s.selected?.id === f.id;
+            const ready = f.id === 'barnard';
+            const p = pos(f.ra, f.dec);
+            // labels point away from the centre, and switch sides when
+            // another target sits in the way
+            let right = p.x >= C;
+            // room on each side: distance to the nearest target in the way
+            const room = (toRight: boolean) =>
+              Math.min(
+                170,
+                ...fields
+                  .filter(o => o.id !== f.id)
+                  .map(o => pos(o.ra, o.dec))
+                  .filter(q => Math.abs(q.y - p.y) < 34 && (toRight ? q.x > p.x : q.x < p.x))
+                  .map(q => Math.abs(q.x - p.x)),
+              );
+            if (room(right) < 170 && room(!right) > room(right)) right = !right;
+            const flip = !right;
+            return (
+              <li key={f.id} style={{ left: pct(p.x), top: pct(p.y) }}>
+                <button type="button" className={`pin${on ? ' is-on' : ''}${ready ? ' is-ready' : ''}${flip ? ' pin--flip' : ''}`} aria-pressed={on} onClick={() => s.pickField(f)}>
+                  <span className="pin__star" aria-hidden="true" />
+                  <span className="pin__text">
+                    <span className="pin__name">{t.targets[f.id]?.short ?? f.name}</span>
+                    <span className="pin__meta">{ready ? (es ? 'con fotos' : 'with photos') : t.search.soonTag}</span>
+                  </span>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+      <figcaption className="scope__key">
+        <p className="scope__key-t">{es ? 'Cómo leer la mira' : 'How to read the eyepiece'}</p>
+        <dl>
+          <div><dt>{es ? 'Centro' : 'Centre'}</dt><dd>{es ? 'polo norte del cielo (+90°)' : 'north celestial pole (+90°)'}</dd></div>
+          <div><dt>{es ? 'Anillo punteado' : 'Dotted ring'}</dt><dd>{es ? 'ecuador del cielo (0°)' : 'celestial equator (0°)'}</dd></div>
+          <div><dt>{es ? 'Borde' : 'Edge'}</dt><dd>{es ? 'hacia el polo sur (−90°)' : 'towards the south pole (−90°)'}</dd></div>
+          <div><dt>{es ? 'Horas alrededor' : 'Hours around'}</dt><dd><Term id="radec" t={t}>{es ? 'ascensión recta' : 'right ascension'}</Term></dd></div>
+        </dl>
+        {s.selected && (
+          <p className="scope__aimed">
+            <span className="scope__aimed-dot" aria-hidden="true" />
+            {es ? 'Apuntando a' : 'Aimed at'} <b>{t.targets[s.selected.id]?.short ?? s.selected.name}</b>
+            <span className="scope__coords">RA {toHms(s.selected.ra)} · Dec {toDms(s.selected.dec)}</span>
+          </p>
+        )}
+      </figcaption>
     </figure>
   );
 }

@@ -426,85 +426,280 @@ ul {
   margin-top: 20px;
   min-width: 0;
 }
-.skymap {
+/* the eyepiece: a polar view of the sky behind a frosted lens, so the
+   moving background stars never mix with the five targets */
+.scope {
+  display: grid;
+  grid-template-columns: minmax(0, 560px) minmax(220px, 1fr);
+  gap: 32px 48px;
+  align-items: center;
+}
+.scope__lens {
   position: relative;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgb(4 8 16 / 0.62);
+  -webkit-backdrop-filter: blur(10px) saturate(0.8);
+  backdrop-filter: blur(10px) saturate(0.8);
+  box-shadow:
+    0 0 0 1px var(--rule-strong),
+    0 0 0 10px rgb(4 8 16 / 0.55),
+    0 0 0 11px var(--rule),
+    0 30px 80px -30px rgb(0 0 0 / 0.9);
 }
-.skymap__svg {
-  display: block;
+:root[data-theme='light'] .scope__lens {
+  background: rgb(240 246 251 / 0.62);
+  box-shadow:
+    0 0 0 1px var(--rule-strong),
+    0 0 0 10px rgb(255 255 255 / 0.55),
+    0 0 0 11px var(--rule),
+    0 30px 60px -30px rgb(12 30 48 / 0.4);
+}
+.scope__svg {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  height: auto;
+  height: 100%;
+  overflow: visible;
 }
-.skymap__frame {
-  fill: rgb(255 255 255 / 0.02);
-  stroke: var(--rule-strong);
+.scope__ring {
+  fill: none;
+  stroke: var(--rule);
 }
-.skymap__eq {
+.scope__eq {
+  fill: none;
   stroke: var(--rule-strong);
   stroke-dasharray: 3 6;
 }
-.skymap__tick {
+.scope__rim {
+  fill: none;
+  stroke: var(--rule-strong);
+  stroke-width: 1.5;
+}
+.scope__cross {
+  stroke: var(--rule-strong);
+  stroke-width: 1;
+}
+.scope__pole {
+  fill: none;
+  stroke: var(--text-3);
+}
+.scope__tick {
+  stroke: var(--text-3);
+  stroke-width: 1.5;
+}
+.scope__hour {
   font-family: var(--font-data);
-  font-size: 11px;
+  font-size: 13px;
   fill: var(--text-3);
   text-anchor: middle;
 }
-.skymap__tick--l {
-  text-anchor: start;
+.scope__dec {
+  font-family: var(--font-data);
+  font-size: 11px;
+  fill: var(--text-3);
 }
-.skymap__pins li {
+/* the eyepiece darkens towards its edge */
+.scope__vignette {
   position: absolute;
-  transform: translate(-22px, -22px);
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, transparent 62%, rgb(0 0 0 / 0.38) 100%);
+  pointer-events: none;
+}
+:root[data-theme='light'] .scope__vignette {
+  background: radial-gradient(circle, transparent 66%, rgb(12 30 48 / 0.12) 100%);
+}
+/* the reticle that slews onto the chosen target */
+.scope__aim {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 0 -32px;
+  border-radius: 50%;
+  border: 1.5px solid var(--now);
+  box-shadow: 0 0 24px -4px rgb(255 178 56 / 0.6);
+  pointer-events: none;
+  transition: left 900ms cubic-bezier(0.16, 1, 0.3, 1), top 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.scope__aim::before,
+.scope__aim::after {
+  content: '';
+  position: absolute;
+  background: var(--now);
+}
+.scope__aim::before {
+  left: 50%;
+  top: -10px;
+  bottom: -10px;
+  width: 1.5px;
+  transform: translateX(-50%);
+  -webkit-mask: linear-gradient(#000 0 14px, transparent 14px calc(100% - 14px), #000 calc(100% - 14px));
+  mask: linear-gradient(#000 0 14px, transparent 14px calc(100% - 14px), #000 calc(100% - 14px));
+}
+.scope__aim::after {
+  top: 50%;
+  left: -10px;
+  right: -10px;
+  height: 1.5px;
+  transform: translateY(-50%);
+  -webkit-mask: linear-gradient(90deg, #000 0 14px, transparent 14px calc(100% - 14px), #000 calc(100% - 14px));
+  mask: linear-gradient(90deg, #000 0 14px, transparent 14px calc(100% - 14px), #000 calc(100% - 14px));
+}
+.scope__pins li {
+  position: absolute;
+  width: 0;
+  height: 0;
 }
 .pin {
-  display: grid;
-  grid-template-columns: 44px auto;
-  grid-template-rows: auto auto;
+  position: absolute;
+  left: -22px;
+  top: -22px;
+  display: flex;
   align-items: center;
-  column-gap: 6px;
+  gap: 4px;
   padding: 0 10px 0 0;
   border: 0;
   border-radius: 999px;
   background: none;
   text-align: left;
+  white-space: nowrap;
+}
+.pin--flip {
+  left: auto;
+  right: -22px;
+  flex-direction: row-reverse;
+  padding: 0 0 0 10px;
+  text-align: right;
 }
 .pin__star {
-  grid-row: span 2;
+  flex: none;
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: radial-gradient(circle, var(--text-2) 0 14%, rgb(220 236 255 / 0.25) 22%, transparent 60%);
+  background: radial-gradient(circle, var(--text-2) 0 12%, rgb(220 236 255 / 0.22) 20%, transparent 58%);
   transition: transform 200ms ease;
 }
 .pin.is-ready .pin__star {
-  background: radial-gradient(circle, #fff 0 14%, rgb(255 255 255 / 0.35) 24%, transparent 62%);
+  background: radial-gradient(circle, #fff 0 13%, rgb(255 255 255 / 0.35) 22%, transparent 60%);
 }
-:root[data-theme='light'] .pin.is-ready .pin__star {
-  background: radial-gradient(circle, #0c1e30 0 14%, rgb(12 30 48 / 0.25) 24%, transparent 62%);
+:root[data-theme='light'] .pin.is-ready .pin__star,
+:root[data-theme='light'] .pin__star {
+  background: radial-gradient(circle, #0c1e30 0 13%, rgb(12 30 48 / 0.22) 22%, transparent 60%);
 }
 .pin.is-on .pin__star {
-  background: radial-gradient(circle, var(--now) 0 18%, rgb(255 178 56 / 0.45) 30%, transparent 66%);
-  transform: scale(1.25);
+  background: radial-gradient(circle, var(--now) 0 16%, rgb(255 178 56 / 0.4) 26%, transparent 62%);
 }
 .pin:hover .pin__star {
   transform: scale(1.2);
 }
+.pin__text {
+  display: grid;
+  line-height: 1.15;
+}
 .pin__name {
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: 0.82rem;
-  line-height: 1.1;
-  white-space: nowrap;
+  font-size: 0.8rem;
 }
 .pin__meta {
-  font-family: var(--font-data);
-  font-size: 0.62rem;
+  font-size: 0.7rem;
   color: var(--text-3);
-  white-space: nowrap;
 }
-.skymap__cap {
-  margin-top: 8px;
-  font-size: 0.85rem;
+.pin.is-on .pin__name {
+  color: var(--now-ink);
+}
+.scope__key {
+  display: grid;
+  gap: 14px;
+  align-content: center;
+}
+.scope__key-t {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+.scope__key dl {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+.scope__key dl div {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 12px;
+  font-size: 0.9rem;
+}
+.scope__key dt {
+  font-weight: 800;
+}
+.scope__key dd {
+  margin: 0;
+  color: var(--text-2);
+}
+.scope__aimed {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule);
+}
+.scope__aimed b {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--now-ink);
+}
+.scope__aimed-dot {
+  grid-row: span 2;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid var(--now);
+  box-shadow: 0 0 14px -2px rgb(255 178 56 / 0.7);
+}
+.scope__coords {
+  grid-column: 2;
+  font-family: var(--font-data);
+  font-size: 0.72rem;
   color: var(--text-3);
+}
+@media (prefers-reduced-motion: reduce) {
+  .scope__aim {
+    transition: none;
+  }
+}
+@media (max-width: 900px) {
+  .scope {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .scope__lens {
+    width: min(100%, 520px);
+    justify-self: center;
+  }
+}
+@media (max-width: 520px) {
+  .pin__meta {
+    display: none;
+  }
+  .pin__name {
+    font-size: 0.68rem;
+  }
+  .pin__star {
+    width: 36px;
+    height: 36px;
+  }
+  .pin {
+    left: -18px;
+    top: -18px;
+  }
+  .pin--flip {
+    left: auto;
+    right: -18px;
+  }
+  .scope__hour {
+    font-size: 16px;
+  }
 }
 .seek {
   margin-top: 28px;
@@ -797,12 +992,6 @@ ul {
   }
   .leg__body {
     grid-column: 1 / -1;
-  }
-  .pin__meta {
-    display: none;
-  }
-  .pin__name {
-    font-size: 0.7rem;
   }
   .modes button span {
     display: none;
