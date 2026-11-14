@@ -1,0 +1,50 @@
+<!doctype html>
+<!--
+  Prueba mínima: ¿Aladin Lite 3.8.2 carga un FITS con WCS propio?
+  Servir esta carpeta por HTTP y abrir este archivo. Necesita, en la misma carpeta:
+    - aladin.js   (npm aladin-lite@3.8.2, dist/aladin.js)
+    - cutout.fits (recorte MEF de SPHEREx, p. ej. size=0.02)
+  El resultado queda en window.__status y window.__layer (ra, dec, fov).
+  Ver docs/sprint-13-30/cobertura-y-acceso.md, sección 6.
+-->
+<meta charset="utf-8">
+<title>Aladin Lite 3.8.2 · FITS con WCS propio</title>
+<div id="aladin-lite-div" style="width:600px;height:600px"></div>
+<script>
+window.__status = "loading-module";
+window.__events = [];
+window.addEventListener('unhandledrejection', (e) => {
+  window.__status = 'init-error';
+  window.__details = {error: String(e.reason && e.reason.message || e.reason)};
+});
+window.addEventListener('error', (e) => {
+  window.__events.push('error: ' + e.message);
+});
+</script>
+<script type="module">
+// El dist de npm es un módulo ES: con <script src="aladin.js"> falla con
+// "export declarations may only appear at top level of a module".
+import A from './aladin.js';
+try {
+  await A.init;
+  window.__status = "aladin-ready";
+  const aladin = A.aladin('#aladin-lite-div', {fov: 0.08, showCooGrid: false});
+  window.__aladin = aladin;
+  window.__layer = aladin.displayFITS(
+    'cutout.fits',
+    {},
+    () => {
+      window.__status = 'fits-ok';
+      const l = window.__layer;
+      window.__details = {ra: l.ra, dec: l.dec, fov: l.fov};
+    },
+    (e) => {
+      window.__status = 'fits-error';
+      window.__details = {error: String(e && e.message || e)};
+    }
+  );
+} catch (e) {
+  window.__status = 'init-error';
+  window.__details = {error: String(e && e.message || e)};
+}
+</script>

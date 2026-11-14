@@ -9,7 +9,7 @@
 1. La fuente de datos es IRSA, pero la colección cambió: desde noviembre de 2026 se usa **DR1 + QR3**. DR1 reprocesa QR2; QR2 ya no se puede buscar y solo queda para descarga directa hasta febrero de 2027. [VERIFICADO: [data releases](https://github.com/Caltech-IPAC/spherex-archive-documentation/blob/main/documentation/spherex_data_releases.md)]
 2. Los tutoriales de IPAC son el pipeline de referencia: SIA/TAP por coordenadas, cutouts en paralelo, `remote_timeout=120`, ePSF y λ por píxel. [VERIFICADO: [tutorial de cutouts](https://github.com/Caltech-IPAC/irsa-tutorials/blob/main/tutorials/spherex/spherex_cutouts.md)]
 3. WiseView es el modelo de interacción, no una fuente de datos: blink de coadds, superposición Gaia, diferencia e inyección sintética. [VERIFICADO: [WiseView](http://byw.tools/wiseview)]
-4. Gaia DR3 se usa **precalculado** para validar movimiento propio; el TAP en vivo no es confiable (503 y más de 250 s en la prueba del 5-nov). [MEDIDO: [`02-spherex-datos.md`](../../research/planetx/02-spherex-datos.md)]
+4. Gaia DR3 se usa **precalculado** para validar movimiento propio; el TAP en vivo no es confiable (el 5-nov la ESA dio 503 y el TAP de Gaia en IRSA superó los 250 s; el 14-nov la ESA respondió en 2,7 s, pero la copia de IRSA sigue sin reverificarse). [MEDIDO: [`02-spherex-datos.md`](../../research/planetx/02-spherex-datos.md) · [`cobertura-y-acceso.md`](../sprint-13-30/cobertura-y-acceso.md)]
 5. Los cuatro recursos de la CSA no cambian la arquitectura: NEOSSat es óptico y apuntado, y CADC no aloja SPHEREx. [VERIFICADO: [NEOSSat](https://www.asc-csa.gc.ca/eng/satellites/neossat/) · [CADC](https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/en/)]
 
 ---
@@ -121,7 +121,7 @@ Tres banderas que importan para los objetivos de prueba:
 
 ## 2. Tutoriales de SPHEREx (prioridad alta)
 
-**Enlace:** [caltech-ipac.github.io/irsa-tutorials/spherex/](https://caltech-ipac.github.io/irsa-tutorials/spherex/) · **Repo:** [Caltech-IPAC/irsa-tutorials](https://github.com/Caltech-IPAC/irsa-tutorials/tree/main/tutorials/spherex)
+**Enlace:** [Caltech-IPAC/irsa-tutorials · tutorials/spherex](https://github.com/Caltech-IPAC/irsa-tutorials/tree/main/tutorials/spherex) · **Archivos:** [spherex_intro.md](https://github.com/Caltech-IPAC/irsa-tutorials/blob/main/tutorials/spherex/spherex_intro.md) · [spherex_cutouts.md](https://github.com/Caltech-IPAC/irsa-tutorials/blob/main/tutorials/spherex/spherex_cutouts.md) · [spherex_psf.md](https://github.com/Caltech-IPAC/irsa-tutorials/blob/main/tutorials/spherex/spherex_psf.md) · [spherex_mosaic.md](https://github.com/Caltech-IPAC/irsa-tutorials/blob/main/tutorials/spherex/spherex_mosaic.md) · [spherex_hipscube.md](https://github.com/Caltech-IPAC/irsa-tutorials/blob/main/tutorials/spherex/spherex_hipscube.md) · [spherex.md](https://github.com/Caltech-IPAC/irsa-tutorials/blob/main/tutorials/spherex/spherex.md) · [spherex_source_discovery](https://github.com/Caltech-IPAC/irsa-tutorials/tree/main/tutorials/spherex/spherex_source_discovery)
 
 ### 2.1 Qué dan
 
@@ -135,7 +135,7 @@ Tres banderas que importan para los objetivos de prueba:
 
 - Clonar el repo y ejecutar en Jupyter con `astropy`, `astroquery`, `pyvo`, `numpy` y `matplotlib`. [VERIFICADO: [repo](https://github.com/Caltech-IPAC/irsa-tutorials)]
 - Licencia **BSD-3-Clause**. [VERIFICADO: [LICENSE](https://github.com/Caltech-IPAC/irsa-tutorials/blob/main/LICENSE)]
-- Las páginas renderizadas `caltech-ipac.github.io` no abrieron desde esta red el 14-nov (timeout); el contenido se verificó en el repositorio GitHub. [MEDIDO]
+- Las páginas renderizadas de `caltech-ipac.github.io` **no responden desde la red del equipo**: Joaquín midió más de 45 s a las 13:04 y Carlos 25 s a las 14:31 del 14-nov-2026; el dominio completo falla desde ahí. Los notebooks se leen en GitHub y en `raw.githubusercontent.com`, que responden en 0,3–1,4 s. [MEDIDO: 14-nov-2026, 13:04 y 14:31 MST]
 
 ### 2.3 Reglas de uso y límites
 
@@ -219,8 +219,8 @@ Tres banderas que importan para los objetivos de prueba:
 
 ### 4.4 Reglas de uso y límites
 
-- **TAP de ESA:** devolvió HTTP 503 con la cola síncrona llena (150 peticiones). [MEDIDO: [`02-spherex-datos.md`](../../research/planetx/02-spherex-datos.md)]
-- **Gaia en IRSA:** más de 250 s sin respuesta. [MEDIDO: misma fuente]
+- **TAP de ESA:** el 5-nov-2026 devolvió HTTP 503 con la cola síncrona llena (150 peticiones); el 14-nov-2026 respondió HTTP 200 en 2,7 s y 3,6 s. Es intermitente, no permanente. [MEDIDO: 5-nov (hora no registrada) y 14-nov 14:34:58 / 14:35:01 MST, [`cobertura-y-acceso.md`](../sprint-13-30/cobertura-y-acceso.md)]
+- **Gaia en IRSA:** más de 250 s sin respuesta. [MEDIDO: [`02-spherex-datos.md`](../../research/planetx/02-spherex-datos.md)] Sigue sin reverificarse; el 14-nov se probó el TAP de ESA, no la copia de IRSA.
 - **Cobertura óptica:** un objeto Y4 como WISE 0855 puede no tener contrapartida; hay que verificarlo en Gaia DR3 antes de afirmarlo. `[SIN VERIFICAR]` para el objeto concreto. [INFERENCIA: [`03-ciencia.md`](../../research/planetx/03-ciencia.md)]
 - **Errores:** revisar `ruwe` y la calidad astrométrica; no todos los 1.46 mil millones tienen la misma precisión. [INFERENCIA: modelo de datos Gaia]
 
@@ -288,7 +288,7 @@ https://irsa.ipac.caltech.edu/SIA?COLLECTION=<coleccion>&POS=circle+<RA>+<Dec>+0
 
 - Aladin Lite `3.8.2` sigue siendo la última estable; `latest` es `3.9.2-beta`. Mantener el pin. [VERIFICADO: [npm](https://registry.npmjs.org/aladin-lite)]
 - **Ya hay HiPS de SPHEREx** (cubo all-sky de DR1), así que la frase "no hay HiPS de SPHEREx" quedó vieja. Se puede usar como capa de contexto, no como reemplazo de los cutouts. [VERIFICADO: [tutorial HiPS](https://github.com/Caltech-IPAC/irsa-tutorials/blob/main/tutorials/spherex/spherex_hipscube.md)]
-- **Falta:** confirmar la carga de FITS propios en Aladin Lite v3.8.2, la conectividad a CDS desde la UTH y probar el cubo HiPS en Firefly/Aladin. [VERIFICADO: [`04-herramientas.md`](../../research/planetx/04-herramientas.md)]
+- **Falta:** probar el cubo HiPS en Firefly/Aladin y la conectividad a CDS desde la UTH. La carga de FITS propios ya está probada: Aladin Lite 3.8.2 lee un FITS TAN con CD, pero **no respeta el WCS SIP** del cutout MEF de SPHEREx; hay que quitarle el SIP antes de mostrarlo. [MEDIDO: [`cobertura-y-acceso.md`](../sprint-13-30/cobertura-y-acceso.md)]
 
 ### 6.3 [`07-skills-y-recursos.md`](../../research/planetx/07-skills-y-recursos.md)
 
@@ -324,7 +324,7 @@ No cambia por los recursos, pero es la referencia para priorizar: R1–R5 son ob
 | Recurso | Qué da | Lo usamos (sí/no/quizá) | Por qué | Quién lo conecta |
 |---|---|---|---|---|
 | [IRSA SPHEREx](https://irsa.ipac.caltech.edu/Missions/spherex.html) | Imágenes MEF nivel 2 de DR1 y QR3, SIA2, TAP, cutouts IBE, S3, cubo all-sky y MOST. | **Sí** | Es la única fuente oficial de los datos de SPHEREx y la base del flipbook. [VERIFICADO: [data access](https://github.com/Caltech-IPAC/spherex-archive-documentation/blob/main/documentation/spherex_data_access.md)] | Gabriel (datos) + Joaquín (coordinación) |
-| [Tutoriales de SPHEREx](https://caltech-ipac.github.io/irsa-tutorials/spherex/) | Notebooks con SIA/TAP, cutouts en paralelo, ePSF, λ y cubos HiPS. | **Sí** | Acelera el pipeline y evita errores de PSF, timeout y versiones. [VERIFICADO: [repo](https://github.com/Caltech-IPAC/irsa-tutorials/tree/main/tutorials/spherex)] | Gabriel (datos) |
+| [Tutoriales de SPHEREx](https://github.com/Caltech-IPAC/irsa-tutorials/tree/main/tutorials/spherex) | Notebooks con SIA/TAP, cutouts en paralelo, ePSF, λ y cubos HiPS. | **Sí** | Acelera el pipeline y evita errores de PSF, timeout y versiones. [VERIFICADO: [repo](https://github.com/Caltech-IPAC/irsa-tutorials/tree/main/tutorials/spherex)] | Gabriel (datos) |
 | [WiseView](http://byw.tools/wiseview) | Visor web de flipbooks de WISE/NEOWISE, con Gaia, diferencia e inyección sintética. | **Sí, como referencia UX** | Es el estándar probado de ciencia ciudadana para ver movimiento por parpadeo. [VERIFICADO: [WiseView](http://byw.tools/wiseview)] | Cons (frontend) + Carlos |
 | [Gaia en STScI](https://archive.stsci.edu/missions-and-data/gaia) | Catálogo DR3 con posición, paralaje y movimiento propio; época 2016.0. | **Sí, precalculado** | Valida los vectores medidos y permite vetar candidatos; en vivo no es confiable. [VERIFICADO: [ESA DR3](https://www.cosmos.esa.int/web/gaia/dr3)] | Joaquín (ciencia/ML) + Carlos (overlay) |
 | [NEOSSat](https://www.asc-csa.gc.ca/eng/satellites/neossat/) | Misión óptica canadiense para asteroides, cometas, basura espacial y exoplanetas. | **No** | Es óptico y apuntado; no cubre los cinco objetivos ni aporta espectros IR. [VERIFICADO: [CSA](https://www.asc-csa.gc.ca/eng/satellites/neossat/)] | Nadie |
