@@ -123,9 +123,6 @@ Si no hay datos reales todavía, usa los de `results/results.json` y deja las im
 
 **Material que se le entrega**
 - Contexto del proyecto: [`CONTEXTO.md`](CONTEXTO.md).
-- Dirección visual completa y tokens: [`DESIGN.md`](DESIGN.md).
-- Esqueleto del recorrido y de las pantallas: [`ESQUELETO-UX.md`](ESQUELETO-UX.md).
-- Herramientas de diseño y criterios de revisión: [`SKILLS-UX.md`](SKILLS-UX.md) y [`docs/skills-digest.md`](docs/skills-digest.md).
 - Logo y favicon: carpeta [`Logo/`](Logo/) (símbolo, horizontal, versiones de una tinta, símbolo animado, favicon). Los estudios completos están en [`branding/sparks/concept-01/`](branding/sparks/concept-01/).
 - Lista de skills con su fuente: [`skills-lock.json`](skills-lock.json).
 
