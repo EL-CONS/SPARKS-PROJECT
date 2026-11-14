@@ -144,18 +144,7 @@ Si no hay datos reales todavía, usa los de `results/results.json` y deja las im
 
 Además, Joaquín tiene estas dos instaladas en su equipo y no tienen repositorio verificado: `dataviz` (método para gráficas) y `fixing-motion-performance` (auditoría de animaciones). Si las necesitas, pídele que te pase la carpeta.
 
-**Pauta para que el resultado sea consistente con el resto del equipo**
-- El cielo es el protagonista. Las imágenes ocupan el centro y la mayor superficie. La interfaz es el bastidor de un instrumento: oscura, quieta, con poco contraste propio.
-- Una sola chispa de color: el ámbar `#FFB238` marca lo que se mueve, el "ahora" y lo que se puede tocar. Todo lo demás es neutro. El azul `#62B6E8` es solo "antes".
-- Fondo `#06080C`, superficies `#0D1117` y `#141A23`, filetes `#232B37`, texto `#ECE7DC`. Sin violeta, sin degradados decorativos, sin tarjetas con sombra.
-- Títulos en Archivo expandida, texto y números en IBM Plex Sans con cifras tabulares. Etiquetas en minúscula normal, sin mayúsculas sostenidas.
-- Las imágenes del cielo con esquinas rectas y sin suavizado (`image-rendering: pixelated`). Cada escala de color lleva leyenda con unidades.
-- Movimiento: nada se mueve por hacer scroll. El único movimiento que no pidió la persona es un destello breve de la marca al cambiar de cuadro. Con `prefers-reduced-motion`, sin destello y con la reproducción en pausa.
-- Accesibilidad: contraste AA, foco visible siempre, objetivos táctiles de 44 px o más en móvil, todo por teclado, sin scroll horizontal a 390 px.
-- Textos: voz activa, un botón dice exactamente lo que hace, los errores dicen qué pasó y cómo seguir. Todo texto vive en un solo módulo de idioma, no dentro de los componentes.
-- Honestidad científica: nada de "descubrimos"; se habla de candidatos. Lo que no está medido, se dice.
-
-**Cómo se revisa lo que entrega.** Se abre a 390 px y a 1440 px, se recorre con teclado y se compara contra `DESIGN.md`. Para capturas y pruebas, la skill `webapp-testing`.
+**Cómo se revisa lo que entrega.** Se abre a 390 px y a 1440 px, y se recorre con teclado. Para capturas y pruebas, la skill `webapp-testing`.
 
 ---
 
