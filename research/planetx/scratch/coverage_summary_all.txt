@@ -1,0 +1,74 @@
+WISE0855 spherex_qr2: 256 imgs, 129 obs_ids, por detector {'D1': 36, 'D2': 48, 'D3': 45, 'D4': 36, 'D5': 48, 'D6': 43}, 2025-05-05..2026-05-14, texp mediana 113.6s, tamano mediano 70.0 MB
+   bloque 2025-05-05..2025-05-06: 30 imgs
+   bloque 2025-10-31..2025-11-03: 36 imgs
+   bloque 2025-11-07..2025-11-10: 55 imgs
+   bloque 2025-11-14..2025-11-14: 17 imgs
+   bloque 2025-12-11..2025-12-13: 18 imgs
+   bloque 2026-04-21..2026-04-26: 30 imgs
+   bloque 2026-04-30..2026-05-05: 50 imgs
+   bloque 2026-05-08..2026-05-14: 20 imgs
+[WISE0855 spherex_qr3] SIA 1.0s
+WISE0855 spherex_qr3: 0 imagenes
+Barnard spherex_qr2: 240 imgs, 121 obs_ids, por detector {'D1': 42, 'D2': 36, 'D3': 42, 'D4': 41, 'D5': 37, 'D6': 42}, 2025-08-15..2026-05-05, texp mediana 113.6s, tamano mediano 70.0 MB
+   bloque 2025-08-15..2025-09-01: 107 imgs
+   bloque 2025-09-05..2025-09-05: 2 imgs
+   bloque 2025-09-30..2025-10-01: 10 imgs
+   bloque 2026-03-11..2026-03-11: 36 imgs
+   bloque 2026-03-15..2026-03-25: 75 imgs
+   bloque 2026-04-10..2026-04-10: 2 imgs
+   bloque 2026-05-04..2026-05-05: 8 imgs
+Barnard spherex_qr3: 119 imgs, 60 obs_ids, por detector {'D1': 18, 'D2': 25, 'D3': 17, 'D4': 18, 'D5': 24, 'D6': 17}, 2026-08-16..2026-09-22, texp mediana 113.6s, tamano mediano 60.3 MB
+   bloque 2026-08-16..2026-08-29: 115 imgs
+   bloque 2026-09-02..2026-09-02: 2 imgs
+   bloque 2026-09-22..2026-09-22: 2 imgs
+EpsIndB spherex_qr2: 329 imgs, 178 obs_ids, por detector {'D1': 45, 'D2': 68, 'D3': 61, 'D4': 42, 'D5': 56, 'D6': 57}, 2025-04-24..2026-05-04, texp mediana 113.6s, tamano mediano 70.0 MB
+   bloque 2025-04-24..2025-05-07: 86 imgs
+   bloque 2025-05-20..2025-05-20: 2 imgs
+   bloque 2025-06-06..2025-06-10: 29 imgs
+   bloque 2025-09-28..2025-10-16: 109 imgs
+   bloque 2025-10-20..2025-10-20: 2 imgs
+   bloque 2025-10-23..2025-10-23: 4 imgs
+   bloque 2025-11-01..2025-11-12: 23 imgs
+   bloque 2026-04-18..2026-05-04: 74 imgs
+EpsIndB spherex_qr3: 120 imgs, 60 obs_ids, por detector {'D2': 24, 'D3': 36, 'D5': 24, 'D6': 36}, 2026-09-22..2026-10-02, texp mediana 113.6s, tamano mediano 64.4 MB
+   bloque 2026-09-22..2026-10-02: 120 imgs
+[RWAur spherex_qr2] SIA 1.4s
+RWAur spherex_qr2: 224 imgs, 113 obs_ids, por detector {'D1': 38, 'D2': 37, 'D3': 38, 'D4': 38, 'D5': 37, 'D6': 36}, 2025-09-01..2026-03-12, texp mediana 113.6s, tamano mediano 70.0 MB
+   bloque 2025-09-01..2025-09-04: 38 imgs
+   bloque 2025-09-08..2025-09-11: 38 imgs
+   bloque 2025-09-17..2025-09-20: 34 imgs
+   bloque 2026-02-20..2026-02-21: 16 imgs
+   bloque 2026-02-27..2026-03-12: 98 imgs
+[RWAur spherex_qr3] SIA 1.0s
+RWAur spherex_qr3: 109 imgs, 55 obs_ids, por detector {'D1': 18, 'D2': 18, 'D3': 18, 'D4': 18, 'D5': 19, 'D6': 18}, 2026-09-02..2026-09-16, texp mediana 113.6s, tamano mediano 63.1 MB
+   bloque 2026-09-02..2026-09-02: 12 imgs
+   bloque 2026-09-08..2026-09-16: 97 imgs
+[RDra spherex_qr2] SIA 1.7s
+RDra spherex_qr2: 536 imgs, 272 obs_ids, por detector {'D1': 91, 'D2': 89, 'D3': 91, 'D4': 87, 'D5': 89, 'D6': 89}, 2025-05-16..2026-07-16, texp mediana 113.6s, tamano mediano 70.0 MB
+   bloque 2025-05-16..2025-05-16: 8 imgs
+   bloque 2025-05-20..2025-05-20: 4 imgs
+   bloque 2025-06-02..2025-06-02: 8 imgs
+   bloque 2025-06-05..2025-06-15: 62 imgs
+   bloque 2025-06-22..2025-06-27: 18 imgs
+   bloque 2025-07-01..2025-07-07: 25 imgs
+   bloque 2025-07-14..2025-07-22: 26 imgs
+   bloque 2025-10-17..2025-10-19: 32 imgs
+   bloque 2025-10-24..2025-10-25: 6 imgs
+   bloque 2025-11-03..2025-11-08: 30 imgs
+   bloque 2025-11-13..2025-11-20: 28 imgs
+   bloque 2025-11-28..2025-12-03: 29 imgs
+   bloque 2025-12-10..2025-12-14: 38 imgs
+   bloque 2025-12-26..2025-12-26: 14 imgs
+   bloque 2025-12-30..2026-01-03: 26 imgs
+   bloque 2026-01-13..2026-01-13: 8 imgs
+   bloque 2026-04-22..2026-04-24: 21 imgs
+   bloque 2026-05-06..2026-05-06: 4 imgs
+   bloque 2026-05-09..2026-05-13: 22 imgs
+   bloque 2026-05-16..2026-05-16: 6 imgs
+   bloque 2026-05-21..2026-05-23: 18 imgs
+   bloque 2026-06-07..2026-06-08: 10 imgs
+   bloque 2026-06-12..2026-06-12: 8 imgs
+   bloque 2026-06-21..2026-06-23: 38 imgs
+   bloque 2026-07-06..2026-07-16: 47 imgs
+[RDra spherex_qr3] SIA 0.7s
+RDra spherex_qr3: 0 imagenes
