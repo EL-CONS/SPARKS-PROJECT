@@ -1,3 +1,5 @@
+import { validateIndexJson, validateManifestJson } from './contract';
+
 export interface IndexField {
   id: string;
   name: string;
@@ -85,8 +87,13 @@ export async function fetchFieldIndex(baseUrl = '/'): Promise<IndexField[]> {
   if (!res.ok) {
     throw new Error(`Failed to load index.json (HTTP ${res.status})`);
   }
-  const data = (await res.json()) as IndexData;
-  return data.fields ?? [];
+  const raw = await res.json();
+  const checked = validateIndexJson(raw);
+  if (!checked.ok) {
+    const first = checked.issues[0];
+    throw new Error(`Invalid index.json at ${first.path}: ${first.message}`);
+  }
+  return checked.data.fields as unknown as IndexField[];
 }
 
 export function buildPlatesFromManifest(
@@ -114,7 +121,13 @@ export async function loadFieldAssets(
   if (!res.ok) {
     throw new Error(`Failed to load manifest for ${field.id} (HTTP ${res.status})`);
   }
-  const manifest = (await res.json()) as FieldManifest;
+  const raw = await res.json();
+  const checked = validateManifestJson(raw);
+  if (!checked.ok) {
+    const first = checked.issues[0];
+    throw new Error(`Invalid manifest.json for ${field.id} at ${first.path}: ${first.message}`);
+  }
+  const manifest = checked.data as unknown as FieldManifest;
   return {
     status: 'ready',
     field,
