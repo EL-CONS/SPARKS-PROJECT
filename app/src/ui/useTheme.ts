@@ -14,7 +14,7 @@ export function useTheme() {
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
     const meta = document.querySelector('meta[name="theme-color"]');
-    meta?.setAttribute('content', theme === 'light' ? '#FAF8F3' : '#06080C');
+    meta?.setAttribute('content', theme === 'light' ? '#CFE3F2' : '#02040A');
   }, [theme]);
   const toggle = useCallback(() => {
     setTheme(prev => {
