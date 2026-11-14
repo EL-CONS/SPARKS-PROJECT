@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Cobertura de SPHEREx por objeto (SIA2 de IRSA).
+"""Cobertura de SPHEREx por objeto (servicio SIA de IRSA; ruta /SIA).
 
 Lee una lista de objetos con columnas nombre,ra_deg,dec_deg y consulta, para
 cada uno, cuantas imagenes hay en las colecciones de SPHEREx. Calcula las

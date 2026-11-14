@@ -4,7 +4,7 @@
 
 El único objeto que queda con una sola temporada es **Gliese 687**, pero tiene 858 imágenes en 17 meses continuos (2025-05-13 a 2026-10-04): no es un objeto sin serie, es un objeto sin huecos de más de 60 días. Con la definición de temporada que se explica en la sección 4, la cifra que se pide es 36/37; con la pregunta física de fondo (¿hay dos épocas separadas para medir movimiento?), los 37 sirven.
 
-**Entrega:** este archivo, [`cobertura.csv`](cobertura.csv), [`cobertura.py`](cobertura.py), [`consultas.json`](consultas.json) y [`aladin-wcs-test.html`](aladin-wcs-test.html).
+**Entrega:** este archivo, [`cobertura.csv`](cobertura.csv), [`cobertura.py`](cobertura.py), [`consultas.json`](consultas.json), [`aladin-wcs-test.html`](aladin-wcs-test.html) y [`entrega-horacio.md`](entrega-horacio.md).
 
 ---
 
@@ -41,15 +41,17 @@ En `recursos.md` quedaron el repositorio y los siete archivos enlazados; no qued
 
 ## 3. Pruebas de acceso de hoy
 
-Todas las filas son del 14-nov-2026. La columna de 13:04 es la medición de Joaquín desde su máquina; la de 14:30–14:44 es propia, con `curl -L --max-time 25/30/40` desde la red del equipo. Los tiempos son de la respuesta completa, no del primer byte.
+Todas las filas son del 14-nov-2026. La columna de 13:04 es la medición de Joaquín desde su máquina; la de 14:30–15:20 es propia, con `curl -L --max-time 25/30/40/90` desde la red del equipo. Los tiempos son de la respuesta completa, no del primer byte.
 
-| Recurso | 13:04 (Joaquín) | 14:30–14:44 (Carlos) | Estado |
+| Recurso | 13:04 (Joaquín) | 14:30–15:20 (Carlos) | Estado |
 |---|---|---|---|
 | IRSA · página de SPHEREx | 1 timeout y luego 200 en segundos | 14:31:23: 000 en 4,15 s; 14:33:44 y 14:34:14: timeout de 30 s | Intermitente |
 | IRSA · TAP capabilities | 200 en menos de 1,5 s | 14:30:58: 200 en 0,25 s | Responde |
 | IRSA · TAP sync (consulta simple) | TAP 200 en menos de 1,5 s (endpoint no detallado) | 14:32:44: 502 en 0,31 s; 14:32:44 y 14:33:14: timeout de 30 s | No confiable |
 | IRSA · SIA DR1 (Barnard) | 200 en menos de 1,5 s | 14:30:49: 200 en 6,98 s, 239 filas; 14:44:21: 502 en 0,43 s | Responde, con fallos sueltos |
 | IRSA · SIA QR3 (Barnard) | 200 en menos de 1,5 s | 14:30:56: 200 en 1,08 s, 119 filas; 14:44:22: 200 en 1,43 s | Responde |
+| IRSA · ruta `/SIA2` | no probado | 15:16:03: 404 en 1,21 s | La ruta que responde es `/SIA` |
+| IRSA · cutout DR1 (WISE 0855) | cortes de ~4 s y ~5 MB | 15:18:34: 200, 3,85 MB, 18×18; 15:20:21: 200 en 6,73 s, 3,91 MB, 64×64; entre medio 2×503 y 1 timeout de 90 s | Responde con reintentos; el cubo PSF domina el tamaño |
 | Tutoriales · `caltech-ipac.github.io` | más de 45 s sin respuesta | 14:31:34: timeout de 25 s | Caído desde el equipo |
 | Tutoriales · repositorio GitHub | 200 | 14:31:59: 200 en 1,15 s | Responde |
 | Tutoriales · `raw.githubusercontent.com` | 200 | 14:32:00: 200 en 0,27 s | Responde |
@@ -66,6 +68,8 @@ Todas las filas son del 14-nov-2026. La columna de 13:04 es la medición de Joaq
 
 - IRSA SIA DR1: `https://irsa.ipac.caltech.edu/SIA?COLLECTION=spherex_dr1&POS=circle+269.4486+4.7672+0.0005&RESPONSEFORMAT=CSV`
 - IRSA SIA QR3: `https://irsa.ipac.caltech.edu/SIA?COLLECTION=spherex_qr3&POS=circle+269.4486+4.7672+0.0005&RESPONSEFORMAT=CSV`
+- IRSA cutout DR1 (WISE 0855): `https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W19_1B/l2b-v27-2026-197/3/level2_2025W19_1B_0116_1D3_spx_l2b-v27-2026-197.fits?center=133.795129,-7.245147d&size=0.11`
+- IRSA `/SIA2`: devuelve 404; usar `/SIA` (o `/SIA/query`).
 - IRSA TAP capabilities: `https://irsa.ipac.caltech.edu/TAP/capabilities`
 - IRSA TAP sync: `https://irsa.ipac.caltech.edu/TAP/sync?QUERY=SELECT+TOP+1+obs_collection+FROM+ivoa.obscore&FORMAT=csv`
 - IRSA página: `https://irsa.ipac.caltech.edu/Missions/spherex.html`
@@ -95,7 +99,7 @@ Todas las filas son del 14-nov-2026. La columna de 13:04 es la medición de Joaq
 ### 4.1 Entrada y método
 
 - **Lista de entrada:** `docs/sprint-13-30/verdad-terreno.csv`, de la rama `Horacio`, commit `2554170` (14-nov-2026 13:18), 37 objetos, md5 `0d8cc3e4fd97914cc3d5bdf196e4ba58`. El repositorio es privado: el enlace web da 404 sin sesión y hay que usar `git`. No se copió a esta rama para no pisar la entrega de Horacio; el comando para reconstruirla está al final de esta sección.
-- **Consulta:** SIA2 de IRSA, radio de 0,0005° (1,8″), colecciones `spherex_qr2`, `spherex_dr1` y `spherex_qr3`. Es el mismo radio y la misma plantilla usados en `recursos.md`.
+- **Consulta:** servicio SIA de IRSA, radio de 0,0005° (1,8″), colecciones `spherex_qr2`, `spherex_dr1` y `spherex_qr3`. Es el mismo radio y la misma plantilla usados en `recursos.md`. La ruta que responde es `/SIA`; `/SIA2` devuelve 404 (15:16:03).
 - **Plantilla:** `https://irsa.ipac.caltech.edu/SIA?COLLECTION=<coleccion>&POS=circle+<RA>+<Dec>+0.0005&RESPONSEFORMAT=CSV`
 - **Temporada:** bloque de fechas de observación separado por más de **60 días** del siguiente. Se calcula sobre la unión de las fechas de DR1 y QR3, redondeadas a 1e-4 día para no contar dos veces la misma exposición reprocesada. Las temporadas por colección también están en el CSV (`temporadas_dr1`, `temporadas_qr3`).
 - **Ventana:** consultas iniciadas entre 14:22:26 y 14:23:13 MST; reintentos hasta 14:24:53. Cada fila del CSV lleva la hora del primer intento; [`consultas.json`](consultas.json) guarda los 133 intentos con URL, HTTP, filas, segundos y error.
@@ -222,3 +226,4 @@ python3 -m http.server 8765   # abrir http://127.0.0.1:8765/aladin-wcs-test.html
 - [`cobertura.py`](cobertura.py): script de consulta y cálculo de temporadas, solo biblioteca estándar.
 - [`consultas.json`](consultas.json): los 133 intentos con URL, HTTP, filas, segundos y error.
 - [`aladin-wcs-test.html`](aladin-wcs-test.html): página mínima de la prueba de WCS.
+- [`entrega-horacio.md`](entrega-horacio.md): cobertura de los cinco objetivos para Horacio y revisión de su acceso.
