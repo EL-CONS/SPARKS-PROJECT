@@ -73,15 +73,16 @@ function Motion({ L, mu, err, exp, cat, px, t }: { L: L; mu: number; err: number
             <text x={x(v)} y="94" className="c-tick">{v}</text>
           </g>
         ))}
-        <text x="580" y="112" className="c-tick c-tick--end">{L.motion.perYear}</text>
+        <text x="20" y="116" className="c-tick" style={{ textAnchor: 'start' }}>{L.motion.perYear}</text>
         <rect x={x(mu - err)} y="58" width={x(mu + err) - x(mu - err)} height="24" rx="12" className="c-band" />
         <circle cx={x(mu)} cy="70" r="9" className="c-now" />
         <line x1={x(exp)} x2={x(exp)} y1="40" y2="86" className="c-ref" />
-        <text x={x(mu)} y="40" className="c-lbl c-lbl--now" textAnchor="end" dx="-14">{L.motion.sparks} {mu.toFixed(2)}</text>
-        <text x={x(exp)} y="30" className="c-lbl" textAnchor="start" dx="8">{cat} {exp.toFixed(2)}</text>
-        <text x={x(mu + err)} y="56" className="c-mini" dx="6">± {err.toFixed(2)} {L.motion.band}</text>
+        <text x={x(mu)} y="46" className="c-lbl c-lbl--now" textAnchor="end" dx="-14">{L.motion.sparks} {mu.toFixed(2)}</text>
+        <text x={x(exp)} y="22" className="c-lbl" textAnchor={x(exp) > 460 ? 'end' : 'start'} dx={x(exp) > 460 ? -8 : 8}>{cat} {exp.toFixed(2)}</text>
       </svg>
-      <p className="insight__kid">{L.motion.kid(px.toFixed(1))} <Term id="properMotion" t={t} /></p>
+      <p className="insight__kid">
+        <span className="swatch swatch--band" aria-hidden="true" /> ± {err.toFixed(2)} = {L.motion.band}. {L.motion.kid(px.toFixed(1))} <Term id="properMotion" t={t} />
+      </p>
     </figure>
   );
 }

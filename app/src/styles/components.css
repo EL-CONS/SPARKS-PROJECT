@@ -549,6 +549,9 @@
 .chart--compass {
   max-width: 190px;
 }
+.insight--wide .chart {
+  max-width: 760px;
+}
 .c-axis {
   stroke: var(--text-3);
   stroke-width: 1.2;
@@ -558,9 +561,6 @@
   font-size: 12px;
   fill: var(--text-3);
   text-anchor: middle;
-}
-.c-tick--end {
-  text-anchor: end;
 }
 .c-band {
   fill: rgb(255 178 56 / 0.28);
@@ -785,4 +785,16 @@
   .insights__grid {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+
+.swatch {
+  display: inline-block;
+  width: 22px;
+  height: 10px;
+  margin-right: 4px;
+  border-radius: 5px;
+  vertical-align: middle;
+}
+.swatch--band {
+  background: rgb(255 178 56 / 0.4);
 }
