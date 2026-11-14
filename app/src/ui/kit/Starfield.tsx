@@ -9,6 +9,8 @@ interface Props {
   labels: Record<string, string>;
   /** extra density multiplier (1 = default) */
   density?: number;
+  /** behind working screens: bodies dim and unlabelled */
+  quiet?: boolean;
 }
 
 type Body = {
@@ -110,7 +112,7 @@ const BODIES: Omit<Body, 'x' | 'y'>[] = [
   },
 ];
 
-export function Starfield({ theme, labels, density = 1 }: Props) {
+export function Starfield({ theme, labels, density = 1, quiet = false }: Props) {
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const c = ref.current!;
@@ -192,7 +194,7 @@ export function Starfield({ theme, labels, density = 1 }: Props) {
         const y = b.y * h + py * 18 * b.z;
         // fade bodies that pass behind the central reading column
         const off = Math.abs(x / w - 0.5);
-        const fade = w < 700 ? 0.45 : Math.min(1, Math.max(0.25, (off - 0.18) / 0.14));
+        const fade = quiet ? 0.3 : w < 700 ? 0.45 : Math.min(1, Math.max(0.25, (off - 0.18) / 0.14));
         ctx.globalAlpha = fade;
         b.draw(ctx, x, y, now, scale * b.z);
         ctx.globalAlpha = 1;
@@ -252,6 +254,6 @@ export function Starfield({ theme, labels, density = 1 }: Props) {
       window.removeEventListener('pointermove', onMove);
       document.removeEventListener('visibilitychange', onVis);
     };
-  }, [theme, labels, density]);
+  }, [theme, labels, density, quiet]);
   return <canvas ref={ref} className="starfield" aria-hidden="true" />;
 }
