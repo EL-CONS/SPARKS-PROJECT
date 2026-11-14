@@ -1,6 +1,6 @@
 """
 Entrenamiento y exportación del modelo de detección de movimiento para SPARKS.
-Entrena un DecisionTreeClassifier / Random Forest y exporta a JSON interpretable en TypeScript.
+Fondo aislado sin la región central de Barnard. Semilla fija.
 """
 import os
 import json
@@ -13,12 +13,13 @@ from sklearn.metrics import classification_report, confusion_matrix
 from ml.reader import load_diffs
 from ml.injector import generate_synthetic_dataset
 
+repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
 def export_tree_to_json(tree_model, feature_names: list) -> Dict[str, Any]:
-    """Exporta la estructura de un DecisionTreeClassifier a un dict JSON compatible."""
     tree = tree_model.tree_
     
     def recurse(node_id: int) -> Dict[str, Any]:
-        if tree.feature[node_id] != -2: # Not a leaf
+        if tree.feature[node_id] != -2:
             feat_idx = int(tree.feature[node_id])
             threshold = float(tree.threshold[node_id])
             return {
@@ -48,20 +49,18 @@ def export_tree_to_json(tree_model, feature_names: list) -> Dict[str, Any]:
     }
 
 def main():
-    data_dir = "/home/gcons17/Proyectos/SPARKS/data-sample/barnard"
+    data_dir = os.path.join(repo_root, "data-sample", "barnard")
     diffs = load_diffs(data_dir)
     print(f"Diferencias cargadas: {diffs.shape}")
     
-    print("Generando dataset sintético por inyección sobre fondo real...")
-    X, y, feature_names, meta = generate_synthetic_dataset(diffs, n_samples_per_class=600, seed=123)
+    print("Generando dataset sintético con fondos periféricos aislados...")
+    X, y, feature_names, meta = generate_synthetic_dataset(diffs, n_samples_per_class=600, seed=42)
     print(f"Dataset generado: X={X.shape}, y={y.shape}")
     
-    # Partición estratificada 75% train, 25% test
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.25, random_state=42, stratify=y
     )
     
-    # Entrenar árbol de decisión regularizado (para interpretabilidad y exportación directa)
     clf = DecisionTreeClassifier(max_depth=5, min_samples_leaf=10, random_state=42)
     clf.fit(X_train, y_train)
     
@@ -72,17 +71,13 @@ def main():
     y_pred = clf.predict(X_test)
     print("\nReporte de Clasificación (Test):")
     print(classification_report(y_test, y_pred, target_names=["static", "motion", "variable"]))
-    print("Matriz de confusión:")
-    print(confusion_matrix(y_test, y_pred))
     
-    # Exportar árbol a JSON para inferencia en TS
     tree_dict = export_tree_to_json(clf, feature_names)
-    out_json_path = "/home/gcons17/Proyectos/SPARKS/app/src/core/motion_model.json"
+    out_json_path = os.path.join(repo_root, "app", "src", "core", "motion_model.json")
     with open(out_json_path, "w", encoding="utf-8") as f:
         json.dump(tree_dict, f, indent=2)
     print(f"\nModelo exportado a JSON: {out_json_path}")
     
-    # Generar 250 casos de prueba para test cruzado en TypeScript
     test_cases = []
     for i in range(250):
         feats_dict = {name: float(X_test[i, idx]) for idx, name in enumerate(feature_names)}
@@ -95,10 +90,10 @@ def main():
             "class_name": ["static", "motion", "variable"][pred_cls]
         })
         
-    fixtures_path = "/home/gcons17/Proyectos/SPARKS/app/tests/motion_fixtures.json"
+    fixtures_path = os.path.join(repo_root, "app", "tests", "motion_fixtures.json")
     with open(fixtures_path, "w", encoding="utf-8") as f:
         json.dump(test_cases, f, indent=2)
-    print(f"Fixtures para pruebas en TS guardados en: {fixtures_path}")
+    print(f"Fixtures guardados en: {fixtures_path}")
 
 if __name__ == "__main__":
     main()

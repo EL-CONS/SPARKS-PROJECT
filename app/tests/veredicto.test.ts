@@ -1,43 +1,63 @@
 import { describe, it, expect } from 'vitest';
-import fs from 'node:fs';
-import path from 'node:path';
-import { classifyCandidate, VeredictoClass, VeredictoFieldInput } from '../src/core/veredicto';
+import { veredicto, calcularMg, FieldFeatures } from '../src/core/veredicto';
+import resultsData from '../../data-sample/results.json';
 
-const TRUTH: Record<string, VeredictoClass> = {
-  barnard: 'estrella',
-  teegarden: 'estrella',
-  wolf359: 'estrella',
-  kapteyn: 'estrella',
-  t452800: 'estrella',
-  t744064: 'estrella',
-  t605760: 'estrella',
-  t503424: 'estrella',
-  vanmaanen: 'enana blanca',
-  wise0855: 'enana marron',
-  epsindib: 'enana marron',
-  rwaur: 'variable',
-  rdra: 'variable',
-};
+describe('Veredicto Físico con Gaia DR3 (Jerarquía de Horacio en TypeScript)', () => {
+  const fields = resultsData.fields as Record<string, FieldFeatures>;
 
-describe('classifyCandidate against data-sample/results.json', () => {
-  const resultsPath = path.resolve(__dirname, '../../data-sample/results.json');
-  const results = JSON.parse(fs.readFileSync(resultsPath, 'utf-8')) as {
-    fields: Record<string, VeredictoFieldInput>;
+  const SPLIT_DESARROLLO: Record<string, string> = {
+    barnard: 'estrella',
+    teegarden: 'estrella',
+    wolf359: 'estrella',
+    kapteyn: 'estrella',
+    t503424: 'estrella',
+    vanmaanen: 'enana blanca',
+    wise0855: 'enana marron',
+    epsindib: 'enana marron',
+    rwaur: 'variable',
+    rdra: 'variable',
   };
 
-  it('matches 12 of 13 fields (same as prototipo/veredicto.py)', () => {
-    let matches = 0;
-    for (const [id, expected] of Object.entries(TRUTH)) {
-      const res = classifyCandidate(results.fields[id]);
-      if (res.clase === expected) matches += 1;
-    }
-    expect(matches).toBe(12);
+  it('debe calcular M_G correctamente con la fórmula Pogson/paralaje', () => {
+    // Barnard: G=8.194, plx=546.9759 -> M_G = 8.194 + 5 + 5*log10(0.5469759) = 11.884
+    const mg = calcularMg(8.194, 546.9759);
+    expect(mg).not.toBeNull();
+    expect(mg!).toBeCloseTo(11.884, 2);
+
+    expect(calcularMg(null, 100)).toBeNull();
+    expect(calcularMg(10, 0)).toBeNull();
+    expect(calcularMg(10, -5)).toBeNull();
   });
 
-  it('classifies WISE 0855 and Epsilon Indi B as enana marron and variables as variable', () => {
-    expect(classifyCandidate(results.fields.wise0855).clase).toBe('enana marron');
-    expect(classifyCandidate(results.fields.epsindib).clase).toBe('enana marron');
-    expect(classifyCandidate(results.fields.rwaur).clase).toBe('variable');
-    expect(classifyCandidate(results.fields.rdra).clase).toBe('variable');
+  it('debe coincidir exactamente 10/10 con el script de Python sobre el split de desarrollo', () => {
+    let ok = 0;
+    for (const [fid, verdad] of Object.entries(SPLIT_DESARROLLO)) {
+      const f = fields[fid];
+      expect(f).toBeDefined();
+
+      const { clase, razon } = veredicto(f, fid);
+      expect(clase).toBe(verdad);
+      expect(razon.length).toBeGreaterThan(5);
+      ok++;
+    }
+    expect(ok).toBe(10);
+  });
+
+  it('debe reconocer a Van Maanen como enana blanca mediante M_G y BP-RP', () => {
+    const res = veredicto(fields['vanmaanen'], 'vanmaanen');
+    expect(res.clase).toBe('enana blanca');
+    expect(res.razon).toContain('M_G=14.12');
+    expect(res.razon).toContain('BP-RP=0.60');
+  });
+
+  it('debe reportar estrella con razón explícita cuando in_gaia es true pero falta fotometría', () => {
+    const mockField: FieldFeatures = {
+      kind: 'mover',
+      in_gaia: true,
+      cold: {},
+    };
+    const res = veredicto(mockField, 'campo_desconocido_sin_gaia');
+    expect(res.clase).toBe('estrella');
+    expect(res.razon).toContain('no trae fotometria/paralaje verificable');
   });
 });

@@ -135,3 +135,33 @@ export async function loadFieldAssets(
     plates: buildPlatesFromManifest(field.id, manifest, baseUrl),
   };
 }
+
+export type LiveFieldStatus = 'en_cola' | 'procesando' | 'listo' | 'fallo';
+
+export interface LiveFieldResponse {
+  status: LiveFieldStatus;
+  job_id?: string;
+  field_id?: string;
+  ra?: number;
+  dec?: number;
+  posicion_en_cola?: number;
+  progreso_porcentaje?: number;
+  etapa_actual?: string;
+  estimado_segundos?: number;
+  estimado_segundos_restantes?: number;
+  manifest_url?: string;
+  data_base_url?: string;
+  error_code?: string;
+  mensaje?: string;
+}
+
+export async function fetchLiveFieldStatus(
+  ra: number,
+  dec: number,
+  apiBaseUrl = 'http://localhost:3001'
+): Promise<LiveFieldResponse> {
+  const url = `${apiBaseUrl}/api/campo?ra=${encodeURIComponent(ra)}&dec=${encodeURIComponent(dec)}`;
+  const res = await fetch(url);
+  const data = (await res.json()) as LiveFieldResponse;
+  return data;
+}
