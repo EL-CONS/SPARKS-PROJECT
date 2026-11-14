@@ -28,6 +28,40 @@ Tu punto de partida, y nada más:
 - El **espacio**: profundidad, escala, silencio, mucho cielo bien compuesto.
 - La **elegancia**: contención, tipografía cuidada, jerarquía clara, pocas cosas con mucho peso cada una.
 
+## 2.1 El logo: el ADN visual de la página
+
+El logo existe, es nuestro orgullo y manda sobre el resto del diseño. La interfaz tiene que sentirse hecha por la misma mano. Antes de diseñar, abre `Logo/symbol.svg`, `Logo/logo.svg` y `Logo/symbol-animated.svg`, y lee `branding/sparks/concept-01/README.md` (que explica el concepto).
+
+**Qué cuenta.** Dos chispas: la azul es el objeto **antes**, la ámbar es el mismo objeto **ahora**. Se encima un poco, y donde se tocan se enciende el parpadeo de Tombaugh. Es literalmente lo que el usuario ve en la vista de resta. La ámbar es la más grande y está arriba a la derecha; la azul, más chica, abajo a la izquierda. La diagonal sube hacia la derecha, como el tiempo.
+
+**Sus colores (tomados del propio archivo del logo, no inventados):**
+
+| Color | Valor | Qué significa |
+|---|---|---|
+| Ámbar | `#FFB238` | Ahora. Lo que se mueve, lo que se puede tocar |
+| Azul | `#62B6E8` | Antes. Dónde estaba |
+| Crema cálida | `#FFF4DC` | El encendido donde se tocan las dos chispas |
+| Noche | `#06080C` | El fondo sobre el que vive el logo |
+
+Úsalos como columna vertebral de la paleta. Azul y ámbar tienen un significado fijo en toda la plataforma: **azul siempre es antes y ámbar siempre es ahora**, también en las imágenes de resta, las flechas y las leyendas. No uses esos dos colores para otra cosa de forma que un lector pueda confundirse. Puedes construir el resto de la paleta, claros, oscuros y colores de asombro alrededor de ellos, pero cada color nuevo tiene que convivir con el azul y el ámbar sin apagarlos.
+
+**El glow, que es lo más reconocible del logo.** Cada chispa tiene un núcleo sólido y un halo radial que se desvanece muy suave hasta ser transparente: el halo ámbar mide unas tres veces el radio de su disco y el azul casi lo mismo; la opacidad pasa de casi opaca en el centro a cero en el borde. Donde se tocan hay un destello cálido, color crema. No es una sombra paralela ni un desenfoque genérico: es luz.
+
+Usa esa luz en la interfaz con las mismas reglas:
+- **La luz aparece donde hay significado.** Un halo ámbar rodea lo que es acción o "ahora" (el botón principal, el cuadro actual, el foco). Un halo azul acompaña a "antes". Si todo brilla, nada brilla: el glow es escaso y cada uno cuenta algo.
+- Se construye con degradados radiales que decaen a transparente, no con sombras duras ni bordes de colores. En el tema claro la luz también debe verse: mira `Logo/logo-light.svg` para ver cómo la resuelve el logo y diseña ese tema aparte.
+- Cuida el rendimiento: prefiere degradados radiales de CSS a filtros de desenfoque grandes, que pesan en un teléfono modesto.
+- El destello donde las chispas se tocan es la firma del "parpadeo". Úsalo como el momento al cambiar de cuadro, tomando el ritmo de `symbol-animated.svg`. Respeta el límite de destellos de la sección 7 y `prefers-reduced-motion`.
+
+**Cómo combinar con el logo, sin copiarlo literalmente:**
+- Deja que la forma del logo (círculos, diagonal ascendente, traslape) inspire la composición, la flecha de movimiento, las transiciones y los indicadores de estado. No llenes la página de pares de círculos decorativos ni repitas el logo grande como adorno.
+- La tipografía, las esquinas y los trazos deben llevarse bien con la geometría circular y la suavidad del halo.
+- El espacio oscuro alrededor deja respirar la luz: deja aire a las chispas, no las encierres en cajas con borde.
+
+**Lo que no se toca:** no deformes el logo, no le cambies los colores, no le pongas contorno ni sombra paralela, respeta su área libre y usa las versiones de una tinta (`logo-mono-*.svg`) donde el fondo no soporte las de color. No modifiques nada dentro de `Logo/`.
+
+En la Fase B, cada una de las tres direcciones debe explicar cómo parte del logo: qué toma de sus colores, de su glow y de su geometría, y cómo se distingue de las otras dos.
+
 ## 3. Cómo se reparte el trabajo en el repo
 
 Cons construye la capa lógica sin diseño. Tú haces el diseño encima, sin pisarlo.
