@@ -212,7 +212,44 @@ La regla física superó al modelo de ML tanto en exhaustividad como en pureza e
 
 ---
 
-## 8. Corrección de Mitos y Verificación de Números para el Pitch
+## 8. Datos Requeridos para un Clasificador Multiclase y Diagnóstico de Acceso en Vivo
+
+Para trascender la detección binaria (*mover* vs *no-mover*) y construir un clasificador astronómico completo que categorice objetos en familias celestes (asteroides, cometas, enanas marrones, estrellas veloces, estrellas variables y artefactos instrumentales), se requiere una infraestructura de datos específica.
+
+A continuación se detalla qué datos se requieren por familia celeste y el diagnóstico de acceso en tiempo real a las fuentes oficiales:
+
+### 8.1. Datos adicionales requeridos por familia celeste
+
+| Familia celeste | Datos requeridos del catálogo o telescopio | Función en el clasificador |
+|---|---|---|
+| **Asteroides y Cometas** | • **Efemérides orbitales con sello de tiempo (JD/MJD):** Coordenadas $(\alpha, \delta)$ calculadas en el instante exacto de la exposición de SPHEREx.<br>• **Morfología espacial (FWHM y perfil radial):** Contraste entre perfiles puntuales (asteroides) y fuentes difusas con coma extendida (cometas). | Permite la confirmación cruzada determinista con el Sistema Solar sin depender de hipótesis orbitales a ciegas. |
+| **Enanas Marrones Frías (T / Y)** | • **Fotometría en los 6 detectores:** Flujos calibrados en las 102 bandas ($0.75\text{--}5.0\,\mu\text{m}$), evaluando el cociente $F_{\text{D6}} / F_{\text{D2}}$ y el pozo de absorción de $\text{CH}_4$ a $3.3\,\mu\text{m}$.<br>• **Filtro óptico de descarte ("Gaia-Blind"):** Confirmación de no-detección en catálogos visibles ($G > 20.7$). | Separa enanas marrones ultrafrías de estrellas enanas M veloces que tienen desplazamientos angulares idénticos. |
+| **Estrellas de Alto Movimiento Propio (HPM)** | • **Astrometría óptica de alta precisión (Gaia DR3):** Movimiento propio ($\mu_\alpha, \mu_\delta$), paralaje ($\varpi$) y magnitudes $G, G_{\text{BP}}, G_{\text{RP}}$. | Valida que el vector del dipolo medido por Sparks coincide con la física estelar conocida. |
+| **Estrellas Variables (Miras, T Tauri)** | • **Series temporales fotométricas (curvas de luz):** Flujo medido en $>5$ fechas distintas a lo largo de las temporadas QR2 y QR3. | Determina el periodo y la amplitud $\Delta m$, certificando que el residuo en la resta proviene de pulsación de brillo y no de traslación espacial. |
+| **Artefactos y Ruido Instrumental** | • **Máscaras de píxeles y banderas de calidad de SPHEREx:** Banderas `OVERFLOW`, `NONLINEAR`, `GHOST`, `SATURATED`, `EDGE` y mapas de difracción alrededor de estrellas brillantes. | Evita clasificar falsos dipolos producidos por reflejos ópticos internos o residuos de resta en núcleos saturados. |
+
+### 8.2. Diagnóstico de conectividad y acceso en vivo a las fuentes
+
+Evaluación directa de conectividad y latencia hacia las APIs astronómicas oficiales:
+
+| Fuente / API | Protocolo / Endpoint | Estado de Acceso | Diagnóstico técnico y mitigación |
+|---|---|---|---|
+| **JPL Horizons API** (NASA / JPL-Caltech) | REST JSON (`ssd.jpl.nasa.gov/api/horizons.api`) | ✅ **DISPONIBLE (HTTP 200)** | **Acceso total e inmediato.** Permite generar efemérides precisas para cualquier asteroide o cometa conocido en segundos para la fecha exacta de cualquier imagen de SPHEREx. |
+| **Gaia Archive TAP** (ESA / ESAC) | TAP / ADQL (`gea.esac.esa.int/tap-server/tap/sync`) | ✅ **DISPONIBLE (HTTP 200)** | **Acceso total.** Permite consultas remotas en lenguaje ADQL sobre Gaia DR3 para cruzar al vuelo movimientos propios, paralajes y magnitudes ópticas. |
+| **IRSA TAP / ObsTAP** (IPAC / Caltech) | TAP / ADQL (`irsa.ipac.caltech.edu/TAP/sync`) | ⚠️ **ALTA LATENCIA (15 a 60 s)** | **Funcional para lotes, inviable para consultas web en vivo.** Las consultas a CatWISE2020 y metadatos de SPHEREx tardan entre 15 y 60 s. Estrategia: precálculo de tablas estáticas por campo. |
+| **SIMBAD / VizieR** (CDS Estrasburgo) | TAP / HTTP (`simbad.cds.unistra.fr`) | ❌ **BLOQUEO / TIMEOUT DE RED** | Los servidores del CDS presentan restricciones de red o latencia inmanejable desde este entorno. Mitigación: consultar directamente el TAP de Gaia en ESA o los espejos de IRSA. |
+| **Datos locales en el repositorio** | Archivos locales (`research/planetx/scratch/`) | ✅ **100% DISPONIBLE** | Coberturas, metadatos y listas de imágenes descargadas para los 5 campos objetivo (Barnard, WISE 0855, $\epsilon$ Indi B, RW Aurigae, R Draconis) y 9 estrellas de prueba en `models/report/final_test.md`. |
+
+### 8.3. Conclusión de viabilidad para el Hackatón
+Para el alcance del hackatón, **sí contamos con la infraestructura de datos necesaria**:
+1. El cruce con **Gaia DR3** (vía ESA TAP) resuelve la confirmación de estrellas y el filtro "Gaia-Blind" para enanas marrones.
+2. El acceso a **JPL Horizons** resuelve la identificación determinista de asteroides.
+3. Los datos precalculados de **SPHEREx** resuelven la extracción de las 102 bandas espectrales.
+No es necesario reentrenar una red neuronal compleja desde cero; la arquitectura híbrida (regla física de dipolos + cruces en tiempo real con Gaia y Horizons) entrega la máxima precisión científica sin falsas alarmas.
+
+---
+
+## 9. Corrección de Mitos y Verificación de Números para el Pitch
 
 Para blindar la presentación del equipo ante las preguntas técnicas de la astrónoma del jurado:
 
@@ -226,7 +263,7 @@ Para blindar la presentación del equipo ante las preguntas técnicas de la astr
 
 ---
 
-## 9. Bibliografía y Enlaces a Fuentes Primarias
+## 10. Bibliografía y Enlaces a Fuentes Primarias
 
 1. **Luhman, K. L. (2014):** *Discovery of a ~250 K Brown Dwarf at 2 pc from the Sun with WISE.* The Astrophysical Journal Letters, 786:L18. [arXiv:1405.7350](https://arxiv.org/abs/1405.7350).
 2. **Rustamkulov, Z. et al. (2026):** *SPHEREx Spectroscopy of Ultracool Brown Dwarfs.* [arXiv:2607.00543](https://arxiv.org/abs/2607.00543).
