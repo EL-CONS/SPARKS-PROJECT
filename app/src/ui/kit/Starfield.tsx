@@ -190,9 +190,14 @@ export function Starfield({ theme, labels, density = 1 }: Props) {
         }
         const x = b.x * w + px * 18 * b.z;
         const y = b.y * h + py * 18 * b.z;
+        // fade bodies that pass behind the central reading column
+        const off = Math.abs(x / w - 0.5);
+        const fade = w < 700 ? 0.45 : Math.min(1, Math.max(0.25, (off - 0.18) / 0.14));
+        ctx.globalAlpha = fade;
         b.draw(ctx, x, y, now, scale * b.z);
+        ctx.globalAlpha = 1;
         const label = labels[b.id];
-        if (label) {
+        if (label && fade > 0.9) {
           ctx.fillStyle = 'rgba(233,241,255,0.55)';
           ctx.fillText(label, x, y + 30 * scale * b.z);
         }
