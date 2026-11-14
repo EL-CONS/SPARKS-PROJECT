@@ -3,7 +3,7 @@
 > **Responsable:** Horacio (Rol de Ciencia y Física del Motor)  
 > **Equipo:** Cosmonautas · Hermosillo, Sonora  
 > **Proyecto:** Sparks (NASA Space Apps Challenge · Reto SPHEREx)  
-> **Rama de trabajo:** `horacio`  
+> **Rama de trabajo:** `Horacio`  
 > **Última actualización:** 14 de noviembre de 2026
 
 ---
@@ -47,23 +47,26 @@ $$\mu = \sqrt{(\mu_\alpha \cos\delta)^2 + \mu_\delta^2} \quad [\text{unidades: }
 El salto esperado en píxeles de SPHEREx tras una base temporal $\Delta t$ es:
 $$\Delta x_{\text{px}} = \frac{\mu \cdot \Delta t}{6.15''}$$
 
-#### Análisis de los objetivos de calibración y prueba:
+#### Análisis de los objetivos de calibración y prueba (con datos reales de `results.json` y manifiestos):
 
 1. **Barnard's Star (M4V, distancia: $1.83\,\text{pc}$):**
-   * $\mu \approx 10.39''/\text{año}$ (la estrella con mayor movimiento propio conocido).
-   * Línea base en SPHEREx: ago-2025 $\rightarrow$ sep-2026 ($\Delta t \approx 1.1\,\text{años}$).
-   * Desplazamiento esperado: $\sim 11.4'' \approx \mathbf{1.85\,\text{px}}$.
+   * $\mu \approx 10.39''/\text{año}$ (Gaia DR3).
+   * Línea base en SPHEREx: 15 ago 2025 a 22 sep 2026 ($\Delta t = 0.98\,\text{años}$, distribuida en tres temporadas: S0 15 ago – 1 oct 2025, S1 11 mar – 5 may 2026, S2 16 ago – 22 sep 2026).
+   * Desplazamiento esperado con Gaia: $10.39 \times 0.98 / 6.15 = \mathbf{1.66\,\text{px}}$ ($\sim 10.18''$).
+   * Medición real de Sparks (`results.json`): $\mu = 10.23 \pm 0.43''/\text{año} \rightarrow \mathbf{1.63\,\text{px}}$ (acuerdo a $0.4\sigma$).
    * *Diagnóstico:* Se observa como un dipolo clarísimo en la resta. Al ser una estrella brillante ($V \sim 9.5$, muy luminosa en IR), presenta saturación de núcleo en SPHEREx, requiriendo medición en los lóbulos de las alas de la PSF.
 2. **WISE 0855−0714 (Enana marrón Y4, $T \approx 250\,\text{K}$, distancia: $2.23\,\text{pc}$):**
-   * $\mu = 8.08 \pm 0.05''/\text{año}$; paralaje $\pi = 0.449 \pm 0.008''$ (Luhman 2014).
-   * Línea base en SPHEREx: may-2025 $\rightarrow$ may-2026 ($\Delta t \approx 1.0\,\text{año}$).
-   * Desplazamiento esperado: $\sim 8.1'' \approx \mathbf{1.31\,\text{px}}$.
+   * $\mu = 8.09 \pm 0.17''/\text{año}$; paralaje $\pi = 0.449 \pm 0.008''$ (CatWISE2020 / Luhman 2014).
+   * Línea base en SPHEREx: 5 may 2025 a 14 may 2026 ($\Delta t = 0.99\,\text{años}$, en QR2).
+   * Desplazamiento esperado con CatWISE: $8.09 \times 0.99 / 6.15 = \mathbf{1.30\,\text{px}}$ ($\sim 8.01''$).
+   * Medición real de Sparks (`results.json`): $\mu = 7.91 \pm 1.35''/\text{año} \rightarrow \mathbf{1.27\,\text{px}}$ (acuerdo a $0.1\sigma$).
    * *Diagnóstico:* Invisible en los detectores D1 a D3 ($<2.4\,\mu\text{m}$). Emerge con alto S/N en D5 y D6 ($4\text{--}5\,\mu\text{m}$). Es el caso de estudio clave para demostrar que **el movimiento sumado al espectro MIR identifica el objeto sin lugar a dudas**.
 3. **$\mathbf{\epsilon}$ Indi Ba/Bb (Sistema binario T1 + T6, distancia: $3.6\,\text{pc}$):**
-   * $\mu \approx 4.70''/\text{año}$ (movimiento común con $\epsilon$ Indi A).
+   * $\mu \approx 4.70''/\text{año}$ (Gaia DR3, movimiento común con $\epsilon$ Indi A).
    * Separación orbital de la pareja: $0.732''$ (físicamente **no resuelta** por el píxel de $6.15''$).
-   * Línea base en SPHEREx: abr-2025 $\rightarrow$ oct-2026 ($\Delta t \approx 1.45\,\text{años}$).
-   * Desplazamiento esperado: $\sim 6.8'' \approx \mathbf{1.11\,\text{px}}$.
+   * Línea base en SPHEREx: may-2025 a oct-2026 ($\Delta t = 1.39\,\text{años}$, bloques QR2 desde may-2025 hasta QR3 el 2 oct 2026).
+   * Desplazamiento esperado con Gaia: $4.70 \times 1.39 / 6.15 = \mathbf{1.06\,\text{px}}$ ($\sim 6.53''$).
+   * Medición real de Sparks (`results.json`): $\mu = 4.54 \pm 0.11''/\text{año} \rightarrow \mathbf{1.03\,\text{px}}$ (acuerdo a $1.5\sigma$).
    * *Riesgo:* $\epsilon$ Indi A (estrella K4V brillante) está a solo $\sim 6.7'$ de distancia, introduciendo artefactos y fantasmas ópticos (bandera `GHOST`).
 
 > **Veredicto sobre Paralaje Estelar:**  
@@ -91,7 +94,7 @@ A diferencia de las estrellas, los asteroides y cometas están dominados por la 
 * **¿Es posible clasificar o detectar exoplanetas por movimiento directo en SPHEREx?**
 * **Respuesta categórica:** **NO.**
 * **Justificación física:**
-  1. *Escala angular:* Un planeta a $10\,\text{pc}$ de la Tierra con órbita tipo Júpiter ($5\,\text{UA}$) tiene una separación angular máxima de $\theta = 5\,\text{UA} / 10\,\text{pc} = 0.5''$. En SPHEREx ($6.15''/\text{px}$), toda la órbita ocurre dentro de una doceava parte de un solo píxel.
+  1. *Escala angular:* Un planeta a $10\,\text{pc}$ de la Tierra con órbita tipo Júpiter ($5\,\text{UA}$) tiene una separación angular máxima de $\theta = 5\,\text{UA} / 10\,\text{pc} \approx 0.5''$. En SPHEREx ($6.15''/\text{px}$), toda la órbita ocurre dentro de una doceava parte de un solo píxel.
   2. *Contraste de flujo:* La estrella anfitriona es entre $10^6$ y $10^9$ veces más brillante en el infrarrojo. El flujo del planeta queda enterrado bajo el ruido de fotones estelar.
   3. *Conclusión para el pitch:* Cualquier propuesta de "detectar exoplanetas que se mueven" en imágenes de SPHEREx destruiría la credibilidad del equipo ante un jurado astrofísico.
 
@@ -172,9 +175,9 @@ Líneas:      H₂O (1.4)  H₂O (1.9)  CH₄ (2.2)  CH₄ (3.3)  CO₂ (4.26)  
    * **Banda fundamental en $3.3\,\mu\text{m}$ (Detector 4):** Provoca un hundimiento casi total del continuo. Esta es la huella digital indiscutible de las enanas frías tipo T e Y.
 3. **Pico Térmico a $4\text{--}5\,\mu\text{m}$ (Detectores D5 y D6):**
    * Debido a la opacidad del metano en $3.3\,\mu\text{m}$ y del agua en bandas más cortas, la energía térmica de una enana Y como WISE 0855 ($250\,\text{K}$) escapa casi exclusivamente a través de la ventana de $4\text{ a }5\,\mu\text{m}$.
-   * El cociente de flujo entre el detector D6 y los detectores D1/D2 es:
-     $$\frac{F_{\text{D6}} (4.5\text{--}5.0\,\mu\text{m})}{F_{\text{D2}} (1.1\text{--}1.6\,\mu\text{m})} \gg 50$$
-     Para una estrella ordinaria de la secuencia principal (e.g. tipo solar o M temprano), este cociente es $\lesssim 1$.
+   * El cociente de flujo entre el detector D6 y el detector D2 medido en Sparks (`results.json`, `fields.wise0855.cold`) es:
+     $$\frac{F_{\text{D6}} (4.5\text{--}5.0\,\mu\text{m})}{F_{\text{D2}} (1.1\text{--}1.6\,\mu\text{m})} \ge 10.88$$
+     Este valor de **10.88 es un límite inferior** (`ratio_kind: lower_limit`), debido a que en D2 WISE 0855 apenas alcanza $S/N \sim 1.0$ con un flujo apilado de apenas $0.007\,\text{mJy}$, mientras que en bandas largas D5/D6 emite $0.31\,\text{mJy}$ ($S/N > 10$). Para una estrella ordinaria de la secuencia principal (e.g. tipo solar o M temprano), este cociente es $\lesssim 1$.
 
 ### 6.3. El Filtro Óptico "Gaia-Blind"
 * Las enanas marrones más frías son tan débiles en el rango óptico que están muy por debajo del límite de detección de Gaia DR3 ($G \approx 20.7$).
@@ -202,11 +205,11 @@ Sobre una muestra de 9 estrellas veloces de Gaia DR3 ($pm > 100\,\text{mas/año}
 | Métrica | Regla Física Transparente | Spark Detector (LightGBM) |
 |---|---|---|
 | **Recuperación de Movers Conocidos** | **8 / 9** ($88.9\%$) | **6 / 9** ($66.7\%$) |
-| **Falsas Alarmas (sobre 541 candidatos)** | **0** ($0.0\%$) | **10** ($1.8\%$) |
+| **Movedores adicionales sin verificar (sobre 541 candidatos)** | **0** ($0.0\%$) | **10** ($1.8\%$) |
 | **Explicabilidad** | Total (cada candidato detalla su razón física) | Caja negra (vector de probabilidad) |
 
 ### 7.3. Veredicto del Equipo
-La regla física superó al modelo de ML tanto en exhaustividad como en pureza estricta (cero falsas alarmas). Por tanto:
+La regla física superó al modelo de ML tanto en exhaustividad como en pureza estricta (cero movedores adicionales sin verificar). Por tanto:
 1. **La aplicación web Sparks clasifica sus candidatos usando la regla física.**
 2. **El modelo LightGBM se muestra como una segunda opinión experimental.**
 
@@ -216,36 +219,38 @@ La regla física superó al modelo de ML tanto en exhaustividad como en pureza e
 
 Para trascender la detección binaria (*mover* vs *no-mover*) y construir un clasificador astronómico completo que categorice objetos en familias celestes (asteroides, cometas, enanas marrones, estrellas veloces, estrellas variables y artefactos instrumentales), se requiere una infraestructura de datos específica.
 
-A continuación se detalla qué datos se requieren por familia celeste y el diagnóstico de acceso en tiempo real a las fuentes oficiales:
+A continuación se detalla qué datos se requieren por familia celeste y el diagnóstico de acceso a las fuentes oficiales:
 
 ### 8.1. Datos adicionales requeridos por familia celeste
 
 | Familia celeste | Datos requeridos del catálogo o telescopio | Función en el clasificador |
 |---|---|---|
 | **Asteroides y Cometas** | • **Efemérides orbitales con sello de tiempo (JD/MJD):** Coordenadas $(\alpha, \delta)$ calculadas en el instante exacto de la exposición de SPHEREx.<br>• **Morfología espacial (FWHM y perfil radial):** Contraste entre perfiles puntuales (asteroides) y fuentes difusas con coma extendida (cometas). | Permite la confirmación cruzada determinista con el Sistema Solar sin depender de hipótesis orbitales a ciegas. |
-| **Enanas Marrones Frías (T / Y)** | • **Fotometría en los 6 detectores:** Flujos calibrados en las 102 bandas ($0.75\text{--}5.0\,\mu\text{m}$), evaluando el cociente $F_{\text{D6}} / F_{\text{D2}}$ y el pozo de absorción de $\text{CH}_4$ a $3.3\,\mu\text{m}$.<br>• **Filtro óptico de descarte ("Gaia-Blind"):** Confirmación de no-detección en catálogos visibles ($G > 20.7$). | Separa enanas marrones ultrafrías de estrellas enanas M veloces que tienen desplazamientos angulares idénticos. |
+| **Enanas Marrones Frías (T / Y)** | • **Fotometría en los 6 detectores:** Flujos calibrados en las 102 bandas ($0.75\text{--}5.0\,\mu\text{m}$), evaluando el cociente $F_{\text{D6}} / F_{\text{D2}} \ge 10.88$ y el pozo de absorción de $\text{CH}_4$ a $3.3\,\mu\text{m}$.<br>• **Filtro óptico de descarte ("Gaia-Blind"):** Confirmación de no-detección en catálogos visibles ($G > 20.7$). | Separa enanas marrones ultrafrías de estrellas enanas M veloces que tienen desplazamientos angulares idénticos. |
 | **Estrellas de Alto Movimiento Propio (HPM)** | • **Astrometría óptica de alta precisión (Gaia DR3):** Movimiento propio ($\mu_\alpha, \mu_\delta$), paralaje ($\varpi$) y magnitudes $G, G_{\text{BP}}, G_{\text{RP}}$. | Valida que el vector del dipolo medido por Sparks coincide con la física estelar conocida. |
 | **Estrellas Variables (Miras, T Tauri)** | • **Series temporales fotométricas (curvas de luz):** Flujo medido en $>5$ fechas distintas a lo largo de las temporadas QR2 y QR3. | Determina el periodo y la amplitud $\Delta m$, certificando que el residuo en la resta proviene de pulsación de brillo y no de traslación espacial. |
 | **Artefactos y Ruido Instrumental** | • **Máscaras de píxeles y banderas de calidad de SPHEREx:** Banderas `OVERFLOW`, `NONLINEAR`, `GHOST`, `SATURATED`, `EDGE` y mapas de difracción alrededor de estrellas brillantes. | Evita clasificar falsos dipolos producidos por reflejos ópticos internos o residuos de resta en núcleos saturados. |
 
-### 8.2. Diagnóstico de conectividad y acceso en vivo a las fuentes
+### 8.2. Diagnóstico de conectividad y acceso a las fuentes
 
 Evaluación directa de conectividad y latencia hacia las APIs astronómicas oficiales:
 
 | Fuente / API | Protocolo / Endpoint | Estado de Acceso | Diagnóstico técnico y mitigación |
 |---|---|---|---|
-| **JPL Horizons API** (NASA / JPL-Caltech) | REST JSON (`ssd.jpl.nasa.gov/api/horizons.api`) | ✅ **DISPONIBLE (HTTP 200)** | **Acceso total e inmediato.** Permite generar efemérides precisas para cualquier asteroide o cometa conocido en segundos para la fecha exacta de cualquier imagen de SPHEREx. |
-| **Gaia Archive TAP** (ESA / ESAC) | TAP / ADQL (`gea.esac.esa.int/tap-server/tap/sync`) | ✅ **DISPONIBLE (HTTP 200)** | **Acceso total.** Permite consultas remotas en lenguaje ADQL sobre Gaia DR3 para cruzar al vuelo movimientos propios, paralajes y magnitudes ópticas. |
-| **IRSA TAP / ObsTAP** (IPAC / Caltech) | TAP / ADQL (`irsa.ipac.caltech.edu/TAP/sync`) | ⚠️ **ALTA LATENCIA (15 a 60 s)** | **Funcional para lotes, inviable para consultas web en vivo.** Las consultas a CatWISE2020 y metadatos de SPHEREx tardan entre 15 y 60 s. Estrategia: precálculo de tablas estáticas por campo. |
-| **SIMBAD / VizieR** (CDS Estrasburgo) | TAP / HTTP (`simbad.cds.unistra.fr`) | ❌ **BLOQUEO / TIMEOUT DE RED** | Los servidores del CDS presentan restricciones de red o latencia inmanejable desde este entorno. Mitigación: consultar directamente el TAP de Gaia en ESA o los espejos de IRSA. |
-| **Datos locales en el repositorio** | Archivos locales (`research/planetx/scratch/`) | ✅ **100% DISPONIBLE** | Coberturas, metadatos y listas de imágenes descargadas para los 5 campos objetivo (Barnard, WISE 0855, $\epsilon$ Indi B, RW Aurigae, R Draconis) y 9 estrellas de prueba en `models/report/final_test.md`. |
+| **JPL Horizons API** (NASA / JPL-Caltech) | REST JSON (`ssd.jpl.nasa.gov/api/horizons.api`) | DISPONIBLE (HTTP 200) | **Acceso total e inmediato.** Permite generar efemérides precisas para cualquier asteroide o cometa conocido en segundos para la fecha exacta de cualquier imagen de SPHEREx. |
+| **Gaia Archive TAP** (ESA / ESAC) | TAP / ADQL (`gea.esac.esa.int/tap-server/tap/sync`) | DISPONIBLE (HTTP 200) | **Acceso total.** Permite consultas remotas en lenguaje ADQL sobre Gaia DR3 para cruzar al vuelo movimientos propios, paralajes y magnitudes ópticas. |
+| **IRSA TAP / ObsTAP** (IPAC / Caltech) | TAP / ADQL (`irsa.ipac.caltech.edu/TAP/sync`) | ALTA LATENCIA (15 a 60 s) | **Funcional para lotes, inviable para consultas web en vivo.** Las consultas a CatWISE2020 y metadatos de SPHEREx tardan entre 15 y 60 s. Estrategia: precálculo de tablas estáticas por campo. |
+| **SIMBAD / VizieR** (CDS Estrasburgo) | TAP / HTTP (`simbad.cds.unistra.fr`) | BLOQUEO / TIMEOUT DE RED | Los servidores del CDS presentan restricciones de red o latencia inmanejable desde este entorno. Mitigación: consultar directamente el TAP de Gaia en ESA o los espejos de IRSA. |
+| **Datos locales en el repositorio** | Archivos locales (`research/planetx/scratch/`, `data-sample/`) | 100% DISPONIBLE | Coberturas, metadatos y listas de imágenes descargadas para los campos objetivo (Barnard, WISE 0855, $\epsilon$ Indi B, RW Aurigae, R Draconis) y 9 estrellas de prueba en `models/report/final_test.md`. |
+
+*Nota de entorno:* El estado de SIMBAD (404/timeout) y los tiempos de respuesta de IRSA (15 a 60 s) corresponden a mediciones locales realizadas desde este entorno a las 12:2x h, reflejando condiciones puntuales de latencia y red en ese instante, y no una propiedad permanente del servicio oficial.
 
 ### 8.3. Conclusión de viabilidad para el Hackatón
 Para el alcance del hackatón, **sí contamos con la infraestructura de datos necesaria**:
 1. El cruce con **Gaia DR3** (vía ESA TAP) resuelve la confirmación de estrellas y el filtro "Gaia-Blind" para enanas marrones.
 2. El acceso a **JPL Horizons** resuelve la identificación determinista de asteroides.
 3. Los datos precalculados de **SPHEREx** resuelven la extracción de las 102 bandas espectrales.
-No es necesario reentrenar una red neuronal compleja desde cero; la arquitectura híbrida (regla física de dipolos + cruces en tiempo real con Gaia y Horizons) entrega la máxima precisión científica sin falsas alarmas.
+No es necesario reentrenar una red neuronal compleja desde cero; la arquitectura híbrida (regla física de dipolos + cruces en tiempo real con Gaia y Horizons) entrega la máxima precisión científica sin movedores adicionales sin verificar.
 
 ---
 
@@ -256,19 +261,19 @@ Para blindar la presentación del equipo ante las preguntas técnicas de la astr
 | Afirmación Errónea / Ingenua | Corrección Científica Verificada |
 |---|---|
 | *"Descubrimos nuevos cuerpos celestes"* | **No.** Detectamos **candidatos a verificar**. Ningún descubrimiento es válido sin seguimiento temporal y espectroscópico independiente. |
-| *"Con SPHEREx vemos moverse a WISE 0855 en video como un asteroide"* | **Falso.** En 1 año se mueve $\sim 1.3\text{ px}$. En un video de cuadros crudos no se aprecia; se revela mediante **coadds estacionales y resta de imágenes (dipolos)**. |
-| *"Calculamos la temperatura exacta con la curva de Planck"* | **Incorrecto.** Las enanas marrones no son cuerpos negros; la absorción de $\text{CH}_4$ y $\text{H}_2\text{O}$ deforma el continuo. Usamos un **índice de color infrarrojo** ($F_{\text{D6}} / F_{\text{D2}}$). |
+| *"Con SPHEREx vemos moverse a WISE 0855 en video como un asteroide"* | **Falso.** En 1 año se mueve $\sim 1.3\text{ px}$ ($1.27\text{ px}$ medido en Sparks). En un video de cuadros crudos no se aprecia; se revela mediante **coadds estacionales y resta de imágenes (dipolos)**. |
+| *"Calculamos la temperatura exacta con la curva de Planck"* | **Incorrecto.** Las enanas marrones no son cuerpos negros; la absorción de $\text{CH}_4$ y $\text{H}_2\text{O}$ deforma el continuo. Usamos un **índice de color infrarrojo** ($F_{\text{D6}} / F_{\text{D2}} \ge 10.88$, límite inferior medido en Sparks). |
 | *"Medimos el paralaje de las estrellas cercanas"* | **Imposible con este píxel.** El paralaje estelar es $< 1''$, frente a píxeles de $6.15''$. La paralaje se remueve, no se ajusta. |
-| *"Buscamos exoplanetas en movimiento"* | **Físicamente inviable.** La separación angular es sub-arcsec y el contraste es de órdenes de magnitud. |
+| *"Buscamos exoplanetas en movimiento"* | **Físicamente inviable.** La separación angular es de $\sim 0.5''$ para un análogo de Júpiter a $10\,\text{pc}$ y el contraste es de $10^6\text{--}10^9$. |
 
 ---
 
 ## 10. Bibliografía y Enlaces a Fuentes Primarias
 
 1. **Luhman, K. L. (2014):** *Discovery of a ~250 K Brown Dwarf at 2 pc from the Sun with WISE.* The Astrophysical Journal Letters, 786:L18. [arXiv:1405.7350](https://arxiv.org/abs/1405.7350).
-2. **Rustamkulov, Z. et al. (2026):** *SPHEREx Spectroscopy of Ultracool Brown Dwarfs.* [arXiv:2607.00543](https://arxiv.org/abs/2607.00543).
-3. **Duev, D. A. et al. (2019):** *Real-bogus classification for the Zwicky Transient Facility using deep learning.* MNRAS, 489(3), 3582–3590. [arXiv:1904.05920](https://arxiv.org/abs/1904.05920).
-4. **Holman, M. J. et al. (2018):** *HelioLinx: A Clean Algorithm for Linking Solar System Observations.* The Astronomical Journal. [arXiv:1806.07920](https://arxiv.org/abs/1806.07920).
+2. **Rustamkulov, Z. et al. (2026):** *SPHEREx Spectroscopy of Ultracool Brown Dwarfs.* [arXiv:2607.00543](https://arxiv.org/abs/2607.00543) [sin verificar: no abierto hoy en texto completo].
+3. **Duev, D. A. et al. (2019):** *Real-bogus classification for the Zwicky Transient Facility using deep learning.* MNRAS, 489(3), 3582–3590. [arXiv:1904.05920](https://arxiv.org/abs/1904.05920) [rendimiento >95% tomado de abstract, sin verificar].
+4. **Holman, M. J. et al. (2018):** *HelioLinx: A Clean Algorithm for Linking Solar System Observations.* The Astronomical Journal. [arXiv:1806.07920](https://arxiv.org/abs/1806.07920) [sin verificar: citado por referencia de catálogo].
 5. **Backyard Worlds: Planet 9:** Proyecto de Ciencia Ciudadana de la NASA / Zooniverse. [backyardworlds.org](https://backyardworlds.org/).
 6. **IRSA / IPAC SPHEREx Mission Archive & Tutorials:** [irsa.ipac.caltech.edu/Missions/spherex.html](https://irsa.ipac.caltech.edu/Missions/spherex.html).
 7. **Gaia Collaboration (2022):** *Gaia Data Release 3: Summary of the content and survey properties.* [archive.stsci.edu/missions-and-data/gaia](https://archive.stsci.edu/missions-and-data/gaia).
