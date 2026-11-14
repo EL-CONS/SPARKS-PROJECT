@@ -1,9 +1,10 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './App';
+import SparksApp from './ui/SparksApp';
+import './styles/sparks.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <SparksApp />
   </StrictMode>
 );

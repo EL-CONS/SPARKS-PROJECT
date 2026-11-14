@@ -1,0 +1,132 @@
+/* Sparks · tokens. The logo's four colours are the spine; every other value
+   is built around them. Blue always means before, amber always means now. */
+
+:root,
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  /* ground: the night the logo lives on, with ink-blue surfaces */
+  --bg: #06080c;
+  --bg-raise: #0b1017;
+  --bg-sunk: #040609;
+  --surface: #0e141d;
+  --surface-2: #141c27;
+  --rule: rgb(236 231 220 / 0.09);
+  --rule-strong: rgb(236 231 220 / 0.18);
+
+  /* text: the logo's plate colour and two quieter steps (all ≥ 4.5:1 on --bg) */
+  --text: #ece7dc;
+  --text-2: #bdb7ab;
+  --text-3: #918c82;
+
+  /* meaning (data + brand): fixed across the platform */
+  --before: #62b6e8;
+  --before-ink: #8fcaef;
+  --now: #ffb238;
+  --now-ink: #ffc56a;
+  --on-now: #1a1104;
+  --lens: #fff4dc;
+
+  /* wonder: colour for illustration and atmosphere only, never data */
+  --wonder-plum: #24173a;
+  --wonder-dusk: #0f2a40;
+  --astro-coral: #ff8a6b;
+  --astro-mauve: #b07ab0;
+  --astro-mauve-deep: #5b3560;
+  --astro-rose: #f29bc4;
+  --astro-mint: #9be8c8;
+  --astro-stone: #a89c8f;
+  --astro-stone-deep: #6d6359;
+  --astro-lens: #fff4dc;
+
+  /* glow strengths: the logo's halo falls from ~0.9 to 0 at 3× the core */
+  --halo-now: 0.55;
+  --halo-before: 0.4;
+
+  --danger: #ff8f7a;
+  --focus: #ffc56a;
+  --selection: rgb(255 178 56 / 0.32);
+
+  --sky: #06080c; /* the stage is night in both themes */
+  --sky-rule: rgb(236 231 220 / 0.12);
+  --sky-text: #ece7dc;
+  --sky-text-2: #a9a499;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  /* paper, from logo-light.svg */
+  --bg: #faf8f3;
+  --bg-raise: #fffdf8;
+  --bg-sunk: #f1ede4;
+  --surface: #f3efe6;
+  --surface-2: #ebe5d8;
+  --rule: rgb(13 17 23 / 0.1);
+  --rule-strong: rgb(13 17 23 / 0.2);
+
+  --text: #0d1117;
+  --text-2: #3b3f46;
+  --text-3: #5c5f66;
+
+  --before: #2f8bcb;
+  --before-ink: #1d6aa3;
+  --now: #f09a0c;
+  --now-ink: #8a5200;
+  --on-now: #1a1104;
+  --lens: #ffffff;
+
+  --wonder-plum: #efe4f3;
+  --wonder-dusk: #e2eef6;
+  --astro-coral: #e8603f;
+  --astro-mauve: #9a5c9a;
+  --astro-mauve-deep: #5b3560;
+  --astro-rose: #d9659c;
+  --astro-mint: #2f9c76;
+  --astro-stone: #8c7f72;
+  --astro-stone-deep: #5a5047;
+  --astro-lens: #ffffff;
+
+  /* on paper the halo is thinner, as in logo-light.svg (0.41 → 0) */
+  --halo-now: 0.38;
+  --halo-before: 0.26;
+
+  --danger: #b3321b;
+  --focus: #8a5200;
+  --selection: rgb(240 154 12 / 0.28);
+}
+
+:root {
+  --font-display: 'Archivo', 'Atkinson Hyperlegible Next', system-ui, sans-serif;
+  --font-text: 'Atkinson Hyperlegible Next', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-data: 'Atkinson Hyperlegible Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --step--1: 0.875rem;
+  --step-0: 1.0625rem; /* 17px body: comfortable for a young reader */
+  --step-1: 1.25rem;
+  --step-2: clamp(1.4rem, 1.1rem + 0.9vw, 1.75rem);
+  --step-3: clamp(1.9rem, 1.3rem + 1.9vw, 2.75rem);
+  --step-4: clamp(2.2rem, 1.4rem + 2.6vw, 3.4rem);
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+  --space-9: 7rem;
+
+  --radius-s: 8px;
+  --radius-m: 14px;
+  --radius-pill: 999px;
+
+  --gutter: clamp(1rem, 0.4rem + 2.6vw, 2.5rem);
+  --maxw: 1440px;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-1: 160ms;
+  --dur-2: 280ms;
+  --dur-lens: 700ms;
+}
