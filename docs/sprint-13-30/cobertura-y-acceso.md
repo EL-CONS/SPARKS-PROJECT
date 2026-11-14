@@ -1,8 +1,8 @@
-# 36 de 37 objetos de la lista tienen al menos dos temporadas con cobertura SPHEREx
+# 35 de 36 objetos de la lista tienen al menos dos temporadas con cobertura SPHEREx
 
 **Cobertura y acceso · SPHEREx · sprint 13:30 a 14:30 · sábado 14 de noviembre de 2026 · rama `carlos`**
 
-El único objeto que queda con una sola temporada es **Gliese 687**, pero tiene 858 imágenes en 17 meses continuos (2025-05-13 a 2026-10-04): no es un objeto sin serie, es un objeto sin huecos de más de 60 días. Con la definición de temporada que se explica en la sección 4, la cifra que se pide es 36/37; con la pregunta física de fondo (¿hay dos épocas separadas para medir movimiento?), los 37 sirven.
+El único objeto que queda con una sola temporada es **Gliese 687**, pero tiene 965 imágenes en 17 meses continuos (2025-04-25 a 2026-10-04): no es un objeto sin serie, es un objeto sin huecos de más de 60 días. Con la definición de temporada que se explica en la sección 4, la cifra que se pide es **35/36**; con la pregunta física de fondo (¿hay dos épocas separadas para medir movimiento?), los 36 sirven.
 
 **Entrega:** este archivo, [`cobertura.csv`](cobertura.csv), [`cobertura.py`](cobertura.py), [`consultas.json`](consultas.json), [`aladin-wcs-test.html`](aladin-wcs-test.html) y [`entrega-horacio.md`](entrega-horacio.md).
 
@@ -41,7 +41,7 @@ En `recursos.md` quedaron el repositorio y los siete archivos enlazados; no qued
 
 ## 3. Pruebas de acceso de hoy
 
-Todas las filas son del 14-nov-2026. La columna de 13:04 es la medición de Joaquín desde su máquina; la de 14:30–15:20 es propia, con `curl -L --max-time 25/30/40/90` desde la red del equipo. Los tiempos son de la respuesta completa, no del primer byte.
+Todas las filas son del 14-nov-2026. La columna de 13:04 es la medición de Joaquín desde su máquina; la de 14:30–15:20 es propia, con `curl -L --max-time 25/30/40/90` desde la red del equipo. Los tiempos son de la respuesta completa, no del primer byte. **Se conserva además la medición anterior de Gaia ESA: el 5-nov-2026 el TAP sync devolvió HTTP 503 con la cola síncrona llena; hoy responde 200 (14:34:58 y 14:35:01).**
 
 | Recurso | 13:04 (Joaquín) | 14:30–15:20 (Carlos) | Estado |
 |---|---|---|---|
@@ -98,60 +98,64 @@ Todas las filas son del 14-nov-2026. La columna de 13:04 es la medición de Joaq
 
 ### 4.1 Entrada y método
 
-- **Lista de entrada:** `docs/sprint-13-30/verdad-terreno.csv`, de la rama `Horacio`, commit `2554170` (14-nov-2026 13:18), 37 objetos, md5 `0d8cc3e4fd97914cc3d5bdf196e4ba58`. El repositorio es privado: el enlace web da 404 sin sesión y hay que usar `git`. No se copió a esta rama para no pisar la entrega de Horacio; el comando para reconstruirla está al final de esta sección.
+- **Lista de entrada:** `docs/sprint-13-30/verdad-terreno.csv`, de la rama `Horacio`, commit `83c9607` (14-nov-2026 14:30), 36 objetos, md5 `7fcb394c9f201ce7987cb4956e584907`. Es la lista vigente: corrige las coordenadas de R Draconis y ε Indi B, pasa Barnard a la época J2016 y añade la columna `aislado`. El repositorio es privado: el enlace web da 404 sin sesión y hay que usar `git`. No se copió a esta rama para no pisar la entrega de Horacio; el comando para reconstruirla está al final de esta sección.
 - **Consulta:** servicio SIA de IRSA, radio de 0,0005° (1,8″), colecciones `spherex_qr2`, `spherex_dr1` y `spherex_qr3`. Es el mismo radio y la misma plantilla usados en `recursos.md`. La ruta que responde es `/SIA`; `/SIA2` devuelve 404 (15:16:03).
 - **Plantilla:** `https://irsa.ipac.caltech.edu/SIA?COLLECTION=<coleccion>&POS=circle+<RA>+<Dec>+0.0005&RESPONSEFORMAT=CSV`
 - **Temporada:** bloque de fechas de observación separado por más de **60 días** del siguiente. Se calcula sobre la unión de las fechas de DR1 y QR3, redondeadas a 1e-4 día para no contar dos veces la misma exposición reprocesada. Las temporadas por colección también están en el CSV (`temporadas_dr1`, `temporadas_qr3`).
-- **Ventana:** consultas iniciadas entre 14:22:26 y 14:23:13 MST; reintentos hasta 14:24:53. Cada fila del CSV lleva la hora del primer intento; [`consultas.json`](consultas.json) guarda los 133 intentos con URL, HTTP, filas, segundos y error.
-- **Errores:** una consulta que falla se deja vacía, no en 0. El 0 significaría “la colección no tiene imágenes de ese objeto”; vacío significa “no se pudo verificar”. Al final quedó **1 celda sin verificar de 111** (37 objetos × 3 colecciones): QR2 de WISE J0350-5658, por error de red.
+- **Ventana:** consultas iniciadas entre 15:56:09 y 15:56:40 MST, sin reintentos pendientes al cerrar. La hora del CSV es la de escritura del archivo (15:56:40 MST, igual en todas las filas); [`consultas.json`](consultas.json) guarda la hora de cada uno de los **109 intentos** con URL, HTTP, filas, segundos y error.
+- **Errores:** una consulta que falla se deja vacía, no en 0. El 0 significaría “la colección no tiene imágenes de ese objeto”; vacío significa “no se pudo verificar”. Al final quedó **0 celdas sin verificar de 108** (36 objetos × 3 colecciones): un timeout de QR2 en SS Cygni se reintentó con éxito.
+- **Estrella brillante cercana:** columna aparte `companera_brillante_10arcsec` en el CSV, además de la columna `aislado` de la lista de Horacio. No se midió la separación angular en este sprint; se usa la clasificación de la lista y el compañero conocido.
 - **Script:** [`cobertura.py`](cobertura.py), escrito para este sprint, solo biblioteca estándar, sin nada del proyecto anterior.
 
-**Sobre QR2.** Respondió **0 filas en 36 de 37 objetos** y falló por red en el restante. Ese 0 no significa que no existan archivos: QR2 ya no se indexa para búsqueda y solo se descarga hasta febrero de 2027. [VERIFICADO: [data releases](https://github.com/Caltech-IPAC/spherex-archive-documentation/blob/main/documentation/spherex_data_releases.md)] Además, en pruebas sueltas QR2 dio 502 y timeouts, así que tampoco es un endpoint estable.
+**Sobre QR2.** Respondió **0 filas en los 36 objetos**, así que sus temporadas son 0 en todos; por eso el CSV no lleva una columna `temporadas_qr2`. Ese 0 no significa que no existan archivos: QR2 ya no se indexa para búsqueda y solo se descarga hasta febrero de 2027. [VERIFICADO: [data releases](https://github.com/Caltech-IPAC/spherex-archive-documentation/blob/main/documentation/spherex_data_releases.md)] Además, en pruebas sueltas QR2 dio 502 y timeouts, así que tampoco es un endpoint estable.
 
 ### 4.2 Validación con los cinco objetivos del reto
 
-Se repitieron las consultas con las coordenadas documentadas en `recursos.md` y, por separado, con las de la lista de Horacio. La diferencia importa en R Draconis.
+Se probaron primero los cinco objetivos, con las coordenadas de la lista vigente. Los cinco reproducen exacto las cifras de `recursos.md` cuando se usa la misma posición.
 
 | Objetivo | Coordenadas de la lista | DR1 | QR3 | Total | Temporadas | Comparación con `recursos.md` |
 |---|---|---:|---:|---:|---:|---|
-| Barnard's Star | 269,4486 / +4,7672 | 239 | 119 | 358 | 3 | 363 antes; −5 (−1,4 %). Mismas coordenadas |
-| ε Indi B | 330,8404 / −56,7869 | 343 | 116 | 459 | 4 | 460 antes; −1. Con 330,84024 / −56,78598 da 344 + 116 = 460, exacto |
+| Barnard's Star | 269,4485 / +4,7394 (J2016) | 240 | 123 | 363 | 3 | 363 antes, exacto. La lista anterior traía +4,7672 (época 2025.7) y daba 358 |
+| ε Indi B | 331,0441 / −56,7828 (J2000) | 345 | 120 | 465 | 4 | 465 antes, exacto. La lista anterior traía la posición de ε Indi A y daba 459 |
 | WISE 0855 | 133,7951 / −7,2451 | 258 | 0 | 258 | 3 | 258 antes, exacto |
-| RW Aurigae | 76,9535 / +30,4015 | 226 | 109 | 335 | 3 | 335 antes, exacto |
-| R Draconis | 248,3308 / +66,7028 | 433 | 123 | 556 | 3 | 539 antes; +17. Con 248,1675 / +66,754972 da 413 + 126 = 539, exacto |
+| RW Aurigae | 76,9561 / +30,4012 | 226 | 109 | 335 | 3 | 335 antes, exacto |
+| R Draconis | 248,1674 / +66,7550 (J2016) | 413 | 126 | 539 | 3 | 539 antes, exacto. La lista anterior estaba a ~5,0′ |
 
-- **4 de 5 reproducen exacto** (ε Indi B, WISE 0855, RW Aur y R Dra) cuando se usan las coordenadas de `recursos.md`; la quinta, Barnard, difiere en 5 imágenes. El método es el mismo; no hay un error de conteo.
-- **Barnard difiere en 5 imágenes** (239/119 hoy frente a 240/123 antes). Es un 1,4 % y no cambia ninguna conclusión. La causa no se investigó. [SIN VERIFICAR]
-- **La coordenada de R Draconis de la lista está a ~5,0′ de SIMBAD.** SIMBAD da 16h 32m 40,227s, +66° 45′ 17,926″ (J2000), es decir 248,1676 / +66,7550 en grados; la lista trae 248,3308 / +66,7028. No es redondeo: es otra posición. Con la posición de SIMBAD salen 413 + 126 = 539, que es la cifra que ya tenía `recursos.md`. Hay que corregir esa fila de `verdad-terreno.csv`. [VERIFICADO: [SIMBAD R Dra](https://simbad.harvard.edu/simbad/sim-id?Ident=R+Dra), espejo de Harvard; CDS no responde desde esta red]
-- RW Aur tiene un corrimiento de 8,7″ y ε Indi B de 3,3″, pero los conteos no cambian. [MEDIDO: diferencia de coordenadas y consultas del 14-nov-2026]
+- **5 de 5 reproducen exacto.** No hay diferencia de método ni de conteo; las diferencias que aparecieron con la lista anterior (`2554170`) eran de coordenadas.
+- **Barnard:** la lista anterior daba 358 (239 + 119) y la actual 363 (240 + 123). No era un error de conteo: el cambio de +4,7672 (época ~2025.7) a +4,7394 (J2016) mueve el centro de la consulta ~100″ (0,028°) y el círculo de 1,8″ cae sobre una zona con cobertura distinta. Con la posición J2016 se reproduce la cifra de `recursos.md`.
+- **R Draconis:** la lista anterior traía 248,3308 / +66,7028, a ~5,0′ de SIMBAD. La vigente trae 248,1674 / +66,7550, que es la posición correcta, y da 413 + 126 = 539. [VERIFICADO: [SIMBAD R Dra](https://simbad.harvard.edu/simbad/sim-id?Ident=R+Dra), espejo de Harvard; CDS no responde desde esta red]
+- **ε Indi B:** la lista anterior traía 330,8404 / −56,7869, que es la posición de ε Indi A; la vigente trae 331,0441 / −56,7828 y da 345 + 120 = 465. [VERIFICADO: [SIMBAD ε Indi B](https://simbad.harvard.edu/simbad/sim-id?Ident=eps+Ind+B), espejo de Harvard]
+- **WISE 0855 y RW Aur:** las posiciones cambian poco respecto a `recursos.md` y los conteos no cambian.
+
+**Estrella brillante cercana (columna aparte).** Cuatro objetos de la lista tienen una compañera muy brillante a menos de ~10″: **Sirius B** (Sirius A), **Procyon B** (Procyon A), **Stein 2051 B** (Stein 2051 A) y **Gliese 229 B** (Gliese 229 A). En el CSV llevan `companera_brillante_10arcsec = si (<compañera>)`. **Luhman 16** y **Gliese 725 A** son binarias, pero sin una estrella muy brillante al lado: llevan `no`, con la nota del tipo de binaria. La lista de Horacio ya las marca `aislado = no`; la columna separa el caso de compañera brillante del de binaria sin estrella brillante.
 
 ### 4.3 Resultado
 
 | Métrica | Valor |
 |---|---|
-| Objetos en la lista | 37 |
-| Objetos con cobertura en DR1 | 37 de 37 |
-| Objetos con cobertura en QR3 | 35 de 37 (sin QR3: WISE 0855 y Procyon B) |
-| Imágenes por objeto | 221 a 858 |
-| Objetos con 4 temporadas | 3: ε Indi B, Gliese 725 A, Chi Cygni |
-| Objetos con 3 temporadas | 32 |
+| Objetos en la lista | 36 |
+| Objetos con cobertura en DR1 | 36 de 36 |
+| Objetos con cobertura en QR3 | 34 de 36 (sin QR3: WISE 0855 y Procyon B) |
+| Imágenes por objeto | 221 a 965 |
+| Objetos con 4 temporadas | 4: Chi Cygni, ε Indi B, Gliese 725 A, Lacaille 8760 |
+| Objetos con 3 temporadas | 30 |
 | Objetos con 2 temporadas | 1: Procyon B |
 | Objetos con 1 temporada | 1: Gliese 687 |
 | Rango temporal global | 2025-04-24 a 2026-10-04 |
-| Objetos con al menos 2 temporadas | **36 de 37** |
+| Objetos con al menos 2 temporadas | **35 de 36** |
 
-- **Todos tienen más de 200 imágenes y más de 6 meses de línea base.** El mínimo es Procyon B con 221 imágenes (2025-10-09 a 2026-04-15); el máximo es Gliese 687 con 858 (2025-05-13 a 2026-10-04).
+- **Todos tienen más de 200 imágenes y más de 6 meses de línea base.** El mínimo es Procyon B con 221 imágenes (2025-10-09 a 2026-04-15); el máximo es Gliese 687 con 965 (2025-04-25 a 2026-10-04).
 - **Las temporadas no son épocas.** Una temporada puede tener decenas de imágenes; para el flipbook se elige una coadd o un cuadro por temporada, no las 300. El conteo de imágenes es el que devuelve SIA (una fila por imagen de detector que cubre la posición), no el número de visitas independientes.
-- **`cobertura.csv` tiene las 37 filas** con objeto, RA, Dec, imágenes en QR2, QR3, temporadas, fecha y hora, más DR1, total y las temporadas por colección. Ahí están las cifras que no se repiten en esta tabla.
+- **`cobertura.csv` tiene las 36 filas** con objeto, RA, Dec, imágenes en QR2, QR3, temporadas, `aislado`, compañera brillante, fecha y hora, más DR1, total y las temporadas por colección (15 columnas). Ahí están las cifras que no se repiten en esta tabla.
 
 ### 4.4 Excepciones y avisos
 
-- **Gliese 687:** 858 imágenes, 293 en QR3 y 565 en DR1, sin huecos de más de 60 días. La cifra de “1 temporada” es correcta con la definición, pero no significa una sola época: hay 17 meses de cobertura continua. Es el mejor objeto de la lista para una curva de luz, no el peor.
+- **Gliese 687:** 965 imágenes, 273 en QR3 y 692 en DR1, sin huecos de más de 60 días. La cifra de “1 temporada” es correcta con la definición, pero no significa una sola época: hay 17 meses de cobertura continua. Es el mejor objeto de la lista para una curva de luz, no el peor.
 - **WISE 0855:** QR3 = 0. Su serie está en DR1 y termina el 2026-05-14; tiene 3 temporadas, pero el demo no debe prometer una campaña de 2026 para este objeto. [MEDIDO: 14-nov-2026]
-- **Procyon B:** QR3 = 0 y solo 2 temporadas; 221 imágenes, el mínimo. Suficiente, pero es el objeto más justo de la lista.
-- **Lacaille 8760:** solo 8 imágenes en QR3, pero 285 en DR1 y 3 temporadas. No es un problema.
-- **Wolf 359 (40 en QR3) y Lalande 21185 (30 en QR3):** pocas en QR3, muchas en DR1; 3 temporadas cada uno.
-- **WISE J0350-5658:** única celda sin verificar (QR2, error de red). QR2 no se usa, así que no afecta.
+- **Procyon B:** QR3 = 0 y solo 2 temporadas; 221 imágenes, el mínimo. Tiene a Procyon A a unos 5″, así que la fotometría de la enana blanca exige cuidar el halo de la primaria. Suficiente, pero es el objeto más justo de la lista.
+- **Lacaille 8760:** solo 8 imágenes en QR3, pero 331 en DR1 y 4 temporadas. No es un problema.
+- **Wolf 359 (40 en QR3) y Lalande 21185 (30 en QR3):** pocas en QR3, muchas en DR1 (251 y 266); 3 temporadas cada uno.
+- **Compañera brillante:** Sirius B, Procyon B, Stein 2051 B y Gliese 229 B llevan `si` en la columna aparte. Luhman 16 y Gliese 725 A son binarias, pero sin estrella muy brillante: `no`. La lista de Horacio coincide con `aislado = no` en los seis.
 - **Las colecciones *deep* no se consultaron.** El CSV es de las colecciones *wide*, igual que `recursos.md`; `qr3_deep` tardó más de 20 min en la prueba anterior y no sirve para vivo. [VERIFICADO: [`02-spherex-datos.md`](../../research/planetx/02-spherex-datos.md)]
 
 **Para reconstruir la entrada y el CSV:**
@@ -166,7 +170,7 @@ python3 docs/sprint-13-30/cobertura.py /tmp/verdad-terreno.csv docs/sprint-13-30
 
 ## 5. La cifra para decidir
 
-**36 de 37.** Ese es el número de objetos de la lista con al menos dos temporadas separadas por más de 60 días. El único que no cumple es Gliese 687, y no por falta de datos: tiene 858 imágenes en 17 meses continuos. Si la pregunta es “¿cuántos permiten medir un vector de movimiento propio?”, la respuesta es **37 de 37**; si se exige el corte de dos temporadas, **36 de 37**. La diferencia no cambia la decisión: la lista completa sirve para el modo de movimiento.
+**35 de 36.** Ese es el número de objetos de la lista vigente con al menos dos temporadas separadas por más de 60 días. El único que no cumple es Gliese 687, y no por falta de datos: tiene 965 imágenes en 17 meses continuos. Si la pregunta es “¿cuántos permiten medir un vector de movimiento propio?”, la respuesta es **36 de 36**; si se exige el corte de dos temporadas, **35 de 36**. La diferencia no cambia la decisión: la lista completa sirve para el modo de movimiento.
 
 ---
 
@@ -178,7 +182,7 @@ La pregunta pendiente era si Aladin Lite 3.8.2 puede cargar una imagen con su pr
 
 - Aladin Lite **3.8.2** desde el paquete npm (`dist/aladin.js`), Firefox **159.0** en modo headless y geckodriver **0.37.1**. La página de prueba es [`aladin-wcs-test.html`](aladin-wcs-test.html); se sirve por HTTP local junto con `aladin.js` y el FITS.
 - **El `dist` de npm es un módulo ES.** Cargarlo con `<script src="aladin.js">` falla con `SyntaxError: export declarations may only appear at top level of a module` y luego `A is not defined`. Hay que usar `<script type="module">import A from './aladin.js'</script>`. Es la primera trampa de integración y no está en el ejemplo “vanilla” del README, que usa el `aladin.js` del CDN, no el de npm.
-- Se probaron cuatro FITS: (a) un FITS sintético de 100×100 con TAN + matriz `CD` en 269,4486 / +4,7672; (b) el cutout MEF de SPHEREx de 12×12 px y 4.037.760 B, centrado en 269,4486 / +4,7672, con `size=0.02`; (c) el mismo cutout con la extensión IMAGE como HDU primaria, `CTYPE` sin `-SIP` y `PC`/`CDELT`; (d) igual que (c) pero con matriz `CD`.
+- Se probaron cuatro FITS: (a) un FITS sintético de 100×100 con TAN + matriz `CD` en 269,4486 / +4,7672; (b) el cutout MEF de SPHEREx de 12×12 px y 4.037.760 B, centrado en 269,4486 / +4,7672, con `size=0.02`; (c) el mismo cutout con la extensión IMAGE como HDU primaria, `CTYPE` sin `-SIP` y `PC`/`CDELT`; (d) igual que (c) pero con matriz `CD`. La prueba se hizo antes de la lista vigente: la posición actual de Barnard es 269,4485 / +4,7394, 0,028° al sur; el resultado de WCS no depende de esa diferencia.
 
 Para reproducirlo:
 
@@ -212,8 +216,9 @@ python3 -m http.server 8765   # abrir http://127.0.0.1:8765/aladin-wcs-test.html
 
 ## 7. Pendientes y límites de esta entrega
 
-- **Sin repetir a las 14:30:** CADC (no medido), WiseView, MAST y JPL Horizons (solo la medición de Joaquín a las 13:04); el TAP de Gaia en IRSA (el “más de 250 s” es del 5-nov); la causa de las 5 imágenes de diferencia de Barnard; el error angular exacto de quitar el SIP.
-- **La lista de Horacio tiene una coordenada a corregir:** R Draconis, 248,3308 / +66,7028, a ~5′ de SIMBAD. Los conteos de esa fila son de esa posición; con la posición correcta son 413 + 126 = 539 y la conclusión no cambia.
+- **Sin repetir a las 14:30:** CADC (no medido), WiseView, MAST y JPL Horizons (solo la medición de Joaquín a las 13:04); el TAP de Gaia en IRSA (el “más de 250 s” es del 5-nov); el error angular exacto de quitar el SIP.
+- **La lista de Horacio ya está corregida:** el commit `83c9607` trae R Draconis en 248,1674 / +66,7550 y ε Indi B en 331,0441 / −56,7828; ya no hay que corregir esas filas. El CSV se generó con esa lista.
+- **La clasificación de compañera brillante es de la lista, no una medición nueva.** No se midió la separación angular ni el contraste en este sprint; se usan `aislado` y el compañero conocido. [SIN VERIFICAR la separación exacta]
 - **La definición de temporada es una convención** (60 días), no una definición física. Está declarada para que se pueda repetir o cambiar; el CSV trae las temporadas por colección para recalcular.
 - **El CSV no distingue visitas de imágenes.** Cuenta filas SIA, que es lo que pide la tarea. Para el flipbook hay que agrupar por `obs_id`/fecha y elegir una imagen por grupo.
 - **La prueba de Aladin es de escritorio, no de móvil.** No se midió rendimiento ni memoria en un teléfono. [SIN VERIFICAR]
@@ -222,8 +227,8 @@ python3 -m http.server 8765   # abrir http://127.0.0.1:8765/aladin-wcs-test.html
 
 ### Archivos de esta entrega
 
-- [`cobertura.csv`](cobertura.csv): 37 objetos, 13 columnas, con fecha y hora de consulta.
+- [`cobertura.csv`](cobertura.csv): 36 objetos, 15 columnas, con fecha y hora de consulta.
 - [`cobertura.py`](cobertura.py): script de consulta y cálculo de temporadas, solo biblioteca estándar.
-- [`consultas.json`](consultas.json): los 133 intentos con URL, HTTP, filas, segundos y error.
+- [`consultas.json`](consultas.json): los 109 intentos con URL, HTTP, filas, segundos y error.
 - [`aladin-wcs-test.html`](aladin-wcs-test.html): página mínima de la prueba de WCS.
 - [`entrega-horacio.md`](entrega-horacio.md): cobertura de los cinco objetivos para Horacio y revisión de su acceso.
