@@ -1,0 +1,286 @@
+{
+ "fields": [
+  {
+   "id": "barnard",
+   "name": "Barnard's Star",
+   "ra": 269.4486,
+   "dec": 4.7672,
+   "kind": "mover",
+   "note": "M4V red dwarf, 1.8 pc; fastest-moving star in the sky.",
+   "n_frames": 355,
+   "seasons": 3,
+   "releases": [
+    "QR2",
+    "QR3"
+   ],
+   "mu_measured": 10.232933,
+   "mu_err": 0.42745,
+   "pa": 354.790083,
+   "mu_expected": 10.393349,
+   "pa_expected": 355.57687,
+   "in_gaia": true,
+   "thumb": "barnard/png/coadd_D6_S0.png"
+  },
+  {
+   "id": "wise0855",
+   "name": "WISE 0855\u22120714",
+   "ra": 133.795129,
+   "dec": -7.245147,
+   "kind": "mover",
+   "note": "Coldest known brown dwarf (~250 K), 2.3 pc. Coordinates as given in the challenge.",
+   "n_frames": 255,
+   "seasons": 3,
+   "releases": [
+    "QR2"
+   ],
+   "mu_measured": 7.906186,
+   "mu_err": 1.353639,
+   "pa": 275.476426,
+   "mu_expected": 8.087789,
+   "pa_expected": 277.357342,
+   "in_gaia": false,
+   "thumb": "wise0855/png/coadd_D6_S0.png"
+  },
+  {
+   "id": "epsindib",
+   "name": "\u03b5 Indi B",
+   "ra": 331.0438,
+   "dec": -56.7828,
+   "kind": "mover",
+   "note": "Pair of T dwarfs (T1+T6) orbiting \u03b5 Indi A, 3.6 pc; unresolved by SPHEREx.",
+   "n_frames": 444,
+   "seasons": 4,
+   "releases": [
+    "QR2",
+    "QR3"
+   ],
+   "mu_measured": 4.538471,
+   "mu_err": 0.114326,
+   "pa": 120.506923,
+   "mu_expected": 4.684165,
+   "pa_expected": 121.778186,
+   "in_gaia": true,
+   "thumb": "epsindib/png/coadd_D6_S0.png"
+  },
+  {
+   "id": "rwaur",
+   "name": "RW Aurigae",
+   "ra": 76.9564,
+   "dec": 30.4014,
+   "kind": "variable",
+   "note": "Young T Tauri binary with deep dimming episodes; ~150 pc.",
+   "n_frames": 331,
+   "seasons": 3,
+   "releases": [
+    "QR2",
+    "QR3"
+   ],
+   "mu_measured": null,
+   "mu_err": null,
+   "pa": null,
+   "mu_expected": 0.027525,
+   "pa_expected": 174.494704,
+   "in_gaia": true,
+   "thumb": "rwaur/png/coadd_D6_S0.png"
+  },
+  {
+   "id": "rdra",
+   "name": "R Draconis",
+   "ra": 248.1675,
+   "dec": 66.755,
+   "kind": "variable",
+   "note": "Mira variable, 246-day pulsation period.",
+   "n_frames": 534,
+   "seasons": 3,
+   "releases": [
+    "QR2"
+   ],
+   "mu_measured": null,
+   "mu_err": null,
+   "pa": null,
+   "mu_expected": 0.021539,
+   "pa_expected": 286.587074,
+   "in_gaia": true,
+   "thumb": "rdra/png/coadd_D6_S0.png"
+  },
+  {
+   "id": "teegarden",
+   "name": "Teegarden's Star",
+   "ra": 43.279596,
+   "dec": 16.853803,
+   "kind": "mover",
+   "note": "M7 dwarf, 3.8 pc; one of the faintest nearby stars.",
+   "gallery": true,
+   "n_frames": 325,
+   "seasons": 3,
+   "releases": [
+    "QR2",
+    "QR3"
+   ],
+   "mu_measured": 5.083583,
+   "mu_err": 0.203575,
+   "pa": 137.694501,
+   "mu_expected": 5.122573,
+   "pa_expected": 137.978736,
+   "in_gaia": true
+  },
+  {
+   "id": "vanmaanen",
+   "name": "Van Maanen's Star",
+   "ra": 12.300176,
+   "dec": 5.369024,
+   "kind": "mover",
+   "note": "Nearest solitary white dwarf, 4.3 pc.",
+   "gallery": true,
+   "n_frames": 322,
+   "seasons": 3,
+   "releases": [
+    "QR2",
+    "QR3"
+   ],
+   "mu_measured": 2.897006,
+   "mu_err": 0.148646,
+   "pa": 154.800433,
+   "mu_expected": 2.978364,
+   "pa_expected": 155.578364,
+   "in_gaia": true
+  },
+  {
+   "id": "wolf359",
+   "name": "Wolf 359",
+   "ra": 164.09237,
+   "dec": 6.995229,
+   "kind": "mover",
+   "note": "M6 dwarf, 2.4 pc; flare star.",
+   "gallery": true,
+   "n_frames": 279,
+   "seasons": 3,
+   "releases": [
+    "QR2"
+   ],
+   "mu_measured": 4.570442,
+   "mu_err": 0.662991,
+   "pa": 231.084,
+   "mu_expected": 4.71533,
+   "pa_expected": 235.079869,
+   "in_gaia": true
+  },
+  {
+   "id": "kapteyn",
+   "name": "Kapteyn's Star",
+   "ra": 77.985457,
+   "dec": -45.05967,
+   "kind": "mover",
+   "note": "Old halo red dwarf, 3.9 pc; second-fastest star.",
+   "gallery": true,
+   "n_frames": 375,
+   "seasons": 3,
+   "releases": [
+    "QR2",
+    "QR3"
+   ],
+   "mu_measured": 8.56759,
+   "mu_err": 0.317187,
+   "pa": 128.98548,
+   "mu_expected": 8.644319,
+   "pa_expected": 131.329554,
+   "in_gaia": true
+  },
+  {
+   "id": "t452800",
+   "name": "Lacaille 9352",
+   "ra": 346.527103,
+   "dec": -35.843469,
+   "kind": "mover",
+   "note": "Lacaille 9352 (M0.5 dwarf, 3.3 pc). Final-test star of the validation protocol.",
+   "gallery": true,
+   "n_frames": 346,
+   "seasons": 3,
+   "releases": [
+    "QR2"
+   ],
+   "mu_measured": 7.062268,
+   "mu_err": 1.308191,
+   "pa": 80.392622,
+   "mu_expected": 6.895531,
+   "pa_expected": 78.876764,
+   "in_gaia": true
+  },
+  {
+   "id": "t744064",
+   "name": "Gliese 1",
+   "ra": 1.402974,
+   "dec": -37.374229,
+   "kind": "mover",
+   "note": "Gliese 1 (M1.5 dwarf, 4.3 pc). Final-test star of the validation protocol.",
+   "gallery": true,
+   "n_frames": 363,
+   "seasons": 3,
+   "releases": [
+    "QR2"
+   ],
+   "mu_measured": 6.238909,
+   "mu_err": 0.87845,
+   "pa": 110.098938,
+   "mu_expected": 6.098077,
+   "pa_expected": 112.511066,
+   "in_gaia": true
+  },
+  {
+   "id": "t605760",
+   "name": "Gaia DR3 3713594960831605760",
+   "ra": 204.105681,
+   "dec": 3.671386,
+   "kind": "mover",
+   "note": "Faint fast star (G 14.4). Final-test star of the validation protocol.",
+   "gallery": true,
+   "n_frames": 384,
+   "seasons": 3,
+   "releases": [
+    "QR2"
+   ],
+   "mu_measured": 3.963112,
+   "mu_err": 0.148449,
+   "pa": 253.316184,
+   "mu_expected": 3.898276,
+   "pa_expected": 253.401703,
+   "in_gaia": true
+  },
+  {
+   "id": "t503424",
+   "name": "Gaia DR3 6281432246412503424",
+   "ra": 221.062339,
+   "dec": -20.337908,
+   "kind": "mover",
+   "note": "Faint fast star (G 16.6). Validation star of the protocol.",
+   "gallery": true,
+   "n_frames": 340,
+   "seasons": 3,
+   "releases": [
+    "QR2",
+    "QR3"
+   ],
+   "mu_measured": 3.436949,
+   "mu_err": 0.163039,
+   "pa": 236.487034,
+   "mu_expected": 3.507897,
+   "pa_expected": 236.013304,
+   "in_gaia": true
+  }
+ ],
+ "collections": [
+  {
+   "collection": "spherex_qr2",
+   "n_images": 1097080,
+   "release": "qr2",
+   "deep": false
+  },
+  {
+   "collection": "spherex_qr3",
+   "n_images": 192961,
+   "release": "qr3",
+   "deep": false
+  }
+ ],
+ "generated_utc": "2026-11-05T09:52:46Z"
+}
