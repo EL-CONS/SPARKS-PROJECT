@@ -1,6 +1,6 @@
-# Entrega a Horacio: cobertura de los cinco objetivos y revisión del acceso
+# Entrega a Horacio: cobertura de los cinco objetivos, revisión del acceso y recortes
 
-**Fecha:** sábado 14 de noviembre de 2026, 15:56 MST · **Rama:** `carlos` · **Lista:** `origin/Horacio`, commit `83c9607`
+**Fecha:** sábado 14 de noviembre de 2026, 15:56–16:38 MST · **Rama:** `carlos` · **Lista:** `origin/Horacio`, commit `83c9607`
 
 ---
 
@@ -35,7 +35,7 @@ https://irsa.ipac.caltech.edu/SIA?COLLECTION=<coleccion>&POS=circle+<RA>+<Dec>+0
 - **Ventanas de fechas (unión DR1 + QR3):** Barnard 2025-08-15 a 2026-09-22; ε Indi B 2025-04-24 a 2026-10-02; WISE 0855 2025-05-05 a 2026-05-14; RW Aur 2025-09-01 a 2026-09-16; R Dra 2025-05-16 a 2026-07-16.
 - **Compañera brillante:** Sirius B, Procyon B, Stein 2051 B y Gliese 229 B tienen una estrella muy brillante a menos de ~10″; Luhman 16 y Gliese 725 A son binarias sin estrella muy brillante. En `cobertura.csv` va en la columna `companera_brillante_10arcsec`, separada de `aislado`.
 
-**Archivos con el detalle:** `cobertura.csv` (36 objetos, 15 columnas), `cobertura.py` (script), `consultas.json` (109 intentos con URL, HTTP, filas, segundos y error).
+**Archivos con el detalle:** `cobertura.csv` (36 objetos, 15 columnas), `cobertura.py` (script), `consultas.json` (109 intentos con URL, HTTP, filas, segundos y error), `recortes.py` (descarga de los recortes) y `resumen.json` en `/home/carlos/Documents/SPARKS-PROJECT-data/recortes`.
 
 ---
 
@@ -84,5 +84,19 @@ https://irsa.ipac.caltech.edu/SIA?COLLECTION=<coleccion>&POS=circle+<RA>+<Dec>+0
 - Temporadas: corte de 60 días sobre la unión DR1 + QR3; guarda también el conteo por colección.
 - WISE 0855: solo DR1, 3 temporadas, serie hasta 2026-05-14.
 - R Dra: 534 de 534 imágenes saturadas; mide en el anillo exterior, no en el núcleo.
+
+---
+
+## 3. Recortes ya descargados: R Draconis y RW Aurigae
+
+**Estado:** 288 de 288 archivos (144 por objeto), entre las 16:18:48 y las 16:37:34 MST del 14-nov-2026.
+
+- **Selección:** 8 cuadros por detector (D1–D6) y temporada, equiespaciados en `t_min`; 3 temporadas por objeto; 18 grupos y 144 archivos por campo.
+- **Recorte:** `size=0.11` (64 × 64 px, 6,15″/px), `center=<RA>,<Dec>d`, sobre SIA `spherex_dr1` + `spherex_qr3`. Misma definición de temporada que la tabla de arriba (corte de 60 días).
+- **Descarga:** 6 hilos, 5 intentos con esperas de 3/6/12/24 s. R Draconis necesitó una pasada extra para un archivo de D5 que devolvió 503 cinco veces; RW Aurigae completó 144/144 a la primera.
+- **EPSF:** se quitó el HDU `EPSF` antes de guardar. El recorte crudo pesa 4.008.960 B y el filtrado unos 140 kB; se conservan `FLAGS`, `VARIANCE`, `ZODI` y `WCS-WAVE`. Los 288 archivos se validaron leyendo su cabecera: ninguno tiene `EPSF`.
+- **Dónde está:** `/home/carlos/Documents/SPARKS-PROJECT-data/recortes`, fuera de git. Cada campo tiene `seleccion.json` y `consultas.json`; el resumen global es `resumen.json`. Los intentos de R Draconis están en `R_Draconis/consultas.json` (243 entradas, 95 HTTP 503) y los de RW Aurigae en `RW_Aurigae/consultas.json` (212 entradas, 64 HTTP 503).
+- **Pipeline:** en `origin/Horacio`, commit `83c9607`, no hay `pipeline/` ni `docs/pipeline/metodo.md`; por eso usé el respaldo [`recortes.py`](recortes.py), que importa `fetch_csv`, `sia_url`, `mjd_to_date` y `seasons` de `cobertura.py`. Cuando subas tu módulo de recortes, avísame y lo reviso antes de volver a ejecutar; no he tocado WISE 0855 ni ε Indi B para no duplicar tu trabajo.
+- **Límite:** son recortes level 2, no mosaicos ni fotometría validada. [SIN VERIFICAR la calibración fotométrica]
 
 **Confírmame dos cosas cuando puedas:** qué colecciones usa tu pipeline (`dr1` + `qr3`, o todavía `qr2`) y qué corte de temporada. Con eso ajusto los números si hace falta.

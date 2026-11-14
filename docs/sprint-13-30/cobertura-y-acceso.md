@@ -174,11 +174,50 @@ python3 docs/sprint-13-30/cobertura.py /tmp/verdad-terreno.csv docs/sprint-13-30
 
 ---
 
-## 6. Aladin Lite 3.8.2 con WCS propio
+## 6. Descarga de recortes: R Draconis y RW Aurigae
+
+Se descargaron **288 de 288 recortes** (144 por objeto) entre las 16:18:48 y las 16:37:34 MST del 14-nov-2026. Los datos quedan fuera de git, en `/home/carlos/Documents/SPARKS-PROJECT-data/recortes`, y cada campo tiene su propio `consultas.json` con todos los intentos. La rama `origin/Horacio` en el commit `83c9607` todavía no tiene `pipeline/`, así que se usó el respaldo basado en `cobertura.py`.
+
+### 6.1 Regla de selección y consulta
+
+- **Entrada:** los dos objetos asignados de la lista vigente `83c9607`: R Draconis en 248,1674 / +66,7550 y RW Aurigae en 76,9561 / +30,4012.
+- **Descubrimiento:** SIA de IRSA, `/SIA`, radio 0,0005°, colecciones `spherex_dr1` y `spherex_qr3`, `RESPONSEFORMAT=CSV`. Se usó la misma plantilla y la misma definición de temporada que en la sección 4: bloques separados por más de 60 días sobre la unión de DR1 y QR3.
+- **Selección:** hasta **8 cuadros por detector y temporada**, eligiendo posiciones equiespaciadas en `t_min` y sin repetir `obs_id`. Con 6 detectores (D1 a D6) y 3 temporadas salen 18 grupos por objeto: 6 × 3 × 8 = 144.
+- **Recorte:** sobre el `access_url` de cada fila, `center=<RA>,<Dec>d&size=0.11&gzip=false`. `size=0.11` devuelve 64 × 64 px (6,15″/px), el mismo tamaño usado en la revisión de acceso. La consulta SIA de R Draconis terminó a las 16:18:48 (DR1, 413 filas, 3,159 s) y a las 16:18:50 (QR3, 126 filas, 2,130 s); la de RW Aurigae, a las 16:28:34 (DR1, 226 filas, 12,761 s) y a las 16:28:49 (QR3, 109 filas, 15,024 s).
+- **Reintentos:** 5 intentos por archivo con esperas de 3, 6, 12 y 24 s; el archivo que quedó pendiente se repitió con 8 intentos. Solo se reintentan los 5xx y los timeouts; un 4xx no se repite.
+- **Paralelismo:** 6 hilos. El script rechaza `--workers` fuera de 4 a 6 y cualquier salida dentro del repositorio.
+- **EPSF:** antes de guardar se quita el HDU `EPSF` con un filtro FITS en Python puro, porque esta máquina no tiene `astropy`, `fitsio`, `numpy` ni `requests`. Se conservan `PRIMARY`, `FLAGS`, `VARIANCE`, `ZODI` y `WCS-WAVE`; la escritura es atómica (`.tmp` y `os.replace`).
+- **Reanudación:** `--solo-faltantes` no vuelve a bajar lo que ya existe y conserva los registros anteriores.
+
+### 6.2 Resultado
+
+| Objeto | Grupos detector-temporada | Seleccionados | Presentes | Intentos de recorte | HTTP 503 | Bajado | Guardado | Tiempo |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| R Draconis | 18 | 144 | 144 | 239 | 95 | 579,2 MB | 20,2 MB | 637,2 s (10,6 min) |
+| RW Aurigae | 18 | 144 | 144 | 208 | 64 | 579,5 MB | 20,4 MB | 361,6 s (6,0 min) |
+| **Total** | **36** | **288** | **288** | **447** | **159** | **1.158,7 MB** | **40,6 MB** | **998,8 s (16,6 min)** |
+
+- **R Draconis:** la primera pasada terminó a las 16:28:21 con 143 de 144 archivos; faltó `2025W26_1A_0517_1` del detector D5 de la temporada 1, que devolvió HTTP 503 cinco veces. El reintento de las 16:36:20 a las 16:37:34 volvió a recibir cuatro 503 y bajó el archivo al quinto intento (HTTP 200). El total incluye esa pasada (571,2 s + 66,0 s).
+- **RW Aurigae:** terminó a las 16:34:51 con 144 de 144 en la primera pasada (361,6 s).
+- **Tamaño por archivo:** el recorte crudo mide 4.008.960 B; el `EPSF` ocupa 3.867.840 B y el archivo filtrado queda en unos 140 kB (140.320 B de media en R Draconis y 141.920 B en RW Aurigae). La relación entre lo bajado y lo guardado es de ~28,5 a 1.
+- **Validación:** se leyeron las cabeceras de los 288 archivos; ninguno contiene un HDU `EPSF` y todos tienen la misma estructura (`PRIMARY`, `PRIMARY`, `FLAGS`, `VARIANCE`, `ZODI`, `WCS-WAVE`).
+- **Registro:** `R_Draconis/consultas.json` tiene 243 entradas (4 de SIA y 239 de recorte) y `RW_Aurigae/consultas.json` tiene 212 (4 y 208). Cada intento de recorte guarda hora, temporada, detector, colección, `obs_id`, intento, URL, HTTP, bytes descargados, bytes guardados, segundos, archivo y error. El resumen global está en `resumen.json`.
+
+### 6.3 Estructura, límites y estado del pipeline
+
+- **Ruta:** `/home/carlos/Documents/SPARKS-PROJECT-data/recortes/<Campo>/temporada_<n>/<Dx>/<obs_id>_<Dx>.fits`, con `seleccion.json` y `consultas.json` por campo y `resumen.json` en la raíz. Está fuera del repositorio a propósito; `recortes.py` se niega a escribir dentro de `/home/carlos/Documents/SPARKS-PROJECT`.
+- **Qué son estos archivos:** recortes level 2 del detector, no mosaicos combinados ni productos calibrados por nosotros. Conservan `FLAGS`, `VARIANCE` y `ZODI` para poder filtrar después; la selección es sistemática en tiempo, no aleatoria. No se midió fotometría ni se comparó con catálogos. [SIN VERIFICAR la calibración fotométrica]
+- **Solo se cubrieron dos objetos.** WISE 0855 y ε Indi B quedan a cargo de Horacio; no se descargaron sus recortes para no duplicar trabajo.
+- **Sin `pipeline/` todavía:** `git ls-tree -r --name-only origin/Horacio` no devuelve ninguna ruta `pipeline/` en `83c9607`, y `git fetch origin Horacio` falla con `Permission denied (publickey)`, así que no se pudo comprobar si hay commits más nuevos. Cuando Horacio suba su módulo de recortes, hay que revisarlo y volver a ejecutar con él; hasta entonces, [`recortes.py`](recortes.py) es el respaldo y reutiliza `fetch_csv`, `sia_url`, `mjd_to_date` y `seasons` de [`cobertura.py`](cobertura.py).
+- **El servicio de recortes es intermitente:** 159 de 447 intentos devolvieron 503 `Server busy, retry later`. Los reintentos resolvieron todos menos el archivo de R Draconis, que necesitó una pasada extra. No se interpretó ningún 503 como ausencia de datos.
+
+---
+
+## 7. Aladin Lite 3.8.2 con WCS propio
 
 La pregunta pendiente era si Aladin Lite 3.8.2 puede cargar una imagen con su propio WCS. La respuesta corta: **sí, pero no con el cutout MEF de SPHEREx tal como lo entrega IRSA.**
 
-### 6.1 Montaje
+### 7.1 Montaje
 
 - Aladin Lite **3.8.2** desde el paquete npm (`dist/aladin.js`), Firefox **159.0** en modo headless y geckodriver **0.37.1**. La página de prueba es [`aladin-wcs-test.html`](aladin-wcs-test.html); se sirve por HTTP local junto con `aladin.js` y el FITS.
 - **El `dist` de npm es un módulo ES.** Cargarlo con `<script src="aladin.js">` falla con `SyntaxError: export declarations may only appear at top level of a module` y luego `A is not defined`. Hay que usar `<script type="module">import A from './aladin.js'</script>`. Es la primera trampa de integración y no está en el ejemplo “vanilla” del README, que usa el `aladin.js` del CDN, no el de npm.
@@ -193,7 +232,7 @@ curl -L -o cutout.fits "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level
 python3 -m http.server 8765   # abrir http://127.0.0.1:8765/aladin-wcs-test.html
 ```
 
-### 6.2 Resultados
+### 7.2 Resultados
 
 | FITS | Estado | Posición del layer (RA / Dec) | FOV | Lectura |
 |---|---|---|---|---|
@@ -205,16 +244,16 @@ python3 -m http.server 8765   # abrir http://127.0.0.1:8765/aladin-wcs-test.html
 - **El problema es el SIP.** El cutout de SPHEREx declara `RA---TAN-SIP` y `DEC--TAN-SIP` con coeficientes `A_*`/`B_*`. Aladin lo carga sin error, pero coloca la imagen en 99° / +83,6° en vez de 269,4° / +4,77°. Al quitar `-SIP` y dejar solo la parte lineal (con `PC`/`CDELT` o con `CD`), la posición coincide con el centro del recorte. No es un problema de `CD` ni de que el MEF tenga varias extensiones: es el SIP. [MEDIDO: 14-nov-2026, 14:40–14:48 MST]
 - **No se midió el error angular del SIP quitado.** Para contexto y overlay es aceptable; para astrometría no. La medida se hace con el MEF original y `astropy`, no con Aladin. [INFERENCIA]
 
-### 6.3 Qué hacer en Sparks
+### 7.3 Qué hacer en Sparks
 
 1. **No alimentar Aladin con el MEF crudo.** El pipeline debe producir, por cuadro, un FITS de una sola extensión con `CTYPE` TAN sin SIP y matriz `CD` (o un PNG con la WCS aparte), y ese es el que se muestra.
-2. **Mantener el MEF para medir.** El recorte original conserva la ePSF, las banderas y el WCS completo; Aladin es solo contexto.
+2. **Mantener el MEF original solo si se va a medir.** El recorte crudo conserva la ePSF, las banderas y el WCS completo; Aladin es solo contexto. Los 288 recortes de esta entrega ya tienen el `EPSF` eliminado, así que para fotometría con ePSF hay que volver a bajar el MEF o pedir el cubo aparte.
 3. **Fijar la versión y cargar como módulo ES.** `3.8.2` sigue siendo la última estable; `latest` es `3.9.2-beta`. [VERIFICADO: [npm](https://registry.npmjs.org/aladin-lite)]
 4. **Si se usa el cubo HiPS de DR1 como fondo**, no reemplaza a los cutouts: son 102 capas de 12,9″/px, demasiado gruesas para medir movimiento. [VERIFICADO: [data products](https://github.com/Caltech-IPAC/spherex-archive-documentation/blob/main/documentation/spherex_data_products.md)]
 
 ---
 
-## 7. Pendientes y límites de esta entrega
+## 8. Pendientes y límites de esta entrega
 
 - **Sin repetir a las 14:30:** CADC (no medido), WiseView, MAST y JPL Horizons (solo la medición de Joaquín a las 13:04); el TAP de Gaia en IRSA (el “más de 250 s” es del 5-nov); el error angular exacto de quitar el SIP.
 - **La lista de Horacio ya está corregida:** el commit `83c9607` trae R Draconis en 248,1674 / +66,7550 y ε Indi B en 331,0441 / −56,7828; ya no hay que corregir esas filas. El CSV se generó con esa lista.
@@ -222,6 +261,8 @@ python3 -m http.server 8765   # abrir http://127.0.0.1:8765/aladin-wcs-test.html
 - **La definición de temporada es una convención** (60 días), no una definición física. Está declarada para que se pueda repetir o cambiar; el CSV trae las temporadas por colección para recalcular.
 - **El CSV no distingue visitas de imágenes.** Cuenta filas SIA, que es lo que pide la tarea. Para el flipbook hay que agrupar por `obs_id`/fecha y elegir una imagen por grupo.
 - **La prueba de Aladin es de escritorio, no de móvil.** No se midió rendimiento ni memoria en un teléfono. [SIN VERIFICAR]
+- **Los recortes son level 2 y no están calibrados por nosotros.** Se verificó la estructura FITS y la ausencia de `EPSF`, no la fotometría ni la astrometría interna. [SIN VERIFICAR la calibración]
+- **Falta probar el módulo de recortes de Horacio.** En `83c9607` no hay `pipeline/` y el `fetch` por SSH está bloqueado; cuando esté, hay que revisar su selección y su política de `EPSF` antes de reemplazar `recortes.py`.
 
 ---
 
@@ -230,5 +271,7 @@ python3 -m http.server 8765   # abrir http://127.0.0.1:8765/aladin-wcs-test.html
 - [`cobertura.csv`](cobertura.csv): 36 objetos, 15 columnas, con fecha y hora de consulta.
 - [`cobertura.py`](cobertura.py): script de consulta y cálculo de temporadas, solo biblioteca estándar.
 - [`consultas.json`](consultas.json): los 109 intentos con URL, HTTP, filas, segundos y error.
+- [`recortes.py`](recortes.py): selector y descargador de recortes, con reintentos, 6 hilos y filtro de `EPSF`.
 - [`aladin-wcs-test.html`](aladin-wcs-test.html): página mínima de la prueba de WCS.
 - [`entrega-horacio.md`](entrega-horacio.md): cobertura de los cinco objetivos para Horacio y revisión de su acceso.
+- **Datos de los recortes:** `/home/carlos/Documents/SPARKS-PROJECT-data/recortes` (fuera de git), con `resumen.json` y un `consultas.json` por campo.
