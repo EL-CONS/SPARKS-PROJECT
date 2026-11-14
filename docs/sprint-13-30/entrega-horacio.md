@@ -1,12 +1,12 @@
 # Entrega a Horacio: cobertura de los cinco objetivos y revisión del acceso
 
-**Fecha:** sábado 14 de noviembre de 2026, 15:20 MST · **Rama:** `carlos`
+**Fecha:** sábado 14 de noviembre de 2026, 15:56 MST · **Rama:** `carlos` · **Lista:** `origin/Horacio`, commit `83c9607`
 
 ---
 
 ## 1. Mensaje para Horacio (cobertura de los cinco objetivos)
 
-**Consultas:** SIA de IRSA, radio de 0,0005° (1,8″), colecciones `spherex_dr1` y `spherex_qr3`. Iniciadas entre 14:22:26 y 14:22:31 MST; reintentos hasta 14:24:53. Cada cifra es una fila SIA (una imagen de detector que cubre la posición), no una visita independiente.
+**Consultas:** SIA de IRSA, radio de 0,0005° (1,8″), colecciones `spherex_dr1` y `spherex_qr3`. Iniciadas entre 15:56:09 y 15:56:40 MST; el único timeout (QR2 de SS Cygni) se reintentó con éxito. Cada cifra es una fila SIA (una imagen de detector que cubre la posición), no una visita independiente.
 
 **Plantilla:**
 
@@ -16,30 +16,32 @@ https://irsa.ipac.caltech.edu/SIA?COLLECTION=<coleccion>&POS=circle+<RA>+<Dec>+0
 
 **Temporada:** bloque de fechas separado por más de 60 días del siguiente, calculado sobre la unión de DR1 y QR3.
 
-| Objetivo | RA / Dec (J2000, grados) | DR1 | QR3 | Total | Temporadas | Temporadas DR1 / QR3 |
+| Objetivo | RA / Dec (grados) | DR1 | QR3 | Total | Temporadas | Temporadas DR1 / QR3 |
 |---|---|---:|---:|---:|---:|---:|
-| Barnard's Star | 269,4486 / +4,7672 | 239 | 119 | 358 | 3 | 2 / 1 |
-| ε Indi B | 330,84024 / −56,78598 | 344 | 116 | 460 | 4 | 3 / 1 |
-| WISE 0855 | 133,795129 / −7,245147 | 258 | 0 | 258 | 3 | 3 / 0 |
-| RW Aurigae | 76,9563 / +30,4014 | 226 | 109 | 335 | 3 | 2 / 1 |
-| R Draconis | 248,1675 / +66,754972 | 413 | 126 | 539 | 3 | 3 / 1 |
+| Barnard's Star | 269,4485 / +4,7394 (J2016) | 240 | 123 | 363 | 3 | 2 / 1 |
+| ε Indi B | 331,0441 / −56,7828 (J2000) | 345 | 120 | 465 | 4 | 3 / 1 |
+| WISE 0855 | 133,7951 / −7,2451 | 258 | 0 | 258 | 3 | 3 / 0 |
+| RW Aurigae | 76,9561 / +30,4012 | 226 | 109 | 335 | 3 | 2 / 1 |
+| R Draconis | 248,1674 / +66,7550 (J2016) | 413 | 126 | 539 | 3 | 3 / 1 |
 
 **Notas de la tabla:**
 
-- **Barnard:** 239 + 119 = 358. `recursos.md` tenía 363 (240 + 123); la diferencia de 5 imágenes (1,4 %) no está investigada. [SIN VERIFICAR]
-- **ε Indi B:** con la coordenada de tu lista (330,8404 / −56,7869) salen 343 + 116 = 459. La coordenada de la tabla es la de `recursos.md` y da 460 exacto.
+- **Los cinco reproducen exacto** las cifras de `recursos.md`. Las diferencias que aparecían con la lista del commit `2554170` eran de coordenadas, no de método.
+- **Barnard:** 240 + 123 = 363, la cifra de `recursos.md`, con la posición J2016. La posición anterior (+4,7672, época ~2025.7) daba 358; no era un error de conteo.
+- **ε Indi B:** 345 + 120 = 465. La lista anterior traía 330,8404 / −56,7869, que es la posición de ε Indi A, y daba 459. La vigente usa la de B.
 - **WISE 0855:** no tiene QR3. Su serie está en DR1 y termina el 2026-05-14; no prometas una campaña de 2026 para este objeto.
 - **RW Aurigae:** 226 + 109 = 335, exacto.
-- **R Draconis:** tu lista trae 248,3308 / +66,7028, que está a ~5,0′ de SIMBAD. En esa posición salen 433 + 123 = 556. Usa 248,1675 / +66,754972: 413 + 126 = 539, la cifra que ya tenía `recursos.md`. La diferencia no es redondeo; es otra posición, y con un campo de 6,5′ el objeto quedaría fuera del campo.
+- **R Draconis:** 413 + 126 = 539 con 248,1674 / +66,7550. La lista vigente ya corrigió la posición anterior (248,3308 / +66,7028, a ~5,0′ de SIMBAD); con esa posición equivocada salían 433 + 123 = 556 y el objeto quedaba fuera de un campo de 6,5′.
 - **Ventanas de fechas (unión DR1 + QR3):** Barnard 2025-08-15 a 2026-09-22; ε Indi B 2025-04-24 a 2026-10-02; WISE 0855 2025-05-05 a 2026-05-14; RW Aur 2025-09-01 a 2026-09-16; R Dra 2025-05-16 a 2026-07-16.
+- **Compañera brillante:** Sirius B, Procyon B, Stein 2051 B y Gliese 229 B tienen una estrella muy brillante a menos de ~10″; Luhman 16 y Gliese 725 A son binarias sin estrella muy brillante. En `cobertura.csv` va en la columna `companera_brillante_10arcsec`, separada de `aislado`.
 
-**Archivos con el detalle:** `cobertura.csv` (37 objetos, 13 columnas), `cobertura.py` (script), `consultas.json` (133 intentos con URL, HTTP, filas, segundos y error).
+**Archivos con el detalle:** `cobertura.csv` (36 objetos, 15 columnas), `cobertura.py` (script), `consultas.json` (109 intentos con URL, HTTP, filas, segundos y error).
 
 ---
 
 ## 2. Revisión de tu parte de acceso
 
-**Qué revisé:** rama `Horacio`, commit `2554170` (14-nov-2026 13:18). En esa rama todavía no hay `pipeline/` ni `docs/pipeline/metodo.md`. Lo revisable es `docs/methods.md` (pipeline 0.3.0 del 5-nov, proyecto anterior), `Investigacion.md` §8.2 y los scripts de `research/planetx/scratch/`. Si ya tienes la canalización nueva sin subir, pásamela y la reviso.
+**Qué revisé:** rama `Horacio`, commit `83c9607` (14-nov-2026 14:30). En esa rama todavía no hay `pipeline/` ni `docs/pipeline/metodo.md`. Lo revisable es `docs/methods.md` (pipeline 0.3.0 del 5-nov, proyecto anterior), `Investigacion.md` §8.2 y los scripts de `research/planetx/scratch/`. Si ya tienes la canalización nueva sin subir, pásamela y la reviso.
 
 ### Lo que pides a IRSA y cómo
 
@@ -51,9 +53,9 @@ https://irsa.ipac.caltech.edu/SIA?COLLECTION=<coleccion>&POS=circle+<RA>+<Dec>+0
 
 ### Límites y errores concretos
 
-1. **QR2 no sirve para descubrir.** SIA devolvió 0 filas en 36 de 37 objetos y falló por red en el restante. QR2 ya no se indexa para búsqueda y solo se puede descargar hasta febrero de 2027. Si el pipeline recorre `spherex_qr2` y `spherex_qr3`, la mitad de las consultas no aporta ni una imagen. Usa `spherex_dr1` + `spherex_qr3`. [VERIFICADO: 14-nov-2026, `consultas.json`; data releases de SPHEREx]
+1. **QR2 no sirve para descubrir.** SIA devolvió 0 filas en los 36 objetos. QR2 ya no se indexa para búsqueda y solo se puede descargar hasta febrero de 2027. Si el pipeline recorre `spherex_qr2` y `spherex_qr3`, la mitad de las consultas no aporta ni una imagen. Usa `spherex_dr1` + `spherex_qr3`. [VERIFICADO: 14-nov-2026, `consultas.json`; data releases de SPHEREx]
 2. **La ruta `/SIA2` de IRSA no responde.** `https://irsa.ipac.caltech.edu/SIA2?...` devolvió 404 en 1,21 s a las 15:16:03. La que responde es `/SIA` (y `/SIA/query`). Si usas `pyvo` con `SIA2Service`, comprueba la URL base antes de confiar en que funciona.
-3. **La coordenada de ε Indi B en `scratch/cov2.py` y `coverage.py` está mal:** 331,0438 / −56,7828, unos 0,2° en RA (6,7′ en el cielo) al este de la posición real 330,84024 / −56,78598. Con un campo de 6,5′ el objeto queda fuera. No reutilices esos scripts.
+3. **No mezcles ε Indi A con ε Indi B.** `scratch/cov2.py` usa 331,0438 / −56,7828, que es la posición correcta de B y da 465. La posición 330,8404 / −56,7869 es la de ε Indi A y da 459; con un campo de 6,5′ el objeto queda fuera. La lista vigente ya trae la buena; usa esa. [VERIFICADO: [SIMBAD ε Indi B](https://simbad.harvard.edu/simbad/sim-id?Ident=eps+Ind+B)]
 4. **`size=0.03` no da un campo de 6,5′.** Medido con un cutout DR1 de WISE 0855: `size=0.03` devuelve 18 × 18 px; `size=0.11` devuelve 64 × 64 px (6,15″/px). Para 64 × 64 usa `size=0.11`; para 80 × 80, `size=0.137`. Añade la `d` al final de la Dec (`center=133.795129,-7.245147d`), como en el tutorial.
 5. **Cada cutout pesa ~3,9 MB aunque sea pequeño.** `size=0.03` dio 3.850.000 bytes y `size=0.11` dio 3.910.000 bytes, porque el servicio devuelve el cubo EPSF completo (33 × 33 × 451). Quita `EPSF` antes de guardar; si no, 460 recortes de ε Indi B son ~1,8 GB solo de PSF.
 6. **El servicio de cutouts es intermitente.** En dos minutos: dos HTTP 503 con cuerpo `Server busy, retry later`, un timeout de 90 s y dos 200 (6,73 s el último). Reintenta con espera; no interpretes un 503 como “no hay datos”.
@@ -77,7 +79,7 @@ https://irsa.ipac.caltech.edu/SIA?COLLECTION=<coleccion>&POS=circle+<RA>+<Dec>+0
 ### Lo que yo usaría
 
 - Descubrimiento: `/SIA` con `COLLECTION=spherex_dr1` y `spherex_qr3`, radio 0,0005°, `RESPONSEFORMAT=CSV`, reintentos y registro de HTTP/tiempo.
-- Coordenadas corregidas: ε Indi B 330,84024 / −56,78598; R Dra 248,1675 / +66,754972.
+- Coordenadas corregidas: usa las de la lista `83c9607`; en particular ε Indi B 331,0441 / −56,7828 y R Dra 248,1674 / +66,7550.
 - Cutouts: `size=0.11` para 64 × 64 (o `0.137` para 80 × 80), `center=<RA>,<Dec>d`, guardar IMAGE, FLAGS, VARIANCE, ZODI y WCS-WAVE, descartar EPSF.
 - Temporadas: corte de 60 días sobre la unión DR1 + QR3; guarda también el conteo por colección.
 - WISE 0855: solo DR1, 3 temporadas, serie hasta 2026-05-14.

@@ -44,9 +44,22 @@ RETRIES_BY = {"spherex_qr2": 0}
 HEADER = [
     "objeto", "ra_deg", "dec_deg",
     "imagenes_qr2", "imagenes_qr3", "temporadas",
+    "aislado", "companera_brillante_10arcsec",
     "fecha_consulta", "hora_consulta",
     "imagenes_dr1", "imagenes_total", "temporadas_qr3", "temporadas_dr1", "nota",
 ]
+
+# Objetos de la lista con una estrella muy brillante a menos de ~10 arcsec.
+# La lista de Horacio ya marca estos casos con aislado=no; aqui se separa el
+# caso de una companera brillante del de una binaria sin estrella brillante.
+COMPANERA_BRILLANTE = {
+    "Sirius B": "si (Sirius A)",
+    "Procyon B": "si (Procyon A)",
+    "Stein 2051 B": "si (Stein 2051 A)",
+    "Gliese 229 B": "si (Gliese 229 A)",
+    "Luhman 16": "no (binaria de enanas marrones)",
+    "Gliese 725 A": "no (binaria; companera no muy brillante)",
+}
 
 
 def sia_url(collection: str, ra: float, dec: float) -> str:
@@ -100,7 +113,10 @@ def query_object(obj, log):
     name = obj["nombre"].strip()
     ra = float(obj["ra_deg"])
     dec = float(obj["dec_deg"])
-    result = {"nombre": name, "ra": ra, "dec": dec, "data": {}}
+    result = {
+        "nombre": name, "ra": ra, "dec": dec,
+        "aislado": obj.get("aislado", "").strip(), "data": {},
+    }
     for coll in COLLECTIONS:
         url = sia_url(coll, ra, dec)
         rows, status, elapsed, err = fetch_csv(
@@ -176,6 +192,8 @@ def build_row(res):
         "imagenes_qr2": blank(n_qr2),
         "imagenes_qr3": blank(n_qr3),
         "temporadas": n_seasons,
+        "aislado": res.get("aislado", ""),
+        "companera_brillante_10arcsec": COMPANERA_BRILLANTE.get(res["nombre"], "no"),
         "fecha_consulta": now.date().isoformat(),
         "hora_consulta": now.strftime("%H:%M:%S %Z"),
         "imagenes_dr1": blank(n_dr1),
