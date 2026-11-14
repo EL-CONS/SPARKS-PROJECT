@@ -383,27 +383,56 @@ ul {
   margin: 0 auto;
   padding: 8px var(--gutter) 64px;
 }
-.leg {
+
+/* the trail: three stars joined by a line that fills as you advance */
+.trail {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  margin: 4px auto 28px;
+  max-width: 760px;
+}
+.trail__list {
   position: relative;
   display: grid;
-  grid-template-columns: 56px minmax(0, 1fr);
-  column-gap: 20px;
-  padding-bottom: 72px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: 100%;
 }
-/* the route: a faint line from star to star, like a constellation */
-.leg::before {
+.trail__list::before,
+.trail__list::after {
   content: '';
   position: absolute;
-  left: 27px;
-  top: 52px;
-  bottom: 0;
-  width: 1px;
-  background: linear-gradient(var(--rule-strong), var(--rule));
+  top: 27px;
+  left: calc(100% / 6);
+  height: 2px;
+  border-radius: 1px;
 }
-.leg--last::before {
-  display: none;
+.trail__list::before {
+  right: calc(100% / 6);
+  background: var(--rule-strong);
 }
-.leg__star {
+.trail__list::after {
+  width: calc((100% - 100% / 3) * var(--progress, 0));
+  background: linear-gradient(90deg, var(--before), var(--now));
+  box-shadow: 0 0 12px rgb(255 178 56 / 0.5);
+  transition: width 600ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.trail__star {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+.trail__star:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+.trail__dot {
   display: grid;
   place-items: center;
   width: 56px;
@@ -411,20 +440,104 @@ ul {
   border-radius: 50%;
   font-family: var(--font-display);
   font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text-2);
+  background: radial-gradient(circle, var(--bg) 0 46%, transparent 47%), radial-gradient(circle, var(--rule-strong) 0 50%, transparent 51%);
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), color 200ms ease;
+}
+:root[data-theme='light'] .trail__dot {
+  background: radial-gradient(circle, #e8f1f8 0 46%, transparent 47%), radial-gradient(circle, var(--rule-strong) 0 50%, transparent 51%);
+}
+.trail__star.is-done .trail__dot {
+  color: #04121d;
+  background: radial-gradient(circle, var(--before) 0 50%, rgb(98 182 232 / 0.3) 58%, transparent 70%);
+}
+.trail__star.is-on .trail__dot {
   color: var(--on-now);
-  background: radial-gradient(circle, var(--now) 0 52%, rgb(255 178 56 / 0.3) 60%, transparent 72%);
+  background: radial-gradient(circle, var(--now) 0 52%, rgb(255 178 56 / 0.35) 60%, transparent 72%);
+  transform: scale(1.12);
+}
+.trail__star:not(:disabled):hover .trail__dot {
+  transform: scale(1.12);
+}
+.trail__name {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 0.82rem;
+  color: var(--text-3);
+}
+.trail__star.is-on .trail__name {
+  color: var(--text);
+}
+.trail__hint {
+  font-size: 0.78rem;
+  color: var(--text-3);
+}
+
+/* the steps sit side by side; the track slides left to move on */
+.steps {
+  overflow-x: clip;
+  transition: height 450ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.steps__track {
+  display: flex;
+  align-items: flex-start;
+  transition: transform 650ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.leg {
+  flex: 0 0 100%;
+  min-width: 0;
+  padding: 0 2px;
+  opacity: 0.25;
+  transition: opacity 400ms ease;
+}
+.leg.is-active {
+  opacity: 1;
 }
 .leg__title {
-  align-self: center;
+  display: flex;
+  align-items: center;
+  gap: 14px;
   font-family: var(--font-display);
   font-weight: 600;
   font-size: clamp(1.3rem, 2.4vw, 1.9rem);
   line-height: 1.15;
 }
+.leg__n {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1rem;
+  color: var(--on-now);
+  background: radial-gradient(circle, var(--now) 0 52%, rgb(255 178 56 / 0.3) 60%, transparent 72%);
+}
 .leg__body {
-  grid-column: 2;
   margin-top: 20px;
   min-width: 0;
+}
+.stepnav {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--rule);
+}
+.stepnav .spark:disabled {
+  opacity: 0.4;
+  cursor: default;
+  box-shadow: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .steps,
+  .steps__track,
+  .leg,
+  .trail__list::after {
+    transition: none;
+  }
 }
 /* the eyepiece: a polar view of the sky behind a frosted lens, so the
    moving background stars never mix with the five targets */
@@ -979,19 +1092,67 @@ ul {
   .cn-nav button {
     font-size: 0.72rem;
   }
-  .leg {
-    grid-template-columns: 40px minmax(0, 1fr);
-    column-gap: 12px;
+  .trail__dot {
+    width: 46px;
+    height: 46px;
   }
-  .leg::before {
-    left: 19px;
+  .trail__list::before,
+  .trail__list::after {
+    top: 22px;
   }
-  .leg__star {
-    width: 40px;
-    height: 40px;
+  .trail__name {
+    font-size: 0.7rem;
+    text-align: center;
   }
-  .leg__body {
-    grid-column: 1 / -1;
+  .stepnav {
+    position: sticky;
+    bottom: 0;
+    z-index: 12;
+    margin-inline: calc(var(--gutter) * -1);
+    padding: 10px var(--gutter);
+    background: var(--bg);
+  }
+  .stepnav .spark {
+    min-height: 48px;
+    padding: 0 14px 0 12px;
+    font-size: 0.78rem;
+  }
+  .stepnav__where {
+    display: none;
+  }
+  .stepnav .spark {
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+  /* step 2's player stays compact above the step buttons */
+  .deck {
+    gap: 8px 10px;
+    padding-block: 8px;
+  }
+  .deck .check {
+    display: none;
+  }
+  .deck .round {
+    width: 44px;
+    height: 44px;
+  }
+  .deck .round--play {
+    width: 52px;
+    height: 52px;
+  }
+  .deck .chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .deck .chip {
+    min-height: 40px;
+    padding: 0 12px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+  .deck .chips--speed {
+    order: 2;
   }
   .modes button span {
     display: none;
@@ -1001,7 +1162,8 @@ ul {
   }
   .deck {
     position: sticky;
-    bottom: 0;
+    /* sits just above the sticky step navigation */
+    bottom: 68px;
     z-index: 10;
     margin-inline: calc(var(--gutter) * -1);
     padding: 10px var(--gutter);

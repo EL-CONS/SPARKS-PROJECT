@@ -1,7 +1,7 @@
 // Iteración 1 · Constelación. Cosmos's infinite sky + the Club's three-step
 // mission. No cards: content floats on the sky. Targets are picked on a map
 // of the whole sky at their real RA/Dec. Buttons carry a spark dot.
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useSparks, SPEEDS, type Sparks } from './kit/useSparks';
 import { Starfield } from './kit/Starfield';
 import { Insights } from './kit/Insights';
@@ -35,6 +35,7 @@ export default function App() {
   const s = useSparks();
   const { theme, toggle } = useTheme();
   const labels = useBodyLabels(s);
+  const [step, setStep] = useState(0);
   const es = s.url.lang === 'es';
   return (
     <div className="cn">
@@ -56,7 +57,7 @@ export default function App() {
           </button>
         </span>
       </header>
-      <main id="cielo">{s.tab === 'inicio' ? <Start s={s} theme={theme} /> : <Route s={s} />}</main>
+      <main id="cielo">{s.tab === 'inicio' ? <Start s={s} theme={theme} onGo={() => setStep(1)} /> : <Route s={s} step={step} setStep={setStep} />}</main>
       <footer className="cn-foot">
         <p>{s.t.footer.honest}</p>
         <p>{es ? 'Los astros que cruzan el fondo son ilustraciones de los objetivos del reto; las fotos de SPHEREx están solo en el escenario.' : 'The bodies crossing the background are illustrations of the challenge targets; SPHEREx photos appear only on the stage.'}</p>
@@ -68,7 +69,7 @@ export default function App() {
 
 /* ------------------------------------------------------------------ inicio */
 
-function Start({ s, theme }: { s: Sparks; theme: string }) {
+function Start({ s, theme, onGo }: { s: Sparks; theme: string; onGo: () => void }) {
   const i = s.intro;
   return (
     <section className="st" aria-labelledby="st-t">
@@ -94,7 +95,7 @@ function Start({ s, theme }: { s: Sparks; theme: string }) {
         <text x="510" y="140" className="st__t">{i.how.now} · {i.how.nowText}</text>
         <text x="320" y="60" className="st__t st__t--arrow">{i.how.arrow} · {i.how.arrowText}</text>
       </svg>
-      <Spark primary onClick={() => s.startWithField(s.barnard)}>{i.cta}</Spark>
+      <Spark primary onClick={() => { onGo(); s.startWithField(s.barnard); }}>{i.cta}</Spark>
       <p className="st__pluto">{i.pluto}</p>
       <p className="st__facts">{i.facts.colors} · {i.facts.detectors} · {i.facts.sky}</p>
     </section>
@@ -103,81 +104,192 @@ function Start({ s, theme }: { s: Sparks; theme: string }) {
 
 /* ------------------------------------------------------------------ route */
 
-function Leg({ n, title, children, id, last }: { n: number; title: string; children: React.ReactNode; id: string; last?: boolean }) {
+function Leg({ n, title, children, id, active, panelRef }: { n: number; title: string; children: React.ReactNode; id: string; active: boolean; panelRef: (el: HTMLElement | null) => void }) {
   return (
-    <section className={`leg${last ? ' leg--last' : ''}`} aria-labelledby={id}>
-      <span className="leg__star" aria-hidden="true">{n}</span>
-      <h2 id={id} className="leg__title">{title}</h2>
+    <section
+      ref={el => {
+        panelRef(el);
+        // only the visible step can be reached by keyboard or screen reader
+        if (el) {
+          if (active) el.removeAttribute('inert');
+          else el.setAttribute('inert', '');
+        }
+      }}
+      className={`leg${active ? ' is-active' : ''}`}
+      aria-labelledby={id}
+      aria-hidden={!active}
+      role="group"
+    >
+      <h2 id={id} className="leg__title">
+        <span className="leg__n" aria-hidden="true">{n}</span>
+        {title}
+      </h2>
       <div className="leg__body">{children}</div>
     </section>
   );
 }
 
-function Route({ s }: { s: Sparks }) {
+const STEPS = 3;
+
+function Route({ s, step, setStep }: { s: Sparks; step: number; setStep: (n: number) => void }) {
   const { t } = s;
   const es = s.url.lang === 'es';
+  const ready = s.data.status === 'ready';
+  const panels = useRef<(HTMLElement | null)[]>([]);
+  const top = useRef<HTMLDivElement>(null);
+  const [height, setHeight] = useState<number | undefined>(undefined);
+  const touch = useRef<{ x: number; y: number } | null>(null);
+  const titles = [
+    es ? 'Apunta el telescopio' : 'Aim the telescope',
+    es ? 'Mira el cielo' : 'Watch the sky',
+    es ? '¿Qué pasó?' : 'What happened?',
+  ];
+  const canGo = (n: number) => n >= 0 && n < STEPS && (n < 2 || ready);
+  const go = (n: number) => {
+    if (!canGo(n) || n === step) return;
+    setStep(n);
+    const y = (top.current?.getBoundingClientRect().top ?? 0) + window.scrollY - 12;
+    if (window.scrollY > y) window.scrollTo({ top: y, behavior: 'smooth' });
+  };
+
+  // the viewport takes the height of the visible step, so nothing sits empty
+  useEffect(() => {
+    const el = panels.current[step];
+    if (!el) return;
+    const ro = new ResizeObserver(() => setHeight(el.offsetHeight));
+    ro.observe(el);
+    setHeight(el.offsetHeight);
+    return () => ro.disconnect();
+  }, [step]);
+
+  // arrow keys move between steps (not while typing)
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement)?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || e.altKey || e.ctrlKey || e.metaKey) return;
+      if (e.key === 'ArrowRight') go(step + 1);
+      if (e.key === 'ArrowLeft') go(step - 1);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  });
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    touch.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    const t0 = touch.current;
+    touch.current = null;
+    if (!t0) return;
+    const dx = e.changedTouches[0].clientX - t0.x;
+    const dy = e.changedTouches[0].clientY - t0.y;
+    // a clear sideways swipe: left moves on, right goes back
+    if (Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy) * 1.5) go(step + (dx < 0 ? 1 : -1));
+  };
+
   return (
-    <div className="route">
-      <Leg n={1} id="l1" title={es ? 'Apunta el telescopio a un astro' : 'Aim the telescope at a target'}>
-        <SkyScope s={s} />
-        <form
-          className="seek"
-          role="search"
-          onSubmit={e => {
-            e.preventDefault();
-            s.submitSearch();
-          }}
-        >
-          <label htmlFor="q">{es ? '¿O tienes coordenadas?' : 'Or got coordinates?'}</label>
-          <div className="seek__row">
-            <input id="q" value={s.query} onChange={e => s.setQuery(e.target.value)} placeholder="269.4486 4.7672" aria-describedby="q-hint" autoComplete="off" spellCheck={false} />
-            <Spark type="submit">{t.search.submit}</Spark>
-          </div>
-          <p id="q-hint" className="hint">{t.search.hint} <Term id="radec" t={t} /></p>
-          {s.searchError && <p className="err" role="alert">{s.searchError}</p>}
-          {s.far && (
-            <p className="hint" role="status">
-              {t.search.noField(t.targets[s.far.field.id]?.short ?? s.far.field.name, s.far.deg.toFixed(1))}{' '}
-              <button type="button" className="tlink" onClick={() => s.pickField(s.far!.field)}>{t.search.nearest}</button>
-            </p>
-          )}
-        </form>
-      </Leg>
+    <div className="route" ref={top}>
+      <nav className="trail" aria-label={es ? 'Pasos' : 'Steps'}>
+        <ol className="trail__list" style={{ ['--progress' as string]: step / (STEPS - 1) }}>
+          {titles.map((title, n) => (
+            <li key={n}>
+              <button
+                type="button"
+                className={`trail__star${n === step ? ' is-on' : ''}${n < step ? ' is-done' : ''}`}
+                aria-current={n === step ? 'step' : undefined}
+                disabled={!canGo(n)}
+                onClick={() => go(n)}
+              >
+                <span className="trail__dot" aria-hidden="true">{n + 1}</span>
+                <span className="trail__name">{title}</span>
+              </button>
+            </li>
+          ))}
+        </ol>
+        <p className="trail__hint" aria-hidden="true">{es ? 'Desliza o usa las flechas ← →' : 'Swipe or use the ← → keys'}</p>
+      </nav>
 
-      <Leg n={2} id="l2" title={es ? 'Mira el cielo' : 'Watch the sky'}>
-        {s.indexError && (
-          <div className="note note--err" role="alert">
-            <p>{s.core.loadError}</p>
-            <Spark onClick={s.retryIndex}>{t.stage.retry}</Spark>
-          </div>
-        )}
-        {s.selected && (
-          <div className="who">
-            <p className="who__name">{s.selected.id === 'barnard' ? (es ? 'Estrella de Barnard' : 'Barnard’s Star') : s.selected.name}</p>
-            <p className="who__note">{t.targets[s.selected.id]?.note ?? s.selected.note}</p>
-          </div>
-        )}
-        {s.selected && s.data.status === 'loading' && (
-          <p className="note" role="status">
-            <span className="meter" aria-hidden="true"><span style={{ width: `${s.data.total ? (s.data.done / s.data.total) * 100 : 0}%` }} /></span>
-            {t.stage.loading(s.data.done, s.data.total || 18)}
-          </p>
-        )}
-        {s.data.status === 'error' && (
-          <div className="note note--err" role="alert">
-            <p>{t.stage.loadFailed}</p>
-            <Spark onClick={s.retryField}>{t.stage.retry}</Spark>
-          </div>
-        )}
-        {s.data.status === 'soon' && <Soon s={s} />}
-        {s.data.status === 'ready' && <Watch s={s} />}
-      </Leg>
+      <div className="steps" style={{ height }} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+        <div className="steps__track" style={{ transform: `translateX(${-step * 100}%)` }}>
+          <Leg n={1} id="l1" title={titles[0]} active={step === 0} panelRef={el => (panels.current[0] = el)}>
+            <SkyScope s={s} />
+            <form
+              className="seek"
+              role="search"
+              onSubmit={e => {
+                e.preventDefault();
+                s.submitSearch();
+              }}
+            >
+              <label htmlFor="q">{es ? '¿O tienes coordenadas?' : 'Or got coordinates?'}</label>
+              <div className="seek__row">
+                <input id="q" value={s.query} onChange={e => s.setQuery(e.target.value)} placeholder="269.4486 4.7672" aria-describedby="q-hint" autoComplete="off" spellCheck={false} />
+                <Spark type="submit">{t.search.submit}</Spark>
+              </div>
+              <p id="q-hint" className="hint">{t.search.hint} <Term id="radec" t={t} /></p>
+              {s.searchError && <p className="err" role="alert">{s.searchError}</p>}
+              {s.far && (
+                <p className="hint" role="status">
+                  {t.search.noField(t.targets[s.far.field.id]?.short ?? s.far.field.name, s.far.deg.toFixed(1))}{' '}
+                  <button type="button" className="tlink" onClick={() => s.pickField(s.far!.field)}>{t.search.nearest}</button>
+                </p>
+              )}
+            </form>
+          </Leg>
 
-      {s.data.status === 'ready' && (
-        <Leg n={3} id="l3" title={es ? '¿Qué pasó?' : 'What happened?'} last>
-          <Insights lang={s.url.lang} t={t} manifest={s.data.manifest} field={s.selected!} det={s.det === 'all' ? 6 : s.det} season={s.mode === 'diff' ? s.pair[1] : s.player.frame} />
-        </Leg>
-      )}
+          <Leg n={2} id="l2" title={titles[1]} active={step === 1} panelRef={el => (panels.current[1] = el)}>
+            {s.indexError && (
+              <div className="note note--err" role="alert">
+                <p>{s.core.loadError}</p>
+                <Spark onClick={s.retryIndex}>{t.stage.retry}</Spark>
+              </div>
+            )}
+            {s.selected && (
+              <div className="who">
+                <p className="who__name">{s.selected.id === 'barnard' ? (es ? 'Estrella de Barnard' : 'Barnard’s Star') : s.selected.name}</p>
+                <p className="who__note">{t.targets[s.selected.id]?.note ?? s.selected.note}</p>
+              </div>
+            )}
+            {s.selected && s.data.status === 'loading' && (
+              <p className="note" role="status">
+                <span className="meter" aria-hidden="true"><span style={{ width: `${s.data.total ? (s.data.done / s.data.total) * 100 : 0}%` }} /></span>
+                {t.stage.loading(s.data.done, s.data.total || 18)}
+              </p>
+            )}
+            {s.data.status === 'error' && (
+              <div className="note note--err" role="alert">
+                <p>{t.stage.loadFailed}</p>
+                <Spark onClick={s.retryField}>{t.stage.retry}</Spark>
+              </div>
+            )}
+            {s.data.status === 'soon' && <Soon s={s} />}
+            {s.data.status === 'ready' && <Watch s={s} />}
+          </Leg>
+
+          <Leg n={3} id="l3" title={titles[2]} active={step === 2} panelRef={el => (panels.current[2] = el)}>
+            {s.data.status === 'ready' ? (
+              <Insights lang={s.url.lang} t={t} manifest={s.data.manifest} field={s.selected!} det={s.det === 'all' ? 6 : s.det} season={s.mode === 'diff' ? s.pair[1] : s.player.frame} />
+            ) : (
+              <p className="note">{es ? 'Primero apunta a un astro que tenga fotos.' : 'First aim at a target that has photos.'}</p>
+            )}
+          </Leg>
+        </div>
+      </div>
+
+      <div className="stepnav">
+        {step > 0 ? (
+          <Spark className="stepnav__back" onClick={() => go(step - 1)}>
+            <span aria-hidden="true">← </span>{es ? 'Atrás' : 'Back'}<span className="stepnav__where">: {titles[step - 1]}</span>
+          </Spark>
+        ) : (
+          <span />
+        )}
+        {step < STEPS - 1 && (
+          <Spark primary className="stepnav__next" onClick={() => go(step + 1)} disabled={!canGo(step + 1)}>
+            {es ? 'Siguiente' : 'Next'}<span className="stepnav__where">: {titles[step + 1]}</span><span aria-hidden="true"> →</span>
+          </Spark>
+        )}
+      </div>
     </div>
   );
 }

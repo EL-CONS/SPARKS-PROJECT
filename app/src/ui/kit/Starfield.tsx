@@ -216,6 +216,7 @@ export function Starfield({ theme, labels, density = 1, quiet = false }: Props) 
           const g = ctx.createLinearGradient(comet.x, comet.y, comet.x - comet.vx * 0.35, comet.y - comet.vy * 0.35);
           g.addColorStop(0, 'rgba(155,232,200,0.9)');
           g.addColorStop(1, 'rgba(155,232,200,0)');
+          ctx.globalAlpha = quiet ? 0.35 : 1;
           ctx.strokeStyle = g;
           ctx.lineWidth = 2;
           ctx.beginPath();
@@ -223,6 +224,7 @@ export function Starfield({ theme, labels, density = 1, quiet = false }: Props) 
           ctx.lineTo(comet.x - comet.vx * 0.35, comet.y - comet.vy * 0.35);
           ctx.stroke();
           disk(ctx, comet.x, comet.y, 2.2, '#dffbef');
+          ctx.globalAlpha = 1;
           if (comet.x > w + 60 || comet.y < -60) comet.x = -1;
         }
       }
