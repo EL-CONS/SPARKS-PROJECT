@@ -39,7 +39,7 @@ export default function App() {
   const es = s.url.lang === 'es';
   return (
     <div className="cn">
-      <Starfield theme="dark" labels={labels} quiet={s.tab === 'explorar'} />
+      <Starfield labels={labels} quiet={s.tab === 'explorar'} />
       <a className="skip" href="#cielo">{s.t.skip}</a>
       <header className="band band--top">
         <div className="cn-top">

@@ -3,8 +3,7 @@
    are "sparks": an outlined pill whose dot lights from blue to amber. */
 @import './components.css';
 
-:root,
-:root[data-theme='dark'] {
+:root {
   color-scheme: dark;
   --bg: #02040a;
   --haze-a: rgba(35, 79, 78, 0.2);
@@ -1144,7 +1143,6 @@ html {
 .band--top::before {
   bottom: 0;
 }
-
 .band--foot {
   margin-top: 64px;
   /* fades in from the page instead of starting with an edge */
