@@ -12,6 +12,7 @@ import { IconNext, IconPause, IconPlay, IconPrev } from './components/Icons';
 import { diffPairs, seasonLabel, toDms, toHms } from './sky';
 import { Spectrum } from './components/Spectrum';
 import { tieneFotos } from '../data/loader';
+import { INSIGHTS } from '../i18n/insights';
 import { BASE } from './kit/useSparks';
 import { fovOptions, fovParam, zoomForFov } from '../core/fov';
 import type { ShellDict } from '../i18n/shell';
@@ -389,7 +390,7 @@ function Route({ s, step, setStep }: { s: Sparks; step: number; setStep: (n: num
                         verticalAlign: 'middle',
                       }}
                     >
-                      {es ? 'Procesamiento parcial' : 'Partial processing'}
+                      {INSIGHTS[s.url.lang].manifestStatus.partialBadge}
                     </span>
                   )}
                 </p>

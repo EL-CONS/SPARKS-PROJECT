@@ -7,8 +7,8 @@ export interface InsightsDict {
   motion: { say: (mu: string, err: string, cat: string, exp: string) => string; bound: (mu: string, err: string, cat: string, exp: string) => string; agree: string; disagree: string; kid: (px: string) => string; sparks: string; perYear: string; band: string };
   direction: { say: (dir: string, pa: string) => string; kid: string; dirs: string[] };
   noise: { say: (x: string) => string; kid: string; one: string; stack: string; unit: string };
-  color: { say: (sat: number, total: number) => string; kid: string; sat: string; ok: string; none: string };
-  quality: { say: (src: string, bad: string) => string; kid: string; star: string; problems: string; names: Record<string, string> };
+  color: { say: (sat: number, total: number) => string; sayOk: (ok: number, total: number) => string; kid: string; sat: string; ok: string; none: string };
+  quality: { say: (src: string, bad: string) => string; kid: string; kidBad: string; star: string; problems: string; names: Record<string, string> };
   data: { say: (n: number, seasons: number, rel: string) => string };
   classifier: {
     title: string;
@@ -69,6 +69,7 @@ export const INSIGHTS: Record<Lang, InsightsDict> = {
     },
     color: {
       say: (sat, total) => `No pudimos medir su color: ${sat} de ${total} fotos salieron saturadas.`,
+      sayOk: (ok, total) => `Su color se pudo medir en ${ok} de ${total} fotos.`,
       kid: 'Es tan brillante que la cámara se "encandila", como una foto contra el sol.',
       sat: 'saturadas',
       ok: 'medibles',
@@ -77,6 +78,7 @@ export const INSIGHTS: Record<Lang, InsightsDict> = {
     quality: {
       say: (src, bad) => `${src} de los píxeles marcados son la estrella misma; problemas reales: ${bad}.`,
       kid: 'La NASA marca cada píxel dudoso. Aquí casi todo está bien.',
+      kidBad: 'La NASA marca cada píxel dudoso. Aquí la mayoría de lo marcado son problemas reales.',
       star: 'es la estrella',
       problems: 'problemas',
       names: {
@@ -152,6 +154,7 @@ export const INSIGHTS: Record<Lang, InsightsDict> = {
     },
     color: {
       say: (sat, total) => `We could not measure its colour: ${sat} of ${total} photos came back saturated.`,
+      sayOk: (ok, total) => `Its colour could be measured in ${ok} of ${total} photos.`,
       kid: 'It is so bright the camera is "dazzled", like a photo against the Sun.',
       sat: 'saturated',
       ok: 'measurable',
@@ -160,6 +163,7 @@ export const INSIGHTS: Record<Lang, InsightsDict> = {
     quality: {
       say: (src, bad) => `${src} of the flagged pixels are the star itself; real problems: ${bad}.`,
       kid: 'NASA flags every doubtful pixel. Here almost everything is fine.',
+      kidBad: 'NASA flags every doubtful pixel. Here most of what is flagged are real problems.',
       star: 'is the star',
       problems: 'problems',
       names: {

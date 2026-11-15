@@ -347,9 +347,12 @@ function Color({ L, m, t }: { L: L; m: FullManifest; t: UiDict }) {
   const ok = sp.filter(p => p.good).length;
   const none = sp.length - sat - ok;
   const pct = (n: number) => (n / sp.length) * 100;
+  // Sin espectro del objetivo (R Draconis: ningún punto medible) la tarjeta no dice nada útil.
+  if (sp.length === 0) return null;
+  const mostlySat = sat > ok;
   return (
     <figure className="insight">
-      <figcaption className="insight__say">{L.color.say(sat, sp.length)}</figcaption>
+      <figcaption className="insight__say">{mostlySat ? L.color.say(sat, sp.length) : L.color.sayOk(ok, sp.length)}</figcaption>
       <div className="stack" role="img" aria-label={`${sat} ${L.color.sat}, ${ok} ${L.color.ok}, ${none} ${L.color.none}`}>
         <span className="stack__seg stack__seg--sat" style={{ width: `${pct(sat)}%` }}>{sat} {L.color.sat}</span>
         {ok > 0 && <span className="stack__seg stack__seg--ok" style={{ width: `${pct(ok)}%` }} />}
@@ -358,7 +361,7 @@ function Color({ L, m, t }: { L: L; m: FullManifest; t: UiDict }) {
       <p className="stack__legend">
         <span>{ok} {L.color.ok}</span> · <span>{none} {L.color.none}</span>
       </p>
-      <p className="insight__kid">{L.color.kid} <Term id="saturated" t={t} /></p>
+      {mostlySat && <p className="insight__kid">{L.color.kid} <Term id="saturated" t={t} /></p>}
     </figure>
   );
 }
@@ -393,7 +396,7 @@ function Quality({ L, m, det, season, t }: { L: L; m: FullManifest; det: number;
           </li>
         ))}
       </ul>
-      <p className="insight__kid">{L.quality.kid} <Term id="flags" t={t} /> · D{det}</p>
+      <p className="insight__kid">{bad > src ? L.quality.kidBad : L.quality.kid} <Term id="flags" t={t} /> · D{det}</p>
     </figure>
   );
 }
