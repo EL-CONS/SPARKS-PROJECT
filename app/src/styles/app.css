@@ -1159,11 +1159,6 @@ html {
   left: var(--gutter);
   right: var(--gutter);
 }
-:root[data-theme='light'] .band--foot {
-  background:
-    radial-gradient(120% 90% at 50% 120%, rgb(0 66 166 / 0.1), transparent 70%),
-    linear-gradient(180deg, transparent 0, rgb(255 255 255 / 0.55) 90px, rgb(255 255 255 / 0.75));
-}
 .cn-spaceapps {
   display: grid;
   place-items: center;

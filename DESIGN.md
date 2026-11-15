@@ -17,7 +17,7 @@ Sparks es la bitácora de un pedazo de cielo: cada temporada es una entrada, y p
 | `--now` | `#FFB238` | `#F09A0C` | **Solo** "ahora" y la acción principal |
 | `--now-ink` | `#FFC56A` | `#8A5200` | Texto ámbar y foco (6:1 en papel) |
 | `--lens` | `#FFF4DC` | `#FFFFFF` | Solo el destello del cambio de época |
-| `--sky` | `#06080C` | `#06080C` | El escenario del cielo es de noche en los dos temas |
+| `--sky` | `#06080C` | `#06080C` | El escenario del cielo es de noche |
 | asombro | `--wonder-plum`, `--wonder-dusk`, `--astro-*` | versiones de papel | Atmósfera e ilustración, nunca datos |
 
 Reglas:
@@ -29,7 +29,7 @@ Reglas:
 
 - Siempre es un `radial-gradient` que cae a cero, nunca una sombra de color ni un `filter: blur`.
 - Halo ámbar: acción principal (`.btn--now`) y entrada viva de la bitácora. Halo azul más tenue (75 %): la entrada "antes".
-- Intensidad por tema: `--halo-now` 0.55 en noche, 0.38 en papel.
+- Intensidad: `--halo-now` 0.55 (noche).
 - Destello crema (`.entry__lens`, 700 ms) en cada cambio de época, como en `symbol-animated.svg`. Desaparece con `prefers-reduced-motion`.
 
 ## Tipografía
@@ -61,4 +61,4 @@ Todo término técnico es un `<Term>`: se abre con toque, clic o teclado, y se c
 
 ## Temas
 
-La noche es el tema predeterminado: los datos del cielo son oscuros y la luz del logo se lee sobre noche. El día es papel con las tintas de `logo-light.svg`, con halos más finos y el escenario todavía de noche. La elección se guarda en `localStorage` (`sparks-theme`), se aplica antes de pintar (script en `index.html`) y acepta `?theme=light|dark` para incrustar.
+Un solo tema: la noche. Los datos del cielo son oscuros y la luz del logo se lee sobre noche. El tema claro ("papel") existió hasta el commit `881eb30` de Cons ("oblitarated light mode", 14 de noviembre) y se retiró; la decisión de no restaurarlo es provisional (paso C de `docs/integracion/estado.md`). Las columnas "papel" de la tabla de color quedan como referencia histórica y no se usan en el código. Ya no hay `localStorage` `sparks-theme` ni parámetro `?theme=`.
