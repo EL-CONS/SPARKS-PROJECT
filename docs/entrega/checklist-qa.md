@@ -1,8 +1,8 @@
-# Lista de verificación QA manual · Sparks
+# Manual QA Checklist · Sparks
 
-Lista de pruebas para ejecutar sobre la rama integrada (`carlos` o `main`) antes de la entrega del domingo.
+Test checklist to run on the integrated branch (`carlos` or `main`) before Sunday submission.
 
-**Cómo iniciar localmente (en la rama integrada):**
+**How to start locally (on the integrated branch):**
 
 ```bash
 cd app
@@ -10,75 +10,75 @@ npm install
 npm run dev
 ```
 
-Abrir la URL local (`http://localhost:5173`) en el navegador. Anotar cualquier fallo con captura, URL exacta, resolución y mensaje de consola.
+Open the local URL (`http://localhost:5173`) in a browser. Record any failure with screenshot, exact URL, viewport resolution, and console message.
 
 ---
 
-## 1. Resoluciones y diseño adaptable (`390 px` y `1440 px`)
+## 1. Viewports and Responsive Layout (`390 px` and `1440 px`)
 
-- [ ] **Escritorio (`1440 × 900`):**
-  - El encabezado muestra logotipo, pestañas (`Inicio` / `Explorar`), selector de idioma (`ES`/`EN`) y distintivo `NASA Space Apps Challenge 2026` sin superposiciones.
-  - No existe desplazamiento horizontal (`scrollWidth <= innerWidth`) en `Inicio` ni en los 3 pasos de `Explorar`.
-  - La mira polar (`SkyScope`) y el escenario de 6 detectores (`D1`–`D6`) muestran etiquetas legibles sin cortarse ni montarse unas sobre otras.
-- [ ] **Móvil (`390 × 844`):**
-  - El distintivo de Space Apps cambia a la variante compacta sin desbordar el encabezado.
-  - Los pines de objetivos en la mira polar, el campo de coordenadas `#q`, los botones de modo (`Blink` / `Stack` / `Subtract`), los controles de reproducción (`1/2/3 Hz`) y las gráficas de `Insights` caben dentro del ancho de `390 px` sin scroll horizontal.
-  - El pie de página y la navegación entre pasos (`Atrás` / `Siguiente`) siguen siendo táctiles y accesibles.
-
----
-
-## 2. Tema oscuro único
-
-- [ ] **Modo oscuro único (sin interruptor de modo claro, decisión `bd9a632`):** fondo espacial `#06080C`, texto legible con alto contraste, estrella de fondo (`Starfield`) atenuada en modo `explorar` (`quiet`), logotipo claro (`symbol.svg`, `spaceapps-color-white.svg`) y marcadores azul (**antes**) y ámbar (**ahora**) claramente distinguibles en `Subtract B−A`.
+- [ ] **Desktop (`1440 × 900`):**
+  - Header shows logo, tabs (`Home` / `Explore`), language toggle (`ES`/`EN`), and `NASA Space Apps Challenge 2026` badge without overlaps.
+  - No horizontal overflow (`scrollWidth <= innerWidth`) on `Home` or across all 3 steps of `Explore`.
+  - The polar scope (`SkyScope`) and 6-detector stage (`D1`–`D6`) display readable labels without clipping or overlapping.
+- [ ] **Mobile (`390 × 844`):**
+  - The Space Apps badge switches to its compact variant without overflowing the header.
+  - Target pins in the polar scope, coordinate input `#q`, mode buttons (`Blink` / `Stack` / `Subtract`), playback controls (`1/2/3 Hz`), and `Insights` charts fit within `390 px` width without horizontal scrolling.
+  - Footer and step navigation (`Back` / `Next`) remain touch-friendly and accessible.
 
 ---
 
-## 3. Navegación por teclado y accesibilidad
+## 2. Single Dark Theme
 
-- [ ] **Enlace de salto:** al pulsar `Tab` al cargar, aparece el enlace `skip` hacia `#cielo` y al activarlo con `Enter` mueve el foco al contenido principal.
-- [ ] **Orden de tabulación y foco visible:** recorrer con `Tab` / `Shift+Tab` encabezado, pestañas, mira de objetivos, formulario `#q`, modos (`blink`, `stack`, `diff`), selector de detector (`All`, `D1`–`D6`) y botones `Atrás`/`Siguiente`. Todos tienen anillo de foco visible.
-- [ ] **Atajos entre pasos:** en la pestaña `Explorar`, pulsar `ArrowRight` y `ArrowLeft` cambia entre pasos (`1 -> 2 -> 3`) cuando el paso siguiente está habilitado.
-- [ ] **Seguridad fotosensible (WCAG 2.3.1):**
-  - Al abrir un campo, el parpadeo inicia **pausado** (`playing = false`).
-  - Al activar reproducción/parpadeo por primera vez aparece el diálogo `role="alertdialog"` (`askFlash`); se puede confirmar o cancelar con teclado.
-  - Con `prefers-reduced-motion: reduce` activado en el sistema/navegador, no inicia reproducción automática.
-- [ ] **Idioma (`ES` / `EN`):** pulsar el botón de idioma actualiza textos de interfaz, títulos de pasos, notas de objetivos, etiquetas `aria-label` y la URL (`?lang=es` / `?lang=en`).
+- [ ] **Dark mode only (no light-mode toggle, decision `bd9a632`):** deep-space background `#06080C`, high-contrast readable text, dimmed `Starfield` in `explore` mode (`quiet`), light logo (`symbol.svg`, `spaceapps-color-white.svg`), and clearly distinguishable blue (**before**) and amber (**now**) markers in `Subtract B−A`.
 
 ---
 
-## 4. Los cinco objetivos del reto
+## 3. Keyboard Navigation and Accessibility
 
-Probar cada objetivo seleccionándolo desde `SkyScope` (paso 1) y avanzando a paso 2 (`Ver`) y paso 3 (`Analizar`):
+- [ ] **Skip link:** pressing `Tab` on load reveals the `skip` link to `#cielo`; activating with `Enter` moves focus to main content.
+- [ ] **Tab order and visible focus:** step through header, tabs, target scope, `#q` form, modes (`blink`, `stack`, `diff`), detector selector (`All`, `D1`–`D6`), and `Back`/`Next` buttons with `Tab` / `Shift+Tab`. All show a visible focus ring.
+- [ ] **Step shortcuts:** in the `Explore` tab, pressing `ArrowRight` and `ArrowLeft` switches between steps (`1 -> 2 -> 3`) when the next step is enabled.
+- [ ] **Photosensitive safety (WCAG 2.3.1):**
+  - Opening a field starts blinking **paused** (`playing = false`).
+  - Triggering playback/blinking for the first time opens the `role="alertdialog"` (`askFlash`) confirmation; it can be confirmed or canceled via keyboard.
+  - With `prefers-reduced-motion: reduce` enabled in the OS/browser, autoplay does not start.
+- [ ] **Language (`ES` / `EN`):** clicking the language toggle updates UI copy, step titles, target notes, `aria-label` attributes, and the URL (`?lang=es` / `?lang=en`).
+
+---
+
+## 4. The Five Challenge Targets
+
+Test each target by selecting it from `SkyScope` (step 1) and advancing to step 2 (`View`) and step 3 (`Analyze`):
 
 - [ ] **1. Barnard's Star (`269.4485 / +4.7394`):**
-  - Carga inmediatamente con fotos (`con fotos`).
-  - En `Subtract`, se observa el par azul/ámbar y la flecha de movimiento propio (`10.23 ± 0.43″/año` en `data-sample/results.json` frente a `10.39″/año` en Gaia DR3).
-  - La URL refleja coordenadas y parámetros sin errores en consola.
+  - Loads immediately with images (`with photos`).
+  - In `Subtract`, the blue/amber dipole pair and proper-motion arrow are visible (`10.23 ± 0.43″/yr` in `data-sample/results.json` vs. `10.39″/yr` in Gaia DR3).
+  - URL reflects coordinates and parameters with zero console errors.
 - [ ] **2. ε Indi B (`331.0441 / −56.7828`, J2000):**
-  - Verificar que las coordenadas mostradas correspondan a **ε Indi B** (`331.044 / −56.783`) y **no** a ε Indi A (`330.84 / −56.786`).
-  - Comprobar que carga las 4 temporadas (`DR1 + QR3`, `4.21 ± 0.28″/año` en `data-new/results.json`) sin inventar datos.
+  - Verify displayed coordinates match **ε Indi B** (`331.044 / −56.783`) and **not** ε Indi A (`330.84 / −56.786`).
+  - Confirm all 4 seasons load (`DR1 + QR3`, `4.21 ± 0.28″/yr` in `data-new/results.json`) without fabricating data.
 - [ ] **3. WISE 0855 (`133.7951 / −7.2451`):**
-  - Muestra la etiqueta **"Not in Gaia DR3"** (o equivalente en español).
-  - En `D5` y `D6` (ampliando el panel), se aprecia la fuente infrarroja y en paso 3 se muestra la huella de 102 colores apagada en longitudes cortas y encendida en `4–5 µm` (`D6/D2 >= 10.09` en `data-new/results.json`).
+  - Displays the **"Not in Gaia DR3"** label (or Spanish equivalent).
+  - In `D5` and `D6` (zooming the panel), the infrared source is visible and step 3 shows the 102-color fingerprint dark at short wavelengths and bright at `4–5 µm` (`D6/D2 >= 10.09` in `data-new/results.json`).
 - [ ] **4. RW Aurigae (`76.9561 / +30.4012`):**
-  - Se presenta como estrella **variable** (sin vector de movimiento significativo; en `data-new/results.json` reporta `status: "parcial"`, movimiento consistente con cero a 3σ).
+  - Presented as a **variable** star (no significant proper-motion vector; `data-new/results.json` reports `status: "parcial"`, motion consistent with zero at 3σ).
 - [ ] **5. R Draconis (`248.1674 / +66.7550`):**
-  - Muestra el aviso/limitación por **saturación** (`534/534` cuadros saturados en `entrega-horacio.md`; `status: "parcial"` con `0 < 3` detecciones utilizables en `data-new/results.json`), sin mostrar un movimiento propio falso de núcleo.
+  - Shows the **saturation** notice/limitation (`534/534` saturated frames in `entrega-horacio.md`; `status: "parcial"` with `0 < 3` usable detections in `data-new/results.json`), without displaying a false core proper motion.
 
 ---
 
-## 5. Coordenada inventada y casos límite de búsqueda (`#q`)
+## 5. Arbitrary Coordinates and Search Edge Cases (`#q`)
 
-- [ ] **Entrada inválida (ej. `hola mundo` o `400 10`):** al enviar el formulario `#q`, aparece un mensaje de error claro con `role="alert"` y no se rompe la app.
-- [ ] **Coordenada inventada lejana (`> 0.2°`, ej. `210.8023 54.3488` o `150.0000 -25.0000`):**
-  - Muestra el aviso `far-box` indicando la distancia al campo precargado más cercano y el botón para ir al más cercano.
-  - Si el flujo en vivo está disponible (`Consultar campo en vivo`), verificar transiciones honestas de estado (`en_cola` → `procesando` con barra de progreso → `listo` con botón `Inspeccionar campo` o `fallo` con mensaje de error).
-- [ ] **Persistencia de URL compartible:** copiar la URL generada con `?ra=...&dec=...&mode=...&det=...&lang=...`, abrirla en una pestaña nueva y confirmar que abre directamente en `explorar` con el mismo modo, detector e idioma.
+- [ ] **Invalid input (e.g. `hello world` or `400 10`):** submitting `#q` displays a clear error message with `role="alert"` and does not crash the app.
+- [ ] **Distant arbitrary coordinate (`> 0.2°`, e.g. `210.8023 54.3488` or `150.0000 -25.0000`):**
+  - Displays the `far-box` notice showing distance to the nearest preloaded field and a button to jump to it.
+  - If the live flow is available (`Query field live`), verify honest state transitions (`queued` → `processing` with progress bar → `ready` with `Inspect field` button, or `failed` with error message).
+- [ ] **Shareable URL persistence:** copy the generated URL with `?ra=...&dec=...&mode=...&det=...&lang=...`, open it in a new tab, and confirm it opens directly in `explore` with the same mode, detector, and language.
 
 ---
 
-## 6. Registro de ejecución (llenar al correr el QA)
+## 6. Execution Log (fill in when running QA)
 
-| Fecha / hora | Rama / commit probado | Navegador | Resultado (`390 px` / `1440 px` / teclado / 5 objetivos / coordenada) | Fallos encontrados |
+| Date / time | Branch / commit tested | Browser | Result (`390 px` / `1440 px` / keyboard / 5 targets / coordinate) | Issues found |
 |---|---|---|---|---|
-| `[[PENDIENTE]]` | `[[PENDIENTE]]` | `[[PENDIENTE]]` | `[SIN VERIFICAR EN APP INTEGRADA]` | `[[NINGUNO / DETALLAR]]` |
+| `[[PENDING]]` | `[[PENDING]]` | `[[PENDING]]` | `[UNVERIFIED ON INTEGRATED APP]` | `[[NONE / DETAILS]]` |

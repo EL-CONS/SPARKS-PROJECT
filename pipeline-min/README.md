@@ -1,22 +1,22 @@
-# Canalización Mínima SPHEREx (`pipeline-min`) · Camino B
+# Minimal SPHEREx Pipeline (`pipeline-min`) · Path B
 
-## Contexto y Propósito
-Canalización mínima de respaldo (Camino B del Sprint 18:00–20:00) desarrollada para procesar recortes crudos de SPHEREx cuando la canalización central no estuviera disponible en el repositorio.
+## Context and Purpose
+Minimal backup pipeline (Sprint 18:00–20:00 Path B) built to process raw SPHEREx cutouts whenever the main pipeline was not yet available in the repository.
 
-- **Diseñada para:** `RW Aurigae` (estrella variable) y campos adicionales.
-- **Formato de datos:** Idéntico al contrato del esquema 1 (`data-sample/barnard/manifest.json`).
-- **Etiqueta metodológica obligatoria:** **"subconjunto de cuadros"** (8 cuadros por detector y temporada), sin inflar cobertura ni inventar datos.
-- **Coordinación con el equipo:**
-  - **Carlos:** Utiliza los recortes crudos descargados por `recortes.py` (evitando descargas duplicadas desde IRSA SIA).
-  - **Horacio:** Homologa con las reglas de calidad astronómica y evita discrepancias de método con la canalización científica principal.
+- **Designed for:** `RW Aurigae` (variable star) and additional fields.
+- **Data format:** Matches the Schema 1 contract (`data-sample/barnard/manifest.json`).
+- **Mandatory methodological label:** **"frame subset"** (`subconjunto de cuadros`, 8 frames per detector and season), without inflating coverage or fabricating data.
+- **Team coordination:**
+  - **Carlos:** Uses raw cutouts downloaded by `recortes.py` (avoiding duplicate downloads from IRSA SIA).
+  - **Horacio:** Aligns with astronomical quality rules to avoid methodological discrepancies with the main scientific pipeline.
 
-## Componentes
-- `coadd.py`: Cálculo de coadds por detector y temporada con estadística robusta (mediana y MAD).
-- `diff.py`: Resta de coadds entre temporadas sucesivas con alineación de fondo mediano de cielo.
-- `manifest.py`: Construcción del archivo `manifest.json` validado contra `data/contract.ts`.
-- `run_pipeline.py`: Ejecución de punta a punta, exportación de imágenes PNG calibradas y manifiesto JSON.
+## Components
+- `coadd.py`: Computes per-detector, per-season coadds using robust statistics (median and MAD).
+- `diff.py`: Subtracts coadds across successive seasons with median sky background alignment.
+- `manifest.py`: Builds `manifest.json` validated against `data/contract.ts`.
+- `run_pipeline.py`: End-to-end execution, exporting calibrated PNG images and the JSON manifest.
 
-## Uso
+## Usage
 ```bash
 python3 pipeline-min/run_pipeline.py \
   --field rwaur \
