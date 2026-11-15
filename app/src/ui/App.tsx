@@ -11,7 +11,6 @@ import { Term } from './components/Term';
 import { IconMoon, IconNext, IconPause, IconPlay, IconPrev, IconSun } from './components/Icons';
 import { seasonLabel, toDms, toHms } from './sky';
 import symbol from './assets/symbol.svg';
-import symbolLight from './assets/symbol-flat-light.svg';
 import spaceAppsWhite from './assets/spaceapps/spaceapps-color-white.svg';
 import spaceAppsBlack from './assets/spaceapps/spaceapps-color-black.svg';
 import spaceAppsSmallWhite from './assets/spaceapps/spaceapps-small-white.svg';
@@ -48,7 +47,7 @@ export default function App() {
       <header className="band band--top">
         <div className="cn-top">
         <button type="button" className="cn-brand" onClick={() => s.setTab('inicio')}>
-          <img src={theme === 'light' ? symbolLight : symbol} alt="" width={34} height={34} />
+          <img src={symbol} alt="" width={34} height={34} />
           <span className="cn-brand__name">Sparks</span>
         </button>
         <nav className="cn-nav" aria-label={es ? 'Secciones' : 'Sections'}>
@@ -67,7 +66,7 @@ export default function App() {
         </a>
         </div>
       </header>
-      <main id="cielo">{s.tab === 'inicio' ? <Start s={s} theme={theme} onGo={() => setStep(1)} /> : <Route s={s} step={step} setStep={setStep} />}</main>
+      <main id="cielo">{s.tab === 'inicio' ? <Start s={s} onGo={() => setStep(1)} /> : <Route s={s} step={step} setStep={setStep} />}</main>
       <footer className="band band--foot">
         <div className="foot">
           <a className="foot__logo" href="https://www.spaceappschallenge.org/" target="_blank" rel="noreferrer">
@@ -129,12 +128,12 @@ function ScrollHint({ es }: { es: boolean }) {
 
 /* ------------------------------------------------------------------ inicio */
 
-function Start({ s, theme, onGo }: { s: Sparks; theme: string; onGo: () => void }) {
+function Start({ s, onGo }: { s: Sparks; onGo: () => void }) {
   const i = s.intro;
   return (
     <section className="st" aria-labelledby="st-t">
       <div className="st__logo">
-        <img src={theme === 'light' ? symbolLight : symbol} alt="" width={360} height={360} />
+        <img src={symbol} alt="" width={360} height={360} />
       </div>
       <h1 id="st-t" className="st__name">Sparks</h1>
       <p className="st__motto">{i.motto}</p>
@@ -374,6 +373,63 @@ function SkyScope({ s }: { s: Sparks }) {
   const { t } = s;
   const es = s.url.lang === 'es';
   const fields = (s.fields ?? []).slice(0, 5);
+  const lensRef = useRef<HTMLDivElement>(null);
+  const selIdx = fields.findIndex(f => f.id === s.selected?.id);
+  const selIdxRef = useRef(selIdx);
+  selIdxRef.current = selIdx;
+
+  useEffect(() => {
+    const lens = lensRef.current;
+    if (!lens || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let raf = 0;
+    let last = performance.now();
+    let tx = 0;
+    let ty = 0;
+    let px = 0;
+    let py = 0;
+    const onMove = (e: PointerEvent) => {
+      tx = e.clientX / window.innerWidth - 0.5;
+      ty = e.clientY / window.innerHeight - 0.5;
+    };
+    const frame = (now: number) => {
+      const dt = Math.min(64, now - last) / 1000;
+      last = now;
+      px += (tx - px) * Math.min(1, dt * 3);
+      py += (ty - py) * Math.min(1, dt * 3);
+      const items = lens.querySelectorAll<HTMLLIElement>('.scope__pins > li');
+      const aim = lens.querySelector<HTMLElement>('.scope__aim');
+      items.forEach((li, i) => {
+        const depth = 8 + (i % 3) * 2;
+        const dx = px * depth + Math.sin(now * 0.0008 + i * 1.4) * 2.5;
+        const dy = py * depth + Math.cos(now * 0.0007 + i * 1.9) * 2.5;
+        li.style.setProperty('--tx', `${dx.toFixed(2)}px`);
+        li.style.setProperty('--ty', `${dy.toFixed(2)}px`);
+        if (aim && i === selIdxRef.current) {
+          aim.style.setProperty('--tx', `${dx.toFixed(2)}px`);
+          aim.style.setProperty('--ty', `${dy.toFixed(2)}px`);
+        }
+      });
+      if (aim && selIdxRef.current < 0) {
+        aim.style.setProperty('--tx', '0px');
+        aim.style.setProperty('--ty', '0px');
+      }
+      raf = requestAnimationFrame(frame);
+    };
+    const onVis = () => {
+      cancelAnimationFrame(raf);
+      last = performance.now();
+      if (!document.hidden) raf = requestAnimationFrame(frame);
+    };
+    window.addEventListener('pointermove', onMove, { passive: true });
+    document.addEventListener('visibilitychange', onVis);
+    raf = requestAnimationFrame(frame);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('pointermove', onMove);
+      document.removeEventListener('visibilitychange', onVis);
+    };
+  }, [fields.length]);
+
   const C = 300; // centre of a 600 x 600 view
   const R = 270; // radius where Dec = -90 sits
   const pos = (ra: number, dec: number) => {
@@ -386,7 +442,7 @@ function SkyScope({ s }: { s: Sparks }) {
   const ring = (dec: number) => ((90 - dec) / 180) * R;
   return (
     <figure className="scope">
-      <div className="scope__lens">
+      <div className="scope__lens" ref={lensRef}>
         <svg viewBox="0 0 600 600" className="scope__svg" aria-hidden="true">
           {/* declination rings */}
           {[60, 30, -30, -60].map(d => (

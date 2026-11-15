@@ -215,6 +215,7 @@ ul {
   padding: 12px var(--gutter);
 }
 .cn-brand {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -224,6 +225,55 @@ ul {
   font-family: var(--font-display);
   font-weight: 600;
   font-size: 1.05rem;
+}
+.cn-brand::before {
+  content: '';
+  position: absolute;
+  left: 17px;
+  top: 50%;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgb(255 244 220 / 0.55) 0%,
+    rgb(255 178 56 / 0.35) 32%,
+    rgb(98 182 232 / 0.18) 58%,
+    transparent 74%
+  );
+  transform: translate(-50%, -50%) scale(0.65);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 280ms ease, transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.cn-brand img {
+  position: relative;
+  border-radius: 50%;
+  transition: filter 280ms ease, transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.cn-brand__name {
+  transition: text-shadow 280ms ease;
+}
+.cn-brand:hover::before,
+.cn-brand:focus-visible::before {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.1);
+}
+.cn-brand:hover img,
+.cn-brand:focus-visible img {
+  transform: scale(1.06);
+  filter: drop-shadow(0 0 8px rgb(255 178 56 / 0.75)) drop-shadow(0 0 18px rgb(98 182 232 / 0.45));
+}
+.cn-brand:hover .cn-brand__name,
+.cn-brand:focus-visible .cn-brand__name {
+  text-shadow: 0 0 16px rgb(255 178 56 / 0.45);
+}
+@media (prefers-reduced-motion: reduce) {
+  .cn-brand::before,
+  .cn-brand img,
+  .cn-brand__name {
+    transition: none;
+  }
 }
 .cn-nav {
   display: flex;
@@ -293,13 +343,8 @@ ul {
 .st__logo img {
   width: 100%;
   height: auto;
-}
-:root:not([data-theme='light']) .st__logo img {
   -webkit-mask-image: radial-gradient(closest-side, #000 72%, transparent 100%);
   mask-image: radial-gradient(closest-side, #000 72%, transparent 100%);
-}
-:root[data-theme='light'] .st__logo img {
-  width: 70%;
 }
 @media (prefers-reduced-motion: no-preference) {
   .st__logo img {
@@ -646,6 +691,7 @@ ul {
   border: 1.5px solid var(--now);
   box-shadow: 0 0 24px -4px rgb(255 178 56 / 0.6);
   pointer-events: none;
+  transform: translate(var(--tx, 0px), var(--ty, 0px));
   transition: left 900ms cubic-bezier(0.16, 1, 0.3, 1), top 900ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .scope__aim::before,
@@ -676,6 +722,7 @@ ul {
   position: absolute;
   width: 0;
   height: 0;
+  transform: translate(var(--tx, 0px), var(--ty, 0px));
 }
 .pin {
   position: absolute;
@@ -777,6 +824,7 @@ ul {
   width: 22px;
   height: 22px;
   border-radius: 50%;
+  background: var(--now);
   border: 1.5px solid var(--now);
   box-shadow: 0 0 14px -2px rgb(255 178 56 / 0.7);
 }
