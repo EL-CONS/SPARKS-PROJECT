@@ -39,11 +39,13 @@
 }
 :root[data-theme='light'] {
   color-scheme: light;
-  --bg: #cfe3f2;
+  --sky-top: #3546fe;
+  --bg: #4ca9f0;
+  --sky-horizon: #eff3f7;
   --haze-a: rgb(255 255 255 / 0.6);
   --haze-b: rgb(255 214 170 / 0.35);
   --surface: rgb(255 255 255 / 0.7);
-  --surface-2: rgb(220 232 242 / 0.95);
+  --surface-2: rgba(147, 182, 224, 0.95);
   --rule: rgb(12 30 48 / 0.14);
   --rule-strong: rgb(12 30 48 / 0.3);
   --text: #0c1e30;
@@ -98,7 +100,11 @@ body {
   background-attachment: fixed;
 }
 :root[data-theme='light'] body {
-  background: linear-gradient(180deg, #a9cde8 0%, #cfe3f2 45%, #f3ece2 100%) fixed;
+  background:
+    radial-gradient(900px 600px at 15% 20%, var(--haze-a), transparent 70%),
+    radial-gradient(800px 500px at 90% 85%, var(--haze-b), transparent 70%),
+    linear-gradient(180deg, var(--sky-top) 0%, var(--bg) 45%, var(--sky-horizon) 100%);
+  background-attachment: fixed;
 }
 ::selection {
   background: rgb(255 178 56 / 0.35);
@@ -544,9 +550,10 @@ ul {
    moving background stars never mix with the five targets */
 .scope {
   display: grid;
-  grid-template-columns: minmax(0, 560px) minmax(220px, 1fr);
+  grid-template-columns: minmax(0, 500px) minmax(220px, 1fr);
   gap: 32px 48px;
   align-items: center;
+  padding: 14px;
 }
 .scope__lens {
   position: relative;
@@ -562,12 +569,20 @@ ul {
     0 30px 80px -30px rgb(0 0 0 / 0.9);
 }
 :root[data-theme='light'] .scope__lens {
-  background: rgb(240 246 251 / 0.62);
+  --rule: rgb(220 236 255 / 0.14);
+  --rule-strong: rgb(220 236 255 / 0.3);
+  --text: #f1f6ff;
+  --text-2: #c6cfde;
+  --text-3: #98a3b6;
+  --now: #ffb238;
+  --now-ink: #ffc76e;
+  color: var(--text);
+  background: rgb(6 12 22 / 0.9);
   box-shadow:
     0 0 0 1px var(--rule-strong),
-    0 0 0 10px rgb(255 255 255 / 0.55),
-    0 0 0 11px var(--rule),
-    0 30px 60px -30px rgb(12 30 48 / 0.4);
+    0 0 0 10px rgb(10 18 32 / 0.82),
+    0 0 0 11px rgb(12 30 48 / 0.25),
+    0 30px 60px -30px rgb(12 30 48 / 0.45);
 }
 .scope__svg {
   position: absolute;
@@ -620,9 +635,6 @@ ul {
   border-radius: 50%;
   background: radial-gradient(circle, transparent 62%, rgb(0 0 0 / 0.38) 100%);
   pointer-events: none;
-}
-:root[data-theme='light'] .scope__vignette {
-  background: radial-gradient(circle, transparent 66%, rgb(12 30 48 / 0.12) 100%);
 }
 /* the reticle that slews onto the chosen target */
 .scope__aim {
@@ -696,10 +708,6 @@ ul {
 }
 .pin.is-ready .pin__star {
   background: radial-gradient(circle, #fff 0 13%, rgb(255 255 255 / 0.35) 22%, transparent 60%);
-}
-:root[data-theme='light'] .pin.is-ready .pin__star,
-:root[data-theme='light'] .pin__star {
-  background: radial-gradient(circle, #0c1e30 0 13%, rgb(12 30 48 / 0.22) 22%, transparent 60%);
 }
 .pin.is-on .pin__star {
   background: radial-gradient(circle, var(--now) 0 16%, rgb(255 178 56 / 0.4) 26%, transparent 62%);
@@ -788,7 +796,7 @@ ul {
     grid-template-columns: minmax(0, 1fr);
   }
   .scope__lens {
-    width: min(100%, 520px);
+    width: min(calc(100% - 28px), 480px);
     justify-self: center;
   }
 }
@@ -909,7 +917,6 @@ ul {
   border-radius: 22px;
   background: var(--sky);
   box-shadow: 0 0 0 1px var(--rule-strong), 0 30px 80px -30px rgb(0 0 0 / 0.8);
-  --sky-rule: rgb(220 236 255 / 0.12);
 }
 .deck {
   display: flex;
