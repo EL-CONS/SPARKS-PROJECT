@@ -8,6 +8,8 @@ Sparks surfaces **candidates to review**, never discovery claims. It is an indep
 
 **Live demo (AWS S3 + CloudFront):** https://d3hfqg5g7frqp1.cloudfront.net/
 
+**Presentation (AWS S3 + CloudFront):** https://d3hfqg5g7frqp1.cloudfront.net/sparks-presentacion.html
+
 ## What it does
 
 - Accepts coordinates in degrees (`269.4486 4.7672`), in hours and degrees (`08h55m10.831s -7d14m42.53s`, `17:57:48.5 +04:41:36`), or by selecting a challenge target name.
