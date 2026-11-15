@@ -1,4 +1,4 @@
-"""Calcula metricas morfologicas en imagenes de diferencia (dipolo vs monopolo) para separar movimientos propios de estrellas variables."""
+"""Compute morphological metrics on difference images (dipole vs. monopole) to separate proper motion from variable stars."""
 
 from __future__ import annotations
 
@@ -26,7 +26,7 @@ def compute_diff_features(
     snr_thresh: float = 2.0,
     min_max_snr: float = 4.0,
 ) -> list[dict[str, Any]]:
-    """Calcula dipole_balance, peak_snr_balance y lobe_sep_px para cada diferencia de un campo."""
+    """Compute dipole_balance, peak_snr_balance and lobe_sep_px for each difference image in a field."""
     manifest = json.loads((field_dir / "manifest.json").read_text(encoding="utf-8"))
     diffs_meta = manifest.get("diffs", [])
     n = len(diffs_meta)
@@ -96,7 +96,7 @@ def compute_diff_features(
 
 
 def summarize_fields(root: Path) -> list[dict[str, Any]]:
-    """Resume la mediana y rango de las metricas por campo."""
+    """Summarize the median and range of the metrics per field."""
     summary: list[dict[str, Any]] = []
     for fid, clase, rel in DEFAULT_FIELDS:
         recs = compute_diff_features(root / rel)

@@ -1,8 +1,8 @@
-"""Cliente HTTP con reintentos y registro de cada intento.
+"""HTTP client with retries and per-attempt logging.
 
-IRSA responde de forma intermitente con 502 desde la red del equipo. Cada
-peticion se reintenta con espera creciente y se registra la URL, la hora y el
-resultado, para que ``metodo.md`` pueda citar la evidencia.
+IRSA intermittently responds with 502 from the team's network. Each request is
+retried with exponential backoff, logging the URL, timestamp and result so
+``metodo.md`` can cite the evidence.
 """
 
 from __future__ import annotations
@@ -18,8 +18,8 @@ from typing import Any
 import requests
 
 USER_AGENT = "sparks-pipeline/0.1 (NASA Space Apps; contacto: equipo EL-CONS)"
-# Tope de la espera entre reintentos, en segundos. Con 1.6^13 el ultimo intento
-# de una racha de 14 esperaria 8 minutos; el servicio se recupera antes.
+# Cap on the wait between retries, in seconds. At 1.6^13 the last attempt of
+# a 14-try streak would wait 8 minutes; the service recovers sooner.
 MAX_BACKOFF_S = 10.0
 
 
@@ -107,7 +107,7 @@ class HttpClient:
                 )
                 if ok:
                     return r
-                # 4xx distintos de 429 no mejoran con reintentos.
+                # 4xx other than 429 do not improve on retry.
                 if 400 <= r.status_code < 500 and r.status_code != 429:
                     r.raise_for_status()
             except Exception as exc:  # noqa: BLE001
@@ -124,8 +124,8 @@ class HttpClient:
                     )
                 )
                 last = exc
-            # La espera crece exponencialmente pero tiene tope: sin tope, 14
-            # reintentos a 1.6^n suman horas y bloquean la corrida.
+            # Wait grows exponentially but is capped: without a cap, 14 retries
+            # at 1.6^n add up to hours and block the run.
             time.sleep(min(self.backoff ** (i - 1), MAX_BACKOFF_S))
         if last is not None:
             raise last

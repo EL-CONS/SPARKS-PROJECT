@@ -1,11 +1,10 @@
-"""Genera data-new/results.json con el mismo esquema que data-sample/results.json.
+"""Generate data-new/results.json with the same schema as data-sample/results.json.
 
-Lee los manifiestos de data-new/<id>/ y el index.json. No inventa bloques que
-esta canalizacion no produce: los campos de ML y del split de candidatos se
-declaran como no ejecutados, con una nota, en lugar de copiar los numeros del
-equipo.
+Reads the manifests in data-new/<id>/ and index.json. It does not fabricate
+blocks that this pipeline does not produce: the ML and candidate-split fields
+are declared as not run, with a note, instead of copying the team's numbers.
 
-Uso:
+Usage:
     python make_results.py
 """
 
@@ -71,7 +70,7 @@ def _catalog(man: dict) -> dict:
 
 
 def _snr(man: dict, field_id: str) -> dict:
-    """SNR por detector: mediana por cuadro y cociente del flujo combinado."""
+    """Per-detector SNR: per-frame median and combined-flux ratio."""
     out: dict[str, dict] = {}
     points_path = ROOT / "pipeline" / "_work" / field_id / "cold_points.json"
     points = []
@@ -186,9 +185,9 @@ def _field(field_id: str) -> dict:
         "reason": target.get("reason") or "",
     }
     if entry["kind"] == "variable":
-        # La curva de luz por alas de la PSF no se implemento en esta
-        # canalizacion: la clave existe con null para que el formato coincida
-        # con data-sample, sin inventar numeros.
+        # PSF-wing lightcurve was not implemented in this pipeline: the key
+        # exists with null so the format matches data-sample without inventing
+        # numbers.
         entry["lightcurve"] = target.get("lightcurve")
     return entry
 
@@ -224,8 +223,8 @@ def _sha256(path: Path) -> str:
 
 def build() -> dict:
     fields = {fid: _field(fid) for fid in IDS if (DATA / fid / "manifest.json").exists()}
-    # Conteo por coleccion sumando los manifiestos de los cuatro campos. El
-    # index.json guarda solo las colecciones del ultimo campo ejecutado.
+    # Per-collection counts summed across the manifests of the four fields.
+    # index.json stores only the collections from the last field executed.
     by_collection: dict[str, int] = {}
     for fid in fields:
         for rel in _manifest(fid).get("releases") or []:

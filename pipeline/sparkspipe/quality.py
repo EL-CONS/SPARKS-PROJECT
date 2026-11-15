@@ -1,7 +1,7 @@
-"""Decodificacion de banderas y estimacion de fondo/ruido por cuadro.
+"""Flag decoding and per-frame background/noise estimation.
 
-La tabla de bits se toma del encabezado FLAGS del propio MEF
-(``MSKNnnnn``/``MSKDnnnn``) y, si no esta, del manifiesto de Barnard.
+The bit table is read from the MEF's own FLAGS header
+(``MSKNnnnn``/``MSKDnnnn``), falling back to the Barnard manifest if absent.
 """
 
 from __future__ import annotations
@@ -13,9 +13,9 @@ import numpy as np
 
 from .config import DEFAULT_FLAG_BITS
 
-# Bits que no se usan para fotometria/coadd. SOURCE, FULLSAMPLE y REFERENCE
-# NO se enmascaran: SOURCE marca pixeles de fuentes conocidas (incluido el
-# propio objeto) y enmascararlo borraria la senal que queremos medir.
+# Bits excluded from photometry/coadds. SOURCE, FULLSAMPLE and REFERENCE are
+# NOT masked: SOURCE marks pixels of known sources (including the target itself)
+# and masking it would erase the signal we want to measure.
 BAD_BIT_NAMES = {
     "transient",
     "overflow",
@@ -42,7 +42,7 @@ BAD_BIT_NAMES = {
     "phanmiss",
 }
 
-# Codigos de la mascara que escribimos (uint8, suma de bits).
+# Bit codes for our output mask (uint8, sum of bits).
 MASK_BAD = 1
 MASK_EDGE = 2
 MASK_HIGH_ZODI = 4
@@ -84,7 +84,7 @@ def bad_bit_numbers(flag_bits: dict[str, str]) -> set[int]:
 
 
 def count_flags(flags: np.ndarray | None, flag_bits: dict[str, str]) -> dict[str, int]:
-    """Cuenta pixeles por bandera. Incluye SOURCE y las demas no malas."""
+    """Count pixels per flag. Includes SOURCE and other non-bad flags."""
     if flags is None:
         return {}
     flags = np.asarray(flags).astype(np.int64, copy=False)
@@ -103,7 +103,7 @@ def build_mask(
     *,
     edge_pixels: int = 2,
 ) -> tuple[np.ndarray, dict[str, int]]:
-    """Convierte el mapa de banderas en una mascara uint8 propia."""
+    """Convert the flag map into our own uint8 mask."""
     if flags is None:
         return np.zeros((0, 0), dtype=np.uint8), {}
     flags = np.asarray(flags).astype(np.int64, copy=False)

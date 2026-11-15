@@ -1,8 +1,8 @@
-"""Coadds por detector y temporada, diferencias emparejadas en longitud de onda.
+"""Coadds per detector and season, and wavelength-matched differences.
 
-Se usa recorte por sigma y media ponderada por la varianza. El ruido del coadd
-sale de la propagacion de la varianza, no de la dispersion observada, para no
-subestimar el error cuando hay pocos cuadros.
+Uses sigma clipping and variance-weighted mean. Coadd noise is propagated from
+the variance rather than the observed scatter, so error is not underestimated
+when few frames are available.
 """
 
 from __future__ import annotations
@@ -91,10 +91,10 @@ def sigma_clipped_coadd(
     sigma: float = SIGMA_CLIP,
     iters: int = MAX_CLIP_ITERS,
 ) -> tuple[np.ndarray, np.ndarray, int]:
-    """Media recortada por sigma, ponderada por 1/varianza.
+    """Sigma-clipped mean, weighted by 1/variance.
 
-    ``images``, ``variances`` y ``masks``: (n, ny, nx).
-    Devuelve (imagen, sigma_imagen, n_pixeles_usados_por_pixel_medio).
+    ``images``, ``variances`` and ``masks``: (n, ny, nx).
+    Returns (image, sigma_image, median_pixels_used_per_pixel).
     """
     images = np.asarray(images, dtype=np.float64)
     variances = np.asarray(variances, dtype=np.float64)
@@ -105,7 +105,7 @@ def sigma_clipped_coadd(
         nan = np.full(images.shape[1:], np.nan, dtype=np.float64)
         return nan, nan.copy(), 0
 
-    # Para pocos cuadros el recorte por sigma no tiene sentido estadistico.
+    # With few frames, sigma clipping has no statistical meaning.
     if n < 3:
         image, sigma_img = _weighted_mean(images, variances, valid)
         return image, sigma_img, int(np.median(valid.sum(axis=0)))
@@ -136,7 +136,7 @@ def coadd_by_det_season(
     *,
     min_frames: int = MIN_FRAMES_PER_COADD,
 ) -> tuple[list[CoaddResult], dict[tuple[int, int], list[int]]]:
-    """``frames``: dicts con det, season, image, variance, mask, wl_um, bw_um, index."""
+    """``frames``: dicts with det, season, image, variance, mask, wl_um, bw_um, index."""
     groups: dict[tuple[int, int], list[dict]] = {}
     for fr in frames:
         key = (int(fr["det"]), int(fr["season"]))
@@ -175,10 +175,10 @@ def coadd_by_det_season(
 
 
 def season_diffs(coadds: list[CoaddResult]) -> list[DiffResult]:
-    """Todas las parejas de temporadas por detector, con emparejado de lambda.
+    """All season pairs per detector, with wavelength matching.
 
-    ``lambda_matched`` es verdadero cuando los intervalos [lam_min, lam_max] de
-    las dos temporadas se solapan. ``lam_lo``/``lam_hi`` son ese solapamiento.
+    ``lambda_matched`` is true when the [lam_min, lam_max] intervals of the
+    two seasons overlap. ``lam_lo``/``lam_hi`` give that overlap.
     """
     by_det: dict[int, list[CoaddResult]] = {}
     for c in coadds:
@@ -213,7 +213,7 @@ def season_diffs(coadds: list[CoaddResult]) -> list[DiffResult]:
 
 
 def median_per_detector(frames: Iterable[dict]) -> np.ndarray:
-    """Mediana por detector sobre todos los cuadros (forma 6 x n x n)."""
+    """Per-detector median over all frames (shape 6 x n x n)."""
     by_det: dict[int, list[np.ndarray]] = {}
     for fr in frames:
         by_det.setdefault(int(fr["det"]), []).append(fr["image"])

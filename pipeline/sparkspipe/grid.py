@@ -1,7 +1,7 @@
-"""Malla comun y reproyeccion.
+"""Common grid and reprojection.
 
-La malla final es exactamente la de ``data-sample/barnard``:
-64 x 64 pixeles, 6.15 arcsec/pixel, TAN centrada en el objeto, ``crpix`` 32.5.
+The final grid matches ``data-sample/barnard``:
+64 x 64 pixels, 6.15 arcsec/pixel, TAN centered on the target, ``crpix`` 32.5.
 """
 
 from __future__ import annotations
@@ -39,7 +39,7 @@ def resample(
     variance: np.ndarray | None = None,
     mask: np.ndarray | None = None,
 ) -> Resampled:
-    """Reproyecta a la malla comun. Devuelve imagen, varianza, mascara y cobertura."""
+    """Reprojects onto the common grid. Returns image, variance, mask and coverage."""
     from reproject import reproject_interp
 
     arr, footprint = reproject_interp((image.astype(np.float64), wcs), out_wcs, shape_out=(N_PIX, N_PIX))
@@ -54,8 +54,8 @@ def resample(
         var = np.full((N_PIX, N_PIX), np.nan)
 
     if mask is not None:
-        # La mascara se propaga por vecino mas cercano y se marca cualquier
-        # pixel cuyo vecino de origen este enmascarado.
+        # Mask is propagated by nearest neighbor, flagging any pixel whose
+        # source neighbor is masked.
         from reproject import reproject_interp as ri
 
         m, _ = ri(((mask > 0).astype(np.float64), wcs), out_wcs, shape_out=(N_PIX, N_PIX), order="nearest-neighbor")
@@ -69,7 +69,7 @@ def resample(
 
 
 def pixel_scale_and_pa(wcs: WCS) -> tuple[float, float]:
-    """Escala (arcsec/pixel) y angulo de posicion del eje +x, para diagnostico."""
+    """Pixel scale (arcsec/pixel) and +x axis position angle, for diagnostics."""
     from astropy import units as u
     from astropy.coordinates import SkyCoord
 

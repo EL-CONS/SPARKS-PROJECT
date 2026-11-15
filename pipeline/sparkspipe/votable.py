@@ -1,10 +1,10 @@
-"""Parseo de respuestas VOTable (XML) y del JSON anidado que devuelve IRSA TAP.
+"""Parsing of VOTable (XML) responses and nested JSON returned by IRSA TAP.
 
-IRSA TAP con ``FORMAT=json`` no entrega ``{metadata, data}`` sino un arbol
+IRSA TAP with ``FORMAT=json`` does not return ``{metadata, data}``, but a tree
 ``{"VOTABLE": {"RESOURCE_ARRAY": [{"TABLE": {"FIELD_ARRAY": ..., "DATA": ...}}]}}``.
-La SIA2 entrega VOTable XML normal, pero astropy renombra las columnas con el
-``ID`` (``col_0``, ``col_1``...) en vez del ``name``. Aqui se conserva el
-``name`` real.
+SIA2 returns standard VOTable XML, but astropy renames columns to ``ID``
+(``col_0``, ``col_1``...) instead of ``name``. Here we preserve the real
+``name``.
 """
 
 from __future__ import annotations
@@ -99,11 +99,11 @@ def parse(payload: str | bytes) -> list[dict[str, Any]]:
 
 
 def parse_sia_columns(payload: bytes | str) -> dict[str, list[Any]]:
-    """Lee una respuesta SIA2 completa y devuelve columnas por nombre real.
+    """Read a full SIA2 response and return columns keyed by their real name.
 
-    Se usa astropy porque una respuesta de 60 MB con 35 000 filas es demasiado
-    lenta para ``ElementTree``. Se elige la tabla con mas filas (la de
-    resultados; la de metadatos tiene cero).
+    Uses astropy because a 60 MB response with 35,000 rows is too slow for
+    ``ElementTree``. Picks the table with the most rows (the results table;
+    the metadata table has zero).
     """
     if isinstance(payload, str):
         payload = payload.encode("utf-8")

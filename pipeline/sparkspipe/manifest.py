@@ -1,16 +1,16 @@
-"""Escritura de ``data-new/<id>/`` en el mismo formato que ``data-sample/barnard``.
+"""Write ``data-new/<id>/`` in the same format as ``data-sample/barnard``.
 
-Se conservan los nombres, formas y tipos de los arreglos densos. La unica
-diferencia esta en la codificacion de ``frames.bin``: Barnard no documenta la
-suya y no fue posible reproducirla, asi que aqui se guarda una version
-normalizada y explicita en el propio manifiesto::
+Dense array names, shapes and dtypes are preserved. The only difference is in
+the encoding of ``frames.bin``: Barnard does not document its own and we could
+not reproduce it, so here we store a normalized version made explicit in the
+manifest itself::
 
-    valor_int16 = round((imagen - bkg) / sigma * 1000)
+    int16_value = round((image - bkg) / sigma * 1000)
 
-de modo que ``imagen = bkg + valor/1000 * sigma`` con ``bkg`` y ``sigma`` de la
-fila correspondiente de ``manifest.json``. Los pixeles fuera de rango se
-recortan a +-32767. Todo lo demas (coadds, diferencias, medianas) va en las
-mismas unidades fisicas que el manifiesto (MJy/sr).
+so that ``image = bkg + value/1000 * sigma`` using ``bkg`` and ``sigma`` from
+the corresponding row of ``manifest.json``. Out-of-range pixels are clipped to
++-32767. Everything else (coadds, differences, medians) is in the same physical
+units as the manifest (MJy/sr).
 """
 
 from __future__ import annotations
@@ -34,7 +34,7 @@ MJD_EPOCH = datetime(1858, 11, 17, tzinfo=timezone.utc)
 FRAME_GAIN = 1000.0
 FRAME_CLIP = 32767
 
-# Constantes del manifiesto de Barnard que no dependen del objeto.
+# Constants from Barnard's manifest that do not depend on the target.
 COLD_BANDS_UM = {
     "short": [1.1, 1.6],
     "long": [4.4, 5.0],
@@ -58,7 +58,7 @@ def mjd_to_iso(mjd: float) -> str:
 
 
 def _plain(value: Any) -> Any:
-    """Convierte numpy a tipos JSON y NaN/inf a None."""
+    """Convert numpy types to JSON types and NaN/inf to None."""
     if isinstance(value, np.generic):
         value = value.item()
     if isinstance(value, float) and not math.isfinite(value):
@@ -116,11 +116,11 @@ def frame_to_int16(image: np.ndarray, bkg: float, sigma: float) -> np.ndarray:
 
 
 def detector_scales(frames: Iterable[dict], coadds: Iterable[Any]) -> dict[str, dict[str, float]]:
-    """Limites de visualizacion por detector, como en Barnard.
+    """Per-detector display limits, as in Barnard.
 
-    ``lo``/``hi`` son los percentiles 0.5 y 99.5 de las coadds del detector,
-    ampliados para contener siempre la imagen completa. ``noise`` es la mediana
-    del ruido de las coadds.
+    ``lo``/``hi`` are the 0.5 and 99.5 percentiles of the detector's coadds,
+    widened to always contain the full image. ``noise`` is the median noise of
+    the coadds.
     """
     by_det: dict[int, list[np.ndarray]] = {}
     sigmas: dict[int, list[float]] = {}
@@ -149,11 +149,12 @@ def detector_scales(frames: Iterable[dict], coadds: Iterable[Any]) -> dict[str, 
 
 
 def measure_registration(motion: dict, pixel_arcsec: float = PIXEL_ARCSEC) -> dict[str, Any]:
-    """Dispersion de los centroides alrededor del modelo de movimiento.
+    """Scatter of the centroids around the proper-motion model.
 
-    No es un registro relativo a estrellas de referencia: la WCS de DR1 ya viene
-    registrada. Se mide lo que queda despues de restar el modelo de PM; incluye
-    ruido de centroide y cualquier error de registro, y asi se declara.
+    This is not a relative registration to reference stars: the DR1 WCS is
+    already registered. It measures what remains after subtracting the PM
+    model; it includes centroid noise and any registration error, and is
+    declared as such.
     """
     points = [p for p in motion.get("points", []) if p.get("use")]
     measured = motion.get("measured") or {}
@@ -170,15 +171,15 @@ def measure_registration(motion: dict, pixel_arcsec: float = PIXEL_ARCSEC) -> di
     mu_ra = measured.get("mu_ra")
     mu_dec = measured.get("mu_dec")
     mjd0 = min(p["mjd"] for p in points)
-    # Los puntos ya estan en la malla; la prediccion se hace en arcsec.
+    # Points are already on the grid; prediction is in arcsec.
     dra_model = []
     ddec_model = []
     for p in points:
         dt = (p["mjd"] - mjd0) / 365.25
         dra_model.append((mu_ra or 0.0) * dt)
         ddec_model.append((mu_dec or 0.0) * dt)
-    # Sin el intercepto no se puede reconstruir el residuo absoluto; se usa la
-    # dispersion de las posiciones relativas al primer punto.
+    # Without the intercept the absolute residual cannot be reconstructed; we
+    # use the scatter of positions relative to the first point.
     x = np.array([p["x"] for p in points])
     y = np.array([p["y"] for p in points])
     t = np.array([(p["mjd"] - mjd0) / 365.25 for p in points])
@@ -423,7 +424,7 @@ def write_bins(
     diffs: list[Any],
     medians: np.ndarray,
 ) -> dict[str, str]:
-    """Escribe los .bin de la carpeta y devuelve el mapa de ``files``."""
+    """Write the folder's .bin files and return the ``files`` map."""
     frames_int = np.stack(
         [frame_to_int16(fr["image"], float(fr["bkg"]), float(fr["sigma"])) for fr in frames]
     ) if frames else np.zeros((0, N_PIX, N_PIX), dtype=np.int16)
@@ -477,7 +478,7 @@ def write_outputs(
     scale_lo_hi: dict[str, dict[str, float]] | None = None,
     thumb_rel: str | None = None,
 ) -> dict[str, Any]:
-    """Escribe PNG, JSON y .bin. Devuelve un resumen con tamanos."""
+    """Write PNG, JSON and .bin files. Returns a summary with byte sizes."""
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "png").mkdir(exist_ok=True)

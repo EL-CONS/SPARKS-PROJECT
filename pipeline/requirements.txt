@@ -1,5 +1,5 @@
-# Entorno propio de la canalizacion (Python 3.12, probado en Windows)
-# Instalacion:
+# Dedicated pipeline environment (Python 3.12, tested on Windows)
+# Install:
 #   python -m venv pipeline/.venv
 #   pipeline/.venv/Scripts/python -m pip install -r pipeline/requirements.txt
 numpy==2.5.4

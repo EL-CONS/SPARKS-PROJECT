@@ -1,15 +1,16 @@
-"""Prueba del clasificador por reglas (jerarquia de dos pasos de Horacio).
+"""Rule-based classifier test (Horacio's two-step hierarchy).
 
-La fotometria y la astrometria de Gaia DR3 se leen de la tabla verificada
-`docs/sprint-13-30/gaia-fotometria.csv` (consultada por TAP el 2026-11-14).
-No hay valores hardcodeados por nombre ni enlaces genericos.
+Gaia DR3 photometry and astrometry are read from the verified table
+`docs/sprint-13-30/gaia-fotometria.csv` (queried via TAP on 2026-11-14).
+No hard-coded values by name or generic links.
 
-La regla de enana blanca es fisica: M_G = G + 5 + 5*log10(plx/1000) >= 10.0
-y BP-RP <= 0.8. Si falta la fotometria de Gaia, el objeto se reporta como
-`estrella` con una razon explicita; no se inventa el veredicto.
+The white-dwarf rule is physical: M_G = G + 5 + 5*log10(plx/1000) >= 10.0
+and BP-RP <= 0.8. If Gaia photometry is missing, the object is reported as
+`estrella` (star) with an explicit reason; no verdict is fabricated.
 
-Solo se evalua el split `desarrollo`. Los tres objetos de `prueba`
-(t452800, t744064, t605760) no se evaluan ni se usan para ajustar umbrales.
+Only the `desarrollo` (development) split is evaluated. The three `prueba`
+(test) objects (t452800, t744064, t605760) are neither evaluated nor used to
+tune thresholds.
 """
 import csv
 import json
@@ -17,7 +18,7 @@ import math
 import os
 import sys
 
-# ---------------------------------------------------------------- rutas
+# ---------------------------------------------------------------- paths
 def buscar(*rutas):
     for r in rutas:
         if os.path.exists(r):
@@ -39,7 +40,7 @@ if path_gaia is None:
 
 R = json.load(open(path_results, encoding="utf-8"))["fields"]
 
-# ---------------------------------------------------------------- tabla Gaia
+# ---------------------------------------------------------------- Gaia table
 GAIA = {}
 with open(path_gaia, encoding="utf-8", newline="") as fh:
     for fila in csv.DictReader(fh):
@@ -49,7 +50,7 @@ with open(path_gaia, encoding="utf-8", newline="") as fh:
 
 
 def num(fila, columna):
-    """Devuelve float o None si la celda esta vacia o dice 'sin verificar'."""
+    """Return float or None if the cell is empty or says 'sin verificar'."""
     if fila is None:
         return None
     valor = (fila.get(columna) or "").strip()
@@ -62,9 +63,9 @@ def num(fila, columna):
 
 
 # ---------------------------------------------------------------- splits
-# Regla determinista: `prueba` son los tres campos de data-sample cuyo id
-# empieza con "t" (t452800, t744064, t605760). El resto es `desarrollo`.
-# No se uso ninguna semilla. Ver docs/sprint-13-30/reglas-veredicto.md.
+# Deterministic rule: `prueba` are the three data-sample fields whose id
+# starts with "t" (t452800, t744064, t605760). The rest is `desarrollo`.
+# No random seed was used. See docs/sprint-13-30/reglas-veredicto.md.
 SPLIT_DESARROLLO = {
     "barnard": "estrella",
     "teegarden": "estrella",
@@ -83,22 +84,22 @@ SPLIT_PRUEBA = {
     "t605760": "estrella",
 }
 
-CH4_MIN = 0.5      # absorcion de metano a 3.3 um (banda D4 de SPHEREx)
-RATIO_MIN = 10.0   # F_D6/F_D2 minimo para objetos ultrafrios sin Gaia
-MG_WD_MIN = 10.0   # magnitud absoluta minima de la secuencia de enanas blancas
-BPRP_WD_MAX = 0.8  # color optico maximo de una enana blanca
+CH4_MIN = 0.5      # 3.3 um methane absorption (SPHEREx band D4)
+RATIO_MIN = 10.0   # minimum F_D6/F_D2 for ultracool objects without Gaia
+MG_WD_MIN = 10.0   # minimum absolute magnitude for the white-dwarf sequence
+BPRP_WD_MAX = 0.8  # maximum optical color for a white dwarf
 
 
 def calcular_mg(g, plx_mas):
-    """M_G = G + 5 + 5*log10(plx/1000); plx en milisegundos de arco."""
+    """M_G = G + 5 + 5*log10(plx/1000); plx in milliarcseconds."""
     if g is None or plx_mas is None or plx_mas <= 0:
         return None
     return g + 5.0 + 5.0 * math.log10(plx_mas / 1000.0)
 
 
 def veredicto(f, fid):
-    """Clasifica un objeto usando solo fisica y la tabla Gaia verificada."""
-    # 1. Cinematica: residuo sin dipolo (variable) vs traslacion (mover)
+    """Classify an object using only physics and the verified Gaia table."""
+    # 1. Kinematics: residual without dipole (variable) vs translation (mover)
     if f.get("kind") == "variable":
         return "variable", "residuo sin dipolo: cambia de brillo, no de posicion"
 
@@ -107,23 +108,23 @@ def veredicto(f, fid):
     ch4 = cold.get("methane_depth")
     in_gaia = bool(f.get("in_gaia"))
 
-    # 2. Metano profundo: firma molecular de atmosferas frias.
-    #    Se evalua antes que Gaia porque una enana T puede tener contraparte
-    #    optica debil o estar ligada a una estrella (epsilon Indi B).
+    # 2. Deep methane: molecular signature of cold atmospheres.
+    #    Evaluated before Gaia because a T dwarf may have a faint optical
+    #    counterpart or be bound to a star (epsilon Indi B).
     if ch4 is not None and ch4 >= CH4_MIN:
         return "enana marron", (
             f"se mueve y presenta absorcion profunda de metano "
             f"(CH4={ch4:.2f} >= {CH4_MIN})"
         )
 
-    # 3. Enana marron ultrafria sin deteccion optica en Gaia.
+    # 3. Ultracool brown dwarf with no optical detection in Gaia.
     if ratio is not None and ratio >= RATIO_MIN and not in_gaia:
         return "enana marron", (
             f"se mueve, ausente en Gaia y cociente infrarrojo "
             f"D6/D2={ratio:.2f} >= {RATIO_MIN}"
         )
 
-    # 4. Clasificacion astrofisica con Gaia DR3.
+    # 4. Astrophysical classification with Gaia DR3.
     if in_gaia:
         fila = GAIA.get(fid)
         g = num(fila, "phot_g_mean_mag")
@@ -143,7 +144,7 @@ def veredicto(f, fid):
                 f"no cumple el criterio de enana blanca"
             )
 
-        # Tiene bandera in_gaia pero la tabla no trae fotometria/paralaje.
+        # Has in_gaia flag, but the table lacks photometry/parallax.
         return "estrella", (
             "se mueve y tiene contraparte en Gaia, pero la tabla no trae "
             "fotometria/paralaje verificable; no se puede calcular M_G"
@@ -168,11 +169,10 @@ print(f"\nAcierto en desarrollo: {ok}/{len(SPLIT_DESARROLLO)} "
 print("Caveat: las reglas se ajustaron sobre este mismo conjunto (n=10); "
       "no es una validacion independiente.")
 
-# ---------------------------------------------------------------- control externo
-# Enanas blancas que NO estan entre los 10 campos de desarrollo con features
-# de SPHEREx en results.json (aunque figuran en el catalogo como desarrollo).
-# Sirven como control de honestidad de la regla fisica; no se usaron para
-# elegir los umbrales.
+# ---------------------------------------------------------------- external control
+# White dwarfs that are NOT among the 10 development fields with SPHEREx
+# features in results.json (though they appear in the catalog as development).
+# Used as an honesty check for the physical rule; not used to tune thresholds.
 CONTROL_WD = {
     "siriusb": "enana blanca",
     "stein2051b": "enana blanca",

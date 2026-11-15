@@ -1,6 +1,6 @@
-"""Lectura y escritura de los arreglos densos de ``data-sample/barnard``.
+"""Read and write dense arrays in the ``data-sample/barnard`` format.
 
-Formato comprobado contra los tamanos del manifiesto de Barnard (no supuesto):
+Format verified against Barnard's manifest sizes (not assumed):
 
 * ``frames.bin``      355 x 64 x 64 int16 little-endian   (2 908 160 B)
 * ``masks.bin``       355 x 64 x 64 uint8                 (1 454 080 B)
@@ -10,10 +10,9 @@ Formato comprobado contra los tamanos del manifiesto de Barnard (no supuesto):
 * ``diffs_sig.bin``    18 x 64 x 64 float32               (294 912 B)
 * ``medians.bin``       6 x 64 x 64 float32               (98 304 B)
 
-El orden de ejes es (indice, y, x), con ``y`` creciendo hacia el sur y ``x``
-hacia el este, igual que en el manifiesto. El endianness se verifica leyendo
-las escalas del manifiesto: si el archivo fuera big-endian los valores serian
-absurdos.
+Axis order is (index, y, x), with ``y`` increasing south and ``x`` increasing
+east, matching the manifest. Endianness is verified against the manifest
+scales: big-endian values would be absurd.
 """
 
 from __future__ import annotations
@@ -75,7 +74,7 @@ def load_barnard(folder: Path) -> BarnardBundle:
 
 
 def write_array(path: Path, array: np.ndarray, kind: str) -> int:
-    """Escribe en el mismo dtype/orden que Barnard. Devuelve los bytes escritos."""
+    """Write in the same dtype/order as Barnard. Returns bytes written."""
     dtype = DTYPES[kind]
     path.parent.mkdir(parents=True, exist_ok=True)
     data = np.ascontiguousarray(array.astype(dtype, copy=False))
@@ -84,11 +83,11 @@ def write_array(path: Path, array: np.ndarray, kind: str) -> int:
 
 
 def verify_barnard(folder: Path) -> dict:
-    """Comprueba tamanos, dtypes y que las coadds caigan en las escalas del manifiesto.
+    """Check shapes, dtypes and that coadds fall within the manifest scales.
 
-    Las formas se comparan contra el numero de filas del propio manifiesto, no
-    contra las de Barnard: ``data-new`` tiene menos cuadros y mas o menos
-    temporadas, y aun asi debe ser coherente.
+    Shapes are checked against the manifest's own row counts, not Barnard's:
+    ``data-new`` has fewer frames and different season counts, and must still
+    be self-consistent.
     """
     folder = Path(folder)
     b = load_barnard(folder)
@@ -110,7 +109,7 @@ def verify_barnard(folder: Path) -> dict:
         "diffs_manifest_rows": n_diffs,
         "medians_manifest_rows": n_det,
     }
-    # Las escalas del manifiesto deben contener los valores de la coadd.
+    # The manifest scales must bound the coadd values.
     ok_scales = True
     for coadd in man.get("coadds", []):
         det = str(coadd["det"])

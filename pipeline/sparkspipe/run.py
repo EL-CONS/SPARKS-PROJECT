@@ -1,8 +1,8 @@
-"""Orquestador: descubrimiento, recortes, coadds, movimiento y escritura.
+"""Orchestrator: discovery, cutouts, coadds, proper motion and output writing.
 
-Cada etapa escribe su cache en ``pipeline/_work/<id>/`` para poder reanudar sin
-volver a descargar. La salida publicable va a ``data-new/<id>/`` y no contiene
-nada que pase de 25 MB por archivo.
+Each stage caches to ``pipeline/_work/<id>/`` so runs can resume without
+re-downloading. Publishable outputs go to ``data-new/<id>/`` with no file
+exceeding 25 MB.
 """
 
 from __future__ import annotations
@@ -37,11 +37,11 @@ from .grid import resample, target_wcs
 from .http import HttpClient, utc_now
 from .quality import build_mask, estimate_quality
 
-# Version del recorte procesado; si cambia el metodo se sube para invalidar cache.
-# v2: centrar la malla depende de la epoca del catalogo (WISE 0855 paso de
-# J2000 a MJD 55320.4), asi que los cuadros v1 quedan invalidados.
-# v3: la longitud de onda se lee con el CRPIX del encabezado de IMAGE; antes se
-# usaba el de WCS-WAVE (ausente) y todas las bandas quedaban en su borde azul.
+# Processed cutout version; bumped when the method changes to invalidate cache.
+# v2: grid centering depends on catalog epoch (WISE 0855 moved from J2000 to
+# MJD 55320.4), invalidating v1 frames.
+# v3: wavelength is read using the IMAGE header CRPIX; previously WCS-WAVE's
+# (absent) header was used and every band fell at its blue edge.
 PROCESS_VERSION = "3"
 
 
@@ -95,17 +95,17 @@ def process_frame(
     work: Path,
     reuse_only: bool = False,
 ) -> dict[str, Any]:
-    """Descarga (o reutiliza), recorta, enmascara y reproyecta un cuadro."""
+    """Download (or reuse), trim, mask and reproject one frame."""
     path = _npz_path(work, record)
     cached = _load_processed(path)
     if cached:
-        # ``cached["coverage"]`` es el mapa 2D de cobertura; el escalar que va al
-        # manifiesto esta en ``meta["coverage"]``. No pisar uno con el otro.
+        # ``cached["coverage"]`` is the 2D coverage map; the scalar written to
+        # the manifest is in ``meta["coverage"]``. Do not overwrite one with the other.
         return {**cached["meta"], "image": cached["image"], "variance": cached["variance"],
                 "mask": cached["mask"], "coverage_arr": cached["coverage"], "cached": True}
     if reuse_only:
-        # Reproducir la salida sin volver a pedir recortes: util cuando el
-        # servicio esta lento y solo se cambio el manifiesto o sus textos.
+        # Reproduce outputs without re-requesting cutouts: useful when the
+        # service is slow and only the manifest or its text changed.
         raise RuntimeError("sin recorte procesado en cache y --reuse-only esta activo")
 
     client = HttpClient(retries=10, backoff=1.5, timeout=240.0)
@@ -132,7 +132,7 @@ def process_frame(
         variance=np.where(np.isfinite(frame.variance) & (frame.variance > 0), frame.variance, np.nan),
         mask=mask_cut,
     )
-    # Marcar como malo cualquier pixel sin cobertura.
+    # Flag any pixel without coverage as bad.
     mask64 = res.mask.astype(np.uint8).copy()
     mask64[~np.isfinite(res.image)] |= 1
     coverage = float(np.isfinite(res.image).mean())
@@ -197,7 +197,7 @@ def _season_summary(frames: list[dict[str, Any]], all_seasons: list[dict[str, An
 
 
 def _gaia_row(target: Target) -> dict[str, Any] | None:
-    """Fila de Gaia desde la tabla ya verificada del sprint anterior."""
+    """Gaia row from the verified table from the previous sprint."""
     path = repo_root() / "docs" / "sprint-13-30" / "gaia-fotometria.csv"
     if not target.gaia_source_id or not path.exists():
         return None
@@ -248,7 +248,7 @@ def run_target(
 
     log(f"centro de malla {center_ra:.6f} {center_dec:.6f} (epoca MJD {REFERENCE_MJD:.0f})")
 
-    # --- 1. Descubrimiento -------------------------------------------------
+    # --- 1. Discovery ------------------------------------------------------
     client = HttpClient(retries=4, backoff=2.0, timeout=420.0)
     t0 = time.time()
     records, seasons, trace = discover(client, target, position=(center_ra, center_dec))
@@ -259,7 +259,7 @@ def run_target(
         return result
     log(f"SIA2: {len(records)} imagenes, {len(seasons)} temporadas, {discovery_s:.0f} s")
 
-    # --- 2. Seleccion ------------------------------------------------------
+    # --- 2. Selection ------------------------------------------------------
     selected = select_frames(
         records,
         cap_per_det_season=cap,
@@ -272,7 +272,7 @@ def run_target(
         f"completos: {list(target.full_detectors) or 'ninguno'})"
     )
 
-    # --- 3. Descarga y procesamiento ---------------------------------------
+    # --- 3. Download and processing ----------------------------------------
     t0 = time.time()
     frames: list[dict[str, Any]] = []
     failures: list[dict[str, Any]] = []
@@ -317,7 +317,7 @@ def run_target(
         fr["i"] = i
         fr["mask"] = np.asarray(fr["mask"], dtype=np.uint8)
 
-    # --- 4. Coadds, diferencias y medianas ---------------------------------
+    # --- 4. Coadds, differences and medians --------------------------------
     t0 = time.time()
     coadd_input = [
         {
@@ -339,12 +339,12 @@ def run_target(
     analysis_s = time.time() - t0
     log(f"coadds {len(coadds)}, diferencias {len(diffs)}")
 
-    # --- 5. Movimiento propio ---------------------------------------------
+    # --- 5. Proper motion --------------------------------------------------
     t0 = time.time()
     wcs = target_wcs(center_ra, center_dec)
 
-    # Estrella de fondo: se localiza en el detector donde el objetivo no se ve
-    # (D1 para WISE 0855) y su posicion queda fija en todas las bandas.
+    # Background star: located in the detector where the target is invisible
+    # (D1 for WISE 0855) and its position stays fixed across all bands.
     star: dict[str, Any] | None = None
     psf_sigma = photometry.DEFAULT_PSF_SIGMA_PX
     if target.star_detector is not None:
@@ -364,7 +364,7 @@ def run_target(
                 f"sigma {profile['sigma']:.2f} px ({profile['n']} coadds D{target.star_detector})"
             )
     if star is None:
-        # Sin estrella conocida, el sigma de la PSF se mide sobre el objetivo.
+        # Without a known star, PSF sigma is measured on the target.
         bright = [c for c in coadds if int(c.det) in (target.motion_detectors or ())]
         if not bright:
             bright = coadds
@@ -392,14 +392,14 @@ def run_target(
         blockers.append(motion_result.get("reason") or "sin movimiento propio medible")
     log(f"movimiento: {motion_result.get('measured') and motion_result['measured'].get('mu')}")
 
-    # --- 5b. Indice de frio (fotometria PSF por cuadro) -------------------
-    # Cada cuadro aporta un punto (lambda, flujo). La longitud de onda sale del
-    # pixel del objeto en la tabla WCS-WAVE y varia de un apuntado a otro, que es
-    # lo que permite muestrear las bandas de metano dentro de D4 y D5.
-    # En WISE 0855, en D1-D4 (donde el objetivo no se ve y domina la estrella de
-    # fondo a ~1.2 px) se ajusta y resta la PSF gaussiana de la estrella vecina
-    # (posicion y sigma fijados desde las coadds de D1) antes de medir, ademas de
-    # enmascarar su nucleo (0.7 px).
+    # --- 5b. Coldness index (per-frame PSF photometry) ---------------------
+    # Each frame contributes one (lambda, flux) point. Wavelength comes from
+    # the target pixel in the WCS-WAVE table and varies from pointing to
+    # pointing, which lets us sample the methane bands inside D4 and D5.
+    # For WISE 0855, in D1-D4 (where the target is absent and the background
+    # star at ~1.2 px dominates) we fit and subtract the neighbor star's
+    # Gaussian PSF (position and sigma fixed from D1 coadds) before measuring,
+    # in addition to masking its core (0.7 px).
     t0 = time.time()
     cold_points: list[dict[str, Any]] = []
     for fr in frames:
@@ -467,7 +467,7 @@ def run_target(
             json.dumps(cold_points, indent=1, ensure_ascii=False), encoding="utf-8"
         )
 
-    # --- 6. Manifiesto y archivos -----------------------------------------
+    # --- 6. Manifest and files ---------------------------------------------
     if not any(r["release"] == "QR2" for r in release_summary(selected)):
         blockers.append(
             "spherex_qr2 no aparece en SIA2 para esta posicion; se usan las "
@@ -630,7 +630,7 @@ def _write_blocked(
     discovery_s: float,
     failures: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
-    """Manifiesto explicito para un campo que no se pudo completar."""
+    """Explicit manifest for a field that could not be completed."""
     out_dir = data_new_root() / target.id
     out_dir.mkdir(parents=True, exist_ok=True)
     man = {

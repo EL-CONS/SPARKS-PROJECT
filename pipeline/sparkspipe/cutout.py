@@ -1,12 +1,12 @@
-"""Descarga y extraccion de recortes SPHEREx (MEF de 7 extensiones en DR1).
+"""Download and extraction of SPHEREx cutouts (7-extension MEF in DR1).
 
-El servicio de recortes de IRSA devuelve un MEF con PRIMARY, IMAGE, FLAGS,
-VARIANCE, ZODI, EPSF y WCS-WAVE. La extension EPSF es el 98 % del peso y no se
-usa aqui, asi que se elimina antes de guardar el recorte reducido.
+The IRSA cutout service returns a MEF with PRIMARY, IMAGE, FLAGS, VARIANCE,
+ZODI, EPSF and WCS-WAVE. The EPSF extension is 98 % of the size and is not
+used here, so it is stripped before saving the reduced cutout.
 
-La WCS de IMAGE ya esta centrada en el recorte: el pixel del objeto cae en
-(17, 17) para un recorte de 35x35. Los coeficientes SIP incluyen el termino
-constante que hace ese desplazamiento, por eso no hay que componer WCS.
+The IMAGE WCS is already centered on the cutout: the target pixel lands at
+(17, 17) for a 35x35 cutout. The SIP coefficients include the constant term
+producing that offset, so there is no need to compose WCS.
 """
 
 from __future__ import annotations
@@ -88,7 +88,7 @@ def _obs_id(header: fits.Header, url: str) -> str:
 
 
 def download_cutout(h: HttpClient, record: ImageRecord, url: str, dest: Path) -> Path:
-    """Descarga el recorte. El servicio responde 503 'Server busy' a menudo."""
+    """Download the cutout. The service often returns 503 'Server busy'."""
     if dest.exists() and dest.stat().st_size > 1024:
         return dest
     dest.parent.mkdir(parents=True, exist_ok=True)
@@ -105,7 +105,7 @@ def download_cutout(h: HttpClient, record: ImageRecord, url: str, dest: Path) ->
 
 
 def trim_mef(src: Path, dst: Path) -> Path:
-    """Copia el MEF sin la extension EPSF."""
+    """Copy the MEF without the EPSF extension."""
     dst.parent.mkdir(parents=True, exist_ok=True)
     with fits.open(src, memmap=False) as hdul:
         keep = [
@@ -123,13 +123,13 @@ def wave_at_pixel(
     y: float,
     image_header: fits.Header | None = None,
 ) -> tuple[float | None, float | None]:
-    """Longitud de onda y ancho de banda en el pixel (0-based) del recorte.
+    """Wavelength and bandwidth at the cutout pixel (0-based).
 
-    La tabla WCS-WAVE guarda una rejilla de control en coordenadas del detector
-    completo. La relacion entre el pixel del recorte y esa rejilla esta en
-    ``CRPIX1W``/``CRVAL1W`` del encabezado de IMAGE (no del de WCS-WAVE, que no
-    los trae). Usar el encabezado equivocado dejaba todas las longitudes de onda
-    en el borde azul de cada detector. Se interpola bilinealmente.
+    The WCS-WAVE table stores a control grid in full-detector coordinates.
+    The mapping from cutout pixel to that grid lives in ``CRPIX1W``/``CRVAL1W``
+    of the IMAGE header (not WCS-WAVE, which lacks those keys). Using the
+    wrong header left all wavelengths at the blue edge of each detector.
+    Interpolated bilinearly.
     """
     try:
         hdu = hdul["WCS-WAVE"]
@@ -256,10 +256,10 @@ def download_and_extract(
     raw = raw_dir / f"{record.obs_id}_D{record.det}_raw.fits"
     trimmed = cutout_path(cutout_dir, record)
 
-    # Reutilizar un recorte ya reducido si contiene el centro pedido. El
-    # recorte puede haberse pedido con otro centro (por ejemplo tras corregir
-    # la epoca); su WCS absoluta sigue siendo valida mientras el centro caiga
-    # dentro. Esto evita volver a descargar al repetir una corrida.
+    # Reuse an already-trimmed cutout if it contains the requested center.
+    # The cutout may have been requested with a different center (e.g. after
+    # correcting the epoch); its absolute WCS remains valid as long as the
+    # center falls inside. This avoids re-downloading on repeated runs.
     if trimmed.exists() and trimmed.stat().st_size > 1024:
         try:
             cached = extract_frame(trimmed, ra, dec, record)

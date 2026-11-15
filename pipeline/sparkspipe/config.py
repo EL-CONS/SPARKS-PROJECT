@@ -1,7 +1,7 @@
-"""Configuracion central de la canalizacion SPHEREx.
+"""Central configuration for the SPHEREx pipeline.
 
-Todos los numeros de la malla son los mismos que usa ``data-sample/barnard``
-para que el front pueda leer ``data-new/`` sin cambios.
+All grid numbers match ``data-sample/barnard`` so the front end can read
+``data-new/`` unchanged.
 """
 
 from __future__ import annotations
@@ -9,49 +9,49 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
-# --- Malla comun ---------------------------------------------------------
+# --- Common grid ---------------------------------------------------------
 N_PIX = 64
 PIXEL_ARCSEC = 6.15
 FOV_ARCMIN = N_PIX * PIXEL_ARCSEC / 60.0  # 6.56 arcmin
-CUTOUT_SIZE_DEG = 0.12  # 7.2 arcmin: cubre las esquinas de la malla de 64x64
+CUTOUT_SIZE_DEG = 0.12  # 7.2 arcmin: covers the corners of the 64x64 grid
 CUTOUT_SIZE_ARCMIN = CUTOUT_SIZE_DEG * 60.0
-CUTOUT_PX = 80  # valor de referencia de Barnard; el recorte real lo fija el WCS
+CUTOUT_PX = 80  # Barnard reference value; actual cutout size is set by the WCS
 CDELT_DEG = PIXEL_ARCSEC / 3600.0
 CRPIX = (N_PIX + 1) / 2.0  # 32.5
 CTYPE = ("RA---TAN", "DEC--TAN")
 
-# --- Deteccion / calidad -------------------------------------------------
+# --- Detection / quality -------------------------------------------------
 SIGMA_CLIP = 3.0
 MAX_CLIP_ITERS = 5
 MIN_FRAMES_PER_COADD = 2
 
-# --- Movimiento propio ---------------------------------------------------
-# Limite de seguridad: no se acepta un ajuste con menos de dos temporadas.
+# --- Proper motion -------------------------------------------------------
+# Safety limit: no fit is accepted with fewer than two seasons.
 MIN_SEASONS_FOR_PM = 2
 MIN_BASELINE_YR = 0.25
 MIN_DETECTIONS_FOR_PSF = 3
 
-# Epoca a la que se lleva la posicion del catalogo para centrar la malla.
-# La malla es fija: no se recentra con los datos, para no inyectar el
-# movimiento que se quiere medir.
-REFERENCE_MJD = 61000.0  # ~2025-12-22, en medio de las observaciones de DR1
+# Epoch to which the catalog position is propagated to center the grid.
+# The grid is fixed: it is not re-centered on the data, to avoid injecting
+# the motion we want to measure.
+REFERENCE_MJD = 61000.0  # ~2025-12-22, near the middle of DR1 observations
 MJD_J2000 = 51544.5
 MJD_J2016 = 57388.5
-# Epoca de la posicion WISE de WISE 0855 en Luhman & Esplin 2014 (Tabla 2).
-# Las coordenadas del index coinciden con el designativo J085510.83-071442.5,
-# que se definio con la posicion WISE de 2010 y NO con una posicion J2000.
+# Epoch of WISE 0855's WISE position in Luhman & Esplin 2014 (Table 2).
+# The index coordinates match the designation J085510.83-071442.5, which was
+# defined at the 2010 WISE position and NOT at J2000.
 MJD_WISE0855_POSITION = 55320.4
-PSF_FWHM_ARCSEC = 7.45  # mediana del encabezado PSF_FWHM de los recortes DR1
+PSF_FWHM_ARCSEC = 7.45  # median of the PSF_FWHM header in DR1 cutouts
 APERTURE_RADIUS_PX = 3.0
 ANNULUS_RADIUS_PX = (6.0, 10.0)
-# Radio de la mascara que quita el nucleo de una estrella de fondo a ~1.2 px.
-# Se fija a priori: cubre los dos pixeles mas cercanos al pico de la estrella.
+# Mask radius removing the core of a background star at ~1.2 px.
+# Fixed a priori: covers the two pixels closest to the star's peak.
 STAR_MASK_RADIUS_PX = 0.7
 
-# --- Descubrimiento ------------------------------------------------------
+# --- Discovery -----------------------------------------------------------
 SIA_URL = "https://irsa.ipac.caltech.edu/SIA"
-SIA_RADIUS_DEG = 0.06  # circulo de busqueda; el recorte final es 0.12 deg
-SIA_RADII_DEG = (0.06, 0.12)  # segundo intento si el primero vuelve vacio
+SIA_RADIUS_DEG = 0.06  # search circle; final cutout is 0.12 deg
+SIA_RADII_DEG = (0.06, 0.12)  # second attempt if the first returns empty
 S3_BUCKET = "https://nasa-irsa-spherex.s3.amazonaws.com"
 CUTOUT_BASE = "https://irsa.ipac.caltech.edu/"
 TAP_URL = "https://irsa.ipac.caltech.edu/TAP/sync"
@@ -76,8 +76,8 @@ RELEASES = [
     },
 ]
 
-# Bits de bandera. El encabezado FLAGS de cada recorte manda; esto solo es
-# el respaldo cuando el encabezado no trae MSKNnnnn.
+# Flag bits. Each cutout's FLAGS header takes precedence; this is only the
+# fallback when the header lacks MSKNnnnn.
 DEFAULT_FLAG_BITS = {
     "0": "TRANSIENT",
     "1": "OVERFLOW",
@@ -105,17 +105,17 @@ DEFAULT_FLAG_BITS = {
     "28": "HALO",
 }
 
-# Temporadas: se agrupan los MJD con un corte de separacion.
-# Se usa 35 dias porque es mayor que el hueco normal entre visitas del mismo
-# campo (mediana 0) y menor que el hueco estacional real. Con 60 dias R Dra
-# cae en una sola temporada (su mayor hueco es 37.8 d) y el movimiento propio
-# no se puede medir. Con 35 d los cuatro campos quedan en 3-4 temporadas. El
-# corte se fija por cadencia, no por el movimiento propio esperado; la
-# sensibilidad a este numero esta en docs/pipeline/metodo.md.
+# Seasons: group MJDs with a gap threshold.
+# 35 days is used because it is larger than the normal gap between visits to
+# the same field (median 0) and smaller than the true seasonal gap. With 60
+# days R Dra falls into a single season (its largest gap is 37.8 d) and proper
+# motion cannot be measured. With 35 d all four fields split into 2-4 seasons.
+# The cut is set by cadence, not by expected proper motion; sensitivity to this
+# number is documented in docs/pipeline/metodo.md.
 SEASON_GAP_DAYS = 35.0
-# Cuadros maximos por (detector, temporada). Se eligen repartidos en el tiempo.
+# Maximum frames per (detector, season). Chosen spread out in time.
 FRAME_CAP_PER_DET_SEASON = 12
-# Descargas simultaneas. El servicio de recortes devuelve 503 si se le exige.
+# Concurrent downloads. The cutout service returns 503 if pushed harder.
 MAX_WORKERS = 3
 DOWNLOAD_RETRIES = 14
 DOWNLOAD_BACKOFF = 1.6
@@ -138,19 +138,19 @@ class Target:
     coord_epoch_mjd: float = MJD_J2000
     coord_epoch_label: str = "J2000"
     expected_source: str = ""
-    # Advertencias que nacen del analisis de los datos, no del catalogo. Se
-    # copian al manifiesto para que quien lea la salida sepa que limitacion
-    # tiene esa medicion concreta.
+    # Warnings arising from data analysis, not the catalog. Copied to the
+    # manifest so readers know the limitations of that specific measurement.
     caveats: tuple[str, ...] = ()
-    # Detectores que se descargan completos (sin tope por temporada). Vacio
-    # significa que todos usan el tope comun.
+    # Detectors downloaded in full (no per-season cap). Empty means all use
+    # the common cap.
     full_detectors: tuple[int, ...] = ()
-    # Detectores que entran en el ajuste de movimiento propio. Vacio significa
-    # todos los procesados. Para WISE 0855 solo D5 y D6: en D1-D4 domina la
-    # estrella de fondo.
+    # Detectors included in the proper-motion fit. Empty means all processed
+    # detectors. For WISE 0855 only D5 and D6: in D1-D4 the background star
+    # dominates.
     motion_detectors: tuple[int, ...] = ()
-    # Detector donde el objetivo no se ve y la estrella de fondo si. Se usa para
-    # fijar la posicion de la estrella que luego se resta en el resto de bandas.
+    # Detector where the target is invisible and the background star is visible.
+    # Used to fix the star's position, which is then subtracted in the other
+    # bands.
     star_detector: int | None = None
 
     @property
@@ -158,7 +158,7 @@ class Target:
         return self.ra, self.dec
 
     def pm_components(self) -> tuple[float | None, float | None]:
-        """(pmra*cosdec, pmdec) en arcsec/anio a partir de mu y PA."""
+        """(pmra*cosdec, pmdec) in arcsec/yr from mu and PA."""
         if self.mu_expected_arcsec_yr is None or self.pa_expected_deg is None:
             return None, None
         import math
@@ -167,10 +167,10 @@ class Target:
         return self.mu_expected_arcsec_yr * math.sin(pa), self.mu_expected_arcsec_yr * math.cos(pa)
 
     def position_at(self, mjd: float) -> tuple[float, float]:
-        """Posicion del catalogo propagada con el PM esperado a ``mjd``.
+        """Catalog position propagated with expected PM to ``mjd``.
 
-        Sirve solo para centrar la malla y pedir los recortes. Si no hay PM,
-        devuelve la posicion del catalogo sin tocar.
+        Used only to center the grid and request cutouts. If there is no PM,
+        returns the catalog position unchanged.
         """
         import math
 
@@ -328,7 +328,7 @@ def data_new_root() -> Path:
 
 
 def work_root() -> Path:
-    # Cache de recortes y productos intermedios, fuera de git.
+    # Cache of cutouts and intermediate products, outside git.
     return repo_root() / "pipeline" / "_work"
 
 

@@ -1,18 +1,18 @@
-"""Medicion de movimiento propio sobre las coadds.
+"""Proper-motion measurement on coadds.
 
-El metodo es deliberadamente simple y no se ajusta al resultado esperado:
+The method is deliberately simple and is not fitted to the expected result:
 
-1. En cada coadd (detector, temporada) se mide el centroide del objeto en una
-   apertura de radio 3 px sobre un anillo de cielo de 6 a 10 px.
-2. El centroide se convierte a desplazamiento en arcsec respecto del centro de
-   la malla usando la WCS. La malla esta centrada en la posicion del catalogo
-   propagada a una epoca de referencia; no se recentra con los datos.
-3. Se ajusta una recta por minimos cuadrados ponderados a cada coordenada
-   contra el tiempo. El resultado es el movimiento propio.
+1. In each coadd (detector, season) the target centroid is measured in a 3 px
+   radius aperture over a 6 to 10 px sky annulus.
+2. The centroid is converted to an offset in arcsec from the grid center
+   using the WCS. The grid is centered on the catalog position propagated to
+   a reference epoch; it is not re-centered on the data.
+3. A weighted least-squares line is fitted to each coordinate against time.
+   The slope is the proper motion.
 
-Si no hay detecciones suficientes o la linea base es menor que
-``MIN_BASELINE_YR``, se devuelve un resultado nulo con la razon escrita. No se
-rellena con el valor esperado.
+If there are not enough detections or the baseline is shorter than
+``MIN_BASELINE_YR``, a null result is returned with the reason written. It is
+never filled with the expected value.
 """
 
 from __future__ import annotations
@@ -94,7 +94,7 @@ def centroid_in_image(
     ann: tuple[float, float] = ANNULUS_RADIUS_PX,
     snr_min: float = SNR_MIN,
 ) -> dict[str, Any]:
-    """Centroide por apertura y anillo. Devuelve tambien la razon si falla."""
+    """Aperture-and-annulus centroid. Also returns the reason on failure."""
     image = np.asarray(image, dtype=np.float64)
     ny, nx = image.shape
     if sigma is None or not np.isfinite(sigma).any():
@@ -125,7 +125,7 @@ def centroid_in_image(
 
     bkg = float(np.median(image[annulus]))
     bkg_sigma = _robust_sigma(image[annulus])
-    # Segundo recorte del anillo para quitar estrellas de paso.
+    # Second annulus clip to remove passing stars.
     keep = annulus & (np.abs(image - bkg) < 3.0 * bkg_sigma) if bkg_sigma > 0 else annulus
     if keep.sum() >= 8:
         bkg = float(np.median(image[keep]))
@@ -181,7 +181,7 @@ def centroid_in_image(
     ex = max(math.sqrt(max(var_x, 0.0)), CENTROID_FLOOR_PX)
     ey = max(math.sqrt(max(var_y, 0.0)), CENTROID_FLOOR_PX)
 
-    # Mezcla: un segundo maximo local parecido dentro de 5 px.
+    # Blending: a comparable second local maximum within 5 px.
     peak = float(np.nanmax(np.where(aperture, image - bkg, np.nan)))
     blended = False
     if np.isfinite(peak) and peak > 0:
@@ -228,11 +228,11 @@ def _wls_design(
     *,
     per_group_intercept: bool,
 ) -> dict[str, float]:
-    """Minimos cuadrados ponderados con recta comun y, opcionalmente, un
-    intercepto por detector.
+    """Weighted least squares with a common line and, optionally, one intercept
+    per detector.
 
-    Un intercepto por detector absorbe el posible desplazamiento sistematico
-    entre detectores sin tocar la pendiente, que es lo que se mide.
+    A per-detector intercept absorbs any systematic offset between detectors
+    without affecting the slope, which is what we measure.
     """
     w = 1.0 / np.maximum(ey, 1e-6) ** 2
     t_mean = float((w * t).sum() / w.sum())
@@ -290,8 +290,8 @@ def _fit_offsets(
     dra, ddec, era, edec = _offsets_arcsec(points, wcs, ra0, dec0)
     groups = np.array([p.det for p in points], dtype=int)
 
-    # Con menos de dos puntos por grupo el intercepto por detector no aporta y
-    # consume grados de libertad; se usa un intercepto comun.
+    # With fewer than two points per group a per-detector intercept adds nothing
+    # and spends degrees of freedom; use a common intercept.
     counts = {int(g): int((groups == g).sum()) for g in set(groups.tolist())}
     use_group_intercept = per_det_intercept and min(counts.values()) >= 2
     if len(counts) == 1:
@@ -301,8 +301,8 @@ def _fit_offsets(
     fit_ra = _wls_design(t, dra, era, groups, per_group_intercept=use_group_intercept)
     fit_dec = _wls_design(t, ddec, edec, groups, per_group_intercept=use_group_intercept)
     if len(points) >= 5:
-        # Recorte sigma con un modelo simple (sin intercepto por grupo) para no
-        # gastar grados de libertad antes de tener el ajuste final.
+        # Sigma clip with a simple model (no per-group intercept) so we do not
+        # spend degrees of freedom before the final fit.
         simple_ra = _wls_design(t, dra, era, groups, per_group_intercept=False)
         simple_dec = _wls_design(t, ddec, edec, groups, per_group_intercept=False)
         pred_ra = simple_ra["intercept"] + simple_ra["slope"] * (t - simple_ra["t_mean"])
@@ -423,24 +423,23 @@ def measure_motion(
     expected_center: tuple[float, float] = (31.5, 31.5),
     star: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """``per_coadd``: dicts con det, season, mjd, image, sigma, mask.
+    """``per_coadd``: dicts with det, season, mjd, image, sigma, mask.
 
-    ``star`` fija la estrella de fondo: ``{"xy": (x, y), "sigma": px,
-    "detectors": (5, 6)}``. En esos detectores se ajusta un modelo de dos
-    Gaussianas con la estrella en posicion fija, en lugar del centroide de
-    apertura que mezclaba las dos fuentes.
+    ``star`` fixes the background star: ``{"xy": (x, y), "sigma": px,
+    "detectors": (5, 6)}``. In those detectors the star core is masked before
+    measuring the aperture centroid.
 
-    Devuelve el bloque ``target`` del manifiesto: puntos, medicion combinada,
-    medicion por detector y comparacion con el valor esperado.
+    Returns the manifest's ``target`` block: points, combined fit, per-detector
+    fits and comparison with the expected value.
     """
     detections: list[Detection] = []
     star_dets = tuple(int(d) for d in (star or {}).get("detectors", ()))
     for item in per_coadd:
         item_mask = item.get("mask")
         if star and int(item["det"]) in star_dets:
-            # Enmascarar el nucleo de la estrella de fondo. A 1.2 px no se puede
-            # separar en dos fuentes; la mascara quita la estrella y una parte
-            # del objetivo, y eso se declara en el manifiesto.
+            # Mask the background star core. At 1.2 px the two sources cannot
+            # be separated; the mask removes the star and part of the target,
+            # which is declared in the manifest.
             disk = photometry.star_mask(
                 np.asarray(item["image"]).shape,
                 tuple(star["xy"]),
@@ -544,7 +543,7 @@ def measure_motion(
 def prediction_offsets(
     points: list[dict[str, Any]], expected: dict[str, Any] | None, mjd0: float
 ) -> list[dict[str, Any]]:
-    """Desplazamiento esperado en pixeles, solo para diagnostico del manifiesto."""
+    """Expected offset in arcsec, for manifest diagnostics only."""
     if not expected or expected.get("pmra") is None:
         return []
     out = []

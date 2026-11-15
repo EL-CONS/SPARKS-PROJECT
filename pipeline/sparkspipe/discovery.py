@@ -1,14 +1,14 @@
-"""Descubrimiento de imagenes SPHEREx que cubren una posicion.
+"""Discovery of SPHEREx images covering a sky position.
 
-Ruta que funciona desde la red del equipo (comprobada el 2026-11-14): SIA2 de
-IRSA con ``POS=CIRCLE ra dec radio`` y sin ``COLLECTION`` ni ``MAXREC``. Con
-esos dos parametros el servicio devuelve una tabla vacia o los metadatos; sin
-ellos devuelve las imagenes que solapan la posicion. La respuesta pesa decenas
-de MB y tarda ~30-100 s, por eso se guarda en ``pipeline/_work/``.
+Route that works from the team's network (verified 2026-11-14): IRSA SIA2
+with ``POS=CIRCLE ra dec radius`` and without ``COLLECTION`` or ``MAXREC``.
+With those two parameters the service returns an empty table or metadata only;
+without them it returns the images overlapping the position. The response is
+tens of MB and takes ~30-100 s, so it is cached in ``pipeline/_work/``.
 
-Las rutas TAP sincrono y TAP asincrono se probaron y se documentan como fallidas
-en ``docs/pipeline/metodo.md``: el sincrono responde 502 o se cuelga, y el
-asincrono deja el trabajo en QUEUED durante horas.
+Synchronous and asynchronous TAP routes were tested and documented as failed
+in ``docs/pipeline/metodo.md``: sync returns 502 or hangs, and async leaves
+the job QUEUED for hours.
 """
 
 from __future__ import annotations
@@ -136,7 +136,7 @@ def season_of_mjd(mjd: float, seasons: list[dict[str, Any]]) -> int | None:
 
 
 def assign_seasons(records: list[ImageRecord], *, gap_days: float = SEASON_GAP_DAYS) -> list[dict[str, Any]]:
-    """Agrupa los MJD en temporadas separadas por huecos mayores que ``gap_days``."""
+    """Group MJDs into seasons separated by gaps larger than ``gap_days``."""
     if not records:
         return []
     times = np.array(sorted({round(float(r.mjd), 6) for r in records if r.mjd > 0}))
@@ -176,10 +176,10 @@ def select_frames(
     cap_per_det_season: int,
     full_detectors: tuple[int, ...] = (),
 ) -> list[ImageRecord]:
-    """Elige hasta ``cap`` cuadros por (detector, temporada), repartidos en el tiempo.
+    """Pick up to ``cap`` frames per (detector, season), spread out in time.
 
-    ``full_detectors`` se descargan completos: se usan cuando el objetivo solo es
-    medible en esas bandas y el resto solo sirve para fotometria de apoyo.
+    ``full_detectors`` are downloaded in full: used when the target is only
+    measurable in those bands and the rest serve as supporting photometry.
     """
     groups: dict[tuple[int, int], list[ImageRecord]] = {}
     for r in records:
@@ -212,15 +212,15 @@ def _query_sia(
     retries: int = 4,
     timeout: float = 420.0,
 ) -> dict[str, list[Any]]:
-    """Descarga una respuesta SIA2 y la guarda. Devuelve columnas por nombre."""
+    """Download a SIA2 response and cache it. Returns columns by name."""
     dest.parent.mkdir(parents=True, exist_ok=True)
     ra, dec = position or target.coord
     params = {
         "POS": f"CIRCLE {ra:.7f} {dec:.7f} {radius_deg:.5f}",
         "RESPONSEFORMAT": "votable",
     }
-    # Una respuesta ya descargada se reutiliza: pesa decenas de MB y tarda
-    # minutos. Solo se borra a mano si se quiere repetir la consulta.
+    # Reuse an already-downloaded response: it is tens of MB and takes minutes.
+    # Only delete manually if you want to re-run the query.
     if dest.exists() and dest.stat().st_size > 1_000_000:
         cols = votable.parse_sia_columns(dest.read_bytes())
         if cols:
@@ -246,7 +246,7 @@ def _query_sia(
                 last = RuntimeError(f"SIA devolvio {n} bytes")
                 time.sleep(4.0 * attempt)
                 continue
-            # Un error de uso tambien viene con HTTP 200; se detecta por el texto.
+            # Usage errors also arrive with HTTP 200; detect them from the body.
             if n < 200_000:
                 head = dest.read_bytes()[:200_000].decode("utf-8", "replace")
                 if 'QUERY_STATUS" value="ERROR"' in head:
@@ -354,7 +354,7 @@ def discover(
     radii: tuple[float, ...] = SIA_RADII_DEG,
     position: tuple[float, float] | None = None,
 ) -> tuple[list[ImageRecord], list[dict[str, Any]], list[dict[str, Any]]]:
-    """Devuelve (imagenes, temporadas, traza)."""
+    """Return (images, seasons, trace)."""
     out_dir = out_dir or (work_root() / target.id)
     out_dir.mkdir(parents=True, exist_ok=True)
     trace: list[dict[str, Any]] = []

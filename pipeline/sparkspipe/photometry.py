@@ -1,19 +1,19 @@
-"""Fotometria de apertura con mascara de estrella y cociente de frio.
+"""Aperture photometry with star masking and coldness ratio.
 
-WISE 0855 tiene una estrella de fondo a ~7 arcsec (1.2 px en la malla de
-6.15 arcsec/px). A esa separacion las dos fuentes no se pueden descomponer:
-un ajuste de dos Gaussianas es degenerado. El metodo que si es estable es
-enmascarar el nucleo de la estrella, cuya posicion se fija desde D1 (donde el
-objetivo no se ve), y medir el resto con la apertura de siempre. La mascara
-quita tambien una parte del objetivo; por eso el resultado se declara como
-medicion con esa limitacion, no como una separacion limpia.
+WISE 0855 has a background star ~7 arcsec away (1.2 px on the 6.15 arcsec/px
+grid). At that separation the two sources cannot be decomposed: a two-Gaussian
+fit is degenerate. The stable method is to mask the star's core, whose position
+is fixed from D1 (where the target is not visible), and measure the rest with
+the usual aperture. The mask also removes part of the target; therefore the
+result is declared as a measurement with that limitation, not as a clean
+separation.
 
-El flujo se mide como la suma de la apertura menos el fondo del anillo:
+Flux is measured as the aperture sum minus the annulus background:
 
-    F[mJy] = sum(imagen - bkg) * (pixel_arcsec/206265)^2 * 1e9
+    F[mJy] = sum(image - bkg) * (pixel_arcsec/206265)^2 * 1e9
 
-El cociente entre bandas cancela el factor de apertura, igual que en el
-procesamiento anterior (docs/methods.md, indice de frio).
+The band ratio cancels the aperture factor, matching the earlier processing
+(docs/methods.md, coldness index).
 """
 
 from __future__ import annotations
@@ -31,7 +31,7 @@ MIN_SNR_FLUX = 3.0
 APERTURE_RADIUS_PX = 3.0
 ANNULUS_RADIUS_PX = (6.0, 10.0)
 
-# Definicion del procesamiento anterior (docs/methods.md).
+# Definition from the earlier processing (docs/methods.md).
 COLD_BANDS = {
     "short": (1.10, 1.63),
     "long": (4.42, 5.01),
@@ -41,7 +41,7 @@ COLD_BANDS = {
 
 
 def flux_to_mjy(values_mjy_sr: float) -> float:
-    """Suma de apertura en MJy/sr a flujo integrado en mJy."""
+    """Aperture sum in MJy/sr to integrated flux in mJy."""
     return float(values_mjy_sr * PIXEL_SR * 1e9)
 
 
@@ -61,11 +61,11 @@ def fit_star_profile(
     expected: tuple[float, float] = (31.5, 31.5),
     psf_sigma0: float = DEFAULT_PSF_SIGMA_PX,
 ) -> dict[str, Any]:
-    """Ajusta una Gaussiana a la estrella de fondo en las coadds de D1.
+    """Fit a Gaussian to the background star in D1 coadds.
 
-    Devuelve posicion media y sigma media. La malla es fija, asi que la posicion
-    de la estrella es la misma en todas las temporadas; la media es una
-    estimacion directa y la dispersion queda como error.
+    Returns mean position and median sigma. The grid is fixed, so the star's
+    position is the same across all seasons; the mean is a direct estimate and
+    the scatter serves as error.
     """
     from scipy.optimize import least_squares
 
@@ -124,7 +124,7 @@ def star_mask(
     star_xy: tuple[float, float] | None,
     radius_px: float,
 ) -> np.ndarray:
-    """Mascara booleana con el nucleo de la estrella de fondo."""
+    """Boolean mask covering the core of the background star."""
     mask = np.zeros(shape, dtype=bool)
     if star_xy is None:
         return mask
@@ -141,13 +141,13 @@ def subtract_star_psf(
     mask: np.ndarray | None = None,
     fit_radius_px: float = 3.5,
 ) -> tuple[np.ndarray, float]:
-    """Resta la PSF gaussiana de la estrella vecina en posicion fija ``star_xy``.
+    """Subtract the Gaussian PSF of the neighbor star at fixed ``star_xy``.
 
-    Ajusta por minimos cuadrados ponderados (1/sigma^2) la amplitud de una
-    Gaussiana de ancho ``psf_sigma`` (fijado desde D1) mas un fondo constante en
-    ``r <= fit_radius_px`` alrededor de la estrella, y resta ``max(0, A) * G``.
-    Se usa en las bandas cortas (D1-D4 de WISE 0855) donde el objetivo no
-    aparece y la estrella vecina domina el flujo.
+    Fits by weighted least squares (1/sigma^2) the amplitude of a Gaussian of
+    width ``psf_sigma`` (fixed from D1) plus a constant background within
+    ``r <= fit_radius_px`` around the star, and subtracts ``max(0, A) * G``.
+    Used in the short bands (D1-D4 of WISE 0855) where the target is absent and
+    the neighbor star dominates the flux.
     """
     img = np.asarray(image, dtype=float).copy()
     ny, nx = img.shape
@@ -183,12 +183,12 @@ def psf_flux(
     mask: np.ndarray | None = None,
     fit_radius_px: float = 5.0,
 ) -> dict[str, Any]:
-    """Fotometria PSF lineal ponderada (Gaussiana normalizada + fondo constante).
+    """Weighted linear PSF photometry (normalized Gaussian + constant background).
 
-    En cada cuadro ajusta ``F * G_norm(x - x0, y - y0) + b`` con pesos
-    ``1/sigma^2`` dentro de ``fit_radius_px`` excluyendo ``mask``. Es mucho
-    menos sensible a las alas residuales y al ruido de cielo que una apertura de
-    3 px (area efectiva 4*pi*sigma^2 ~ 4.7 px frente a 28.3 px).
+    In each frame fits ``F * G_norm(x - x0, y - y0) + b`` with ``1/sigma^2``
+    weights inside ``fit_radius_px`` excluding ``mask``. Much less sensitive
+    to residual wings and sky noise than a 3 px aperture (effective area
+    4*pi*sigma^2 ~ 4.7 px vs. 28.3 px).
     """
     image = np.asarray(image, dtype=float)
     ny, nx = image.shape
@@ -244,7 +244,7 @@ def aperture_flux(
     ap: float = APERTURE_RADIUS_PX,
     ann: tuple[float, float] = ANNULUS_RADIUS_PX,
 ) -> dict[str, Any]:
-    """Flujo en una apertura con fondo del anillo, excluyendo la mascara."""
+    """Aperture flux with annulus background, excluding the mask."""
     image = np.asarray(image, dtype=float)
     ny, nx = image.shape
     yy, xx = np.mgrid[0:ny, 0:nx]
@@ -301,12 +301,12 @@ def _weighted_mean(values: list[float], errors: list[float]) -> tuple[float, flo
 
 
 def cold_index(points: Iterable[dict[str, Any]]) -> dict[str, Any]:
-    """Cociente F_D6/F_D2 y profundidad de metano a 3.3 um.
+    """F_D6/F_D2 ratio and 3.3 um methane depth.
 
-    ``points``: dicts con ``lam`` (um), ``flux_mjy`` y ``flux_err_mjy``. Se
-    agrupan por las bandas de ``COLD_BANDS`` y se promedian con pesos 1/error^2,
-    igual que el procesamiento anterior. Si la banda corta no se detecta a
-    3 sigma, el cociente se reporta como limite inferior.
+    ``points``: dicts with ``lam`` (um), ``flux_mjy`` and ``flux_err_mjy``.
+    Grouped by ``COLD_BANDS`` and averaged with 1/error^2 weights, matching the
+    earlier processing. If the short band is not detected at 3 sigma, the
+    ratio is reported as a lower limit.
     """
     bands: dict[str, list[dict[str, Any]]] = {k: [] for k in COLD_BANDS}
     for p in points:

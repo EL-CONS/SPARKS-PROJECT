@@ -1,4 +1,4 @@
-"""Linea de comandos de la canalizacion.
+"""Command-line interface for the pipeline.
 
     python -m sparkspipe discover wise0855
     python -m sparkspipe run all --cap 12 --workers 3
@@ -76,26 +76,26 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="sparkspipe", description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
 
-    p = sub.add_parser("discover", help="solo consulta SIA2 y guarda la respuesta")
+    p = sub.add_parser("discover", help="query SIA2 only and save the response")
     p.add_argument("targets", nargs="*", default=["all"])
     p.add_argument("--reference-mjd", type=float, default=61000.0)
     p.set_defaults(func=cmd_discover)
 
-    p = sub.add_parser("run", help="canalizacion completa de un objetivo")
+    p = sub.add_parser("run", help="full pipeline for a target")
     p.add_argument("targets", nargs="*", default=["all"])
     p.add_argument("--cap", type=int, default=FRAME_CAP_PER_DET_SEASON,
-                   help="cuadros maximos por detector y temporada")
+                   help="maximum frames per detector and season")
     p.add_argument("--workers", type=int, default=MAX_WORKERS)
-    p.add_argument("--limit", type=int, default=None, help="prueba: procesar solo N cuadros")
+    p.add_argument("--limit", type=int, default=None, help="test: process only N frames")
     p.add_argument(
         "--reuse-only",
         action="store_true",
-        help="no descarga: usa solo los recortes ya procesados en _work y cuenta el resto como fallo",
+        help="do not download: use only cached cutouts in _work and count the rest as failed",
     )
     p.add_argument("--quiet", action="store_true")
     p.set_defaults(func=cmd_run)
 
-    p = sub.add_parser("verify", help="comprueba formas y tipos de una carpeta de datos")
+    p = sub.add_parser("verify", help="check shapes and dtypes of a data folder")
     p.add_argument("folder")
     p.set_defaults(func=cmd_verify)
     return parser

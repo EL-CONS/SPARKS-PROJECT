@@ -1,9 +1,9 @@
-# Entorno de la canalizacion
+# Pipeline environment
 
-Entorno propio, separado del resto del repositorio y sin nada del proyecto
-anterior.
+A dedicated environment, separate from the rest of the repository and with
+nothing from the previous project.
 
-## Como se creo
+## How it was created
 
 ```powershell
 cd "D:\NASA Hackathon\SPARKS-PROJECT"
@@ -11,9 +11,9 @@ python -m venv pipeline/.venv
 pipeline\.venv\Scripts\python.exe -m pip install -r pipeline/requirements.txt
 ```
 
-Version de Python: 3.12 (Windows 11, `C:\Program Files\Python312`).
+Python version: 3.12 (Windows 11, `C:\Program Files\Python312`).
 
-## Versiones instaladas (salida de `pip freeze`)
+## Installed versions (`pip freeze` output)
 
 ```
 astropy==8.0.2
@@ -28,9 +28,9 @@ requests==2.34.2
 scipy==1.18.1
 ```
 
-`astropy-iers-data==0.2026.11.9.0.35.9` viene con astropy.
+`astropy-iers-data==0.2026.11.9.0.35.9` comes with astropy.
 
-## Uso
+## Usage
 
 ```powershell
 cd pipeline
@@ -40,8 +40,8 @@ cd pipeline
 .\.venv\Scripts\python.exe -m sparkspipe verify ..\data-new\wise0855
 ```
 
-## Que no entra a git
+## What is not committed to git
 
-`pipeline/.venv/` y `pipeline/_work/` (respuestas SIA de decenas de MB,
-recortes crudos y recortes procesados) estan en `.gitignore`. Los productos
-publicables de `data-new/` son pequenos y si entran.
+`pipeline/.venv/` and `pipeline/_work/` (SIA responses of tens of MB, raw
+cutouts and processed cutouts) are in `.gitignore`. The publishable products in
+`data-new/` are small and are committed.
