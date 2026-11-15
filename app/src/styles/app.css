@@ -1470,6 +1470,6 @@ ul {
   }
   /* above the sticky player and step buttons on phones */
   body:has(.stepnav) .scrollhint {
-    bottom: 200px;
+    display: none;
   }
 }

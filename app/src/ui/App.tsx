@@ -6,10 +6,14 @@ import { useSparks, SPEEDS, type Sparks } from './kit/useSparks';
 import { Starfield } from './kit/Starfield';
 import { Insights } from './kit/Insights';
 import { useTheme } from './useTheme';
-import { Stage } from './components/Stage';
+import { Stage, MAX_CATALOG_MARKS } from './components/Stage';
 import { Term } from './components/Term';
 import { IconMoon, IconNext, IconPause, IconPlay, IconPrev, IconSun } from './components/Icons';
 import { seasonLabel, toDms, toHms } from './sky';
+import { Spectrum } from './components/Spectrum';
+import { BASE } from './kit/useSparks';
+import { fovOptions, fovParam, zoomForFov } from '../core/fov';
+import type { ShellDict } from '../i18n/shell';
 import symbol from './assets/symbol.svg';
 import spaceAppsWhite from './assets/spaceapps/spaceapps-color-white.svg';
 import spaceAppsBlack from './assets/spaceapps/spaceapps-color-black.svg';
@@ -40,6 +44,7 @@ export default function App() {
   const labels = useBodyLabels(s);
   const [step, setStep] = useState(0);
   const es = s.url.lang === 'es';
+  const sh = s.shell;
   return (
     <div className="cn">
       <Starfield theme={theme} labels={labels} quiet={s.tab === 'explorar'} />
@@ -50,12 +55,12 @@ export default function App() {
           <img src={symbol} alt="" width={34} height={34} />
           <span className="cn-brand__name">Sparks</span>
         </button>
-        <nav className="cn-nav" aria-label={es ? 'Secciones' : 'Sections'}>
+        <nav className="cn-nav" aria-label={sh.sections}>
           <button type="button" aria-current={s.tab === 'inicio' ? 'page' : undefined} onClick={() => s.setTab('inicio')}>{s.intro.tabs.start}</button>
           <button type="button" aria-current={s.tab === 'explorar' ? 'page' : undefined} onClick={() => s.setTab('explorar')}>{s.intro.tabs.explore}</button>
         </nav>
         <span className="cn-tools">
-          <button type="button" onClick={() => s.setLang(es ? 'en' : 'es')} lang={es ? 'en' : 'es'} aria-label={`${s.t.nav.lang}: ${s.t.nav.langName}`}>{es ? 'EN' : 'ES'}</button>
+          <button type="button" onClick={() => s.setLang(es ? 'en' : 'es')} lang={es ? 'en' : 'es'} aria-label={`${s.t.nav.lang}: ${s.t.nav.langName}`}>{sh.langButton}</button>
           <button type="button" role="switch" aria-checked={theme === 'light'} aria-label={`${s.t.nav.theme}: ${theme === 'light' ? s.t.nav.themeLight : s.t.nav.themeDark}`} onClick={toggle}>
             {theme === 'light' ? <IconSun /> : <IconMoon />}
           </button>
@@ -74,27 +79,25 @@ export default function App() {
           </a>
           <div className="foot__text">
             <p className="foot__who">
-              <b>Sparks</b> · {es ? 'Equipo Cosmonautas · NASA Space Apps Challenge 2026, Hermosillo · reto “Planet X and SPHEREx”.' : 'Team Cosmonautas · NASA Space Apps Challenge 2026, Hermosillo · “Planet X and SPHEREx” challenge.'}
+              <b>Sparks</b> · {sh.footer.who}
             </p>
             <p className="foot__honest">{s.t.footer.honest}</p>
             <p>
-              {es
-                ? 'Proyecto independiente, no afiliado ni respaldado por la NASA. Datos: SPHEREx, NASA/IPAC IRSA, CatWISE2020, ESA/Gaia/DPAC. Herramientas: Astropy, Aladin Lite (CDS).'
-                : 'Independent project, not affiliated with or endorsed by NASA. Data: SPHEREx, NASA/IPAC IRSA, CatWISE2020, ESA/Gaia/DPAC. Tools: Astropy, Aladin Lite (CDS).'}
+              {sh.footer.credits}
             </p>
             <p className="foot__fine">
-              {es ? 'Los astros que cruzan el fondo son ilustraciones de los objetivos del reto; las fotos de SPHEREx están solo en el escenario.' : 'The bodies crossing the background are illustrations of the challenge targets; SPHEREx photos appear only on the stage.'}
+              {sh.footer.illustrations}
             </p>
           </div>
         </div>
       </footer>
-      <ScrollHint es={es} />
+      <ScrollHint sh={sh} />
     </div>
   );
 }
 
 /** A round button at the bottom centre while there is more page below. */
-function ScrollHint({ es }: { es: boolean }) {
+function ScrollHint({ sh }: { sh: ShellDict }) {
   const [show, setShow] = useState(false);
   useEffect(() => {
     const check = () => setShow(window.scrollY + window.innerHeight < document.documentElement.scrollHeight - 160);
@@ -113,7 +116,7 @@ function ScrollHint({ es }: { es: boolean }) {
     <button
       type="button"
       className={`scrollhint${show ? ' is-on' : ''}`}
-      aria-label={es ? 'Bajar para ver más' : 'Scroll down for more'}
+      aria-label={sh.scrollMore}
       tabIndex={show ? 0 : -1}
       aria-hidden={!show}
       onClick={() => window.scrollBy({ top: window.innerHeight * 0.75, behavior: 'smooth' })}
@@ -121,7 +124,7 @@ function ScrollHint({ es }: { es: boolean }) {
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <path d="M6 9l6 6 6-6" />
       </svg>
-      <span>{es ? 'Más abajo' : 'More below'}</span>
+      <span>{sh.scrollMoreShort}</span>
     </button>
   );
 }
@@ -192,17 +195,14 @@ const STEPS = 3;
 
 function Route({ s, step, setStep }: { s: Sparks; step: number; setStep: (n: number) => void }) {
   const { t } = s;
-  const es = s.url.lang === 'es';
   const ready = s.data.status === 'ready';
   const panels = useRef<(HTMLElement | null)[]>([]);
   const top = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState<number | undefined>(undefined);
   const touch = useRef<{ x: number; y: number } | null>(null);
-  const titles = [
-    es ? 'Apunta el telescopio' : 'Aim the telescope',
-    es ? 'Mira el cielo' : 'Watch the sky',
-    es ? '¿Qué pasó?' : 'What happened?',
-  ];
+  const sh = s.shell;
+  const titles = sh.steps;
+
   const canGo = (n: number) => n >= 0 && n < STEPS && (n < 2 || ready);
   const go = (n: number) => {
     if (!canGo(n) || n === step) return;
@@ -249,16 +249,16 @@ function Route({ s, step, setStep }: { s: Sparks; step: number; setStep: (n: num
   return (
     <div className="route" ref={top}>
       <div className="edges">
-        <button type="button" className={`edge edge--prev${canGo(step - 1) ? ' is-on' : ''}`} onClick={() => go(step - 1)} disabled={!canGo(step - 1)} aria-label={canGo(step - 1) ? `${es ? 'Paso anterior' : 'Previous step'}: ${titles[step - 1]}` : undefined}>
+        <button type="button" className={`edge edge--prev${canGo(step - 1) ? ' is-on' : ''}`} onClick={() => go(step - 1)} disabled={!canGo(step - 1)} aria-label={canGo(step - 1) ? `${sh.stepPrev}: ${titles[step - 1]}` : undefined}>
           <IconPrev />
           {canGo(step - 1) && <span className="edge__tip">{titles[step - 1]}</span>}
         </button>
-        <button type="button" className={`edge edge--next${canGo(step + 1) ? ' is-on' : ''}`} onClick={() => go(step + 1)} disabled={!canGo(step + 1)} aria-label={canGo(step + 1) ? `${es ? 'Paso siguiente' : 'Next step'}: ${titles[step + 1]}` : undefined}>
+        <button type="button" className={`edge edge--next${canGo(step + 1) ? ' is-on' : ''}`} onClick={() => go(step + 1)} disabled={!canGo(step + 1)} aria-label={canGo(step + 1) ? `${sh.stepNext}: ${titles[step + 1]}` : undefined}>
           <IconNext />
           {canGo(step + 1) && <span className="edge__tip">{titles[step + 1]}</span>}
         </button>
       </div>
-      <nav className="trail" aria-label={es ? 'Pasos' : 'Steps'}>
+      <nav className="trail" aria-label={sh.stepsLabel}>
         <ol className="trail__list" style={{ ['--progress' as string]: step / (STEPS - 1) }}>
           {titles.map((title, n) => (
             <li key={n}>
@@ -275,7 +275,7 @@ function Route({ s, step, setStep }: { s: Sparks; step: number; setStep: (n: num
             </li>
           ))}
         </ol>
-        <p className="trail__hint" aria-hidden="true">{es ? 'Desliza o usa las flechas ← →' : 'Swipe or use the ← → keys'}</p>
+        <p className="trail__hint" aria-hidden="true">{sh.trailHint}</p>
       </nav>
 
       <div className="steps" style={{ height }} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
@@ -290,7 +290,7 @@ function Route({ s, step, setStep }: { s: Sparks; step: number; setStep: (n: num
                 s.submitSearch();
               }}
             >
-              <label htmlFor="q">{es ? '¿O tienes coordenadas?' : 'Or got coordinates?'}</label>
+              <label htmlFor="q">{sh.coordsLabel}</label>
               <div className="seek__row">
                 <input id="q" value={s.query} onChange={e => s.setQuery(e.target.value)} placeholder="269.4486 4.7672" aria-describedby="q-hint" autoComplete="off" spellCheck={false} />
                 <Spark type="submit">{t.search.submit}</Spark>
@@ -315,7 +315,7 @@ function Route({ s, step, setStep }: { s: Sparks; step: number; setStep: (n: num
             )}
             {s.selected && (
               <div className="who">
-                <p className="who__name">{s.selected.id === 'barnard' ? (es ? 'Estrella de Barnard' : 'Barnard’s Star') : s.selected.name}</p>
+                <p className="who__name">{s.selected.id === 'barnard' ? sh.barnardName : s.selected.name}</p>
                 <p className="who__note">{t.targets[s.selected.id]?.note ?? s.selected.note}</p>
               </div>
             )}
@@ -331,15 +331,22 @@ function Route({ s, step, setStep }: { s: Sparks; step: number; setStep: (n: num
                 <Spark onClick={s.retryField}>{t.stage.retry}</Spark>
               </div>
             )}
+            {!s.selected && s.far && (
+              <div className="note" role="status">
+                <p className="note__title">{sh.far.title(toHms(s.url.ra), toDms(s.url.dec))}</p>
+                <p>{sh.far.body(t.targets[s.far.field.id]?.short ?? s.far.field.name, s.far.deg.toFixed(1))}</p>
+                <Spark primary onClick={() => s.pickField(s.far!.field)}>{sh.far.go(t.targets[s.far.field.id]?.short ?? s.far.field.name)}</Spark>
+              </div>
+            )}
             {s.data.status === 'soon' && <Soon s={s} />}
-            {s.data.status === 'ready' && <Watch s={s} />}
+            {s.data.status === 'ready' && <Watch key={s.selected?.id} s={s} />}
           </Leg>
 
           <Leg n={3} id="l3" title={titles[2]} active={step === 2} panelRef={el => (panels.current[2] = el)}>
             {s.data.status === 'ready' ? (
               <Insights lang={s.url.lang} t={t} manifest={s.data.manifest} field={s.selected!} det={s.det === 'all' ? 6 : s.det} season={s.mode === 'diff' ? s.pair[1] : s.player.frame} />
             ) : (
-              <p className="note">{es ? 'Primero apunta a un astro que tenga fotos.' : 'First aim at a target that has photos.'}</p>
+              <p className="note">{sh.needTarget}</p>
             )}
           </Leg>
         </div>
@@ -348,14 +355,14 @@ function Route({ s, step, setStep }: { s: Sparks; step: number; setStep: (n: num
       <div className="stepnav">
         {step > 0 ? (
           <Spark className="stepnav__back" onClick={() => go(step - 1)}>
-            <span aria-hidden="true">← </span>{es ? 'Atrás' : 'Back'}<span className="stepnav__where">: {titles[step - 1]}</span>
+            <span aria-hidden="true">← </span>{sh.back}<span className="stepnav__where">: {titles[step - 1]}</span>
           </Spark>
         ) : (
           <span />
         )}
         {step < STEPS - 1 && (
           <Spark primary className="stepnav__next" onClick={() => go(step + 1)} disabled={!canGo(step + 1)}>
-            {es ? 'Siguiente' : 'Next'}<span className="stepnav__where">: {titles[step + 1]}</span><span aria-hidden="true"> →</span>
+            {sh.next}<span className="stepnav__where">: {titles[step + 1]}</span><span aria-hidden="true"> →</span>
           </Spark>
         )}
       </div>
@@ -371,7 +378,7 @@ function Route({ s, step, setStep }: { s: Sparks; step: number; setStep: (n: num
  */
 function SkyScope({ s }: { s: Sparks }) {
   const { t } = s;
-  const es = s.url.lang === 'es';
+  const sh = s.shell;
   const fields = (s.fields ?? []).slice(0, 5);
   const lensRef = useRef<HTMLDivElement>(null);
   const selIdx = fields.findIndex(f => f.id === s.selected?.id);
@@ -502,7 +509,7 @@ function SkyScope({ s }: { s: Sparks }) {
                   <span className="pin__star" aria-hidden="true" />
                   <span className="pin__text">
                     <span className="pin__name">{t.targets[f.id]?.short ?? f.name}</span>
-                    <span className="pin__meta">{ready ? (es ? 'con fotos' : 'with photos') : t.search.soonTag}</span>
+                    <span className="pin__meta">{ready ? sh.scope.withPhotos : t.search.soonTag}</span>
                   </span>
                 </button>
               </li>
@@ -511,17 +518,17 @@ function SkyScope({ s }: { s: Sparks }) {
         </ul>
       </div>
       <figcaption className="scope__key">
-        <p className="scope__key-t">{es ? 'Cómo leer la mira' : 'How to read the eyepiece'}</p>
+        <p className="scope__key-t">{sh.scope.how}</p>
         <dl>
-          <div><dt>{es ? 'Centro' : 'Centre'}</dt><dd>{es ? 'polo norte del cielo (+90°)' : 'north celestial pole (+90°)'}</dd></div>
-          <div><dt>{es ? 'Anillo punteado' : 'Dotted ring'}</dt><dd>{es ? 'ecuador del cielo (0°)' : 'celestial equator (0°)'}</dd></div>
-          <div><dt>{es ? 'Borde' : 'Edge'}</dt><dd>{es ? 'hacia el polo sur (−90°)' : 'towards the south pole (−90°)'}</dd></div>
-          <div><dt>{es ? 'Horas alrededor' : 'Hours around'}</dt><dd><Term id="radec" t={t}>{es ? 'ascensión recta' : 'right ascension'}</Term></dd></div>
+          <div><dt>{sh.scope.centre}</dt><dd>{sh.scope.centreValue}</dd></div>
+          <div><dt>{sh.scope.ring}</dt><dd>{sh.scope.ringValue}</dd></div>
+          <div><dt>{sh.scope.edge}</dt><dd>{sh.scope.edgeValue}</dd></div>
+          <div><dt>{sh.scope.hours}</dt><dd><Term id="radec" t={t}>{sh.scope.hoursValue}</Term></dd></div>
         </dl>
         {s.selected && (
           <p className="scope__aimed">
             <span className="scope__aimed-dot" aria-hidden="true" />
-            {es ? 'Apuntando a' : 'Aimed at'} <b>{t.targets[s.selected.id]?.short ?? s.selected.name}</b>
+            {sh.scope.aimed} <b>{t.targets[s.selected.id]?.short ?? s.selected.name}</b>
             <span className="scope__coords">RA {toHms(s.selected.ra)} · Dec {toDms(s.selected.dec)}</span>
           </p>
         )}
@@ -532,9 +539,14 @@ function SkyScope({ s }: { s: Sparks }) {
 
 function Watch({ s }: { s: Sparks }) {
   const { t, player } = s;
+  const sh = s.shell;
   const [gaia, setGaia] = useState(false);
+  const [wise, setWise] = useState(false);
+  const [pick, setPick] = useState<{ x: number; y: number } | null>(null);
   if (s.data.status !== 'ready') return null;
   const m = s.data.manifest;
+  const full = m.field.fov_arcmin;
+  const zoom = zoomForFov(s.url.fov, full);
   return (
     <>
       <p className="say">{t.layer1.generic}</p>
@@ -557,7 +569,7 @@ function Watch({ s }: { s: Sparks }) {
         </div>
       )}
       <div className="window">
-        <Stage t={t} manifest={m} plates={s.data.plates} cubes={s.cubes} mode={s.mode} frame={player.frame} pair={s.pair} det={s.det} onDet={s.setDet} showMarks showGaia={gaia} gaia={s.gaia} />
+        <Stage t={t} manifest={m} plates={s.data.plates} cubes={s.cubes} mode={s.mode} frame={player.frame} pair={s.pair} det={s.det} onDet={s.setDet} showMarks showGaia={gaia} gaia={s.gaia} shell={sh} zoom={zoom} showWise={wise} catwise={s.catwise} pick={pick} onPick={setPick} />
       </div>
       <div className="deck">
         {s.mode === 'blink' && (
@@ -599,11 +611,31 @@ function Watch({ s }: { s: Sparks }) {
             ))}
           </span>
         )}
-        <label className="check">
-          <input type="checkbox" checked={gaia} onChange={e => setGaia(e.target.checked)} /> {t.stage.gaiaLayer}
-        </label>
       </div>
       <p className="hint">{s.mode === 'stack' ? t.transport.stackIdle : t.transport.speedNote}</p>
+      <div className="tools">
+        <div className="tools__group" role="group" aria-label={sh.fov.label}>
+          <span className="tools__label">{sh.fov.label}</span>
+          <span className="chips">
+            {fovOptions(full).map(o => (
+              <button key={o.zoom} type="button" className="chip" aria-pressed={zoom === o.zoom} onClick={() => s.setFov(fovParam(full, o.zoom))}>
+                {sh.fov.option(o.arcmin.toFixed(2))}{o.zoom === 1 ? ` · ${sh.fov.full}` : ''}
+              </button>
+            ))}
+          </span>
+        </div>
+        <div className="tools__group" role="group" aria-label={sh.layers.label}>
+          <span className="tools__label">{sh.layers.label}</span>
+          <label className="check">
+            <input type="checkbox" checked={gaia} disabled={!s.gaia.length} onChange={e => setGaia(e.target.checked)} /> {sh.layers.gaia(s.gaia.length)}
+          </label>
+          <label className="check">
+            <input type="checkbox" checked={wise} disabled={!s.catwise.length} onChange={e => setWise(e.target.checked)} /> {sh.layers.catwise(s.catwise.length)}
+          </label>
+        </div>
+      </div>
+      <p className="hint">{sh.fov.note(full.toFixed(2))} {(gaia || wise) && sh.layers.key(MAX_CATALOG_MARKS)}</p>
+      <Spectrum shell={sh} base={BASE} fieldId={m.field.id} manifest={m} season={s.mode === 'diff' ? s.pair[1] : player.frame} pick={pick} onPick={setPick} />
     </>
   );
 }
