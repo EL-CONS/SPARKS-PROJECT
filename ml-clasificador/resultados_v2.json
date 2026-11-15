@@ -2,13 +2,13 @@
  "version": "v2",
  "n_objetos": 69,
  "clases": {
-  "estrella": 20,
-  "enana blanca": 11,
+  "estrella": 19,
+  "enana blanca": 12,
   "variable": 18,
   "enana marron": 20
  },
  "validacion": "dejar uno fuera (LOO)",
- "exactitud_ml_loo": 0.7536,
+ "exactitud_ml_loo": 0.7826,
  "linea_base_clase_mayoritaria": 0.2899,
  "prueba_permutacion": {
   "repeticiones": 30,
@@ -17,9 +17,9 @@
  "matriz_confusion_loo": {
   "estrella": {
    "estrella": 15,
-   "enana marron": 0,
-   "enana blanca": 1,
-   "variable": 4
+   "enana marron": 1,
+   "enana blanca": 0,
+   "variable": 3
   },
   "enana marron": {
    "estrella": 1,
@@ -28,9 +28,9 @@
    "variable": 1
   },
   "enana blanca": {
-   "estrella": 1,
+   "estrella": 0,
    "enana marron": 1,
-   "enana blanca": 9,
+   "enana blanca": 11,
    "variable": 0
   },
   "variable": {
@@ -41,16 +41,16 @@
   }
  },
  "recall_por_clase": {
-  "estrella": 0.75,
+  "estrella": 0.789,
   "enana marron": 0.9,
-  "enana blanca": 0.818,
+  "enana blanca": 0.917,
   "variable": 0.556
  },
  "fallos_loo": [
   {
-   "nombre": "Gaia DR3 3713594960831605760",
+   "nombre": "Gaia DR3 6281432246412503424",
    "verdad": "estrella",
-   "ml": "enana blanca"
+   "ml": "enana marron"
   },
   {
    "nombre": "RW Aurigae",
@@ -118,26 +118,16 @@
    "ml": "estrella"
   },
   {
-   "nombre": "G 240-72",
-   "verdad": "enana blanca",
-   "ml": "estrella"
-  },
-  {
    "nombre": "Delta Pavonis",
-   "verdad": "estrella",
-   "ml": "variable"
-  },
-  {
-   "nombre": "82 G. Eridani",
    "verdad": "estrella",
    "ml": "variable"
   }
  ],
  "importancia_variables": {
-  "en_gaia": 0.0829,
-  "tiene_fotometria": 0.0568,
-  "mg_gaia": 0.4273,
-  "bp_rp": 0.4329
+  "en_gaia": 0.0836,
+  "tiene_fotometria": 0.0621,
+  "mg_gaia": 0.4368,
+  "bp_rp": 0.4174
  },
  "semilla": 42
 }
