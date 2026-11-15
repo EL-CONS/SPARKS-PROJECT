@@ -1101,25 +1101,70 @@ ul {
 }
 
 /* ---------------------------------------------------------------- Space Apps bands
-   Header and footer sit on the official Space Apps gradient (Electric Blue
-   #0042A6 to Deep Blue #07173F, 45°) as a calm solid band, so the official
-   logo is never placed over the busy starfield and is used unaltered. */
+   Header and footer are tinted glass, not solid slabs: the Space Apps blues
+   (Electric Blue #0042A6, Deep Blue #07173F) at low opacity over a frosted
+   blur, so the starfield keeps moving behind them. The blur turns the stars
+   into a soft calm field, so the unaltered official logo never sits on a busy
+   background. A hairline that fades from blue to amber ties them to the logo. */
+html {
+  scroll-padding-top: 76px;
+}
 .band {
   position: relative;
   z-index: 5;
-  background: linear-gradient(135deg, #0042a6 0%, #07173f 55%);
-  color: #ffffff;
-  --text: #ffffff;
-  --text-2: #d6e2ff;
-  --text-3: #a9bbe6;
-  --rule: rgb(255 255 255 / 0.16);
-  --rule-strong: rgb(255 255 255 / 0.32);
+  color: var(--text);
+  --rule: rgb(255 255 255 / 0.14);
+  --rule-strong: rgb(255 255 255 / 0.28);
+  --hair: linear-gradient(
+    90deg,
+    transparent,
+    rgb(98 182 232 / 0.55) 30%,
+    rgb(255 178 56 / 0.5) 70%,
+    transparent
+  );
+}
+.band::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--hair);
+  pointer-events: none;
 }
 .band--top {
-  box-shadow: 0 1px 0 var(--rule), 0 18px 40px -24px rgb(0 0 0 / 0.7);
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: linear-gradient(180deg, rgb(7 23 63 / 0.5), rgb(0 66 166 / 0.14));
+  -webkit-backdrop-filter: blur(14px) saturate(1.3);
+  backdrop-filter: blur(14px) saturate(1.3);
+  transition: background-color 0.3s ease;
 }
+.band--top::before {
+  bottom: 0;
+}
+
 .band--foot {
-  margin-top: 40px;
+  margin-top: 64px;
+  /* fades in from the page instead of starting with an edge */
+  background:
+    radial-gradient(120% 90% at 50% 120%, rgb(0 66 166 / 0.38), transparent 70%),
+    linear-gradient(180deg, transparent 0, rgb(7 23 63 / 0.34) 90px, rgb(7 23 63 / 0.5));
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 72px);
+  mask-image: linear-gradient(180deg, transparent 0, #000 72px);
+}
+.band--foot::before {
+  top: 72px;
+  left: var(--gutter);
+  right: var(--gutter);
+}
+:root[data-theme='light'] .band--foot {
+  background:
+    radial-gradient(120% 90% at 50% 120%, rgb(0 66 166 / 0.1), transparent 70%),
+    linear-gradient(180deg, transparent 0, rgb(255 255 255 / 0.55) 90px, rgb(255 255 255 / 0.75));
 }
 .cn-spaceapps {
   display: grid;
@@ -1144,7 +1189,7 @@ ul {
   align-items: center;
   max-width: 1240px;
   margin: 0 auto;
-  padding: 40px var(--gutter) 48px;
+  padding: 104px var(--gutter) 48px;
 }
 .foot__logo {
   display: block;
