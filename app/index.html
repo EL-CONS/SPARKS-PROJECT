@@ -8,13 +8,10 @@
     <meta name="theme-color" content="#02040A" />
     <link rel="icon" type="image/svg+xml" href="/src/ui/assets/favicon.svg" />
     <script>
-      // Set the theme before first paint so nothing flashes. Night is the
-      // default: the sky data are dark and the logo's light reads on night.
+      // Pick the language before first paint. Sparks has only the night theme.
       (function () {
         try {
           var q = new URLSearchParams(location.search);
-          var t = q.get('theme') || localStorage.getItem('sparks-theme');
-          if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
           var lang = q.get('lang');
           if (lang === 'en' || lang === 'es') document.documentElement.lang = lang;
         } catch (e) {}

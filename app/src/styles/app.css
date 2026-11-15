@@ -3,8 +3,7 @@
    are "sparks": an outlined pill whose dot lights from blue to amber. */
 @import './components.css';
 
-:root,
-:root[data-theme='dark'] {
+:root {
   color-scheme: dark;
   --bg: #02040a;
   --haze-a: rgb(32 132 128 / 0.2);
@@ -37,36 +36,6 @@
   --astro-stone-deep: #7b6e5e;
   --astro-lens: #fff4dc;
 }
-:root[data-theme='light'] {
-  color-scheme: light;
-  --bg: #cfe3f2;
-  --haze-a: rgb(255 255 255 / 0.6);
-  --haze-b: rgb(255 214 170 / 0.35);
-  --surface: rgb(255 255 255 / 0.7);
-  --surface-2: rgb(220 232 242 / 0.95);
-  --rule: rgb(12 30 48 / 0.14);
-  --rule-strong: rgb(12 30 48 / 0.3);
-  --text: #0c1e30;
-  --text-2: #2c4258;
-  --text-3: #475d73;
-  --before: #2f8bcb;
-  --now: #f09a0c;
-  --now-ink: #8a5200;
-  --on-now: #1a1104;
-  --lens: #ffffff;
-  --ok: #1f8a68;
-  --danger: #a5301b;
-  --focus: #8a5200;
-  --tip-bg: #ffffff;
-  --astro-coral: #d9603f;
-  --astro-mauve: #a0705e;
-  --astro-mauve-deep: #5e3a2f;
-  --astro-rose: #c95c78;
-  --astro-mint: #1f8a68;
-  --astro-stone: #8c7f72;
-  --astro-stone-deep: #5a5047;
-  --astro-lens: #ffffff;
-}
 :root {
   --font-display: 'Unbounded', system-ui, sans-serif;
   --font-text: 'Nunito', system-ui, sans-serif;
@@ -96,9 +65,6 @@ body {
     radial-gradient(800px 500px at 90% 85%, var(--haze-b), transparent 70%),
     var(--bg);
   background-attachment: fixed;
-}
-:root[data-theme='light'] body {
-  background: linear-gradient(180deg, #a9cde8 0%, #cfe3f2 45%, #f3ece2 100%) fixed;
 }
 ::selection {
   background: rgb(255 178 56 / 0.35);
@@ -288,12 +254,9 @@ ul {
   width: 100%;
   height: auto;
 }
-:root:not([data-theme='light']) .st__logo img {
+.st__logo img {
   -webkit-mask-image: radial-gradient(closest-side, #000 72%, transparent 100%);
   mask-image: radial-gradient(closest-side, #000 72%, transparent 100%);
-}
-:root[data-theme='light'] .st__logo img {
-  width: 70%;
 }
 @media (prefers-reduced-motion: no-preference) {
   .st__logo img {
@@ -445,9 +408,6 @@ ul {
   background: radial-gradient(circle, var(--bg) 0 46%, transparent 47%), radial-gradient(circle, var(--rule-strong) 0 50%, transparent 51%);
   transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), color 200ms ease;
 }
-:root[data-theme='light'] .trail__dot {
-  background: radial-gradient(circle, #e8f1f8 0 46%, transparent 47%), radial-gradient(circle, var(--rule-strong) 0 50%, transparent 51%);
-}
 .trail__star.is-done .trail__dot {
   color: #04121d;
   background: radial-gradient(circle, var(--before) 0 50%, rgb(98 182 232 / 0.3) 58%, transparent 70%);
@@ -561,14 +521,6 @@ ul {
     0 0 0 11px var(--rule),
     0 30px 80px -30px rgb(0 0 0 / 0.9);
 }
-:root[data-theme='light'] .scope__lens {
-  background: rgb(240 246 251 / 0.62);
-  box-shadow:
-    0 0 0 1px var(--rule-strong),
-    0 0 0 10px rgb(255 255 255 / 0.55),
-    0 0 0 11px var(--rule),
-    0 30px 60px -30px rgb(12 30 48 / 0.4);
-}
 .scope__svg {
   position: absolute;
   inset: 0;
@@ -620,9 +572,6 @@ ul {
   border-radius: 50%;
   background: radial-gradient(circle, transparent 62%, rgb(0 0 0 / 0.38) 100%);
   pointer-events: none;
-}
-:root[data-theme='light'] .scope__vignette {
-  background: radial-gradient(circle, transparent 66%, rgb(12 30 48 / 0.12) 100%);
 }
 /* the reticle that slews onto the chosen target */
 .scope__aim {
@@ -696,10 +645,6 @@ ul {
 }
 .pin.is-ready .pin__star {
   background: radial-gradient(circle, #fff 0 13%, rgb(255 255 255 / 0.35) 22%, transparent 60%);
-}
-:root[data-theme='light'] .pin.is-ready .pin__star,
-:root[data-theme='light'] .pin__star {
-  background: radial-gradient(circle, #0c1e30 0 13%, rgb(12 30 48 / 0.22) 22%, transparent 60%);
 }
 .pin.is-on .pin__star {
   background: radial-gradient(circle, var(--now) 0 16%, rgb(255 178 56 / 0.4) 26%, transparent 62%);
@@ -840,9 +785,6 @@ ul {
   font-family: var(--font-data);
   font-size: 0.85rem;
 }
-:root[data-theme='light'] .seek__row input {
-  background: rgb(255 255 255 / 0.6);
-}
 .seek__row input:focus {
   outline: none;
   border-color: var(--now);
@@ -942,9 +884,6 @@ ul {
   border: 0;
   background: var(--text);
   color: var(--bg);
-}
-:root[data-theme='light'] .round--play {
-  color: #fff;
 }
 .round--play.is-on {
   background: var(--now);
@@ -1189,17 +1128,6 @@ html {
     transparent
   );
 }
-:root[data-theme='light'] .band {
-  --rule: rgb(7 23 63 / 0.12);
-  --rule-strong: rgb(7 23 63 / 0.26);
-  --hair: linear-gradient(
-    90deg,
-    transparent,
-    rgb(47 139 203 / 0.5) 30%,
-    rgb(240 154 12 / 0.45) 70%,
-    transparent
-  );
-}
 .band::before {
   content: '';
   position: absolute;
@@ -1221,9 +1149,6 @@ html {
 .band--top::before {
   bottom: 0;
 }
-:root[data-theme='light'] .band--top {
-  background: linear-gradient(180deg, rgb(255 255 255 / 0.72), rgb(255 255 255 / 0.42));
-}
 .band--foot {
   margin-top: 64px;
   /* fades in from the page instead of starting with an edge */
@@ -1239,11 +1164,6 @@ html {
   top: 72px;
   left: var(--gutter);
   right: var(--gutter);
-}
-:root[data-theme='light'] .band--foot {
-  background:
-    radial-gradient(120% 90% at 50% 120%, rgb(0 66 166 / 0.1), transparent 70%),
-    linear-gradient(180deg, transparent 0, rgb(255 255 255 / 0.55) 90px, rgb(255 255 255 / 0.75));
 }
 .cn-spaceapps {
   display: grid;
@@ -1324,9 +1244,6 @@ html {
   pointer-events: none;
   transition: opacity 250ms ease, transform 250ms cubic-bezier(0.16, 1, 0.3, 1), border-color 200ms ease, box-shadow 200ms ease;
 }
-:root[data-theme='light'] .edge {
-  background: rgb(255 255 255 / 0.8);
-}
 .edge.is-on {
   opacity: 1;
   pointer-events: auto;
@@ -1386,9 +1303,6 @@ html {
   opacity: 0;
   pointer-events: none;
   transition: opacity 300ms ease, transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-:root[data-theme='light'] .scrollhint {
-  background: rgb(255 255 255 / 0.85);
 }
 .scrollhint.is-on {
   opacity: 1;

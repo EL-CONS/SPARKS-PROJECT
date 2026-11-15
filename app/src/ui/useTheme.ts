@@ -1,34 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
-
-export type Theme = 'dark' | 'light';
-const KEY = 'sparks-theme';
-
-function read(): Theme {
-  const t = document.documentElement.dataset.theme;
-  return t === 'light' ? 'light' : 'dark';
-}
-
-/** index.html sets data-theme before first paint; this hook only flips it. */
-export function useTheme() {
-  const [theme, setTheme] = useState<Theme>(read);
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    const meta = document.querySelector('meta[name="theme-color"]');
-    meta?.setAttribute('content', theme === 'light' ? '#CFE3F2' : '#02040A');
-  }, [theme]);
-  const toggle = useCallback(() => {
-    setTheme(prev => {
-      const next: Theme = prev === 'dark' ? 'light' : 'dark';
-      try {
-        localStorage.setItem(KEY, next);
-      } catch {
-        /* storage blocked: the choice lasts for this visit */
-      }
-      return next;
-    });
-  }, []);
-  return { theme, toggle };
-}
+// Sparks has a single night theme: the sky data are dark and the logo's light
+// reads on night. Only the small localStorage helpers live here.
 
 export function readFlag(key: string): boolean {
   try {

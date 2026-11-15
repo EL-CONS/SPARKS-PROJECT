@@ -5,17 +5,13 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useSparks, SPEEDS, type Sparks } from './kit/useSparks';
 import { Starfield } from './kit/Starfield';
 import { Insights } from './kit/Insights';
-import { useTheme } from './useTheme';
 import { Stage } from './components/Stage';
 import { Term } from './components/Term';
-import { IconMoon, IconNext, IconPause, IconPlay, IconPrev, IconSun } from './components/Icons';
+import { IconNext, IconPause, IconPlay, IconPrev } from './components/Icons';
 import { seasonLabel, toDms, toHms } from './sky';
 import symbol from './assets/symbol.svg';
-import symbolLight from './assets/symbol-flat-light.svg';
 import spaceAppsWhite from './assets/spaceapps/spaceapps-color-white.svg';
-import spaceAppsBlack from './assets/spaceapps/spaceapps-color-black.svg';
 import spaceAppsSmallWhite from './assets/spaceapps/spaceapps-small-white.svg';
-import spaceAppsSmallBlack from './assets/spaceapps/spaceapps-small-black.svg';
 
 function useBodyLabels(s: Sparks) {
   return useMemo(() => {
@@ -37,18 +33,17 @@ function Spark({ children, primary, className, ...rest }: React.ButtonHTMLAttrib
 
 export default function App() {
   const s = useSparks();
-  const { theme, toggle } = useTheme();
   const labels = useBodyLabels(s);
   const [step, setStep] = useState(0);
   const es = s.url.lang === 'es';
   return (
     <div className="cn">
-      <Starfield theme={theme} labels={labels} quiet={s.tab === 'explorar'} />
+      <Starfield theme="dark" labels={labels} quiet={s.tab === 'explorar'} />
       <a className="skip" href="#cielo">{s.t.skip}</a>
       <header className="band band--top">
         <div className="cn-top">
         <button type="button" className="cn-brand" onClick={() => s.setTab('inicio')}>
-          <img src={theme === 'light' ? symbolLight : symbol} alt="" width={34} height={34} />
+          <img src={symbol} alt="" width={34} height={34} />
           <span className="cn-brand__name">Sparks</span>
         </button>
         <nav className="cn-nav" aria-label={es ? 'Secciones' : 'Sections'}>
@@ -57,21 +52,18 @@ export default function App() {
         </nav>
         <span className="cn-tools">
           <button type="button" onClick={() => s.setLang(es ? 'en' : 'es')} lang={es ? 'en' : 'es'} aria-label={`${s.t.nav.lang}: ${s.t.nav.langName}`}>{es ? 'EN' : 'ES'}</button>
-          <button type="button" role="switch" aria-checked={theme === 'light'} aria-label={`${s.t.nav.theme}: ${theme === 'light' ? s.t.nav.themeLight : s.t.nav.themeDark}`} onClick={toggle}>
-            {theme === 'light' ? <IconSun /> : <IconMoon />}
-          </button>
         </span>
         <a className="cn-spaceapps" href="https://www.spaceappschallenge.org/" target="_blank" rel="noreferrer" aria-label="NASA Space Apps Challenge 2026">
-          <img className="cn-spaceapps__full" src={theme === 'light' ? spaceAppsBlack : spaceAppsWhite} alt="NASA Space Apps Challenge" width={112} height={44} />
-          <img className="cn-spaceapps__small" src={theme === 'light' ? spaceAppsSmallBlack : spaceAppsSmallWhite} alt="" width={34} height={34} />
+          <img className="cn-spaceapps__full" src={spaceAppsWhite} alt="NASA Space Apps Challenge" width={112} height={44} />
+          <img className="cn-spaceapps__small" src={spaceAppsSmallWhite} alt="" width={34} height={34} />
         </a>
         </div>
       </header>
-      <main id="cielo">{s.tab === 'inicio' ? <Start s={s} theme={theme} onGo={() => setStep(1)} /> : <Route s={s} step={step} setStep={setStep} />}</main>
+      <main id="cielo">{s.tab === 'inicio' ? <Start s={s} onGo={() => setStep(1)} /> : <Route s={s} step={step} setStep={setStep} />}</main>
       <footer className="band band--foot">
         <div className="foot">
           <a className="foot__logo" href="https://www.spaceappschallenge.org/" target="_blank" rel="noreferrer">
-            <img src={theme === 'light' ? spaceAppsBlack : spaceAppsWhite} alt="NASA Space Apps Challenge" width={224} height={88} />
+            <img src={spaceAppsWhite} alt="NASA Space Apps Challenge" width={224} height={88} />
           </a>
           <div className="foot__text">
             <p className="foot__who">
@@ -129,12 +121,12 @@ function ScrollHint({ es }: { es: boolean }) {
 
 /* ------------------------------------------------------------------ inicio */
 
-function Start({ s, theme, onGo }: { s: Sparks; theme: string; onGo: () => void }) {
+function Start({ s, onGo }: { s: Sparks; onGo: () => void }) {
   const i = s.intro;
   return (
     <section className="st" aria-labelledby="st-t">
       <div className="st__logo">
-        <img src={theme === 'light' ? symbolLight : symbol} alt="" width={360} height={360} />
+        <img src={symbol} alt="" width={360} height={360} />
       </div>
       <h1 id="st-t" className="st__name">Sparks</h1>
       <p className="st__motto">{i.motto}</p>
