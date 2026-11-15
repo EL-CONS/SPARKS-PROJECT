@@ -68,3 +68,34 @@ for f in ["symbol.svg", "symbol-animated.svg", "logo-horizontal.svg"]:
     shutil.copyfile(RAIZ / "Logo" / f, OUT / f)
 shutil.copyfile(RAIZ / "app/src/ui/assets/spaceapps/spaceapps-color-white.svg", OUT / "spaceapps-color-white.svg")
 print("listo:", sorted(p.name for p in OUT.iterdir()))
+
+
+# --- Logo en dos capas transparentes (resplandor y núcleos), sin el fondo cuadrado ---
+# Se arma desde Logo/symbol-animated.svg (sin tocar el original) y se rasteriza con
+# Chromium sin interfaz sobre fondo transparente, a 1200 x 1200.
+import re, subprocess, tempfile
+svg = (RAIZ / "Logo" / "symbol-animated.svg").read_text(encoding="utf-8")
+defs = re.search(r"<defs>.*?</defs>", svg, re.S).group(0)
+VB = 'viewBox="-24 -42 186 186"'  # caben los halos completos (el original corta el ámbar)
+capas = {
+    "logo-glow": (
+        '<g opacity="1"><circle cx="70.5" cy="49.5" r="81" fill="url(#s7h1)"/></g>'
+        '<g opacity=".75"><circle cx="43.5" cy="76.5" r="56.7" fill="url(#s7h3)"/></g>'
+        '<g opacity=".85"><circle cx="55.31" cy="64.69" r="30.24" fill="url(#s7h6)"/></g>'
+    ),
+    "logo-core": (
+        '<g><circle cx="70.5" cy="49.5" r="27" fill="#FFB238"/><circle cx="70.5" cy="49.5" r="27" fill="url(#s7c2)"/></g>'
+        '<g opacity=".75"><circle cx="43.5" cy="76.5" r="21" fill="#62B6E8"/><circle cx="43.5" cy="76.5" r="21" fill="url(#s7c4)"/></g>'
+        '<g opacity=".85"><circle cx="70.5" cy="49.5" r="27" clip-path="url(#s7k5)" fill="#FFF4DC"/></g>'
+    ),
+}
+for nombre, cuerpo in capas.items():
+    doc = f'<svg xmlns="http://www.w3.org/2000/svg" {VB} width="1200" height="1200">{defs}{cuerpo}</svg>'
+    (OUT / f"{nombre}.svg").write_text(doc, encoding="utf-8")
+    with tempfile.TemporaryDirectory() as tmp:
+        html = Path(tmp) / "l.html"
+        html.write_text(f'<html><body style="margin:0;background:transparent">{doc}</body></html>', encoding="utf-8")
+        subprocess.run(["chromium", "--headless=new", "--hide-scrollbars", "--default-background-color=00000000",
+                        f"--user-data-dir={tmp}/p", "--window-size=1200,1200", f"--screenshot={OUT / (nombre + '.png')}",
+                        html.as_uri()], check=True, capture_output=True)
+print("logo en capas listo")

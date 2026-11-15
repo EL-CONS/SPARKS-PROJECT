@@ -4,7 +4,7 @@ Versión del 14 de noviembre, 23:40, alineada con la presentación `docs/pitch/p
 
 Tono: humilde, frases cortas, una idea por frase. **(pausa)** marca un silencio. Nunca "descubrimos": "candidatos para revisar".
 
-Cómo presentar: abrir `docs/pitch/presentacion/index.html` en el navegador, pantalla completa (F11). Flechas o espacio para avanzar. La tecla `E` permite corregir un texto en vivo; se guarda en ese navegador. La URL de AWS ya está en `APP_URL`: el botón "Abrir Sparks en vivo" y el QR del cierre la usan.
+Cómo presentar: abrir `docs/pitch/presentacion/index.html` en el navegador, pantalla completa (F11). Flechas o espacio para avanzar. La tecla `E` permite corregir un texto en vivo; se guarda en ese navegador. La URL de AWS ya está en `APP_URL`: el botón "Abrir Sparks en vivo" y el QR del cierre la usan. **Idioma:** botón ES/EN abajo a la derecha, tecla `L`, o `?lang=en` en la URL; las capturas y el video de la app también cambian de idioma. Las capturas y el video se regeneran con `node docs/pitch/presentacion/capturar-app.mjs <url-de-la-app>` (Chromium sin interfaz y ffmpeg).
 
 ---
 
@@ -24,12 +24,12 @@ Fuentes: placas del 23 y 29 de enero de 1930 (`docs/pitch/revision-ciencia.md`, 
 > Así nació Sparks. Una chispa es una luz que cambió de lugar.
 > Sparks toma fotos de SPHEREx de distintos meses y las hace parpadear. Lo que no se movió se queda quieto. Lo que se movió, salta.
 > Azul es donde estaba. Ámbar, donde está ahora.
-> Eliges un pedazo de cielo, o escribes sus coordenadas, desde un navegador o un teléfono.
+> (A los 6 segundos las luces dejan paso a la app grabada.) Esto es Sparks: eliges un objetivo, el cielo parpadea, restas, y te dice qué pasó.
 
 Opcional, si sobra tiempo: clic en "Abrir Sparks en vivo" (abre WISE 0855 en la URL de AWS; enseñarla en **Resta**, no en parpadeo).
 
 ### 4 · La prueba: Barnard (1:10–1:40)
-> Esta es la estrella de Barnard. Parpadea: un año de diferencia. Restamos una foto de la otra: lo que no se movió desaparece.
+> Esta es la estrella de Barnard en Sparks, en los seis detectores. Restamos un año de cielo: lo que no se movió desaparece. (A los 6 segundos entra la pantalla "¿Qué pasó?".)
 > Nuestra flecha dice: diez punto dos segundos de arco por año, más menos cuatro décimas.
 > La de Gaia, el mejor catálogo de estrellas del mundo, dice diez punto cuatro.
 > **(pausa)** Coinciden.
