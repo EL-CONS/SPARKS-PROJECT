@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""Descarga recortes SPHEREx para R Draconis y RW Aurigae.
+"""Descarga recortes SPHEREx para los cuatro campos asignados.
+
+Campos: R Draconis, RW Aurigae, WISE 0855 y epsilon Indi B.
 
 Reglas del sprint:
 - ~8 cuadros por detector y temporada.
@@ -8,6 +10,12 @@ Reglas del sprint:
 - Se quita el cubo EPSF antes de guardar.
 - Los datos se guardan FUERA de git.
 - Cada campo tiene su propio consultas.json con cada intento (hora, HTTP, bytes).
+
+Los dos campos con movimiento propio alto (WISE 0855 y epsilon Indi B) llevan
+la posicion del catalogo a la epoca de cada cuadro antes de pedir el recorte.
+La consulta SIA sigue usando la posicion del catalogo: el campo de SPHEREx es
+mucho mayor que el desplazamiento y la busqueda por POS devuelve las imagenes
+que cubren esa zona. Lo que se centra por cuadro es el recorte.
 
 La seleccion y las consultas SIA reutilizan funciones de cobertura.py. No se
 usa nada del proyecto anterior. Si origin/Horacio llega a tener pipeline/, hay
@@ -19,6 +27,7 @@ import bisect
 import csv
 import io
 import json
+import math
 import os
 import re
 import sys
@@ -33,10 +42,24 @@ from urllib.parse import urlparse
 
 from cobertura import fetch_csv, mjd_to_date, seasons, sia_url
 
-# Lista vigente de Horacio (commit 83c9607), solo los dos campos asignados.
+# Lista vigente de Horacio (commit 83c9607) y correcciones del sprint 18-20.
+# epsilon Indi B queda en 331.044 / -56.783 y epsilon Indi A en 330.84 / -56.786;
+# en este script solo entra B.
+# pmRA*cosdec y pmdec en arcsec/anio. La epoca es la del sistema de referencia
+# de la coordenada: J2000 (MJD 51544.5) o 2010.37 (MJD 55320.4) para WISE 0855.
 OBJETOS = {
     "R Draconis": {"slug": "R_Draconis", "ra": 248.1674, "dec": 66.7550},
     "RW Aurigae": {"slug": "RW_Aurigae", "ra": 76.9561, "dec": 30.4012},
+    "WISE 0855": {
+        "slug": "WISE_0855", "ra": 133.7951, "dec": -7.2451,
+        "epoca_mjd": 55320.4, "pmra_cosdec": -8.06, "pmdec": 0.70,
+        "fuente_pm": "Luhman & Esplin 2014 (ApJL 786, L18); epoca 2010.37",
+    },
+    "epsilon Indi B": {
+        "slug": "Epsilon_Indi_B", "ra": 331.0441, "dec": -56.7828,
+        "epoca_mjd": 51544.5, "pmra_cosdec": 3.976, "pmdec": -2.500,
+        "fuente_pm": "Gaia DR3 de epsilon Indi A (sistema comun); epoca J2000",
+    },
 }
 COLECCIONES = ("spherex_dr1", "spherex_qr3")
 DETECTOR_RE = re.compile(r"SPHEREx-(D\d)")
@@ -72,6 +95,26 @@ def season_of(mjd: float, bounds) -> int:
     return bisect.bisect_right(bounds, mjd) + 1
 
 
+def propagate(ra: float, dec: float, mjd: float, info):
+    """Lleva la posicion del catalogo a la epoca de observacion (mjd).
+
+    Devuelve la misma posicion si el objeto no tiene movimiento propio
+    declarado. pmRA*cosdec se divide por cos(dec) para obtener el cambio en RA.
+    """
+    epoch = info.get("epoca_mjd")
+    pmra = info.get("pmra_cosdec")
+    pmdec = info.get("pmdec")
+    if epoch is None or pmra is None or pmdec is None:
+        return ra, dec
+    years = (mjd - float(epoch)) / 365.25
+    cosd = math.cos(math.radians(dec))
+    if abs(cosd) < 1e-6:
+        return ra, dec
+    ra2 = (ra + (float(pmra) * years / 3600.0) / cosd) % 360.0
+    dec2 = dec + float(pmdec) * years / 3600.0
+    return ra2, dec2
+
+
 def pick_evenly(rows, n: int):
     rows = sorted(rows, key=lambda r: (float(r["t_min"]), r.get("obs_id", "")))
     if len(rows) <= n:
@@ -91,7 +134,8 @@ def pick_evenly(rows, n: int):
     return picked
 
 
-def select_frames(nombre, ra, dec, frames, log, lock):
+def select_frames(nombre, info, frames, log, lock):
+    ra, dec = info["ra"], info["dec"]
     rows = []
     for coll in COLECCIONES:
         url = sia_url(coll, ra, dec)
@@ -137,6 +181,9 @@ def select_frames(nombre, ra, dec, frames, log, lock):
         for r in chosen:
             r["_temporada"] = s
             r["_detector"] = det
+            r["_ra_centro"], r["_dec_centro"] = propagate(
+                ra, dec, float(r["t_min"]), info
+            )
             selected.append(r)
         print(f"  temporada {s} {det}: {len(uniq)} disponibles, {len(chosen)} elegidos", flush=True)
 
@@ -228,7 +275,9 @@ def download_one(nombre, slug, row, ra, dec, size, out_root, log, lock, max_atte
     det = row["_detector"]
     coll = row["_coleccion"]
     obs_id = row.get("obs_id", "sin_obs_id")
-    url = cutout_url(row["access_url"], ra, dec, size)
+    cra = row.get("_ra_centro", ra)
+    cdec = row.get("_dec_centro", dec)
+    url = cutout_url(row["access_url"], cra, cdec, size)
     dest = frame_path(out_root, slug, row)
     rel = dest.relative_to(out_root)
     dest.parent.mkdir(parents=True, exist_ok=True)
@@ -255,6 +304,7 @@ def download_one(nombre, slug, row, ra, dec, size, out_root, log, lock, max_atte
                 "hora": iso_now(), "campo": nombre, "tipo": "cutout",
                 "temporada": season, "detector": det, "coleccion": coll,
                 "obs_id": obs_id, "intento": attempt, "url": url,
+                "centro_ra": round(cra, 6), "centro_dec": round(cdec, 6),
                 "http": status, "bytes_descargados": len(raw),
                 "bytes_guardados": len(filtered), "segundos": round(time.monotonic() - t0, 3),
                 "archivo": str(rel), "hdus_conservados": kept,
@@ -277,6 +327,7 @@ def download_one(nombre, slug, row, ra, dec, size, out_root, log, lock, max_atte
             "hora": iso_now(), "campo": nombre, "tipo": "cutout",
             "temporada": season, "detector": det, "coleccion": coll,
             "obs_id": obs_id, "intento": attempt, "url": url,
+            "centro_ra": round(cra, 6), "centro_dec": round(cdec, 6),
             "http": status, "bytes_descargados": len(raw), "bytes_guardados": 0,
             "segundos": round(time.monotonic() - t0, 3), "archivo": "",
             "hdus_conservados": [], "hdus_eliminados": [], "error": err,
@@ -332,16 +383,23 @@ def main() -> int:
         lock = threading.Lock()
 
         selected, nseasons, nrows = select_frames(
-            nombre, info["ra"], info["dec"], args.frames, log, lock
+            nombre, info, args.frames, log, lock
         )
         seleccion = [{
             "temporada": r["_temporada"], "detector": r["_detector"],
             "coleccion": r["_coleccion"], "obs_id": r.get("obs_id", ""),
             "t_min": r.get("t_min", ""), "fecha": mjd_to_date(float(r["t_min"])).date().isoformat(),
+            "centro_ra": round(r["_ra_centro"], 6),
+            "centro_dec": round(r["_dec_centro"], 6),
             "access_url": r.get("access_url", ""),
         } for r in selected]
         write_json(field_dir / "seleccion.json", {
             "campo": nombre, "ra": info["ra"], "dec": info["dec"],
+            "epoca_mjd": info.get("epoca_mjd"),
+            "pmra_cosdec": info.get("pmra_cosdec"),
+            "pmdec": info.get("pmdec"),
+            "fuente_pm": info.get("fuente_pm", ""),
+            "centro_propagado_por_cuadro": bool(info.get("epoca_mjd")),
             "temporadas": nseasons, "filas_sia": nrows,
             "cuadros_por_detector_temporada": args.frames,
             "seleccionados": len(seleccion), "frames": seleccion,
