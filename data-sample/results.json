@@ -1,0 +1,3268 @@
+{
+ "generated_utc": "2026-11-06 01:40 UTC",
+ "archive": {
+  "queried_utc": "2026-11-05 19:30 UTC",
+  "service": "IRSA ObsTAP ivoa.obscore",
+  "by_collection": {
+   "spherex_qr2": 1097080,
+   "spherex_qr2_cal": 74,
+   "spherex_qr2_deep": 270250,
+   "spherex_qr3": 192961,
+   "spherex_qr3_cal": 88,
+   "spherex_qr3_deep": 47182
+  },
+  "n_science_images": 1607473,
+  "definition": "detector images in spherex_qrN and spherex_qrN_deep (calibration collections excluded)"
+ },
+ "fields": {
+  "barnard": {
+   "name": "Barnard's Star",
+   "kind": "mover",
+   "gallery": false,
+   "n_images": 355,
+   "n_seasons": 3,
+   "releases": [
+    "QR2",
+    "QR3"
+   ],
+   "motion": {
+    "mu": 10.23,
+    "mu_err": 0.43,
+    "pa": 354.8,
+    "pa_err": 2.0,
+    "n_points": 6,
+    "detectors": [
+     5,
+     6
+    ],
+    "baseline_yr": 0.98
+   },
+   "catalog": {
+    "name": "Gaia DR3",
+    "mu": 10.39,
+    "pa": 355.6,
+    "mu_err": 0.0
+   },
+   "agreement_sigma": 0.4,
+   "in_gaia": true,
+   "nearest_gaia_arcsec": null,
+   "coadd_noise": [
+    {
+     "det": 1,
+     "season": 0,
+     "n": 24,
+     "single": 0.023,
+     "coadd": 0.0048,
+     "gain": 4.8
+    },
+    {
+     "det": 1,
+     "season": 1,
+     "n": 18,
+     "single": 0.0247,
+     "coadd": 0.0061,
+     "gain": 4.0
+    },
+    {
+     "det": 1,
+     "season": 2,
+     "n": 18,
+     "single": 0.0213,
+     "coadd": 0.0052,
+     "gain": 4.1
+    },
+    {
+     "det": 2,
+     "season": 0,
+     "n": 18,
+     "single": 0.0219,
+     "coadd": 0.0052,
+     "gain": 4.2
+    },
+    {
+     "det": 2,
+     "season": 1,
+     "n": 18,
+     "single": 0.024,
+     "coadd": 0.0059,
+     "gain": 4.0
+    },
+    {
+     "det": 2,
+     "season": 2,
+     "n": 25,
+     "single": 0.022,
+     "coadd": 0.0045,
+     "gain": 4.9
+    },
+    {
+     "det": 3,
+     "season": 0,
+     "n": 18,
+     "single": 0.0185,
+     "coadd": 0.0046,
+     "gain": 4.1
+    },
+    {
+     "det": 3,
+     "season": 1,
+     "n": 21,
+     "single": 0.0196,
+     "coadd": 0.0049,
+     "gain": 4.0
+    },
+    {
+     "det": 3,
+     "season": 2,
+     "n": 17,
+     "single": 0.0185,
+     "coadd": 0.0046,
+     "gain": 4.0
+    },
+    {
+     "det": 4,
+     "season": 0,
+     "n": 23,
+     "single": 0.0137,
+     "coadd": 0.0029,
+     "gain": 4.6
+    },
+    {
+     "det": 4,
+     "season": 1,
+     "n": 18,
+     "single": 0.0153,
+     "coadd": 0.0037,
+     "gain": 4.1
+    },
+    {
+     "det": 4,
+     "season": 2,
+     "n": 17,
+     "single": 0.0133,
+     "coadd": 0.0034,
+     "gain": 3.9
+    },
+    {
+     "det": 5,
+     "season": 0,
+     "n": 18,
+     "single": 0.0325,
+     "coadd": 0.0077,
+     "gain": 4.2
+    },
+    {
+     "det": 5,
+     "season": 1,
+     "n": 19,
+     "single": 0.0371,
+     "coadd": 0.0087,
+     "gain": 4.2
+    },
+    {
+     "det": 5,
+     "season": 2,
+     "n": 24,
+     "single": 0.0333,
+     "coadd": 0.0068,
+     "gain": 4.9
+    },
+    {
+     "det": 6,
+     "season": 0,
+     "n": 18,
+     "single": 0.0494,
+     "coadd": 0.0117,
+     "gain": 4.2
+    },
+    {
+     "det": 6,
+     "season": 1,
+     "n": 24,
+     "single": 0.0541,
+     "coadd": 0.0116,
+     "gain": 4.7
+    },
+    {
+     "det": 6,
+     "season": 2,
+     "n": 17,
+     "single": 0.0497,
+     "coadd": 0.0121,
+     "gain": 4.1
+    }
+   ],
+   "registration_max_px": 0.033
+  },
+  "wise0855": {
+   "name": "WISE 0855−0714",
+   "kind": "mover",
+   "gallery": false,
+   "n_images": 255,
+   "n_seasons": 3,
+   "releases": [
+    "QR2"
+   ],
+   "motion": {
+    "mu": 7.91,
+    "mu_err": 1.35,
+    "pa": 275.5,
+    "pa_err": 9.7,
+    "n_points": 5,
+    "detectors": [
+     5,
+     6
+    ],
+    "baseline_yr": 0.99
+   },
+   "catalog": {
+    "name": "CatWISE2020",
+    "mu": 8.09,
+    "pa": 277.4,
+    "mu_err": 0.167
+   },
+   "agreement_sigma": 0.1,
+   "in_gaia": false,
+   "nearest_gaia_arcsec": 10.7,
+   "cold": {
+    "ratio": 10.88,
+    "ratio_kind": "lower_limit",
+    "methane_depth": 1.03,
+    "methane_err": 0.07,
+    "long_mjy": 0.31,
+    "short_mjy": 0.007
+   },
+   "snr": {
+    "1": {
+     "single": 0.3,
+     "stacked": 1.7,
+     "n": 21
+    },
+    "2": {
+     "single": 0.4,
+     "stacked": 1.0,
+     "n": 33
+    },
+    "3": {
+     "single": -0.2,
+     "stacked": -0.8,
+     "n": 23
+    },
+    "4": {
+     "single": 0.5,
+     "stacked": 2.6,
+     "n": 22
+    },
+    "5": {
+     "single": 2.4,
+     "stacked": 13.5,
+     "n": 31
+    },
+    "6": {
+     "single": 2.0,
+     "stacked": 10.3,
+     "n": 21
+    }
+   },
+   "coadd_noise": [
+    {
+     "det": 1,
+     "season": 0,
+     "n": 4,
+     "single": 0.0188,
+     "coadd": 0.0104,
+     "gain": 1.8
+    },
+    {
+     "det": 1,
+     "season": 1,
+     "n": 18,
+     "single": 0.0202,
+     "coadd": 0.0052,
+     "gain": 3.9
+    },
+    {
+     "det": 1,
+     "season": 2,
+     "n": 14,
+     "single": 0.0182,
+     "coadd": 0.0052,
+     "gain": 3.5
+    },
+    {
+     "det": 2,
+     "season": 0,
+     "n": 8,
+     "single": 0.0178,
+     "coadd": 0.0065,
+     "gain": 2.8
+    },
+    {
+     "det": 2,
+     "season": 1,
+     "n": 25,
+     "single": 0.019,
+     "coadd": 0.004,
+     "gain": 4.8
+    },
+    {
+     "det": 2,
+     "season": 2,
+     "n": 15,
+     "single": 0.0179,
+     "coadd": 0.0048,
+     "gain": 3.7
+    },
+    {
+     "det": 3,
+     "season": 0,
+     "n": 2,
+     "single": 0.0147,
+     "coadd": 0.0104,
+     "gain": 1.4
+    },
+    {
+     "det": 3,
+     "season": 1,
+     "n": 21,
+     "single": 0.0158,
+     "coadd": 0.0037,
+     "gain": 4.3
+    },
+    {
+     "det": 3,
+     "season": 2,
+     "n": 21,
+     "single": 0.0148,
+     "coadd": 0.0034,
+     "gain": 4.4
+    },
+    {
+     "det": 4,
+     "season": 0,
+     "n": 4,
+     "single": 0.0116,
+     "coadd": 0.0061,
+     "gain": 1.9
+    },
+    {
+     "det": 4,
+     "season": 1,
+     "n": 18,
+     "single": 0.0127,
+     "coadd": 0.0032,
+     "gain": 4.0
+    },
+    {
+     "det": 4,
+     "season": 2,
+     "n": 14,
+     "single": 0.0117,
+     "coadd": 0.0034,
+     "gain": 3.5
+    },
+    {
+     "det": 5,
+     "season": 0,
+     "n": 8,
+     "single": 0.036,
+     "coadd": 0.0128,
+     "gain": 2.8
+    },
+    {
+     "det": 5,
+     "season": 1,
+     "n": 25,
+     "single": 0.0335,
+     "coadd": 0.0071,
+     "gain": 4.7
+    },
+    {
+     "det": 5,
+     "season": 2,
+     "n": 15,
+     "single": 0.0342,
+     "coadd": 0.0088,
+     "gain": 3.9
+    },
+    {
+     "det": 6,
+     "season": 0,
+     "n": 3,
+     "single": 0.0698,
+     "coadd": 0.0401,
+     "gain": 1.7
+    },
+    {
+     "det": 6,
+     "season": 1,
+     "n": 19,
+     "single": 0.0531,
+     "coadd": 0.0133,
+     "gain": 4.0
+    },
+    {
+     "det": 6,
+     "season": 2,
+     "n": 21,
+     "single": 0.0546,
+     "coadd": 0.0118,
+     "gain": 4.6
+    }
+   ],
+   "registration_max_px": 0.055
+  },
+  "epsindib": {
+   "name": "ε Indi B",
+   "kind": "mover",
+   "gallery": false,
+   "n_images": 444,
+   "n_seasons": 4,
+   "releases": [
+    "QR2",
+    "QR3"
+   ],
+   "motion": {
+    "mu": 4.54,
+    "mu_err": 0.11,
+    "pa": 120.5,
+    "pa_err": 1.7,
+    "n_points": 22,
+    "detectors": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6
+    ],
+    "baseline_yr": 1.39
+   },
+   "catalog": {
+    "name": "Gaia DR3",
+    "mu": 4.68,
+    "pa": 121.8,
+    "mu_err": 0.001
+   },
+   "agreement_sigma": 1.3,
+   "in_gaia": true,
+   "nearest_gaia_arcsec": null,
+   "cold": {
+    "ratio": 1.73,
+    "ratio_kind": "measured",
+    "methane_depth": 0.81,
+    "methane_err": 0.0,
+    "long_mjy": 17.43,
+    "short_mjy": 10.054
+   },
+   "snr": {
+    "1": {
+     "single": 19.8,
+     "stacked": 47.3,
+     "n": 43
+    },
+    "2": {
+     "single": 23.0,
+     "stacked": 207.3,
+     "n": 88
+    },
+    "3": {
+     "single": 20.1,
+     "stacked": 199.0,
+     "n": 91
+    },
+    "4": {
+     "single": 22.5,
+     "stacked": 136.2,
+     "n": 39
+    },
+    "5": {
+     "single": 17.9,
+     "stacked": 147.3,
+     "n": 76
+    },
+    "6": {
+     "single": 19.3,
+     "stacked": 183.6,
+     "n": 87
+    }
+   },
+   "coadd_noise": [
+    {
+     "det": 1,
+     "season": 0,
+     "n": 4,
+     "single": 0.0316,
+     "coadd": 0.018,
+     "gain": 1.8
+    },
+    {
+     "det": 1,
+     "season": 1,
+     "n": 21,
+     "single": 0.0244,
+     "coadd": 0.0056,
+     "gain": 4.4
+    },
+    {
+     "det": 1,
+     "season": 2,
+     "n": 20,
+     "single": 0.0248,
+     "coadd": 0.0058,
+     "gain": 4.3
+    },
+    {
+     "det": 2,
+     "season": 0,
+     "n": 32,
+     "single": 0.0199,
+     "coadd": 0.0036,
+     "gain": 5.5
+    },
+    {
+     "det": 2,
+     "season": 1,
+     "n": 29,
+     "single": 0.0205,
+     "coadd": 0.004,
+     "gain": 5.1
+    },
+    {
+     "det": 2,
+     "season": 2,
+     "n": 7,
+     "single": 0.0198,
+     "coadd": 0.008,
+     "gain": 2.5
+    },
+    {
+     "det": 2,
+     "season": 3,
+     "n": 24,
+     "single": 0.0194,
+     "coadd": 0.0041,
+     "gain": 4.8
+    },
+    {
+     "det": 3,
+     "season": 0,
+     "n": 25,
+     "single": 0.018,
+     "coadd": 0.0036,
+     "gain": 5.0
+    },
+    {
+     "det": 3,
+     "season": 1,
+     "n": 22,
+     "single": 0.0175,
+     "coadd": 0.0038,
+     "gain": 4.6
+    },
+    {
+     "det": 3,
+     "season": 2,
+     "n": 12,
+     "single": 0.0169,
+     "coadd": 0.0051,
+     "gain": 3.3
+    },
+    {
+     "det": 3,
+     "season": 3,
+     "n": 34,
+     "single": 0.0167,
+     "coadd": 0.0029,
+     "gain": 5.7
+    },
+    {
+     "det": 4,
+     "season": 0,
+     "n": 3,
+     "single": 0.0125,
+     "coadd": 0.008,
+     "gain": 1.6
+    },
+    {
+     "det": 4,
+     "season": 1,
+     "n": 20,
+     "single": 0.0128,
+     "coadd": 0.003,
+     "gain": 4.2
+    },
+    {
+     "det": 4,
+     "season": 2,
+     "n": 18,
+     "single": 0.0122,
+     "coadd": 0.0031,
+     "gain": 3.9
+    },
+    {
+     "det": 5,
+     "season": 0,
+     "n": 26,
+     "single": 0.0327,
+     "coadd": 0.0066,
+     "gain": 5.0
+    },
+    {
+     "det": 5,
+     "season": 1,
+     "n": 24,
+     "single": 0.0312,
+     "coadd": 0.0066,
+     "gain": 4.7
+    },
+    {
+     "det": 5,
+     "season": 2,
+     "n": 6,
+     "single": 0.0339,
+     "coadd": 0.0139,
+     "gain": 2.4
+    },
+    {
+     "det": 5,
+     "season": 3,
+     "n": 24,
+     "single": 0.0314,
+     "coadd": 0.0066,
+     "gain": 4.8
+    },
+    {
+     "det": 6,
+     "season": 0,
+     "n": 25,
+     "single": 0.0465,
+     "coadd": 0.01,
+     "gain": 4.7
+    },
+    {
+     "det": 6,
+     "season": 1,
+     "n": 21,
+     "single": 0.049,
+     "coadd": 0.011,
+     "gain": 4.4
+    },
+    {
+     "det": 6,
+     "season": 2,
+     "n": 11,
+     "single": 0.0559,
+     "coadd": 0.017,
+     "gain": 3.3
+    },
+    {
+     "det": 6,
+     "season": 3,
+     "n": 36,
+     "single": 0.0496,
+     "coadd": 0.0086,
+     "gain": 5.8
+    }
+   ],
+   "registration_max_px": 0.071
+  },
+  "rwaur": {
+   "name": "RW Aurigae",
+   "kind": "variable",
+   "gallery": false,
+   "n_images": 331,
+   "n_seasons": 3,
+   "releases": [
+    "QR2",
+    "QR3"
+   ],
+   "catalog": {
+    "name": "Gaia DR3",
+    "mu": 0.03,
+    "pa": 174.5,
+    "mu_err": 0.0
+   },
+   "in_gaia": true,
+   "nearest_gaia_arcsec": null,
+   "coadd_noise": [
+    {
+     "det": 1,
+     "season": 0,
+     "n": 19,
+     "single": 0.025,
+     "coadd": 0.0062,
+     "gain": 4.1
+    },
+    {
+     "det": 1,
+     "season": 1,
+     "n": 19,
+     "single": 0.0251,
+     "coadd": 0.0061,
+     "gain": 4.1
+    },
+    {
+     "det": 1,
+     "season": 2,
+     "n": 18,
+     "single": 0.0235,
+     "coadd": 0.0059,
+     "gain": 4.0
+    },
+    {
+     "det": 2,
+     "season": 0,
+     "n": 18,
+     "single": 0.0235,
+     "coadd": 0.0057,
+     "gain": 4.1
+    },
+    {
+     "det": 2,
+     "season": 1,
+     "n": 19,
+     "single": 0.0234,
+     "coadd": 0.0056,
+     "gain": 4.2
+    },
+    {
+     "det": 2,
+     "season": 2,
+     "n": 18,
+     "single": 0.0225,
+     "coadd": 0.0054,
+     "gain": 4.1
+    },
+    {
+     "det": 3,
+     "season": 0,
+     "n": 19,
+     "single": 0.0188,
+     "coadd": 0.0046,
+     "gain": 4.1
+    },
+    {
+     "det": 3,
+     "season": 1,
+     "n": 18,
+     "single": 0.019,
+     "coadd": 0.0047,
+     "gain": 4.1
+    },
+    {
+     "det": 3,
+     "season": 2,
+     "n": 18,
+     "single": 0.019,
+     "coadd": 0.0046,
+     "gain": 4.1
+    },
+    {
+     "det": 4,
+     "season": 0,
+     "n": 19,
+     "single": 0.0155,
+     "coadd": 0.0037,
+     "gain": 4.1
+    },
+    {
+     "det": 4,
+     "season": 1,
+     "n": 18,
+     "single": 0.0155,
+     "coadd": 0.0038,
+     "gain": 4.1
+    },
+    {
+     "det": 4,
+     "season": 2,
+     "n": 18,
+     "single": 0.0158,
+     "coadd": 0.0038,
+     "gain": 4.1
+    },
+    {
+     "det": 5,
+     "season": 0,
+     "n": 18,
+     "single": 0.0398,
+     "coadd": 0.0095,
+     "gain": 4.2
+    },
+    {
+     "det": 5,
+     "season": 1,
+     "n": 19,
+     "single": 0.0379,
+     "coadd": 0.0091,
+     "gain": 4.2
+    },
+    {
+     "det": 5,
+     "season": 2,
+     "n": 19,
+     "single": 0.0383,
+     "coadd": 0.0092,
+     "gain": 4.2
+    },
+    {
+     "det": 6,
+     "season": 0,
+     "n": 17,
+     "single": 0.0578,
+     "coadd": 0.015,
+     "gain": 3.9
+    },
+    {
+     "det": 6,
+     "season": 1,
+     "n": 19,
+     "single": 0.0591,
+     "coadd": 0.0143,
+     "gain": 4.1
+    },
+    {
+     "det": 6,
+     "season": 2,
+     "n": 18,
+     "single": 0.0619,
+     "coadd": 0.0149,
+     "gain": 4.1
+    }
+   ],
+   "registration_max_px": 0.107,
+   "lightcurve": {
+    "method": "psf_wings",
+    "n_saturated": 302,
+    "n_total": 331,
+    "seasons": [
+     {
+      "season": 0,
+      "start": "2025-09-01",
+      "end": "2025-09-20",
+      "n": 109,
+      "median": 1.0
+     },
+     {
+      "season": 1,
+      "start": "2026-02-20",
+      "end": "2026-03-12",
+      "n": 112,
+      "median": 1.03
+     },
+     {
+      "season": 2,
+      "start": "2026-09-02",
+      "end": "2026-09-16",
+      "n": 109,
+      "median": 0.89
+     }
+    ]
+   }
+  },
+  "rdra": {
+   "name": "R Draconis",
+   "kind": "variable",
+   "gallery": false,
+   "n_images": 534,
+   "n_seasons": 3,
+   "releases": [
+    "QR2"
+   ],
+   "catalog": {
+    "name": "Gaia DR3",
+    "mu": 0.02,
+    "pa": 286.6,
+    "mu_err": 0.0
+   },
+   "in_gaia": true,
+   "nearest_gaia_arcsec": null,
+   "coadd_noise": [
+    {
+     "det": 1,
+     "season": 0,
+     "n": 22,
+     "single": 0.0259,
+     "coadd": 0.0056,
+     "gain": 4.6
+    },
+    {
+     "det": 1,
+     "season": 1,
+     "n": 45,
+     "single": 0.0214,
+     "coadd": 0.0035,
+     "gain": 6.2
+    },
+    {
+     "det": 1,
+     "season": 2,
+     "n": 24,
+     "single": 0.0232,
+     "coadd": 0.0048,
+     "gain": 4.8
+    },
+    {
+     "det": 2,
+     "season": 0,
+     "n": 33,
+     "single": 0.0306,
+     "coadd": 0.0057,
+     "gain": 5.4
+    },
+    {
+     "det": 2,
+     "season": 1,
+     "n": 37,
+     "single": 0.0259,
+     "coadd": 0.0043,
+     "gain": 6.1
+    },
+    {
+     "det": 2,
+     "season": 2,
+     "n": 19,
+     "single": 0.0232,
+     "coadd": 0.0054,
+     "gain": 4.3
+    },
+    {
+     "det": 3,
+     "season": 0,
+     "n": 22,
+     "single": 0.0311,
+     "coadd": 0.0066,
+     "gain": 4.7
+    },
+    {
+     "det": 3,
+     "season": 1,
+     "n": 24,
+     "single": 0.032,
+     "coadd": 0.0062,
+     "gain": 5.2
+    },
+    {
+     "det": 3,
+     "season": 2,
+     "n": 45,
+     "single": 0.0226,
+     "coadd": 0.0035,
+     "gain": 6.5
+    },
+    {
+     "det": 4,
+     "season": 0,
+     "n": 21,
+     "single": 0.0216,
+     "coadd": 0.0048,
+     "gain": 4.5
+    },
+    {
+     "det": 4,
+     "season": 1,
+     "n": 42,
+     "single": 0.0188,
+     "coadd": 0.003,
+     "gain": 6.3
+    },
+    {
+     "det": 4,
+     "season": 2,
+     "n": 23,
+     "single": 0.0181,
+     "coadd": 0.0039,
+     "gain": 4.7
+    },
+    {
+     "det": 5,
+     "season": 0,
+     "n": 32,
+     "single": 0.0486,
+     "coadd": 0.0094,
+     "gain": 5.2
+    },
+    {
+     "det": 5,
+     "season": 1,
+     "n": 37,
+     "single": 0.0448,
+     "coadd": 0.0074,
+     "gain": 6.0
+    },
+    {
+     "det": 5,
+     "season": 2,
+     "n": 19,
+     "single": 0.0417,
+     "coadd": 0.0097,
+     "gain": 4.3
+    },
+    {
+     "det": 6,
+     "season": 0,
+     "n": 21,
+     "single": 0.0607,
+     "coadd": 0.0137,
+     "gain": 4.4
+    },
+    {
+     "det": 6,
+     "season": 1,
+     "n": 24,
+     "single": 0.0599,
+     "coadd": 0.0125,
+     "gain": 4.8
+    },
+    {
+     "det": 6,
+     "season": 2,
+     "n": 44,
+     "single": 0.0529,
+     "coadd": 0.0082,
+     "gain": 6.4
+    }
+   ],
+   "registration_max_px": 0.014,
+   "lightcurve": {
+    "method": "psf_wings",
+    "n_saturated": 534,
+    "n_total": 534,
+    "seasons": [
+     {
+      "season": 0,
+      "start": "2025-05-16",
+      "end": "2025-07-22",
+      "n": 148,
+      "median": 1.47
+     },
+     {
+      "season": 1,
+      "start": "2025-10-17",
+      "end": "2026-01-13",
+      "n": 208,
+      "median": 1.0
+     },
+     {
+      "season": 2,
+      "start": "2026-04-22",
+      "end": "2026-07-16",
+      "n": 172,
+      "median": 0.79
+     }
+    ]
+   }
+  },
+  "teegarden": {
+   "name": "Teegarden's Star",
+   "kind": "mover",
+   "gallery": true,
+   "n_images": 325,
+   "n_seasons": 3,
+   "releases": [
+    "QR2",
+    "QR3"
+   ],
+   "motion": {
+    "mu": 5.08,
+    "mu_err": 0.2,
+    "pa": 137.7,
+    "pa_err": 2.4,
+    "n_points": 18,
+    "detectors": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6
+    ],
+    "baseline_yr": 1.01
+   },
+   "catalog": {
+    "name": "Gaia DR3",
+    "mu": 5.12,
+    "pa": 138.0,
+    "mu_err": 0.0
+   },
+   "agreement_sigma": 0.2,
+   "in_gaia": true,
+   "nearest_gaia_arcsec": null,
+   "snr": {
+    "1": {
+     "single": 33.7,
+     "stacked": 110.6,
+     "n": 14
+    },
+    "5": {
+     "single": 24.3,
+     "stacked": 171.5,
+     "n": 48
+    },
+    "6": {
+     "single": 26.8,
+     "stacked": 187.9,
+     "n": 51
+    }
+   },
+   "coadd_noise": [
+    {
+     "det": 1,
+     "season": 0,
+     "n": 19,
+     "single": 0.0243,
+     "coadd": 0.006,
+     "gain": 4.0
+    },
+    {
+     "det": 1,
+     "season": 1,
+     "n": 19,
+     "single": 0.0246,
+     "coadd": 0.006,
+     "gain": 4.1
+    },
+    {
+     "det": 1,
+     "season": 2,
+     "n": 18,
+     "single": 0.0235,
+     "coadd": 0.0059,
+     "gain": 4.0
+    },
+    {
+     "det": 2,
+     "season": 0,
+     "n": 19,
+     "single": 0.0231,
+     "coadd": 0.0055,
+     "gain": 4.2
+    },
+    {
+     "det": 2,
+     "season": 1,
+     "n": 19,
+     "single": 0.0236,
+     "coadd": 0.0057,
+     "gain": 4.2
+    },
+    {
+     "det": 2,
+     "season": 2,
+     "n": 18,
+     "single": 0.0224,
+     "coadd": 0.0054,
+     "gain": 4.1
+    },
+    {
+     "det": 3,
+     "season": 0,
+     "n": 17,
+     "single": 0.0192,
+     "coadd": 0.005,
+     "gain": 3.8
+    },
+    {
+     "det": 3,
+     "season": 1,
+     "n": 18,
+     "single": 0.0191,
+     "coadd": 0.0048,
+     "gain": 3.9
+    },
+    {
+     "det": 3,
+     "season": 2,
+     "n": 18,
+     "single": 0.0186,
+     "coadd": 0.0047,
+     "gain": 4.0
+    },
+    {
+     "det": 4,
+     "season": 0,
+     "n": 17,
+     "single": 0.0147,
+     "coadd": 0.0037,
+     "gain": 4.0
+    },
+    {
+     "det": 4,
+     "season": 1,
+     "n": 18,
+     "single": 0.0148,
+     "coadd": 0.0038,
+     "gain": 3.9
+    },
+    {
+     "det": 4,
+     "season": 2,
+     "n": 18,
+     "single": 0.015,
+     "coadd": 0.0037,
+     "gain": 4.0
+    },
+    {
+     "det": 5,
+     "season": 0,
+     "n": 18,
+     "single": 0.0381,
+     "coadd": 0.0093,
+     "gain": 4.1
+    },
+    {
+     "det": 5,
+     "season": 1,
+     "n": 19,
+     "single": 0.0384,
+     "coadd": 0.0092,
+     "gain": 4.2
+    },
+    {
+     "det": 5,
+     "season": 2,
+     "n": 18,
+     "single": 0.0376,
+     "coadd": 0.0092,
+     "gain": 4.1
+    },
+    {
+     "det": 6,
+     "season": 0,
+     "n": 16,
+     "single": 0.0602,
+     "coadd": 0.0165,
+     "gain": 3.6
+    },
+    {
+     "det": 6,
+     "season": 1,
+     "n": 18,
+     "single": 0.0593,
+     "coadd": 0.015,
+     "gain": 4.0
+    },
+    {
+     "det": 6,
+     "season": 2,
+     "n": 18,
+     "single": 0.0592,
+     "coadd": 0.0145,
+     "gain": 4.1
+    }
+   ],
+   "registration_max_px": 0.047
+  },
+  "vanmaanen": {
+   "name": "Van Maanen's Star",
+   "kind": "mover",
+   "gallery": true,
+   "n_images": 322,
+   "n_seasons": 3,
+   "releases": [
+    "QR2",
+    "QR3"
+   ],
+   "motion": {
+    "mu": 2.9,
+    "mu_err": 0.15,
+    "pa": 154.8,
+    "pa_err": 2.9,
+    "n_points": 18,
+    "detectors": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6
+    ],
+    "baseline_yr": 0.99
+   },
+   "catalog": {
+    "name": "Gaia DR3",
+    "mu": 2.98,
+    "pa": 155.6,
+    "mu_err": 0.0
+   },
+   "agreement_sigma": 0.5,
+   "in_gaia": true,
+   "nearest_gaia_arcsec": null,
+   "cold": {
+    "ratio": 0.16,
+    "ratio_kind": "measured",
+    "methane_depth": -0.34,
+    "methane_err": 0.02,
+    "long_mjy": 4.49,
+    "short_mjy": 28.22
+   },
+   "snr": {
+    "1": {
+     "single": 39.8,
+     "stacked": 301.5,
+     "n": 56
+    },
+    "2": {
+     "single": 45.9,
+     "stacked": 341.9,
+     "n": 55
+    },
+    "3": {
+     "single": 33.0,
+     "stacked": 239.5,
+     "n": 50
+    },
+    "4": {
+     "single": 30.0,
+     "stacked": 175.8,
+     "n": 36
+    },
+    "5": {
+     "single": 26.3,
+     "stacked": 160.5,
+     "n": 37
+    },
+    "6": {
+     "single": 18.2,
+     "stacked": 131.1,
+     "n": 51
+    }
+   },
+   "coadd_noise": [
+    {
+     "det": 1,
+     "season": 0,
+     "n": 19,
+     "single": 0.0237,
+     "coadd": 0.006,
+     "gain": 3.9
+    },
+    {
+     "det": 1,
+     "season": 1,
+     "n": 19,
+     "single": 0.0244,
+     "coadd": 0.006,
+     "gain": 4.0
+    },
+    {
+     "det": 1,
+     "season": 2,
+     "n": 18,
+     "single": 0.0243,
+     "coadd": 0.0062,
+     "gain": 4.0
+    },
+    {
+     "det": 2,
+     "season": 0,
+     "n": 19,
+     "single": 0.0211,
+     "coadd": 0.0053,
+     "gain": 4.0
+    },
+    {
+     "det": 2,
+     "season": 1,
+     "n": 19,
+     "single": 0.0231,
+     "coadd": 0.0056,
+     "gain": 4.1
+    },
+    {
+     "det": 2,
+     "season": 2,
+     "n": 18,
+     "single": 0.0217,
+     "coadd": 0.0055,
+     "gain": 3.9
+    },
+    {
+     "det": 3,
+     "season": 0,
+     "n": 14,
+     "single": 0.0182,
+     "coadd": 0.0052,
+     "gain": 3.5
+    },
+    {
+     "det": 3,
+     "season": 1,
+     "n": 18,
+     "single": 0.0186,
+     "coadd": 0.0047,
+     "gain": 4.0
+    },
+    {
+     "det": 3,
+     "season": 2,
+     "n": 19,
+     "single": 0.0186,
+     "coadd": 0.0045,
+     "gain": 4.2
+    },
+    {
+     "det": 4,
+     "season": 0,
+     "n": 18,
+     "single": 0.0141,
+     "coadd": 0.0036,
+     "gain": 3.9
+    },
+    {
+     "det": 4,
+     "season": 1,
+     "n": 18,
+     "single": 0.0147,
+     "coadd": 0.0037,
+     "gain": 4.0
+    },
+    {
+     "det": 4,
+     "season": 2,
+     "n": 18,
+     "single": 0.0146,
+     "coadd": 0.0037,
+     "gain": 4.0
+    },
+    {
+     "det": 5,
+     "season": 0,
+     "n": 17,
+     "single": 0.0349,
+     "coadd": 0.0089,
+     "gain": 3.9
+    },
+    {
+     "det": 5,
+     "season": 1,
+     "n": 19,
+     "single": 0.0378,
+     "coadd": 0.0091,
+     "gain": 4.2
+    },
+    {
+     "det": 5,
+     "season": 2,
+     "n": 18,
+     "single": 0.0363,
+     "coadd": 0.0091,
+     "gain": 4.0
+    },
+    {
+     "det": 6,
+     "season": 0,
+     "n": 14,
+     "single": 0.0548,
+     "coadd": 0.0156,
+     "gain": 3.5
+    },
+    {
+     "det": 6,
+     "season": 1,
+     "n": 17,
+     "single": 0.0589,
+     "coadd": 0.0152,
+     "gain": 3.9
+    },
+    {
+     "det": 6,
+     "season": 2,
+     "n": 20,
+     "single": 0.0578,
+     "coadd": 0.0135,
+     "gain": 4.3
+    }
+   ],
+   "registration_max_px": 0.089
+  },
+  "wolf359": {
+   "name": "Wolf 359",
+   "kind": "mover",
+   "gallery": true,
+   "n_images": 279,
+   "n_seasons": 3,
+   "releases": [
+    "QR2"
+   ],
+   "motion": {
+    "mu": 4.57,
+    "mu_err": 0.66,
+    "pa": 231.1,
+    "pa_err": 8.3,
+    "n_points": 15,
+    "detectors": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6
+    ],
+    "baseline_yr": 1.02
+   },
+   "catalog": {
+    "name": "Gaia DR3",
+    "mu": 4.72,
+    "pa": 235.1,
+    "mu_err": 0.0
+   },
+   "agreement_sigma": 0.2,
+   "in_gaia": true,
+   "nearest_gaia_arcsec": null,
+   "snr": {
+    "1": {
+     "single": 33.4,
+     "stacked": 33.4,
+     "n": 1
+    },
+    "6": {
+     "single": 24.8,
+     "stacked": 49.8,
+     "n": 5
+    }
+   },
+   "coadd_noise": [
+    {
+     "det": 1,
+     "season": 0,
+     "n": 18,
+     "single": 0.0216,
+     "coadd": 0.0053,
+     "gain": 4.0
+    },
+    {
+     "det": 1,
+     "season": 1,
+     "n": 17,
+     "single": 0.0248,
+     "coadd": 0.0064,
+     "gain": 3.9
+    },
+    {
+     "det": 1,
+     "season": 2,
+     "n": 8,
+     "single": 0.0214,
+     "coadd": 0.008,
+     "gain": 2.7
+    },
+    {
+     "det": 2,
+     "season": 0,
+     "n": 19,
+     "single": 0.0227,
+     "coadd": 0.0051,
+     "gain": 4.4
+    },
+    {
+     "det": 2,
+     "season": 1,
+     "n": 18,
+     "single": 0.0242,
+     "coadd": 0.0058,
+     "gain": 4.2
+    },
+    {
+     "det": 2,
+     "season": 2,
+     "n": 8,
+     "single": 0.0221,
+     "coadd": 0.0079,
+     "gain": 2.8
+    },
+    {
+     "det": 3,
+     "season": 0,
+     "n": 21,
+     "single": 0.0173,
+     "coadd": 0.0038,
+     "gain": 4.5
+    },
+    {
+     "det": 3,
+     "season": 1,
+     "n": 30,
+     "single": 0.0194,
+     "coadd": 0.0036,
+     "gain": 5.4
+    },
+    {
+     "det": 3,
+     "season": 2,
+     "n": 4,
+     "single": 0.0203,
+     "coadd": 0.01,
+     "gain": 2.0
+    },
+    {
+     "det": 4,
+     "season": 0,
+     "n": 16,
+     "single": 0.0133,
+     "coadd": 0.0035,
+     "gain": 3.8
+    },
+    {
+     "det": 4,
+     "season": 1,
+     "n": 17,
+     "single": 0.0152,
+     "coadd": 0.0038,
+     "gain": 4.0
+    },
+    {
+     "det": 4,
+     "season": 2,
+     "n": 8,
+     "single": 0.0135,
+     "coadd": 0.0051,
+     "gain": 2.7
+    },
+    {
+     "det": 5,
+     "season": 0,
+     "n": 19,
+     "single": 0.0347,
+     "coadd": 0.008,
+     "gain": 4.3
+    },
+    {
+     "det": 5,
+     "season": 1,
+     "n": 18,
+     "single": 0.0407,
+     "coadd": 0.0099,
+     "gain": 4.1
+    },
+    {
+     "det": 5,
+     "season": 2,
+     "n": 8,
+     "single": 0.0322,
+     "coadd": 0.0118,
+     "gain": 2.7
+    },
+    {
+     "det": 6,
+     "season": 0,
+     "n": 21,
+     "single": 0.0474,
+     "coadd": 0.0108,
+     "gain": 4.4
+    },
+    {
+     "det": 6,
+     "season": 1,
+     "n": 25,
+     "single": 0.0588,
+     "coadd": 0.0126,
+     "gain": 4.7
+    },
+    {
+     "det": 6,
+     "season": 2,
+     "n": 4,
+     "single": 0.0482,
+     "coadd": 0.0246,
+     "gain": 2.0
+    }
+   ],
+   "registration_max_px": 0.101
+  },
+  "kapteyn": {
+   "name": "Kapteyn's Star",
+   "kind": "mover",
+   "gallery": true,
+   "n_images": 375,
+   "n_seasons": 3,
+   "releases": [
+    "QR2",
+    "QR3"
+   ],
+   "motion": {
+    "mu": 8.57,
+    "mu_err": 0.32,
+    "pa": 129.0,
+    "pa_err": 1.9,
+    "n_points": 15,
+    "detectors": [
+     1,
+     2,
+     3,
+     5,
+     6
+    ],
+    "baseline_yr": 0.99
+   },
+   "catalog": {
+    "name": "Gaia DR3",
+    "mu": 8.64,
+    "pa": 131.3,
+    "mu_err": 0.0
+   },
+   "agreement_sigma": 0.2,
+   "in_gaia": true,
+   "nearest_gaia_arcsec": null,
+   "coadd_noise": [
+    {
+     "det": 1,
+     "season": 0,
+     "n": 20,
+     "single": 0.0177,
+     "coadd": 0.0042,
+     "gain": 4.3
+    },
+    {
+     "det": 1,
+     "season": 1,
+     "n": 19,
+     "single": 0.0169,
+     "coadd": 0.0041,
+     "gain": 4.1
+    },
+    {
+     "det": 1,
+     "season": 2,
+     "n": 22,
+     "single": 0.0171,
+     "coadd": 0.0038,
+     "gain": 4.5
+    },
+    {
+     "det": 2,
+     "season": 0,
+     "n": 31,
+     "single": 0.017,
+     "coadd": 0.0036,
+     "gain": 4.7
+    },
+    {
+     "det": 2,
+     "season": 1,
+     "n": 19,
+     "single": 0.016,
+     "coadd": 0.0037,
+     "gain": 4.3
+    },
+    {
+     "det": 2,
+     "season": 2,
+     "n": 21,
+     "single": 0.0168,
+     "coadd": 0.0037,
+     "gain": 4.5
+    },
+    {
+     "det": 3,
+     "season": 0,
+     "n": 21,
+     "single": 0.0146,
+     "coadd": 0.0033,
+     "gain": 4.5
+    },
+    {
+     "det": 3,
+     "season": 1,
+     "n": 18,
+     "single": 0.0137,
+     "coadd": 0.0034,
+     "gain": 4.0
+    },
+    {
+     "det": 3,
+     "season": 2,
+     "n": 19,
+     "single": 0.0148,
+     "coadd": 0.0035,
+     "gain": 4.2
+    },
+    {
+     "det": 4,
+     "season": 0,
+     "n": 18,
+     "single": 0.0112,
+     "coadd": 0.0027,
+     "gain": 4.1
+    },
+    {
+     "det": 4,
+     "season": 1,
+     "n": 18,
+     "single": 0.0107,
+     "coadd": 0.0027,
+     "gain": 4.0
+    },
+    {
+     "det": 4,
+     "season": 2,
+     "n": 21,
+     "single": 0.0116,
+     "coadd": 0.0026,
+     "gain": 4.4
+    },
+    {
+     "det": 5,
+     "season": 0,
+     "n": 29,
+     "single": 0.0323,
+     "coadd": 0.0067,
+     "gain": 4.8
+    },
+    {
+     "det": 5,
+     "season": 1,
+     "n": 19,
+     "single": 0.0294,
+     "coadd": 0.0069,
+     "gain": 4.2
+    },
+    {
+     "det": 5,
+     "season": 2,
+     "n": 22,
+     "single": 0.0309,
+     "coadd": 0.0068,
+     "gain": 4.6
+    },
+    {
+     "det": 6,
+     "season": 0,
+     "n": 20,
+     "single": 0.0484,
+     "coadd": 0.0111,
+     "gain": 4.4
+    },
+    {
+     "det": 6,
+     "season": 1,
+     "n": 19,
+     "single": 0.0482,
+     "coadd": 0.0117,
+     "gain": 4.1
+    },
+    {
+     "det": 6,
+     "season": 2,
+     "n": 19,
+     "single": 0.0522,
+     "coadd": 0.0119,
+     "gain": 4.4
+    }
+   ],
+   "registration_max_px": 0.035
+  },
+  "t452800": {
+   "name": "Lacaille 9352",
+   "kind": "mover",
+   "gallery": true,
+   "n_images": 346,
+   "n_seasons": 3,
+   "releases": [
+    "QR2"
+   ],
+   "motion": {
+    "mu": 7.06,
+    "mu_err": 1.31,
+    "pa": 80.4,
+    "pa_err": 10.6,
+    "n_points": 2,
+    "detectors": [
+     6
+    ],
+    "baseline_yr": 1.01
+   },
+   "catalog": {
+    "name": "Gaia DR3",
+    "mu": 6.9,
+    "pa": 78.9,
+    "mu_err": 0.0
+   },
+   "agreement_sigma": 0.1,
+   "in_gaia": true,
+   "nearest_gaia_arcsec": null,
+   "coadd_noise": [
+    {
+     "det": 1,
+     "season": 0,
+     "n": 18,
+     "single": 0.0249,
+     "coadd": 0.0062,
+     "gain": 4.0
+    },
+    {
+     "det": 1,
+     "season": 1,
+     "n": 18,
+     "single": 0.0244,
+     "coadd": 0.0061,
+     "gain": 4.0
+    },
+    {
+     "det": 1,
+     "season": 2,
+     "n": 9,
+     "single": 0.0256,
+     "coadd": 0.0092,
+     "gain": 2.8
+    },
+    {
+     "det": 2,
+     "season": 0,
+     "n": 30,
+     "single": 0.0238,
+     "coadd": 0.0045,
+     "gain": 5.3
+    },
+    {
+     "det": 2,
+     "season": 1,
+     "n": 29,
+     "single": 0.0249,
+     "coadd": 0.0047,
+     "gain": 5.3
+    },
+    {
+     "det": 2,
+     "season": 2,
+     "n": 12,
+     "single": 0.0233,
+     "coadd": 0.0069,
+     "gain": 3.4
+    },
+    {
+     "det": 3,
+     "season": 0,
+     "n": 16,
+     "single": 0.0217,
+     "coadd": 0.0055,
+     "gain": 4.0
+    },
+    {
+     "det": 3,
+     "season": 1,
+     "n": 18,
+     "single": 0.0204,
+     "coadd": 0.0051,
+     "gain": 4.0
+    },
+    {
+     "det": 3,
+     "season": 2,
+     "n": 24,
+     "single": 0.0201,
+     "coadd": 0.0042,
+     "gain": 4.8
+    },
+    {
+     "det": 4,
+     "season": 0,
+     "n": 18,
+     "single": 0.0149,
+     "coadd": 0.0036,
+     "gain": 4.1
+    },
+    {
+     "det": 4,
+     "season": 1,
+     "n": 18,
+     "single": 0.0143,
+     "coadd": 0.0036,
+     "gain": 4.0
+    },
+    {
+     "det": 4,
+     "season": 2,
+     "n": 8,
+     "single": 0.0147,
+     "coadd": 0.0054,
+     "gain": 2.7
+    },
+    {
+     "det": 5,
+     "season": 0,
+     "n": 28,
+     "single": 0.0338,
+     "coadd": 0.0067,
+     "gain": 5.0
+    },
+    {
+     "det": 5,
+     "season": 1,
+     "n": 27,
+     "single": 0.036,
+     "coadd": 0.0071,
+     "gain": 5.1
+    },
+    {
+     "det": 5,
+     "season": 2,
+     "n": 12,
+     "single": 0.033,
+     "coadd": 0.01,
+     "gain": 3.3
+    },
+    {
+     "det": 6,
+     "season": 0,
+     "n": 18,
+     "single": 0.0566,
+     "coadd": 0.0136,
+     "gain": 4.2
+    },
+    {
+     "det": 6,
+     "season": 1,
+     "n": 17,
+     "single": 0.0522,
+     "coadd": 0.013,
+     "gain": 4.0
+    },
+    {
+     "det": 6,
+     "season": 2,
+     "n": 26,
+     "single": 0.059,
+     "coadd": 0.0118,
+     "gain": 5.0
+    }
+   ],
+   "registration_max_px": 0.088
+  },
+  "t744064": {
+   "name": "Gliese 1",
+   "kind": "mover",
+   "gallery": true,
+   "n_images": 363,
+   "n_seasons": 3,
+   "releases": [
+    "QR2"
+   ],
+   "motion": {
+    "mu": 6.24,
+    "mu_err": 0.88,
+    "pa": 110.1,
+    "pa_err": 8.2,
+    "n_points": 8,
+    "detectors": [
+     3,
+     5,
+     6
+    ],
+    "baseline_yr": 1.0
+   },
+   "catalog": {
+    "name": "Gaia DR3",
+    "mu": 6.1,
+    "pa": 112.5,
+    "mu_err": 0.0
+   },
+   "agreement_sigma": 0.2,
+   "in_gaia": true,
+   "nearest_gaia_arcsec": null,
+   "coadd_noise": [
+    {
+     "det": 1,
+     "season": 0,
+     "n": 19,
+     "single": 0.021,
+     "coadd": 0.0051,
+     "gain": 4.1
+    },
+    {
+     "det": 1,
+     "season": 1,
+     "n": 19,
+     "single": 0.0213,
+     "coadd": 0.0052,
+     "gain": 4.1
+    },
+    {
+     "det": 1,
+     "season": 2,
+     "n": 23,
+     "single": 0.0211,
+     "coadd": 0.0047,
+     "gain": 4.5
+    },
+    {
+     "det": 2,
+     "season": 0,
+     "n": 20,
+     "single": 0.0207,
+     "coadd": 0.0048,
+     "gain": 4.3
+    },
+    {
+     "det": 2,
+     "season": 1,
+     "n": 22,
+     "single": 0.0205,
+     "coadd": 0.0046,
+     "gain": 4.5
+    },
+    {
+     "det": 2,
+     "season": 2,
+     "n": 19,
+     "single": 0.0206,
+     "coadd": 0.0048,
+     "gain": 4.3
+    },
+    {
+     "det": 3,
+     "season": 0,
+     "n": 15,
+     "single": 0.0174,
+     "coadd": 0.0047,
+     "gain": 3.7
+    },
+    {
+     "det": 3,
+     "season": 1,
+     "n": 24,
+     "single": 0.0173,
+     "coadd": 0.0037,
+     "gain": 4.6
+    },
+    {
+     "det": 3,
+     "season": 2,
+     "n": 25,
+     "single": 0.0173,
+     "coadd": 0.0036,
+     "gain": 4.9
+    },
+    {
+     "det": 4,
+     "season": 0,
+     "n": 18,
+     "single": 0.0129,
+     "coadd": 0.0032,
+     "gain": 4.1
+    },
+    {
+     "det": 4,
+     "season": 1,
+     "n": 18,
+     "single": 0.0128,
+     "coadd": 0.0032,
+     "gain": 4.1
+    },
+    {
+     "det": 4,
+     "season": 2,
+     "n": 23,
+     "single": 0.0128,
+     "coadd": 0.0027,
+     "gain": 4.7
+    },
+    {
+     "det": 5,
+     "season": 0,
+     "n": 17,
+     "single": 0.0338,
+     "coadd": 0.0083,
+     "gain": 4.1
+    },
+    {
+     "det": 5,
+     "season": 1,
+     "n": 16,
+     "single": 0.0323,
+     "coadd": 0.0085,
+     "gain": 3.8
+    },
+    {
+     "det": 5,
+     "season": 2,
+     "n": 19,
+     "single": 0.0344,
+     "coadd": 0.008,
+     "gain": 4.3
+    },
+    {
+     "det": 6,
+     "season": 0,
+     "n": 17,
+     "single": 0.0531,
+     "coadd": 0.0136,
+     "gain": 3.9
+    },
+    {
+     "det": 6,
+     "season": 1,
+     "n": 24,
+     "single": 0.0484,
+     "coadd": 0.0107,
+     "gain": 4.5
+    },
+    {
+     "det": 6,
+     "season": 2,
+     "n": 25,
+     "single": 0.059,
+     "coadd": 0.0118,
+     "gain": 5.0
+    }
+   ],
+   "registration_max_px": 0.063
+  },
+  "t605760": {
+   "name": "Gaia DR3 3713594960831605760",
+   "kind": "mover",
+   "gallery": true,
+   "n_images": 384,
+   "n_seasons": 3,
+   "releases": [
+    "QR2"
+   ],
+   "motion": {
+    "mu": 3.96,
+    "mu_err": 0.15,
+    "pa": 253.3,
+    "pa_err": 2.1,
+    "n_points": 18,
+    "detectors": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6
+    ],
+    "baseline_yr": 0.99
+   },
+   "catalog": {
+    "name": "Gaia DR3",
+    "mu": 3.9,
+    "pa": 253.4,
+    "mu_err": 0.0
+   },
+   "agreement_sigma": 0.4,
+   "in_gaia": true,
+   "nearest_gaia_arcsec": null,
+   "cold": {
+    "ratio": 0.17,
+    "ratio_kind": "measured",
+    "methane_depth": -0.37,
+    "methane_err": 0.02,
+    "long_mjy": 1.41,
+    "short_mjy": 8.514
+   },
+   "snr": {
+    "1": {
+     "single": 39.5,
+     "stacked": 304.6,
+     "n": 58
+    },
+    "2": {
+     "single": 42.3,
+     "stacked": 341.1,
+     "n": 60
+    },
+    "3": {
+     "single": 35.6,
+     "stacked": 319.3,
+     "n": 74
+    },
+    "4": {
+     "single": 31.3,
+     "stacked": 236.3,
+     "n": 56
+    },
+    "5": {
+     "single": 17.1,
+     "stacked": 129.3,
+     "n": 59
+    },
+    "6": {
+     "single": 10.2,
+     "stacked": 88.3,
+     "n": 74
+    }
+   },
+   "coadd_noise": [
+    {
+     "det": 1,
+     "season": 0,
+     "n": 20,
+     "single": 0.0195,
+     "coadd": 0.0047,
+     "gain": 4.2
+    },
+    {
+     "det": 1,
+     "season": 1,
+     "n": 19,
+     "single": 0.0226,
+     "coadd": 0.0056,
+     "gain": 4.1
+    },
+    {
+     "det": 1,
+     "season": 2,
+     "n": 19,
+     "single": 0.0198,
+     "coadd": 0.0049,
+     "gain": 4.1
+    },
+    {
+     "det": 2,
+     "season": 0,
+     "n": 21,
+     "single": 0.0185,
+     "coadd": 0.0043,
+     "gain": 4.3
+    },
+    {
+     "det": 2,
+     "season": 1,
+     "n": 19,
+     "single": 0.0215,
+     "coadd": 0.0051,
+     "gain": 4.2
+    },
+    {
+     "det": 2,
+     "season": 2,
+     "n": 20,
+     "single": 0.0186,
+     "coadd": 0.0044,
+     "gain": 4.3
+    },
+    {
+     "det": 3,
+     "season": 0,
+     "n": 19,
+     "single": 0.0162,
+     "coadd": 0.0039,
+     "gain": 4.1
+    },
+    {
+     "det": 3,
+     "season": 1,
+     "n": 20,
+     "single": 0.0184,
+     "coadd": 0.0044,
+     "gain": 4.2
+    },
+    {
+     "det": 3,
+     "season": 2,
+     "n": 35,
+     "single": 0.0155,
+     "coadd": 0.003,
+     "gain": 5.2
+    },
+    {
+     "det": 4,
+     "season": 0,
+     "n": 20,
+     "single": 0.0119,
+     "coadd": 0.0029,
+     "gain": 4.1
+    },
+    {
+     "det": 4,
+     "season": 1,
+     "n": 19,
+     "single": 0.014,
+     "coadd": 0.0034,
+     "gain": 4.1
+    },
+    {
+     "det": 4,
+     "season": 2,
+     "n": 18,
+     "single": 0.0122,
+     "coadd": 0.003,
+     "gain": 4.0
+    },
+    {
+     "det": 5,
+     "season": 0,
+     "n": 21,
+     "single": 0.031,
+     "coadd": 0.007,
+     "gain": 4.4
+    },
+    {
+     "det": 5,
+     "season": 1,
+     "n": 19,
+     "single": 0.0379,
+     "coadd": 0.0089,
+     "gain": 4.2
+    },
+    {
+     "det": 5,
+     "season": 2,
+     "n": 20,
+     "single": 0.0303,
+     "coadd": 0.0072,
+     "gain": 4.2
+    },
+    {
+     "det": 6,
+     "season": 0,
+     "n": 19,
+     "single": 0.0503,
+     "coadd": 0.0119,
+     "gain": 4.2
+    },
+    {
+     "det": 6,
+     "season": 1,
+     "n": 20,
+     "single": 0.0565,
+     "coadd": 0.0141,
+     "gain": 4.0
+    },
+    {
+     "det": 6,
+     "season": 2,
+     "n": 36,
+     "single": 0.0488,
+     "coadd": 0.0088,
+     "gain": 5.5
+    }
+   ],
+   "registration_max_px": 0.046
+  },
+  "t503424": {
+   "name": "Gaia DR3 6281432246412503424",
+   "kind": "mover",
+   "gallery": true,
+   "n_images": 340,
+   "n_seasons": 3,
+   "releases": [
+    "QR2",
+    "QR3"
+   ],
+   "motion": {
+    "mu": 3.44,
+    "mu_err": 0.16,
+    "pa": 236.5,
+    "pa_err": 2.7,
+    "n_points": 18,
+    "detectors": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6
+    ],
+    "baseline_yr": 0.99
+   },
+   "catalog": {
+    "name": "Gaia DR3",
+    "mu": 3.51,
+    "pa": 236.0,
+    "mu_err": 0.0
+   },
+   "agreement_sigma": 0.4,
+   "in_gaia": true,
+   "nearest_gaia_arcsec": null,
+   "cold": {
+    "ratio": 0.37,
+    "ratio_kind": "measured",
+    "methane_depth": 0.04,
+    "methane_err": 0.01,
+    "long_mjy": 4.51,
+    "short_mjy": 12.312
+   },
+   "snr": {
+    "1": {
+     "single": 35.0,
+     "stacked": 200.6,
+     "n": 57
+    },
+    "2": {
+     "single": 45.4,
+     "stacked": 348.0,
+     "n": 55
+    },
+    "3": {
+     "single": 37.4,
+     "stacked": 274.6,
+     "n": 56
+    },
+    "4": {
+     "single": 32.5,
+     "stacked": 247.9,
+     "n": 56
+    },
+    "5": {
+     "single": 27.2,
+     "stacked": 198.9,
+     "n": 53
+    },
+    "6": {
+     "single": 20.9,
+     "stacked": 163.3,
+     "n": 59
+    }
+   },
+   "coadd_noise": [
+    {
+     "det": 1,
+     "season": 0,
+     "n": 20,
+     "single": 0.0215,
+     "coadd": 0.0052,
+     "gain": 4.1
+    },
+    {
+     "det": 1,
+     "season": 1,
+     "n": 19,
+     "single": 0.0241,
+     "coadd": 0.006,
+     "gain": 4.0
+    },
+    {
+     "det": 1,
+     "season": 2,
+     "n": 19,
+     "single": 0.0208,
+     "coadd": 0.0052,
+     "gain": 4.0
+    },
+    {
+     "det": 2,
+     "season": 0,
+     "n": 18,
+     "single": 0.0203,
+     "coadd": 0.005,
+     "gain": 4.1
+    },
+    {
+     "det": 2,
+     "season": 1,
+     "n": 18,
+     "single": 0.023,
+     "coadd": 0.0057,
+     "gain": 4.0
+    },
+    {
+     "det": 2,
+     "season": 2,
+     "n": 19,
+     "single": 0.02,
+     "coadd": 0.0048,
+     "gain": 4.2
+    },
+    {
+     "det": 3,
+     "season": 0,
+     "n": 20,
+     "single": 0.017,
+     "coadd": 0.004,
+     "gain": 4.3
+    },
+    {
+     "det": 3,
+     "season": 1,
+     "n": 18,
+     "single": 0.0179,
+     "coadd": 0.0046,
+     "gain": 3.9
+    },
+    {
+     "det": 3,
+     "season": 2,
+     "n": 20,
+     "single": 0.017,
+     "coadd": 0.004,
+     "gain": 4.3
+    },
+    {
+     "det": 4,
+     "season": 0,
+     "n": 20,
+     "single": 0.013,
+     "coadd": 0.0031,
+     "gain": 4.2
+    },
+    {
+     "det": 4,
+     "season": 1,
+     "n": 18,
+     "single": 0.0149,
+     "coadd": 0.0037,
+     "gain": 4.0
+    },
+    {
+     "det": 4,
+     "season": 2,
+     "n": 18,
+     "single": 0.0125,
+     "coadd": 0.0031,
+     "gain": 4.1
+    },
+    {
+     "det": 5,
+     "season": 0,
+     "n": 17,
+     "single": 0.0327,
+     "coadd": 0.0081,
+     "gain": 4.0
+    },
+    {
+     "det": 5,
+     "season": 1,
+     "n": 18,
+     "single": 0.04,
+     "coadd": 0.0097,
+     "gain": 4.1
+    },
+    {
+     "det": 5,
+     "season": 2,
+     "n": 19,
+     "single": 0.0326,
+     "coadd": 0.0077,
+     "gain": 4.3
+    },
+    {
+     "det": 6,
+     "season": 0,
+     "n": 20,
+     "single": 0.0538,
+     "coadd": 0.0124,
+     "gain": 4.4
+    },
+    {
+     "det": 6,
+     "season": 1,
+     "n": 19,
+     "single": 0.0574,
+     "coadd": 0.0141,
+     "gain": 4.1
+    },
+    {
+     "det": 6,
+     "season": 2,
+     "n": 20,
+     "single": 0.0533,
+     "coadd": 0.0123,
+     "gain": 4.3
+    }
+   ],
+   "registration_max_px": 0.075
+  }
+ },
+ "ml": {
+  "protocol": "v2",
+  "train_fields": [
+   "barnard",
+   "epsindib",
+   "kapteyn",
+   "rdra",
+   "rwaur",
+   "teegarden",
+   "vanmaanen",
+   "wise0855",
+   "wolf359"
+  ],
+  "validation_fields": [
+   "t489088",
+   "t110464",
+   "t223040",
+   "t525696",
+   "t503424",
+   "t739840"
+  ],
+  "sat_frac": 0.3,
+  "train_counts": {
+   "mover": 1881,
+   "variable": 1321,
+   "static": 1137,
+   "artifact": 1192
+  },
+  "test_counts": {
+   "mover": 1173,
+   "variable": 882,
+   "static": 1250,
+   "artifact": 1251
+  },
+  "f1_ml": {
+   "mover": 0.75,
+   "variable": 0.68,
+   "static": 0.74,
+   "artifact": 0.73
+  },
+  "f1_rule": {
+   "mover": 0.6,
+   "variable": 0.58,
+   "static": 0.56,
+   "artifact": 0.55
+  },
+  "completeness_ml": [
+   {
+    "snr": [
+     3,
+     5
+    ],
+    "n": 219,
+    "pct": 14
+   },
+   {
+    "snr": [
+     5,
+     8
+    ],
+    "n": 198,
+    "pct": 32
+   },
+   {
+    "snr": [
+     8,
+     13
+    ],
+    "n": 241,
+    "pct": 49
+   },
+   {
+    "snr": [
+     13,
+     20
+    ],
+    "n": 194,
+    "pct": 67
+   },
+   {
+    "snr": [
+     20,
+     32
+    ],
+    "n": 210,
+    "pct": 74
+   },
+   {
+    "snr": [
+     32,
+     50
+    ],
+    "n": 190,
+    "pct": 88
+   }
+  ],
+  "completeness_rule": [
+   {
+    "snr": [
+     3,
+     5
+    ],
+    "n": 219,
+    "pct": 1
+   },
+   {
+    "snr": [
+     5,
+     8
+    ],
+    "n": 198,
+    "pct": 9
+   },
+   {
+    "snr": [
+     8,
+     13
+    ],
+    "n": 241,
+    "pct": 24
+   },
+   {
+    "snr": [
+     13,
+     20
+    ],
+    "n": 194,
+    "pct": 45
+   },
+   {
+    "snr": [
+     20,
+     32
+    ],
+    "n": 210,
+    "pct": 57
+   },
+   {
+    "snr": [
+     32,
+     50
+    ],
+    "n": 190,
+    "pct": 65
+   }
+  ],
+  "purity_ml": [
+   {
+    "snr": [
+     5,
+     8
+    ],
+    "n": 189,
+    "pct": 65
+   },
+   {
+    "snr": [
+     8,
+     13
+    ],
+    "n": 250,
+    "pct": 72
+   },
+   {
+    "snr": [
+     13,
+     20
+    ],
+    "n": 225,
+    "pct": 75
+   },
+   {
+    "snr": [
+     20,
+     50
+    ],
+    "n": 247,
+    "pct": 81
+   },
+   {
+    "snr": [
+     50,
+     1000000000.0
+    ],
+    "n": 219,
+    "pct": 85
+   }
+  ],
+  "purity_rule": [
+   {
+    "snr": [
+     5,
+     8
+    ],
+    "n": 21,
+    "pct": 95
+   },
+   {
+    "snr": [
+     8,
+     13
+    ],
+    "n": 109,
+    "pct": 94
+   },
+   {
+    "snr": [
+     13,
+     20
+    ],
+    "n": 122,
+    "pct": 95
+   },
+   {
+    "snr": [
+     20,
+     50
+    ],
+    "n": 164,
+    "pct": 99
+   },
+   {
+    "snr": [
+     50,
+     1000000000.0
+    ],
+    "n": 110,
+    "pct": 96
+   }
+  ],
+  "saturated_completeness_ml": {
+   "n": 397,
+   "pct": 49
+  },
+  "saturated_completeness_rule": {
+   "n": 397,
+   "pct": 25
+  }
+ },
+ "development_check": {
+  "n": 6,
+  "detected": 6,
+  "rule_mover": 5,
+  "ml_mover": 3,
+  "either_mover": 5,
+  "fields": [
+   "barnard",
+   "epsindib",
+   "kapteyn",
+   "rdra",
+   "rwaur",
+   "teegarden",
+   "vanmaanen",
+   "wise0855",
+   "wolf359"
+  ],
+  "ran_utc": "2026-11-05 23:35 UTC",
+  "n_candidates": 673,
+  "rule_other_mover": 1,
+  "ml_other_mover": 1,
+  "objects": [
+   {
+    "field": "barnard",
+    "name": "Barnard's Star",
+    "pm": 10393,
+    "g": 8.2,
+    "shift_px": 1.66,
+    "detected": true,
+    "rule": "mover",
+    "ml": "mover",
+    "ml_p_mover": 0.89
+   },
+   {
+    "field": "epsindib",
+    "name": "ε Indi B",
+    "pm": 4684,
+    "g": 18.0,
+    "shift_px": 1.06,
+    "detected": true,
+    "rule": "mover",
+    "ml": "mover",
+    "ml_p_mover": 0.56
+   },
+   {
+    "field": "kapteyn",
+    "name": "Kapteyn's Star",
+    "pm": 8644,
+    "g": 8.1,
+    "shift_px": 1.4,
+    "detected": true,
+    "rule": "mover",
+    "ml": "mover",
+    "ml_p_mover": 0.95
+   },
+   {
+    "field": "teegarden",
+    "name": "Teegarden's Star",
+    "pm": 5123,
+    "g": 12.3,
+    "shift_px": 0.84,
+    "detected": true,
+    "rule": "mover",
+    "ml": "variable",
+    "ml_p_mover": 0.35
+   },
+   {
+    "field": "wise0855",
+    "name": "WISE 0855−0714",
+    "pm": 8088,
+    "g": null,
+    "shift_px": 1.3,
+    "detected": true,
+    "rule": "variable",
+    "ml": "static",
+    "ml_p_mover": 0.03
+   },
+   {
+    "field": "wolf359",
+    "name": "Wolf 359",
+    "pm": 4715,
+    "g": 11.0,
+    "shift_px": 0.78,
+    "detected": true,
+    "rule": "mover",
+    "ml": "variable",
+    "ml_p_mover": 0.08
+   }
+  ]
+ },
+ "validation": {
+  "n": 8,
+  "detected": 8,
+  "rule_mover": 8,
+  "ml_mover": 7,
+  "either_mover": 8,
+  "fields": [
+   "t489088",
+   "t110464",
+   "t223040",
+   "t525696",
+   "t503424",
+   "t739840"
+  ],
+  "ran_utc": "2026-11-05 22:56 UTC",
+  "n_candidates": 811,
+  "rule_other_mover": 3,
+  "ml_other_mover": 63,
+  "objects": [
+   {
+    "field": "t489088",
+    "name": "Groombridge 1830",
+    "pm": 7062,
+    "g": 6.2,
+    "shift_px": 1.15,
+    "detected": true,
+    "rule": "mover",
+    "ml": "variable",
+    "ml_p_mover": 0.45
+   },
+   {
+    "field": "t110464",
+    "name": "Lalande 21185",
+    "pm": 4812,
+    "g": 6.6,
+    "shift_px": 0.78,
+    "detected": true,
+    "rule": "mover",
+    "ml": "mover",
+    "ml_p_mover": 0.99
+   },
+   {
+    "field": "t223040",
+    "name": "Gaia DR3 3195919528989223040",
+    "pm": 4090,
+    "g": 4.2,
+    "shift_px": 0.66,
+    "detected": true,
+    "rule": "mover",
+    "ml": "mover",
+    "ml_p_mover": 0.97
+   },
+   {
+    "field": "t223040",
+    "name": "Gaia DR3 3195919254111315712",
+    "pm": 4019,
+    "g": 9.5,
+    "shift_px": 0.65,
+    "detected": true,
+    "rule": "mover",
+    "ml": "mover",
+    "ml_p_mover": 0.7
+   },
+   {
+    "field": "t223040",
+    "name": "Gaia DR3 3195919254111314816",
+    "pm": 4084,
+    "g": 9.8,
+    "shift_px": 0.66,
+    "detected": true,
+    "rule": "mover",
+    "ml": "mover",
+    "ml_p_mover": 0.7
+   },
+   {
+    "field": "t525696",
+    "name": "Gaia DR3 5853498713190525696",
+    "pm": 3859,
+    "g": 9.0,
+    "shift_px": 0.63,
+    "detected": true,
+    "rule": "mover",
+    "ml": "mover",
+    "ml_p_mover": 0.64
+   },
+   {
+    "field": "t503424",
+    "name": "Gaia DR3 6281432246412503424",
+    "pm": 3508,
+    "g": 16.6,
+    "shift_px": 0.56,
+    "detected": true,
+    "rule": "mover",
+    "ml": "mover",
+    "ml_p_mover": 0.98
+   },
+   {
+    "field": "t739840",
+    "name": "Gaia DR3 5140693571158739840",
+    "pm": 3429,
+    "g": 10.5,
+    "shift_px": 0.55,
+    "detected": true,
+    "rule": "mover",
+    "ml": "mover",
+    "ml_p_mover": 0.92
+   }
+  ]
+ },
+ "final_test": {
+  "n": 9,
+  "detected": 9,
+  "rule_mover": 8,
+  "ml_mover": 6,
+  "either_mover": 8,
+  "fields": [
+   "t452800",
+   "t744064",
+   "t048640",
+   "t602752",
+   "t605760",
+   "t322432",
+   "t759552",
+   "t177024"
+  ],
+  "ran_utc": "2026-11-05 23:35 UTC",
+  "n_candidates": 541,
+  "rule_other_mover": 0,
+  "ml_other_mover": 10,
+  "objects": [
+   {
+    "field": "t452800",
+    "name": "Lacaille 9352",
+    "pm": 6896,
+    "g": 6.5,
+    "shift_px": 1.13,
+    "detected": true,
+    "rule": "mover",
+    "ml": "mover",
+    "ml_p_mover": 1.0
+   },
+   {
+    "field": "t744064",
+    "name": "Gliese 1",
+    "pm": 6098,
+    "g": 7.7,
+    "shift_px": 0.99,
+    "detected": true,
+    "rule": "mover",
+    "ml": "variable",
+    "ml_p_mover": 0.23
+   },
+   {
+    "field": "t048640",
+    "name": "Lacaille 8760",
+    "pm": 3455,
+    "g": 6.0,
+    "shift_px": 0.8,
+    "detected": true,
+    "rule": "mover",
+    "ml": "mover",
+    "ml_p_mover": 0.8
+   },
+   {
+    "field": "t602752",
+    "name": "Gaia DR3 778947814402602752",
+    "pm": 4505,
+    "g": 7.9,
+    "shift_px": 0.73,
+    "detected": true,
+    "rule": "mover",
+    "ml": "variable",
+    "ml_p_mover": 0.2
+   },
+   {
+    "field": "t602752",
+    "name": "Gaia DR3 778947608243864320",
+    "pm": 4445,
+    "g": 12.3,
+    "shift_px": 0.72,
+    "detected": true,
+    "rule": "mover",
+    "ml": "mover",
+    "ml_p_mover": 0.77
+   },
+   {
+    "field": "t605760",
+    "name": "Gaia DR3 3713594960831605760",
+    "pm": 3898,
+    "g": 14.4,
+    "shift_px": 0.63,
+    "detected": true,
+    "rule": "mover",
+    "ml": "mover",
+    "ml_p_mover": 0.99
+   },
+   {
+    "field": "t322432",
+    "name": "Gaia DR3 411413822074322432",
+    "pm": 3805,
+    "g": 4.9,
+    "shift_px": 0.62,
+    "detected": true,
+    "rule": "mover",
+    "ml": "mover",
+    "ml_p_mover": 0.97
+   },
+   {
+    "field": "t759552",
+    "name": "Gaia DR3 6307374845312759552",
+    "pm": 3680,
+    "g": 8.8,
+    "shift_px": 0.59,
+    "detected": true,
+    "rule": "artifact",
+    "ml": "variable",
+    "ml_p_mover": 0.24
+   },
+   {
+    "field": "t177024",
+    "name": "Gaia DR3 4847957293278177024",
+    "pm": 3121,
+    "g": 4.1,
+    "shift_px": 0.51,
+    "detected": true,
+    "rule": "mover",
+    "ml": "mover",
+    "ml_p_mover": 0.99
+   }
+  ]
+ },
+ "protocol": {
+  "seed_pick": 20261106,
+  "seed_split": 1930,
+  "pool": 68,
+  "qualifying": 19,
+  "validation": [
+   "t489088",
+   "t110464",
+   "t223040",
+   "t525696",
+   "t503424",
+   "t739840"
+  ],
+  "final_test": [
+   "t452800",
+   "t744064",
+   "t048640",
+   "t602752",
+   "t605760",
+   "t322432",
+   "t759552",
+   "t177024"
+  ]
+ },
+ "live": {
+  "label": "M101 (cold)",
+  "ra": 210.8023,
+  "dec": 54.3488,
+  "fov_arcmin": 4.0,
+  "detectors": [
+   2,
+   6
+  ],
+  "max_per_group": 12,
+  "n_images": 72,
+  "seconds": 59,
+  "measured_utc": "2026-11-05 20:56 UTC",
+  "note": "cold cache: images read from IRSA during the run; export to disk not included (< 1 s)"
+ },
+ "frozen": {
+  "frozen_utc": "2026-11-05 22:57 UTC",
+  "sha256": {
+   "pipeline/sparks/candidates.py": "80706aa4840f3cf8c997fd9763fd001f12e70380ee34e6906ab5a1863f83120e",
+   "pipeline/sparks/ml.py": "30dd67cc044871225bfed525a765979ecf00d977d78fa09e08b3c63f5de9e484",
+   "pipeline/sparks/field.py": "c51ffd051f135951a084cff205830ee18826ef773b7e7d2f6dd245cb15a33993",
+   "pipeline/sparks/astrometry.py": "dfea98f543b4e36e9338d0ef8fe9e400e4fabd6bc02415290f5fa0bf90315e74",
+   "models/spark_detector.txt": "72af546a0840257b2ff0b52275b7d8101df2a6db417fde45f5252774824f7627",
+   "scripts/eval_known_movers.py": "7e49d960af38ee2b04c03e5c9c77d13e1bb1a8b941e74031180276d237d6db48"
+  }
+ }
+}

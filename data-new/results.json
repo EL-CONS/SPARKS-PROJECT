@@ -1,0 +1,904 @@
+{
+ "generated_utc": "2026-11-15 02:39 UTC",
+ "archive": {
+  "queried_utc": "2026-11-15 02:39 UTC",
+  "service": "IRSA SIA2 (conteo por coleccion en data-new/index.json)",
+  "by_collection": {
+   "spherex_dr1": 338,
+   "spherex_qr3": 74,
+   "spherex_dr1_deep": 58
+  },
+  "n_science_images": 470,
+  "definition": "cuadros seleccionados por SIA2 para los cuatro campos, sumados por coleccion a partir de los manifiestos; no es el censo global del archivo ni el numero de cuadros descargados"
+ },
+ "fields": {
+  "wise0855": {
+   "name": "WISE 0855-0714",
+   "kind": "mover",
+   "gallery": false,
+   "n_images": 153,
+   "n_seasons": 3,
+   "releases": [
+    "DR1"
+   ],
+   "motion": {
+    "mu": 6.04,
+    "mu_err": 0.76,
+    "pa": 289.1,
+    "pa_err": 3.8,
+    "n_points": 5,
+    "detectors": [
+     5,
+     6
+    ],
+    "baseline_yr": 1.0
+   },
+   "catalog": {
+    "name": "data-sample/index.json (valor del reto; fuente primaria sin verificar salvo Gaia DR3)",
+    "mu": 8.088,
+    "pa": 277.357,
+    "mu_err": null
+   },
+   "agreement_sigma": 2.7,
+   "in_gaia": false,
+   "nearest_gaia_arcsec": null,
+   "cold": {
+    "ratio": 10.09,
+    "ratio_kind": "lower_limit",
+    "methane_depth": 1.2,
+    "methane_err": 0.1,
+    "long_mjy": 0.284,
+    "long_err": 0.019,
+    "short_mjy": -0.006,
+    "short_err": 0.009,
+    "short_upper_limit_3sigma_mjy": 0.028
+   },
+   "snr": {
+    "1": {
+     "single": 0.87,
+     "stacked": 2.24,
+     "n": 14
+    },
+    "2": {
+     "single": -0.1,
+     "stacked": -0.67,
+     "n": 18
+    },
+    "3": {
+     "single": 0.73,
+     "stacked": 2.18,
+     "n": 14
+    },
+    "4": {
+     "single": -0.16,
+     "stacked": 1.01,
+     "n": 13
+    },
+    "5": {
+     "single": 2.71,
+     "stacked": 19.02,
+     "n": 48
+    },
+    "6": {
+     "single": 2.41,
+     "stacked": 15.6,
+     "n": 45
+    }
+   },
+   "coadd_noise": [
+    {
+     "det": 1,
+     "season": 0,
+     "n": 4,
+     "single": 0.0183,
+     "coadd": 0.0101,
+     "gain": 1.8
+    },
+    {
+     "det": 1,
+     "season": 1,
+     "n": 4,
+     "single": 0.0193,
+     "coadd": 0.0098,
+     "gain": 2.0
+    },
+    {
+     "det": 1,
+     "season": 2,
+     "n": 6,
+     "single": 0.0176,
+     "coadd": 0.0078,
+     "gain": 2.3
+    },
+    {
+     "det": 2,
+     "season": 0,
+     "n": 6,
+     "single": 0.0175,
+     "coadd": 0.0072,
+     "gain": 2.4
+    },
+    {
+     "det": 2,
+     "season": 1,
+     "n": 6,
+     "single": 0.0183,
+     "coadd": 0.0079,
+     "gain": 2.3
+    },
+    {
+     "det": 2,
+     "season": 2,
+     "n": 6,
+     "single": 0.0175,
+     "coadd": 0.0072,
+     "gain": 2.4
+    },
+    {
+     "det": 3,
+     "season": 0,
+     "n": 3,
+     "single": 0.0148,
+     "coadd": 0.0102,
+     "gain": 1.4
+    },
+    {
+     "det": 3,
+     "season": 1,
+     "n": 6,
+     "single": 0.0163,
+     "coadd": 0.0068,
+     "gain": 2.4
+    },
+    {
+     "det": 3,
+     "season": 2,
+     "n": 6,
+     "single": 0.0148,
+     "coadd": 0.0063,
+     "gain": 2.4
+    },
+    {
+     "det": 4,
+     "season": 0,
+     "n": 4,
+     "single": 0.0119,
+     "coadd": 0.0062,
+     "gain": 1.9
+    },
+    {
+     "det": 4,
+     "season": 1,
+     "n": 3,
+     "single": 0.0129,
+     "coadd": 0.0076,
+     "gain": 1.7
+    },
+    {
+     "det": 4,
+     "season": 2,
+     "n": 6,
+     "single": 0.012,
+     "coadd": 0.0051,
+     "gain": 2.3
+    },
+    {
+     "det": 5,
+     "season": 0,
+     "n": 8,
+     "single": 0.0363,
+     "coadd": 0.013,
+     "gain": 2.8
+    },
+    {
+     "det": 5,
+     "season": 1,
+     "n": 25,
+     "single": 0.0338,
+     "coadd": 0.0071,
+     "gain": 4.8
+    },
+    {
+     "det": 5,
+     "season": 2,
+     "n": 15,
+     "single": 0.0341,
+     "coadd": 0.0089,
+     "gain": 3.9
+    },
+    {
+     "det": 6,
+     "season": 0,
+     "n": 3,
+     "single": 0.0681,
+     "coadd": 0.0394,
+     "gain": 1.7
+    },
+    {
+     "det": 6,
+     "season": 1,
+     "n": 21,
+     "single": 0.0555,
+     "coadd": 0.0124,
+     "gain": 4.5
+    },
+    {
+     "det": 6,
+     "season": 2,
+     "n": 21,
+     "single": 0.0534,
+     "coadd": 0.0117,
+     "gain": 4.6
+    }
+   ],
+   "registration_max_px": 0.178,
+   "status": "ok",
+   "reason": ""
+  },
+  "epsindib": {
+   "name": "epsilon Indi B",
+   "kind": "mover",
+   "gallery": false,
+   "n_images": 116,
+   "n_seasons": 4,
+   "releases": [
+    "DR1",
+    "QR3"
+   ],
+   "motion": {
+    "mu": 4.21,
+    "mu_err": 0.28,
+    "pa": 124.9,
+    "pa_err": 2.8,
+    "n_points": 16,
+    "detectors": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6
+    ],
+    "baseline_yr": 1.39
+   },
+   "catalog": {
+    "name": "data-sample/index.json (valor del reto; fuente primaria sin verificar salvo Gaia DR3)",
+    "mu": 4.684,
+    "pa": 121.778,
+    "mu_err": null
+   },
+   "agreement_sigma": 1.7,
+   "in_gaia": false,
+   "nearest_gaia_arcsec": null,
+   "cold": {
+    "ratio": 1.31,
+    "ratio_kind": "measured",
+    "methane_depth": 0.8,
+    "methane_err": 0.0,
+    "long_mjy": 17.13,
+    "long_err": 0.069,
+    "short_mjy": 13.099,
+    "short_err": 0.029
+   },
+   "snr": {
+    "1": {
+     "single": 46.09,
+     "stacked": 89.13,
+     "n": 14
+    },
+    "2": {
+     "single": 115.57,
+     "stacked": 450.57,
+     "n": 22
+    },
+    "3": {
+     "single": 120.19,
+     "stacked": 517.97,
+     "n": 22
+    },
+    "4": {
+     "single": 105.61,
+     "stacked": 411.83,
+     "n": 13
+    },
+    "5": {
+     "single": 116.03,
+     "stacked": 500.48,
+     "n": 22
+    },
+    "6": {
+     "single": 53.89,
+     "stacked": 235.49,
+     "n": 19
+    }
+   },
+   "coadd_noise": [
+    {
+     "det": 1,
+     "season": 0,
+     "n": 3,
+     "single": 0.0467,
+     "coadd": 0.0182,
+     "gain": 2.6
+    },
+    {
+     "det": 1,
+     "season": 1,
+     "n": 5,
+     "single": 0.0225,
+     "coadd": 0.0109,
+     "gain": 2.1
+    },
+    {
+     "det": 1,
+     "season": 2,
+     "n": 6,
+     "single": 0.0228,
+     "coadd": 0.01,
+     "gain": 2.3
+    },
+    {
+     "det": 2,
+     "season": 0,
+     "n": 5,
+     "single": 0.0193,
+     "coadd": 0.0089,
+     "gain": 2.2
+    },
+    {
+     "det": 2,
+     "season": 1,
+     "n": 6,
+     "single": 0.0189,
+     "coadd": 0.0084,
+     "gain": 2.3
+    },
+    {
+     "det": 2,
+     "season": 2,
+     "n": 5,
+     "single": 0.0189,
+     "coadd": 0.0086,
+     "gain": 2.2
+    },
+    {
+     "det": 2,
+     "season": 3,
+     "n": 6,
+     "single": 0.0187,
+     "coadd": 0.0077,
+     "gain": 2.4
+    },
+    {
+     "det": 3,
+     "season": 0,
+     "n": 4,
+     "single": 0.017,
+     "coadd": 0.0084,
+     "gain": 2.0
+    },
+    {
+     "det": 3,
+     "season": 1,
+     "n": 6,
+     "single": 0.0166,
+     "coadd": 0.0069,
+     "gain": 2.4
+    },
+    {
+     "det": 3,
+     "season": 2,
+     "n": 6,
+     "single": 0.0155,
+     "coadd": 0.0066,
+     "gain": 2.4
+    },
+    {
+     "det": 3,
+     "season": 3,
+     "n": 6,
+     "single": 0.0159,
+     "coadd": 0.0066,
+     "gain": 2.4
+    },
+    {
+     "det": 4,
+     "season": 0,
+     "n": 4,
+     "single": 0.0135,
+     "coadd": 0.0077,
+     "gain": 1.8
+    },
+    {
+     "det": 4,
+     "season": 1,
+     "n": 5,
+     "single": 0.0125,
+     "coadd": 0.006,
+     "gain": 2.1
+    },
+    {
+     "det": 4,
+     "season": 2,
+     "n": 6,
+     "single": 0.0121,
+     "coadd": 0.0052,
+     "gain": 2.3
+    },
+    {
+     "det": 5,
+     "season": 0,
+     "n": 6,
+     "single": 0.0315,
+     "coadd": 0.0137,
+     "gain": 2.3
+    },
+    {
+     "det": 5,
+     "season": 1,
+     "n": 5,
+     "single": 0.0325,
+     "coadd": 0.0153,
+     "gain": 2.1
+    },
+    {
+     "det": 5,
+     "season": 2,
+     "n": 5,
+     "single": 0.0337,
+     "coadd": 0.015,
+     "gain": 2.2
+    },
+    {
+     "det": 5,
+     "season": 3,
+     "n": 6,
+     "single": 0.029,
+     "coadd": 0.0122,
+     "gain": 2.4
+    },
+    {
+     "det": 6,
+     "season": 0,
+     "n": 4,
+     "single": 0.0458,
+     "coadd": 0.0236,
+     "gain": 1.9
+    },
+    {
+     "det": 6,
+     "season": 1,
+     "n": 5,
+     "single": 0.0532,
+     "coadd": 0.0231,
+     "gain": 2.3
+    },
+    {
+     "det": 6,
+     "season": 2,
+     "n": 6,
+     "single": 0.0543,
+     "coadd": 0.022,
+     "gain": 2.5
+    },
+    {
+     "det": 6,
+     "season": 3,
+     "n": 6,
+     "single": 0.0496,
+     "coadd": 0.0207,
+     "gain": 2.4
+    }
+   ],
+   "registration_max_px": 0.264,
+   "status": "ok",
+   "reason": ""
+  },
+  "rwaur": {
+   "name": "RW Aurigae",
+   "kind": "variable",
+   "gallery": false,
+   "n_images": 101,
+   "n_seasons": 3,
+   "releases": [
+    "DR1",
+    "QR3"
+   ],
+   "motion": {
+    "mu": 1.32,
+    "mu_err": 0.57,
+    "pa": 81.5,
+    "pa_err": 15.7,
+    "n_points": 10,
+    "detectors": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6
+    ],
+    "baseline_yr": 1.03
+   },
+   "catalog": {
+    "name": "Gaia DR3",
+    "mu": 0.028,
+    "pa": 174.494,
+    "mu_err": null
+   },
+   "agreement_sigma": 2.3,
+   "in_gaia": true,
+   "nearest_gaia_arcsec": null,
+   "cold": null,
+   "snr": {},
+   "coadd_noise": [
+    {
+     "det": 1,
+     "season": 0,
+     "n": 5,
+     "single": 0.0244,
+     "coadd": 0.0117,
+     "gain": 2.1
+    },
+    {
+     "det": 1,
+     "season": 1,
+     "n": 6,
+     "single": 0.0244,
+     "coadd": 0.0101,
+     "gain": 2.4
+    },
+    {
+     "det": 1,
+     "season": 2,
+     "n": 6,
+     "single": 0.0235,
+     "coadd": 0.0103,
+     "gain": 2.3
+    },
+    {
+     "det": 2,
+     "season": 0,
+     "n": 5,
+     "single": 0.0229,
+     "coadd": 0.0103,
+     "gain": 2.2
+    },
+    {
+     "det": 2,
+     "season": 1,
+     "n": 6,
+     "single": 0.0232,
+     "coadd": 0.0095,
+     "gain": 2.4
+    },
+    {
+     "det": 2,
+     "season": 2,
+     "n": 5,
+     "single": 0.0224,
+     "coadd": 0.01,
+     "gain": 2.2
+    },
+    {
+     "det": 3,
+     "season": 0,
+     "n": 6,
+     "single": 0.0184,
+     "coadd": 0.0078,
+     "gain": 2.4
+    },
+    {
+     "det": 3,
+     "season": 1,
+     "n": 6,
+     "single": 0.0184,
+     "coadd": 0.0077,
+     "gain": 2.4
+    },
+    {
+     "det": 3,
+     "season": 2,
+     "n": 6,
+     "single": 0.0194,
+     "coadd": 0.008,
+     "gain": 2.4
+    },
+    {
+     "det": 4,
+     "season": 0,
+     "n": 5,
+     "single": 0.016,
+     "coadd": 0.0071,
+     "gain": 2.2
+    },
+    {
+     "det": 4,
+     "season": 1,
+     "n": 6,
+     "single": 0.0155,
+     "coadd": 0.0065,
+     "gain": 2.4
+    },
+    {
+     "det": 4,
+     "season": 2,
+     "n": 6,
+     "single": 0.0164,
+     "coadd": 0.0068,
+     "gain": 2.4
+    },
+    {
+     "det": 5,
+     "season": 0,
+     "n": 5,
+     "single": 0.0403,
+     "coadd": 0.0178,
+     "gain": 2.3
+    },
+    {
+     "det": 5,
+     "season": 1,
+     "n": 6,
+     "single": 0.0388,
+     "coadd": 0.0162,
+     "gain": 2.4
+    },
+    {
+     "det": 5,
+     "season": 2,
+     "n": 5,
+     "single": 0.0403,
+     "coadd": 0.0178,
+     "gain": 2.3
+    },
+    {
+     "det": 6,
+     "season": 0,
+     "n": 6,
+     "single": 0.063,
+     "coadd": 0.026,
+     "gain": 2.4
+    },
+    {
+     "det": 6,
+     "season": 1,
+     "n": 6,
+     "single": 0.0624,
+     "coadd": 0.0257,
+     "gain": 2.4
+    },
+    {
+     "det": 6,
+     "season": 2,
+     "n": 5,
+     "single": 0.0613,
+     "coadd": 0.0278,
+     "gain": 2.2
+    }
+   ],
+   "registration_max_px": 0.355,
+   "status": "parcial",
+   "reason": "movimiento medido consistente con cero a 3 sigma; se reporta como cota superior, no como deteccion",
+   "lightcurve": null
+  },
+  "rdra": {
+   "name": "R Draconis",
+   "kind": "variable",
+   "gallery": false,
+   "n_images": 62,
+   "n_seasons": 2,
+   "releases": [
+    "DR1",
+    "QR3"
+   ],
+   "motion": null,
+   "catalog": {
+    "name": "Gaia DR3",
+    "mu": 0.022,
+    "pa": 286.587,
+    "mu_err": null
+   },
+   "agreement_sigma": null,
+   "in_gaia": true,
+   "nearest_gaia_arcsec": null,
+   "cold": null,
+   "snr": {},
+   "coadd_noise": [
+    {
+     "det": 1,
+     "season": 0,
+     "n": 6,
+     "single": 0.0257,
+     "coadd": 0.0107,
+     "gain": 2.4
+    },
+    {
+     "det": 1,
+     "season": 1,
+     "n": 6,
+     "single": 0.0222,
+     "coadd": 0.0095,
+     "gain": 2.3
+    },
+    {
+     "det": 2,
+     "season": 0,
+     "n": 5,
+     "single": 0.0298,
+     "coadd": 0.0129,
+     "gain": 2.3
+    },
+    {
+     "det": 2,
+     "season": 1,
+     "n": 6,
+     "single": 0.0262,
+     "coadd": 0.0102,
+     "gain": 2.6
+    },
+    {
+     "det": 3,
+     "season": 0,
+     "n": 5,
+     "single": 0.0379,
+     "coadd": 0.0153,
+     "gain": 2.5
+    },
+    {
+     "det": 3,
+     "season": 1,
+     "n": 5,
+     "single": 0.0293,
+     "coadd": 0.0117,
+     "gain": 2.5
+    },
+    {
+     "det": 4,
+     "season": 0,
+     "n": 4,
+     "single": 0.0239,
+     "coadd": 0.0114,
+     "gain": 2.1
+    },
+    {
+     "det": 4,
+     "season": 1,
+     "n": 5,
+     "single": 0.0192,
+     "coadd": 0.0087,
+     "gain": 2.2
+    },
+    {
+     "det": 5,
+     "season": 0,
+     "n": 5,
+     "single": 0.0551,
+     "coadd": 0.0247,
+     "gain": 2.2
+    },
+    {
+     "det": 5,
+     "season": 1,
+     "n": 6,
+     "single": 0.0448,
+     "coadd": 0.0193,
+     "gain": 2.3
+    },
+    {
+     "det": 6,
+     "season": 0,
+     "n": 4,
+     "single": 0.0606,
+     "coadd": 0.0307,
+     "gain": 2.0
+    },
+    {
+     "det": 6,
+     "season": 1,
+     "n": 5,
+     "single": 0.0564,
+     "coadd": 0.0256,
+     "gain": 2.2
+    }
+   ],
+   "registration_max_px": null,
+   "status": "parcial",
+   "reason": "detecciones utilizables 0 < 3; no se mide movimiento propio",
+   "lightcurve": null
+  }
+ },
+ "ml": {
+  "protocol": null,
+  "train_fields": [],
+  "validation_fields": [],
+  "sat_frac": null,
+  "train_counts": null,
+  "test_counts": null,
+  "f1_ml": null,
+  "f1_rule": null,
+  "completeness_ml": null,
+  "completeness_rule": null,
+  "saturated_completeness_ml": null,
+  "saturated_completeness_rule": null,
+  "purity_ml": null,
+  "purity_rule": null,
+  "note": "no ejecutado en esta canalizacion: es fotometria y astrometria, no el detector de candidatos"
+ },
+ "development_check": {
+  "n": 0,
+  "detected": 0,
+  "rule_mover": 0,
+  "ml_mover": 0,
+  "either_mover": 0,
+  "fields": [],
+  "ran_utc": null,
+  "n_candidates": 0,
+  "rule_other_mover": 0,
+  "ml_other_mover": 0,
+  "objects": [],
+  "note": "no ejecutado en esta canalizacion"
+ },
+ "validation": {
+  "n": 0,
+  "detected": 0,
+  "rule_mover": 0,
+  "ml_mover": 0,
+  "either_mover": 0,
+  "fields": [],
+  "ran_utc": null,
+  "n_candidates": 0,
+  "rule_other_mover": 0,
+  "ml_other_mover": 0,
+  "objects": [],
+  "note": "no ejecutado en esta canalizacion"
+ },
+ "final_test": {
+  "n": 0,
+  "detected": 0,
+  "rule_mover": 0,
+  "ml_mover": 0,
+  "either_mover": 0,
+  "fields": [],
+  "ran_utc": null,
+  "n_candidates": 0,
+  "rule_other_mover": 0,
+  "ml_other_mover": 0,
+  "objects": [],
+  "note": "no ejecutado en esta canalizacion"
+ },
+ "protocol": {
+  "seed_pick": null,
+  "seed_split": null,
+  "pool": null,
+  "qualifying": null,
+  "validation": [],
+  "final_test": [],
+  "note": "no aplica: esta canalizacion no hace el split de desarrollo y prueba"
+ },
+ "live": {
+  "label": "WISE 0855 (D5+D6 completos)",
+  "ra": 133.760203,
+  "dec": -7.240673,
+  "fov_arcmin": 6.56,
+  "detectors": [
+   5,
+   6
+  ],
+  "max_per_group": null,
+  "n_images": 153,
+  "seconds": 0.3,
+  "measured_utc": "2026-11-15T02:35:17Z",
+  "note": "todos los cuadros de D5 y D6; el resto de detectores se usa solo para fotometria de apoyo con tope por temporada"
+ },
+ "frozen": {
+  "frozen_utc": "2026-11-15 02:39 UTC",
+  "sha256": {
+   "pipeline/sparkspipe/run.py": "48a25ed3a7f3696ec0ef496d4966b524db2f67e6a077b90ae317b8fa63f96e1f",
+   "pipeline/sparkspipe/motion.py": "2a34b86bac821dce7c2a23c832ffc36307b1c39e2932e10a7e0b89cc3fd1fe7a",
+   "pipeline/sparkspipe/photometry.py": "32c641ac51367c7547c3d3714e8653a5a71654b8002d1fb9c909db468b5de3a2",
+   "pipeline/sparkspipe/manifest.py": "86fe8140c9d5b9ddc3a4db2de4bcaf1247ea38ebda23c4a9a89d733126b70880"
+  }
+ },
+ "note": "Resultados de la canalizacion pipeline/sparkspipe sobre cuatro campos. Los bloques de ML y de split de candidatos no se ejecutaron aqui."
+}

@@ -1,0 +1,5502 @@
+[
+  {
+    "features": {
+      "pos_flux": 5.832326889038086,
+      "neg_flux": 3.5726773738861084,
+      "flux_asymmetry": 0.24026034772396088,
+      "dipole_balance": 0.7597396373748779,
+      "centroid_separation": 1.1142364740371704,
+      "peak_pos_snr": 11.445363998413086,
+      "peak_neg_snr": 4.056921005249023,
+      "min_peak_snr": 4.056921005249023,
+      "total_abs_flux": 24.240629196166992,
+      "net_flux": 2.107264518737793,
+      "border_dist": 5.999048709869385
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.15217391304347827,
+      0.4855072463768116,
+      0.36231884057971014
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 1.0470445156097412,
+      "neg_flux": 1.2356852293014526,
+      "flux_asymmetry": 0.08263818919658661,
+      "dipole_balance": 0.9173617959022522,
+      "centroid_separation": 2.441450834274292,
+      "peak_pos_snr": 26.411226272583008,
+      "peak_neg_snr": 21.17644691467285,
+      "min_peak_snr": 21.17644691467285,
+      "total_abs_flux": 4.589313983917236,
+      "net_flux": -0.2948024570941925,
+      "border_dist": 6.8934102058410645
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.4483319818973541,
+      "neg_flux": 0.21651841700077057,
+      "flux_asymmetry": 0.34867027401924133,
+      "dipole_balance": 0.651329755783081,
+      "centroid_separation": 15.388264656066895,
+      "peak_pos_snr": 3.354332208633423,
+      "peak_neg_snr": 3.9151992797851562,
+      "min_peak_snr": 3.354332208633423,
+      "total_abs_flux": 2.2760376930236816,
+      "net_flux": 0.36020421981811523,
+      "border_dist": 1.8616478443145752
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 1.3122632503509521,
+      "neg_flux": 1.2482540607452393,
+      "flux_asymmetry": 0.02499854564666748,
+      "dipole_balance": 0.9750014543533325,
+      "centroid_separation": 1.8740965127944946,
+      "peak_pos_snr": 6.804112911224365,
+      "peak_neg_snr": 6.680395126342773,
+      "min_peak_snr": 6.680395126342773,
+      "total_abs_flux": 5.268604278564453,
+      "net_flux": 0.14315907657146454,
+      "border_dist": 4.989424228668213
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.0,
+      "neg_flux": 3.5031023025512695,
+      "flux_asymmetry": 1.0,
+      "dipole_balance": 0.0,
+      "centroid_separation": 0.0,
+      "peak_pos_snr": 1.7850298881530762,
+      "peak_neg_snr": 10.23967170715332,
+      "min_peak_snr": 1.7850298881530762,
+      "total_abs_flux": 6.970644474029541,
+      "net_flux": -2.7007884979248047,
+      "border_dist": 7.0
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.9016393442622951,
+      0.03278688524590164,
+      0.06557377049180328
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 7.047248363494873,
+      "neg_flux": 0.7347230911254883,
+      "flux_asymmetry": 0.8111730217933655,
+      "dipole_balance": 0.18882699310779572,
+      "centroid_separation": 6.621551990509033,
+      "peak_pos_snr": 49.29122543334961,
+      "peak_neg_snr": 5.544952869415283,
+      "min_peak_snr": 5.544952869415283,
+      "total_abs_flux": 9.844172477722168,
+      "net_flux": 6.610256671905518,
+      "border_dist": 6.838318347930908
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 0.32930418848991394,
+      "neg_flux": 0.13074205815792084,
+      "flux_asymmetry": 0.43161338567733765,
+      "dipole_balance": 0.5683866143226624,
+      "centroid_separation": 1.2374650239944458,
+      "peak_pos_snr": 4.394705772399902,
+      "peak_neg_snr": 3.5245089530944824,
+      "min_peak_snr": 3.5245089530944824,
+      "total_abs_flux": 2.56740665435791,
+      "net_flux": 0.2281203418970108,
+      "border_dist": 5.608978271484375
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.9016393442622951,
+      0.03278688524590164,
+      0.06557377049180328
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.4195190668106079,
+      "neg_flux": 0.9385314583778381,
+      "flux_asymmetry": 0.3821745812892914,
+      "dipole_balance": 0.6178253889083862,
+      "centroid_separation": 0.4666505753993988,
+      "peak_pos_snr": 9.887177467346191,
+      "peak_neg_snr": 6.216217517852783,
+      "min_peak_snr": 6.216217517852783,
+      "total_abs_flux": 3.8475327491760254,
+      "net_flux": -0.8326572179794312,
+      "border_dist": 3.98807430267334
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 5.8679728507995605,
+      "neg_flux": 0.0,
+      "flux_asymmetry": 1.0,
+      "dipole_balance": 0.0,
+      "centroid_separation": 0.0,
+      "peak_pos_snr": 8.519518852233887,
+      "peak_neg_snr": 0.5728609561920166,
+      "min_peak_snr": 0.5728609561920166,
+      "total_abs_flux": 14.160112380981445,
+      "net_flux": 9.100961685180664,
+      "border_dist": 0.043533340096473694
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 7.574938774108887,
+      "neg_flux": 3.290273427963257,
+      "flux_asymmetry": 0.3943471312522888,
+      "dipole_balance": 0.6056528687477112,
+      "centroid_separation": 1.9321160316467285,
+      "peak_pos_snr": 11.898845672607422,
+      "peak_neg_snr": 13.180928230285645,
+      "min_peak_snr": 11.898845672607422,
+      "total_abs_flux": 16.192333221435547,
+      "net_flux": 6.592329502105713,
+      "border_dist": 6.975116729736328
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      0.9,
+      0.1
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 11.491203308105469,
+      "neg_flux": 12.655092239379883,
+      "flux_asymmetry": 0.0482015423476696,
+      "dipole_balance": 0.9517984390258789,
+      "centroid_separation": 12.501591682434082,
+      "peak_pos_snr": 14.137491226196289,
+      "peak_neg_snr": 11.655357360839844,
+      "min_peak_snr": 11.655357360839844,
+      "total_abs_flux": 32.60329818725586,
+      "net_flux": 1.3841192722320557,
+      "border_dist": 0.01432349905371666
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      0.6,
+      0.4
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.6354895234107971,
+      "neg_flux": 0.4016023278236389,
+      "flux_asymmetry": 0.22552214562892914,
+      "dipole_balance": 0.7744778394699097,
+      "centroid_separation": 0.8938103914260864,
+      "peak_pos_snr": 7.46551513671875,
+      "peak_neg_snr": 5.406131744384766,
+      "min_peak_snr": 5.406131744384766,
+      "total_abs_flux": 3.610008955001831,
+      "net_flux": 0.4921480715274811,
+      "border_dist": 0.9964756369590759
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 6.44151496887207,
+      "neg_flux": 0.471464067697525,
+      "flux_asymmetry": 0.8636003136634827,
+      "dipole_balance": 0.13639967143535614,
+      "centroid_separation": 3.5696043968200684,
+      "peak_pos_snr": 42.14575958251953,
+      "peak_neg_snr": 5.941403388977051,
+      "min_peak_snr": 5.941403388977051,
+      "total_abs_flux": 9.68701457977295,
+      "net_flux": 6.134984016418457,
+      "border_dist": 7.25087833404541
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 4.656624794006348,
+      "neg_flux": 14.55312442779541,
+      "flux_asymmetry": 0.5151811242103577,
+      "dipole_balance": 0.4848189055919647,
+      "centroid_separation": 1.4537954330444336,
+      "peak_pos_snr": 12.79586124420166,
+      "peak_neg_snr": 12.92982006072998,
+      "min_peak_snr": 12.79586124420166,
+      "total_abs_flux": 27.917871475219727,
+      "net_flux": -14.833203315734863,
+      "border_dist": 6.888952255249023
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 2.645437479019165,
+      "neg_flux": 2.4747848510742188,
+      "flux_asymmetry": 0.033329129219055176,
+      "dipole_balance": 0.9666708707809448,
+      "centroid_separation": 1.9161217212677002,
+      "peak_pos_snr": 37.02341079711914,
+      "peak_neg_snr": 26.21889877319336,
+      "min_peak_snr": 26.21889877319336,
+      "total_abs_flux": 7.107856273651123,
+      "net_flux": 0.262106329202652,
+      "border_dist": 7.081145763397217
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 10.096160888671875,
+      "neg_flux": 28.040807723999023,
+      "flux_asymmetry": 0.47053152322769165,
+      "dipole_balance": 0.5294684767723083,
+      "centroid_separation": 6.620919704437256,
+      "peak_pos_snr": 7.90458345413208,
+      "peak_neg_snr": 36.55680465698242,
+      "min_peak_snr": 7.90458345413208,
+      "total_abs_flux": 49.1502685546875,
+      "net_flux": -11.860690116882324,
+      "border_dist": 2.7332992553710938
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 0.8259865641593933,
+      "neg_flux": 0.5590002536773682,
+      "flux_asymmetry": 0.19277173280715942,
+      "dipole_balance": 0.8072282671928406,
+      "centroid_separation": 1.7649054527282715,
+      "peak_pos_snr": 20.833044052124023,
+      "peak_neg_snr": 13.051081657409668,
+      "min_peak_snr": 13.051081657409668,
+      "total_abs_flux": 2.7905657291412354,
+      "net_flux": 0.1485941857099533,
+      "border_dist": 6.986645698547363
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 1.2145748138427734,
+      "neg_flux": 1.5210710763931274,
+      "flux_asymmetry": 0.11203799396753311,
+      "dipole_balance": 0.8879619836807251,
+      "centroid_separation": 5.994797706604004,
+      "peak_pos_snr": 9.890430450439453,
+      "peak_neg_snr": 11.722892761230469,
+      "min_peak_snr": 9.890430450439453,
+      "total_abs_flux": 5.568357944488525,
+      "net_flux": -0.19513550400733948,
+      "border_dist": 6.065493583679199
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.15217391304347827,
+      0.4855072463768116,
+      0.36231884057971014
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.2624615430831909,
+      "neg_flux": 0.2722209692001343,
+      "flux_asymmetry": 0.018252748996019363,
+      "dipole_balance": 0.9817472696304321,
+      "centroid_separation": 1.053183913230896,
+      "peak_pos_snr": 11.11536979675293,
+      "peak_neg_snr": 4.120128154754639,
+      "min_peak_snr": 4.120128154754639,
+      "total_abs_flux": 2.141605854034424,
+      "net_flux": -0.11628314107656479,
+      "border_dist": 2.976011037826538
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 1.826412320137024,
+      "neg_flux": 1.900726318359375,
+      "flux_asymmetry": 0.019938623532652855,
+      "dipole_balance": 0.9800613522529602,
+      "centroid_separation": 2.809628963470459,
+      "peak_pos_snr": 12.196507453918457,
+      "peak_neg_snr": 10.673922538757324,
+      "min_peak_snr": 10.673922538757324,
+      "total_abs_flux": 6.597311019897461,
+      "net_flux": -0.44791746139526367,
+      "border_dist": 5.683250427246094
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.1,
+      0.7,
+      0.2
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.241362065076828,
+      "neg_flux": 0.6650474071502686,
+      "flux_asymmetry": 0.46743258833885193,
+      "dipole_balance": 0.5325673818588257,
+      "centroid_separation": 4.901803493499756,
+      "peak_pos_snr": 9.981232643127441,
+      "peak_neg_snr": 10.981222152709961,
+      "min_peak_snr": 9.981232643127441,
+      "total_abs_flux": 2.0893993377685547,
+      "net_flux": -0.4763350486755371,
+      "border_dist": 3.9960386753082275
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.5498303174972534,
+      "neg_flux": 0.2861713767051697,
+      "flux_asymmetry": 0.31538084149360657,
+      "dipole_balance": 0.6846191883087158,
+      "centroid_separation": 9.261775970458984,
+      "peak_pos_snr": 3.107574701309204,
+      "peak_neg_snr": 3.9225032329559326,
+      "min_peak_snr": 3.107574701309204,
+      "total_abs_flux": 3.3627090454101562,
+      "net_flux": 0.44534528255462646,
+      "border_dist": 0.8869233131408691
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.5734819173812866,
+      "neg_flux": 0.2403838336467743,
+      "flux_asymmetry": 0.40927889943122864,
+      "dipole_balance": 0.590721070766449,
+      "centroid_separation": 7.800888538360596,
+      "peak_pos_snr": 6.2690277099609375,
+      "peak_neg_snr": 3.7708523273468018,
+      "min_peak_snr": 3.7708523273468018,
+      "total_abs_flux": 3.285233497619629,
+      "net_flux": 0.5780690908432007,
+      "border_dist": 7.11634635925293
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.15217391304347827,
+      0.4855072463768116,
+      0.36231884057971014
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 2.3684840202331543,
+      "neg_flux": 2.6412875652313232,
+      "flux_asymmetry": 0.054454293102025986,
+      "dipole_balance": 0.9455457329750061,
+      "centroid_separation": 1.6581425666809082,
+      "peak_pos_snr": 16.754531860351562,
+      "peak_neg_snr": 23.61316680908203,
+      "min_peak_snr": 16.754531860351562,
+      "total_abs_flux": 8.001315116882324,
+      "net_flux": 0.09725348651409149,
+      "border_dist": 7.206628799438477
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 1.217291235923767,
+      "neg_flux": 4.016210079193115,
+      "flux_asymmetry": 0.5348080992698669,
+      "dipole_balance": 0.46519190073013306,
+      "centroid_separation": 0.9248987436294556,
+      "peak_pos_snr": 7.9263505935668945,
+      "peak_neg_snr": 8.148651123046875,
+      "min_peak_snr": 7.9263505935668945,
+      "total_abs_flux": 9.41392707824707,
+      "net_flux": -2.2819743156433105,
+      "border_dist": 1.0
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.47692307692307695,
+      0.16923076923076924,
+      0.35384615384615387
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.6900691986083984,
+      "neg_flux": 5.084555149078369,
+      "flux_asymmetry": 0.7609994411468506,
+      "dipole_balance": 0.23900054395198822,
+      "centroid_separation": 7.976243495941162,
+      "peak_pos_snr": 3.3159968852996826,
+      "peak_neg_snr": 6.717688083648682,
+      "min_peak_snr": 3.3159968852996826,
+      "total_abs_flux": 10.413829803466797,
+      "net_flux": -6.044454574584961,
+      "border_dist": 0.0
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.47692307692307695,
+      0.16923076923076924,
+      0.35384615384615387
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 2.920156955718994,
+      "neg_flux": 0.05734354257583618,
+      "flux_asymmetry": 0.9614821076393127,
+      "dipole_balance": 0.03851790353655815,
+      "centroid_separation": 5.040531158447266,
+      "peak_pos_snr": 32.819244384765625,
+      "peak_neg_snr": 2.897580862045288,
+      "min_peak_snr": 2.897580862045288,
+      "total_abs_flux": 4.817929267883301,
+      "net_flux": 3.021789312362671,
+      "border_dist": 6.652673721313477
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 38.714744567871094,
+      "neg_flux": 10.244241714477539,
+      "flux_asymmetry": 0.5815173983573914,
+      "dipole_balance": 0.41848260164260864,
+      "centroid_separation": 8.495680809020996,
+      "peak_pos_snr": 27.538700103759766,
+      "peak_neg_snr": 6.738582134246826,
+      "min_peak_snr": 6.738582134246826,
+      "total_abs_flux": 66.68242645263672,
+      "net_flux": 30.661901473999023,
+      "border_dist": 6.239269256591797
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 0.3861381411552429,
+      "neg_flux": 1.2053126096725464,
+      "flux_asymmetry": 0.5147343873977661,
+      "dipole_balance": 0.4852655827999115,
+      "centroid_separation": 8.51928997039795,
+      "peak_pos_snr": 7.372678279876709,
+      "peak_neg_snr": 22.64373779296875,
+      "min_peak_snr": 7.372678279876709,
+      "total_abs_flux": 2.729663133621216,
+      "net_flux": -0.907606303691864,
+      "border_dist": 0.9211858510971069
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 0.3940123915672302,
+      "neg_flux": 1.7166115045547485,
+      "flux_asymmetry": 0.6266389489173889,
+      "dipole_balance": 0.37336108088493347,
+      "centroid_separation": 0.9212402701377869,
+      "peak_pos_snr": 6.273597240447998,
+      "peak_neg_snr": 9.460980415344238,
+      "min_peak_snr": 6.273597240447998,
+      "total_abs_flux": 5.242079257965088,
+      "net_flux": -2.1464591026306152,
+      "border_dist": 0.037340860813856125
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 2.085136651992798,
+      "neg_flux": 2.2967417240142822,
+      "flux_asymmetry": 0.04829097539186478,
+      "dipole_balance": 0.9517090320587158,
+      "centroid_separation": 2.5906026363372803,
+      "peak_pos_snr": 45.39728927612305,
+      "peak_neg_snr": 43.421607971191406,
+      "min_peak_snr": 43.421607971191406,
+      "total_abs_flux": 6.6193342208862305,
+      "net_flux": 0.06393817067146301,
+      "border_dist": 7.0170063972473145
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.29135116934776306,
+      "neg_flux": 0.3332063853740692,
+      "flux_asymmetry": 0.06701576709747314,
+      "dipole_balance": 0.9329842329025269,
+      "centroid_separation": 3.3176803588867188,
+      "peak_pos_snr": 4.196861743927002,
+      "peak_neg_snr": 4.459931373596191,
+      "min_peak_snr": 4.196861743927002,
+      "total_abs_flux": 1.8203833103179932,
+      "net_flux": -0.09101622551679611,
+      "border_dist": 4.8856120109558105
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 5.584176540374756,
+      "neg_flux": 6.8524580001831055,
+      "flux_asymmetry": 0.10197950154542923,
+      "dipole_balance": 0.8980205059051514,
+      "centroid_separation": 1.9780757427215576,
+      "peak_pos_snr": 19.675832748413086,
+      "peak_neg_snr": 24.238121032714844,
+      "min_peak_snr": 19.675832748413086,
+      "total_abs_flux": 15.09340763092041,
+      "net_flux": -1.0454062223434448,
+      "border_dist": 7.310314655303955
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 4.935665607452393,
+      "neg_flux": 0.7294175028800964,
+      "flux_asymmetry": 0.7424865365028381,
+      "dipole_balance": 0.25751346349716187,
+      "centroid_separation": 1.9567763805389404,
+      "peak_pos_snr": 27.325986862182617,
+      "peak_neg_snr": 13.607738494873047,
+      "min_peak_snr": 13.607738494873047,
+      "total_abs_flux": 7.114462375640869,
+      "net_flux": 4.450987815856934,
+      "border_dist": 6.744207859039307
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 0.8275778293609619,
+      "neg_flux": 0.7347231507301331,
+      "flux_asymmetry": 0.05943456292152405,
+      "dipole_balance": 0.9405654072761536,
+      "centroid_separation": 0.48560503125190735,
+      "peak_pos_snr": 10.046869277954102,
+      "peak_neg_snr": 5.54495096206665,
+      "min_peak_snr": 5.54495096206665,
+      "total_abs_flux": 3.3683674335479736,
+      "net_flux": 0.09699840843677521,
+      "border_dist": 2.902672052383423
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.419364333152771,
+      "neg_flux": 0.17422808706760406,
+      "flux_asymmetry": 0.412970632314682,
+      "dipole_balance": 0.5870293378829956,
+      "centroid_separation": 4.778955936431885,
+      "peak_pos_snr": 12.162830352783203,
+      "peak_neg_snr": 3.117781162261963,
+      "min_peak_snr": 3.117781162261963,
+      "total_abs_flux": 2.471261978149414,
+      "net_flux": 0.1681358367204666,
+      "border_dist": 0.2774733603000641
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.8236196637153625,
+      "neg_flux": 3.433380365371704,
+      "flux_asymmetry": 0.6130515933036804,
+      "dipole_balance": 0.3869484066963196,
+      "centroid_separation": 12.65918254852295,
+      "peak_pos_snr": 6.477654457092285,
+      "peak_neg_snr": 7.4528398513793945,
+      "min_peak_snr": 6.477654457092285,
+      "total_abs_flux": 9.78579330444336,
+      "net_flux": -3.796386480331421,
+      "border_dist": 2.0
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.47692307692307695,
+      0.16923076923076924,
+      0.35384615384615387
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 5.677670478820801,
+      "neg_flux": 5.108185291290283,
+      "flux_asymmetry": 0.052799295634031296,
+      "dipole_balance": 0.9472007155418396,
+      "centroid_separation": 1.8722301721572876,
+      "peak_pos_snr": 38.25507354736328,
+      "peak_neg_snr": 24.0557861328125,
+      "min_peak_snr": 24.0557861328125,
+      "total_abs_flux": 12.628050804138184,
+      "net_flux": 0.5263788104057312,
+      "border_dist": 6.727654457092285
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.0,
+      "neg_flux": 69.45993041992188,
+      "flux_asymmetry": 1.0,
+      "dipole_balance": 0.0,
+      "centroid_separation": 0.0,
+      "peak_pos_snr": 0.33059176802635193,
+      "peak_neg_snr": 62.168121337890625,
+      "min_peak_snr": 0.33059176802635193,
+      "total_abs_flux": 81.533203125,
+      "net_flux": -78.47682189941406,
+      "border_dist": 7.0
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 123.41436004638672,
+      "neg_flux": 9.700654983520508,
+      "flux_asymmetry": 0.854251503944397,
+      "dipole_balance": 0.14574846625328064,
+      "centroid_separation": 7.413107872009277,
+      "peak_pos_snr": 60.08768081665039,
+      "peak_neg_snr": 14.929571151733398,
+      "min_peak_snr": 14.929571151733398,
+      "total_abs_flux": 145.4640655517578,
+      "net_flux": 121.61016845703125,
+      "border_dist": 6.888065338134766
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 3.8263823986053467,
+      "neg_flux": 3.20682692527771,
+      "flux_asymmetry": 0.08808999508619308,
+      "dipole_balance": 0.9119099974632263,
+      "centroid_separation": 1.3354377746582031,
+      "peak_pos_snr": 13.772431373596191,
+      "peak_neg_snr": 19.052059173583984,
+      "min_peak_snr": 13.772431373596191,
+      "total_abs_flux": 9.393660545349121,
+      "net_flux": 1.3712564706802368,
+      "border_dist": 6.306682586669922
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.9363901615142822,
+      "neg_flux": 1.3518818616867065,
+      "flux_asymmetry": 0.18157443404197693,
+      "dipole_balance": 0.8184255957603455,
+      "centroid_separation": 6.990148544311523,
+      "peak_pos_snr": 7.7297539710998535,
+      "peak_neg_snr": 9.7439603805542,
+      "min_peak_snr": 7.7297539710998535,
+      "total_abs_flux": 5.074248790740967,
+      "net_flux": -0.6322361826896667,
+      "border_dist": 6.672372817993164
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.15217391304347827,
+      0.4855072463768116,
+      0.36231884057971014
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.26498398184776306,
+      "neg_flux": 0.27382975816726685,
+      "flux_asymmetry": 0.016417114064097404,
+      "dipole_balance": 0.9835828542709351,
+      "centroid_separation": 2.7690515518188477,
+      "peak_pos_snr": 6.98086404800415,
+      "peak_neg_snr": 8.310574531555176,
+      "min_peak_snr": 6.98086404800415,
+      "total_abs_flux": 1.830891728401184,
+      "net_flux": 0.08785589039325714,
+      "border_dist": 5.302529335021973
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.15217391304347827,
+      0.4855072463768116,
+      0.36231884057971014
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 2.4113550186157227,
+      "neg_flux": 1.5367798805236816,
+      "flux_asymmetry": 0.22151601314544678,
+      "dipole_balance": 0.7784839868545532,
+      "centroid_separation": 1.881905198097229,
+      "peak_pos_snr": 11.329792022705078,
+      "peak_neg_snr": 6.2122015953063965,
+      "min_peak_snr": 6.2122015953063965,
+      "total_abs_flux": 7.0075883865356445,
+      "net_flux": 0.3082542419433594,
+      "border_dist": 5.281848907470703
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 1.0211848020553589,
+      "neg_flux": 7.44649600982666,
+      "flux_asymmetry": 0.7588041424751282,
+      "dipole_balance": 0.24119587242603302,
+      "centroid_separation": 7.324591636657715,
+      "peak_pos_snr": 13.961281776428223,
+      "peak_neg_snr": 55.56422805786133,
+      "min_peak_snr": 13.961281776428223,
+      "total_abs_flux": 11.82048225402832,
+      "net_flux": -6.086659908294678,
+      "border_dist": 0.0
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 11.596765518188477,
+      "neg_flux": 1.2846404314041138,
+      "flux_asymmetry": 0.8005434274673462,
+      "dipole_balance": 0.19945655763149261,
+      "centroid_separation": 1.5008081197738647,
+      "peak_pos_snr": 13.521199226379395,
+      "peak_neg_snr": 2.825881004333496,
+      "min_peak_snr": 2.825881004333496,
+      "total_abs_flux": 23.895339965820312,
+      "net_flux": 17.457958221435547,
+      "border_dist": 6.821605682373047
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.15217391304347827,
+      0.4855072463768116,
+      0.36231884057971014
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 20.90834617614746,
+      "neg_flux": 8.541993141174316,
+      "flux_asymmetry": 0.41990527510643005,
+      "dipole_balance": 0.5800946950912476,
+      "centroid_separation": 12.039068222045898,
+      "peak_pos_snr": 6.052520751953125,
+      "peak_neg_snr": 10.763063430786133,
+      "min_peak_snr": 6.052520751953125,
+      "total_abs_flux": 62.110260009765625,
+      "net_flux": 39.162994384765625,
+      "border_dist": 0.012341202236711979
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.47692307692307695,
+      0.16923076923076924,
+      0.35384615384615387
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 8.363329887390137,
+      "neg_flux": 6.466492176055908,
+      "flux_asymmetry": 0.12790696322917938,
+      "dipole_balance": 0.8720930218696594,
+      "centroid_separation": 1.60347318649292,
+      "peak_pos_snr": 17.292118072509766,
+      "peak_neg_snr": 19.44586944580078,
+      "min_peak_snr": 17.292118072509766,
+      "total_abs_flux": 18.615503311157227,
+      "net_flux": 2.2457075119018555,
+      "border_dist": 5.593965530395508
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.13483312726020813,
+      "neg_flux": 0.10556283593177795,
+      "flux_asymmetry": 0.12175864726305008,
+      "dipole_balance": 0.8782413601875305,
+      "centroid_separation": 12.742890357971191,
+      "peak_pos_snr": 6.0713114738464355,
+      "peak_neg_snr": 2.666719675064087,
+      "min_peak_snr": 2.666719675064087,
+      "total_abs_flux": 1.6071425676345825,
+      "net_flux": 0.06724626570940018,
+      "border_dist": 0.10367962718009949
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 7.779531955718994,
+      "neg_flux": 7.543477535247803,
+      "flux_asymmetry": 0.015405234880745411,
+      "dipole_balance": 0.9845947623252869,
+      "centroid_separation": 1.6356244087219238,
+      "peak_pos_snr": 31.859779357910156,
+      "peak_neg_snr": 34.30522918701172,
+      "min_peak_snr": 31.859779357910156,
+      "total_abs_flux": 18.070926666259766,
+      "net_flux": 0.08604134619235992,
+      "border_dist": 6.700832366943359
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 1.0766113996505737,
+      "neg_flux": 1.1553295850753784,
+      "flux_asymmetry": 0.03526894748210907,
+      "dipole_balance": 0.9647310376167297,
+      "centroid_separation": 2.0571374893188477,
+      "peak_pos_snr": 30.597248077392578,
+      "peak_neg_snr": 29.55309295654297,
+      "min_peak_snr": 29.55309295654297,
+      "total_abs_flux": 3.884856939315796,
+      "net_flux": -0.22720341384410858,
+      "border_dist": 6.796446800231934
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 11.460320472717285,
+      "neg_flux": 7.111656188964844,
+      "flux_asymmetry": 0.2341519445180893,
+      "dipole_balance": 0.7658480405807495,
+      "centroid_separation": 1.94147527217865,
+      "peak_pos_snr": 16.70227813720703,
+      "peak_neg_snr": 19.18975257873535,
+      "min_peak_snr": 16.70227813720703,
+      "total_abs_flux": 23.985013961791992,
+      "net_flux": 5.931252479553223,
+      "border_dist": 6.9119954109191895
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 2.7562832832336426,
+      "neg_flux": 1.0086829662322998,
+      "flux_asymmetry": 0.46417421102523804,
+      "dipole_balance": 0.535825788974762,
+      "centroid_separation": 6.2368011474609375,
+      "peak_pos_snr": 25.483776092529297,
+      "peak_neg_snr": 6.061001300811768,
+      "min_peak_snr": 6.061001300811768,
+      "total_abs_flux": 6.124225616455078,
+      "net_flux": 1.4925376176834106,
+      "border_dist": 6.428588390350342
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 3.988233804702759,
+      "neg_flux": 0.6454776525497437,
+      "flux_asymmetry": 0.7213992476463318,
+      "dipole_balance": 0.2786007225513458,
+      "centroid_separation": 2.2236366271972656,
+      "peak_pos_snr": 8.922442436218262,
+      "peak_neg_snr": 3.941957473754883,
+      "min_peak_snr": 3.941957473754883,
+      "total_abs_flux": 11.767877578735352,
+      "net_flux": 6.4980854988098145,
+      "border_dist": 0.28127428889274597
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.32216113805770874,
+      "neg_flux": 0.2250552475452423,
+      "flux_asymmetry": 0.17745427787303925,
+      "dipole_balance": 0.8225457072257996,
+      "centroid_separation": 12.149724960327148,
+      "peak_pos_snr": 4.499967575073242,
+      "peak_neg_snr": 10.337455749511719,
+      "min_peak_snr": 4.499967575073242,
+      "total_abs_flux": 1.9396966695785522,
+      "net_flux": 0.36771631240844727,
+      "border_dist": 0.0805409625172615
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 6.032532691955566,
+      "neg_flux": 2.6582865715026855,
+      "flux_asymmetry": 0.3882540762424469,
+      "dipole_balance": 0.6117458939552307,
+      "centroid_separation": 11.038804054260254,
+      "peak_pos_snr": 10.403955459594727,
+      "peak_neg_snr": 4.466954708099365,
+      "min_peak_snr": 4.466954708099365,
+      "total_abs_flux": 19.28139877319336,
+      "net_flux": 8.129788398742676,
+      "border_dist": 2.00933837890625
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 3.091399669647217,
+      "neg_flux": 0.8499631881713867,
+      "flux_asymmetry": 0.5686957836151123,
+      "dipole_balance": 0.4313042163848877,
+      "centroid_separation": 7.845517158508301,
+      "peak_pos_snr": 7.5858612060546875,
+      "peak_neg_snr": 12.42965030670166,
+      "min_peak_snr": 7.5858612060546875,
+      "total_abs_flux": 5.753004550933838,
+      "net_flux": 2.6897664070129395,
+      "border_dist": 6.548009872436523
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.15217391304347827,
+      0.4855072463768116,
+      0.36231884057971014
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.08323297649621964,
+      "neg_flux": 0.8529949188232422,
+      "flux_asymmetry": 0.8221950531005859,
+      "dipole_balance": 0.17780494689941406,
+      "centroid_separation": 9.171853065490723,
+      "peak_pos_snr": 2.4756112098693848,
+      "peak_neg_snr": 7.339802265167236,
+      "min_peak_snr": 2.4756112098693848,
+      "total_abs_flux": 2.809565544128418,
+      "net_flux": -0.8297279477119446,
+      "border_dist": 7.0
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.9016393442622951,
+      0.03278688524590164,
+      0.06557377049180328
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 7.428071975708008,
+      "neg_flux": 1.0209664106369019,
+      "flux_asymmetry": 0.758323609828949,
+      "dipole_balance": 0.24167636036872864,
+      "centroid_separation": 4.817733287811279,
+      "peak_pos_snr": 47.128082275390625,
+      "peak_neg_snr": 7.830669403076172,
+      "min_peak_snr": 7.830669403076172,
+      "total_abs_flux": 10.238956451416016,
+      "net_flux": 6.749528884887695,
+      "border_dist": 6.197876453399658
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 8.641748428344727,
+      "neg_flux": 1.66181218624115,
+      "flux_asymmetry": 0.6774295568466187,
+      "dipole_balance": 0.32257044315338135,
+      "centroid_separation": 1.7702845335006714,
+      "peak_pos_snr": 13.5735445022583,
+      "peak_neg_snr": 4.324472904205322,
+      "min_peak_snr": 4.324472904205322,
+      "total_abs_flux": 14.83863353729248,
+      "net_flux": 7.922510623931885,
+      "border_dist": 6.652461528778076
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.15217391304347827,
+      0.4855072463768116,
+      0.36231884057971014
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.260069876909256,
+      "neg_flux": 0.17986814677715302,
+      "flux_asymmetry": 0.1823023408651352,
+      "dipole_balance": 0.8176976442337036,
+      "centroid_separation": 13.484997749328613,
+      "peak_pos_snr": 3.841782331466675,
+      "peak_neg_snr": 3.3022923469543457,
+      "min_peak_snr": 3.3022923469543457,
+      "total_abs_flux": 2.399984359741211,
+      "net_flux": 0.42566174268722534,
+      "border_dist": 0.8551287055015564
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.6688866019248962,
+      "neg_flux": 7.429435729980469,
+      "flux_asymmetry": 0.8348085880279541,
+      "dipole_balance": 0.1651914119720459,
+      "centroid_separation": 7.213409423828125,
+      "peak_pos_snr": 9.585861206054688,
+      "peak_neg_snr": 38.76773452758789,
+      "min_peak_snr": 9.585861206054688,
+      "total_abs_flux": 11.306808471679688,
+      "net_flux": -7.526580333709717,
+      "border_dist": 1.0
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 17.582616806030273,
+      "neg_flux": 19.37343978881836,
+      "flux_asymmetry": 0.04845815151929855,
+      "dipole_balance": 0.9515418410301208,
+      "centroid_separation": 7.386889457702637,
+      "peak_pos_snr": 5.1213297843933105,
+      "peak_neg_snr": 8.991262435913086,
+      "min_peak_snr": 5.1213297843933105,
+      "total_abs_flux": 59.308746337890625,
+      "net_flux": 5.526679515838623,
+      "border_dist": 1.4668323993682861
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.47692307692307695,
+      0.16923076923076924,
+      0.35384615384615387
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.42897993326187134,
+      "neg_flux": 0.3259270489215851,
+      "flux_asymmetry": 0.1365106999874115,
+      "dipole_balance": 0.8634892702102661,
+      "centroid_separation": 0.7306059002876282,
+      "peak_pos_snr": 8.226609230041504,
+      "peak_neg_snr": 6.280221939086914,
+      "min_peak_snr": 6.280221939086914,
+      "total_abs_flux": 2.2886388301849365,
+      "net_flux": -0.34615159034729004,
+      "border_dist": 3.3989795156230684e-07
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 13.52883243560791,
+      "neg_flux": 18.52569580078125,
+      "flux_asymmetry": 0.15588635206222534,
+      "dipole_balance": 0.8441136479377747,
+      "centroid_separation": 2.3590993881225586,
+      "peak_pos_snr": 48.88029098510742,
+      "peak_neg_snr": 47.62760543823242,
+      "min_peak_snr": 47.62760543823242,
+      "total_abs_flux": 37.39080047607422,
+      "net_flux": -6.595771312713623,
+      "border_dist": 6.680649757385254
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.6211838722229004,
+      "neg_flux": 15.904387474060059,
+      "flux_asymmetry": 0.9248214960098267,
+      "dipole_balance": 0.07517850399017334,
+      "centroid_separation": 2.6523542404174805,
+      "peak_pos_snr": 7.035192966461182,
+      "peak_neg_snr": 47.140377044677734,
+      "min_peak_snr": 7.035192966461182,
+      "total_abs_flux": 18.969989776611328,
+      "net_flux": -15.509293556213379,
+      "border_dist": 4.0
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 3.005312442779541,
+      "neg_flux": 14.96661376953125,
+      "flux_asymmetry": 0.6655547618865967,
+      "dipole_balance": 0.33444520831108093,
+      "centroid_separation": 4.164397716522217,
+      "peak_pos_snr": 10.329349517822266,
+      "peak_neg_snr": 44.84185791015625,
+      "min_peak_snr": 10.329349517822266,
+      "total_abs_flux": 23.191679000854492,
+      "net_flux": -13.156288146972656,
+      "border_dist": 4.0408735275268555
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 0.5851804614067078,
+      "neg_flux": 1.6908453702926636,
+      "flux_asymmetry": 0.4857875108718872,
+      "dipole_balance": 0.5142124891281128,
+      "centroid_separation": 7.19840145111084,
+      "peak_pos_snr": 7.5571160316467285,
+      "peak_neg_snr": 6.262491703033447,
+      "min_peak_snr": 6.262491703033447,
+      "total_abs_flux": 5.50377082824707,
+      "net_flux": -2.3670387268066406,
+      "border_dist": 7.057541370391846
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.15217391304347827,
+      0.4855072463768116,
+      0.36231884057971014
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 1.340975046157837,
+      "neg_flux": 1.2459487915039062,
+      "flux_asymmetry": 0.03673329949378967,
+      "dipole_balance": 0.9632666707038879,
+      "centroid_separation": 1.8284776210784912,
+      "peak_pos_snr": 23.682861328125,
+      "peak_neg_snr": 31.29404640197754,
+      "min_peak_snr": 23.682861328125,
+      "total_abs_flux": 4.503469467163086,
+      "net_flux": 0.017752157524228096,
+      "border_dist": 6.393796920776367
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.12557435035705566,
+      "neg_flux": 0.04880138859152794,
+      "flux_asymmetry": 0.4402731657028198,
+      "dipole_balance": 0.5597268342971802,
+      "centroid_separation": 11.156429290771484,
+      "peak_pos_snr": 4.259847640991211,
+      "peak_neg_snr": 2.705547332763672,
+      "min_peak_snr": 2.705547332763672,
+      "total_abs_flux": 1.0288244485855103,
+      "net_flux": 0.12839363515377045,
+      "border_dist": 1.002382755279541
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 4.175477027893066,
+      "neg_flux": 4.398664951324463,
+      "flux_asymmetry": 0.02603035420179367,
+      "dipole_balance": 0.9739696383476257,
+      "centroid_separation": 2.2388722896575928,
+      "peak_pos_snr": 47.896827697753906,
+      "peak_neg_snr": 57.002952575683594,
+      "min_peak_snr": 47.896827697753906,
+      "total_abs_flux": 10.93277645111084,
+      "net_flux": -0.31787553429603577,
+      "border_dist": 5.683201789855957
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.2987385392189026,
+      "neg_flux": 0.21719130873680115,
+      "flux_asymmetry": 0.1580587476491928,
+      "dipole_balance": 0.841941237449646,
+      "centroid_separation": 7.396582126617432,
+      "peak_pos_snr": 2.9775233268737793,
+      "peak_neg_snr": 2.8726272583007812,
+      "min_peak_snr": 2.8726272583007812,
+      "total_abs_flux": 2.8790602684020996,
+      "net_flux": -0.04897007718682289,
+      "border_dist": 0.015964211896061897
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.34242716431617737,
+      "neg_flux": 0.22714312374591827,
+      "flux_asymmetry": 0.20240528881549835,
+      "dipole_balance": 0.7975947260856628,
+      "centroid_separation": 1.4723962545394897,
+      "peak_pos_snr": 7.294806480407715,
+      "peak_neg_snr": 3.883267879486084,
+      "min_peak_snr": 3.883267879486084,
+      "total_abs_flux": 2.13301157951355,
+      "net_flux": -0.01944923773407936,
+      "border_dist": 1.2098158597946167
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 1.495959758758545,
+      "neg_flux": 0.7870175838470459,
+      "flux_asymmetry": 0.3105340600013733,
+      "dipole_balance": 0.6894659399986267,
+      "centroid_separation": 9.022024154663086,
+      "peak_pos_snr": 12.275017738342285,
+      "peak_neg_snr": 12.423079490661621,
+      "min_peak_snr": 12.275017738342285,
+      "total_abs_flux": 4.491054534912109,
+      "net_flux": 0.63695228099823,
+      "border_dist": 0.0
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      0.6,
+      0.4
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.8087218999862671,
+      "neg_flux": 0.7820430397987366,
+      "flux_asymmetry": 0.016771087422966957,
+      "dipole_balance": 0.9832289218902588,
+      "centroid_separation": 1.490737795829773,
+      "peak_pos_snr": 17.787242889404297,
+      "peak_neg_snr": 16.18300437927246,
+      "min_peak_snr": 16.18300437927246,
+      "total_abs_flux": 3.3349103927612305,
+      "net_flux": -0.05849941819906235,
+      "border_dist": 7.039751052856445
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 14.74427604675293,
+      "neg_flux": 14.84483528137207,
+      "flux_asymmetry": 0.003398541361093521,
+      "dipole_balance": 0.9966014623641968,
+      "centroid_separation": 1.5155099630355835,
+      "peak_pos_snr": 27.9107723236084,
+      "peak_neg_snr": 28.12860679626465,
+      "min_peak_snr": 27.9107723236084,
+      "total_abs_flux": 35.649959564208984,
+      "net_flux": 1.1056337356567383,
+      "border_dist": 6.64595365524292
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 12.581818580627441,
+      "neg_flux": 13.915237426757812,
+      "flux_asymmetry": 0.050323307514190674,
+      "dipole_balance": 0.9496766924858093,
+      "centroid_separation": 2.968092203140259,
+      "peak_pos_snr": 33.372257232666016,
+      "peak_neg_snr": 39.977806091308594,
+      "min_peak_snr": 33.372257232666016,
+      "total_abs_flux": 30.306100845336914,
+      "net_flux": -0.22014085948467255,
+      "border_dist": 7.246935844421387
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.6627799272537231,
+      "neg_flux": 3.682373046875,
+      "flux_asymmetry": 0.6949337124824524,
+      "dipole_balance": 0.30506631731987,
+      "centroid_separation": 0.987966775894165,
+      "peak_pos_snr": 6.105486869812012,
+      "peak_neg_snr": 13.373708724975586,
+      "min_peak_snr": 6.105486869812012,
+      "total_abs_flux": 7.1821465492248535,
+      "net_flux": -2.63680100440979,
+      "border_dist": 5.971927642822266
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.15217391304347827,
+      0.4855072463768116,
+      0.36231884057971014
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.8297557830810547,
+      "neg_flux": 1.2151060104370117,
+      "flux_asymmetry": 0.18844805657863617,
+      "dipole_balance": 0.8115519285202026,
+      "centroid_separation": 1.0784515142440796,
+      "peak_pos_snr": 9.283990859985352,
+      "peak_neg_snr": 7.695419788360596,
+      "min_peak_snr": 7.695419788360596,
+      "total_abs_flux": 4.524564743041992,
+      "net_flux": -0.5097571611404419,
+      "border_dist": 1.0053067207336426
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.6013004779815674,
+      "neg_flux": 0.510684609413147,
+      "flux_asymmetry": 0.0814901813864708,
+      "dipole_balance": 0.918509840965271,
+      "centroid_separation": 13.78831958770752,
+      "peak_pos_snr": 5.611073970794678,
+      "peak_neg_snr": 7.590661525726318,
+      "min_peak_snr": 5.611073970794678,
+      "total_abs_flux": 3.256197452545166,
+      "net_flux": 0.6776694059371948,
+      "border_dist": 0.2651524841785431
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 3.134819269180298,
+      "neg_flux": 0.22199763357639313,
+      "flux_asymmetry": 0.8677332401275635,
+      "dipole_balance": 0.13226675987243652,
+      "centroid_separation": 7.01613712310791,
+      "peak_pos_snr": 19.6588191986084,
+      "peak_neg_snr": 4.84047269821167,
+      "min_peak_snr": 4.84047269821167,
+      "total_abs_flux": 6.012524604797363,
+      "net_flux": 3.51247501373291,
+      "border_dist": 6.44169282913208
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 7.3574604988098145,
+      "neg_flux": 9.185773849487305,
+      "flux_asymmetry": 0.11051727086305618,
+      "dipole_balance": 0.8894827365875244,
+      "centroid_separation": 2.3283822536468506,
+      "peak_pos_snr": 38.53071212768555,
+      "peak_neg_snr": 42.37958908081055,
+      "min_peak_snr": 38.53071212768555,
+      "total_abs_flux": 19.57193374633789,
+      "net_flux": -2.8904964923858643,
+      "border_dist": 6.628868579864502
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.18793098628520966,
+      "neg_flux": 1.6976053714752197,
+      "flux_asymmetry": 0.8006604313850403,
+      "dipole_balance": 0.19933955371379852,
+      "centroid_separation": 9.507630348205566,
+      "peak_pos_snr": 11.952101707458496,
+      "peak_neg_snr": 33.64455795288086,
+      "min_peak_snr": 11.952101707458496,
+      "total_abs_flux": 2.7930033206939697,
+      "net_flux": -1.748313307762146,
+      "border_dist": 0.0
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 1.929162621498108,
+      "neg_flux": 0.5020596981048584,
+      "flux_asymmetry": 0.5869898796081543,
+      "dipole_balance": 0.4130101203918457,
+      "centroid_separation": 7.124791622161865,
+      "peak_pos_snr": 32.1912727355957,
+      "peak_neg_snr": 4.428994655609131,
+      "min_peak_snr": 4.428994655609131,
+      "total_abs_flux": 4.340071201324463,
+      "net_flux": 1.3784546852111816,
+      "border_dist": 6.893318176269531
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 0.1505136489868164,
+      "neg_flux": 0.2574658989906311,
+      "flux_asymmetry": 0.26215100288391113,
+      "dipole_balance": 0.7378489971160889,
+      "centroid_separation": 6.438409328460693,
+      "peak_pos_snr": 3.458037853240967,
+      "peak_neg_snr": 3.1188199520111084,
+      "min_peak_snr": 3.1188199520111084,
+      "total_abs_flux": 2.4246582984924316,
+      "net_flux": -0.021721694618463516,
+      "border_dist": 0.060560017824172974
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.12802205979824066,
+      "neg_flux": 3.615668535232544,
+      "flux_asymmetry": 0.9316064715385437,
+      "dipole_balance": 0.06839350610971451,
+      "centroid_separation": 12.135632514953613,
+      "peak_pos_snr": 2.6373276710510254,
+      "peak_neg_snr": 5.632596969604492,
+      "min_peak_snr": 2.6373276710510254,
+      "total_abs_flux": 7.1006245613098145,
+      "net_flux": -5.268866062164307,
+      "border_dist": -1.7763568394002505e-15
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.47692307692307695,
+      0.16923076923076924,
+      0.35384615384615387
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 2.252612590789795,
+      "neg_flux": 0.0,
+      "flux_asymmetry": 1.0,
+      "dipole_balance": 0.0,
+      "centroid_separation": 0.0,
+      "peak_pos_snr": 11.437371253967285,
+      "peak_neg_snr": 1.8149800300598145,
+      "min_peak_snr": 1.8149800300598145,
+      "total_abs_flux": 6.0753703117370605,
+      "net_flux": 2.9618725776672363,
+      "border_dist": 0.0025096761528402567
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 15.617841720581055,
+      "neg_flux": 0.0,
+      "flux_asymmetry": 1.0,
+      "dipole_balance": 0.0,
+      "centroid_separation": 0.0,
+      "peak_pos_snr": 11.21444034576416,
+      "peak_neg_snr": 0.09867766499519348,
+      "min_peak_snr": 0.09867766499519348,
+      "total_abs_flux": 25.43791961669922,
+      "net_flux": 22.674386978149414,
+      "border_dist": 0.0021657010074704885
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 2.8174657821655273,
+      "neg_flux": 2.290742874145508,
+      "flux_asymmetry": 0.10311301797628403,
+      "dipole_balance": 0.8968870043754578,
+      "centroid_separation": 0.7265158891677856,
+      "peak_pos_snr": 9.991998672485352,
+      "peak_neg_snr": 9.875263214111328,
+      "min_peak_snr": 9.875263214111328,
+      "total_abs_flux": 8.428617477416992,
+      "net_flux": 0.3229808807373047,
+      "border_dist": 1.7093385457992554
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 1.8673053979873657,
+      "neg_flux": 2.2187860012054443,
+      "flux_asymmetry": 0.08601879328489304,
+      "dipole_balance": 0.9139811992645264,
+      "centroid_separation": 11.31408977508545,
+      "peak_pos_snr": 7.751701354980469,
+      "peak_neg_snr": 9.046330451965332,
+      "min_peak_snr": 7.751701354980469,
+      "total_abs_flux": 7.398882865905762,
+      "net_flux": -0.35145696997642517,
+      "border_dist": 0.0
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 2.667745351791382,
+      "neg_flux": 0.3404081165790558,
+      "flux_asymmetry": 0.773676335811615,
+      "dipole_balance": 0.22632363438606262,
+      "centroid_separation": 5.128542900085449,
+      "peak_pos_snr": 32.856971740722656,
+      "peak_neg_snr": 9.4552640914917,
+      "min_peak_snr": 9.4552640914917,
+      "total_abs_flux": 4.9077887535095215,
+      "net_flux": 2.2388648986816406,
+      "border_dist": 7.007810592651367
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 1.8566359281539917,
+      "neg_flux": 0.14191238582134247,
+      "flux_asymmetry": 0.8579845428466797,
+      "dipole_balance": 0.1420154571533203,
+      "centroid_separation": 9.855725288391113,
+      "peak_pos_snr": 36.320587158203125,
+      "peak_neg_snr": 3.0975584983825684,
+      "min_peak_snr": 3.0975584983825684,
+      "total_abs_flux": 4.368999004364014,
+      "net_flux": 1.7561453580856323,
+      "border_dist": 7.10219669342041
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 0.3649752140045166,
+      "neg_flux": 2.6843109130859375,
+      "flux_asymmetry": 0.7606159448623657,
+      "dipole_balance": 0.23938404023647308,
+      "centroid_separation": 11.36276626586914,
+      "peak_pos_snr": 8.166592597961426,
+      "peak_neg_snr": 50.56509017944336,
+      "min_peak_snr": 8.166592597961426,
+      "total_abs_flux": 4.631385803222656,
+      "net_flux": -2.4502716064453125,
+      "border_dist": 0.1001410037279129
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 1.7065112590789795,
+      "neg_flux": 0.19272537529468536,
+      "flux_asymmetry": 0.7970496416091919,
+      "dipole_balance": 0.2029503583908081,
+      "centroid_separation": 7.266666889190674,
+      "peak_pos_snr": 37.70339584350586,
+      "peak_neg_snr": 2.7591845989227295,
+      "min_peak_snr": 2.7591845989227295,
+      "total_abs_flux": 4.0904388427734375,
+      "net_flux": 1.56572687625885,
+      "border_dist": 6.126498222351074
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 0.10507183521986008,
+      "neg_flux": 1.940564513206482,
+      "flux_asymmetry": 0.8972722291946411,
+      "dipole_balance": 0.10272777825593948,
+      "centroid_separation": 5.290642261505127,
+      "peak_pos_snr": 7.285857677459717,
+      "peak_neg_snr": 32.4980583190918,
+      "min_peak_snr": 7.285857677459717,
+      "total_abs_flux": 3.7761712074279785,
+      "net_flux": -1.8962894678115845,
+      "border_dist": 3.001227855682373
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 0.0,
+      "neg_flux": 1.8048741817474365,
+      "flux_asymmetry": 1.0,
+      "dipole_balance": 0.0,
+      "centroid_separation": 0.0,
+      "peak_pos_snr": 1.9319264888763428,
+      "peak_neg_snr": 13.567622184753418,
+      "min_peak_snr": 1.9319264888763428,
+      "total_abs_flux": 5.156219482421875,
+      "net_flux": -1.3335249423980713,
+      "border_dist": 7.0
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.9016393442622951,
+      0.03278688524590164,
+      0.06557377049180328
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.2564364969730377,
+      "neg_flux": 0.354258269071579,
+      "flux_asymmetry": 0.16018112003803253,
+      "dipole_balance": 0.8398188948631287,
+      "centroid_separation": 1.1123826503753662,
+      "peak_pos_snr": 13.576949119567871,
+      "peak_neg_snr": 11.015937805175781,
+      "min_peak_snr": 11.015937805175781,
+      "total_abs_flux": 1.825318455696106,
+      "net_flux": 0.06360810250043869,
+      "border_dist": 6.099666118621826
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.1,
+      0.7,
+      0.2
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.8131669163703918,
+      "neg_flux": 1.65297269821167,
+      "flux_asymmetry": 0.3405345678329468,
+      "dipole_balance": 0.6594654321670532,
+      "centroid_separation": 1.3402330875396729,
+      "peak_pos_snr": 5.944361686706543,
+      "peak_neg_snr": 13.524585723876953,
+      "min_peak_snr": 5.944361686706543,
+      "total_abs_flux": 6.640705585479736,
+      "net_flux": -0.8328610062599182,
+      "border_dist": 4.970898628234863
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 3.8219339847564697,
+      "neg_flux": 2.808103084564209,
+      "flux_asymmetry": 0.15291482210159302,
+      "dipole_balance": 0.847085177898407,
+      "centroid_separation": 2.368765354156494,
+      "peak_pos_snr": 8.324382781982422,
+      "peak_neg_snr": 6.969134330749512,
+      "min_peak_snr": 6.969134330749512,
+      "total_abs_flux": 14.61436653137207,
+      "net_flux": -1.595407247543335,
+      "border_dist": 0.17929008603096008
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 8.461812973022461,
+      "neg_flux": 10.176603317260742,
+      "flux_asymmetry": 0.09200303256511688,
+      "dipole_balance": 0.9079969525337219,
+      "centroid_separation": 1.542319893836975,
+      "peak_pos_snr": 22.61713981628418,
+      "peak_neg_snr": 33.71895980834961,
+      "min_peak_snr": 22.61713981628418,
+      "total_abs_flux": 22.085203170776367,
+      "net_flux": -1.332099437713623,
+      "border_dist": 6.244755744934082
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.36258211731910706,
+      "neg_flux": 0.3355761766433716,
+      "flux_asymmetry": 0.03868165984749794,
+      "dipole_balance": 0.96131831407547,
+      "centroid_separation": 1.1066163778305054,
+      "peak_pos_snr": 10.535365104675293,
+      "peak_neg_snr": 7.908047676086426,
+      "min_peak_snr": 7.908047676086426,
+      "total_abs_flux": 3.252382516860962,
+      "net_flux": 0.30254247784614563,
+      "border_dist": 3.0640480518341064
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.3147292137145996,
+      "neg_flux": 0.9955262541770935,
+      "flux_asymmetry": 0.5195910930633545,
+      "dipole_balance": 0.4804089069366455,
+      "centroid_separation": 11.572513580322266,
+      "peak_pos_snr": 2.931541919708252,
+      "peak_neg_snr": 14.868252754211426,
+      "min_peak_snr": 2.931541919708252,
+      "total_abs_flux": 3.782160758972168,
+      "net_flux": -0.6840273141860962,
+      "border_dist": 0.037446681410074234
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 17.50322914123535,
+      "neg_flux": 17.159740447998047,
+      "flux_asymmetry": 0.009909363463521004,
+      "dipole_balance": 0.9900906085968018,
+      "centroid_separation": 2.3809778690338135,
+      "peak_pos_snr": 34.38804626464844,
+      "peak_neg_snr": 33.581260681152344,
+      "min_peak_snr": 33.581260681152344,
+      "total_abs_flux": 37.852264404296875,
+      "net_flux": 0.47137725353240967,
+      "border_dist": 5.154123306274414
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 2.6046290397644043,
+      "neg_flux": 8.541993141174316,
+      "flux_asymmetry": 0.5326603651046753,
+      "dipole_balance": 0.4673396050930023,
+      "centroid_separation": 1.4142135381698608,
+      "peak_pos_snr": 4.594239234924316,
+      "peak_neg_snr": 15.06700611114502,
+      "min_peak_snr": 4.594239234924316,
+      "total_abs_flux": 21.257556915283203,
+      "net_flux": -0.8328814506530762,
+      "border_dist": 0.0
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.3,
+      0.2,
+      0.5
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 4.335008144378662,
+      "neg_flux": 1.9146674871444702,
+      "flux_asymmetry": 0.3872746229171753,
+      "dipole_balance": 0.6127253770828247,
+      "centroid_separation": 10.044966697692871,
+      "peak_pos_snr": 6.743046760559082,
+      "peak_neg_snr": 9.333606719970703,
+      "min_peak_snr": 6.743046760559082,
+      "total_abs_flux": 15.316784858703613,
+      "net_flux": 3.9499740600585938,
+      "border_dist": 0.045385558158159256
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.1444307118654251,
+      "neg_flux": 0.17739516496658325,
+      "flux_asymmetry": 0.10242943465709686,
+      "dipole_balance": 0.8975705504417419,
+      "centroid_separation": 7.260260105133057,
+      "peak_pos_snr": 2.1981842517852783,
+      "peak_neg_snr": 3.157383918762207,
+      "min_peak_snr": 2.1981842517852783,
+      "total_abs_flux": 1.9824200868606567,
+      "net_flux": 0.04871309548616409,
+      "border_dist": 7.0
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.9016393442622951,
+      0.03278688524590164,
+      0.06557377049180328
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.26787227392196655,
+      "neg_flux": 0.12758271396160126,
+      "flux_asymmetry": 0.35475480556488037,
+      "dipole_balance": 0.6452451944351196,
+      "centroid_separation": 1.4963722229003906,
+      "peak_pos_snr": 4.308577537536621,
+      "peak_neg_snr": 3.085672378540039,
+      "min_peak_snr": 3.085672378540039,
+      "total_abs_flux": 2.6665780544281006,
+      "net_flux": -0.06643988937139511,
+      "border_dist": 1.689760684967041
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.0,
+      "neg_flux": 4.578649044036865,
+      "flux_asymmetry": 1.0,
+      "dipole_balance": 0.0,
+      "centroid_separation": 0.0,
+      "peak_pos_snr": 0.7643260359764099,
+      "peak_neg_snr": 24.19953727722168,
+      "min_peak_snr": 0.7643260359764099,
+      "total_abs_flux": 7.457143783569336,
+      "net_flux": -5.88262939453125,
+      "border_dist": 7.0
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 0.5299966931343079,
+      "neg_flux": 0.22981925308704376,
+      "flux_asymmetry": 0.39506596326828003,
+      "dipole_balance": 0.60493403673172,
+      "centroid_separation": 1.8398308753967285,
+      "peak_pos_snr": 8.1895170211792,
+      "peak_neg_snr": 3.7065224647521973,
+      "min_peak_snr": 3.7065224647521973,
+      "total_abs_flux": 3.1422760486602783,
+      "net_flux": 0.6286570429801941,
+      "border_dist": 5.225292682647705
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 6.104018211364746,
+      "neg_flux": 9.182188034057617,
+      "flux_asymmetry": 0.20136912167072296,
+      "dipole_balance": 0.7986308932304382,
+      "centroid_separation": 10.638570785522461,
+      "peak_pos_snr": 5.410445690155029,
+      "peak_neg_snr": 10.348799705505371,
+      "min_peak_snr": 5.410445690155029,
+      "total_abs_flux": 30.489126205444336,
+      "net_flux": 4.0848283767700195,
+      "border_dist": 0.019281145185232162
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.47692307692307695,
+      0.16923076923076924,
+      0.35384615384615387
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.8742102384567261,
+      "neg_flux": 1.3177870512008667,
+      "flux_asymmetry": 0.20236192643642426,
+      "dipole_balance": 0.7976380586624146,
+      "centroid_separation": 1.2542212009429932,
+      "peak_pos_snr": 12.057114601135254,
+      "peak_neg_snr": 12.87303638458252,
+      "min_peak_snr": 12.057114601135254,
+      "total_abs_flux": 5.18889045715332,
+      "net_flux": -0.9043474793434143,
+      "border_dist": 5.865474224090576
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 2.821049928665161,
+      "neg_flux": 1.0305041074752808,
+      "flux_asymmetry": 0.46488919854164124,
+      "dipole_balance": 0.5351108312606812,
+      "centroid_separation": 14.140654563903809,
+      "peak_pos_snr": 7.477787494659424,
+      "peak_neg_snr": 5.887300491333008,
+      "min_peak_snr": 5.887300491333008,
+      "total_abs_flux": 8.82469654083252,
+      "net_flux": 3.874842405319214,
+      "border_dist": 0.19935449957847595
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 1.8192614316940308,
+      "neg_flux": 1.2626559734344482,
+      "flux_asymmetry": 0.18060363829135895,
+      "dipole_balance": 0.8193963766098022,
+      "centroid_separation": 2.2049193382263184,
+      "peak_pos_snr": 20.97621726989746,
+      "peak_neg_snr": 22.945158004760742,
+      "min_peak_snr": 20.97621726989746,
+      "total_abs_flux": 4.7741379737854,
+      "net_flux": 0.9951640367507935,
+      "border_dist": 6.595429420471191
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 27.28622055053711,
+      "neg_flux": 22.771162033081055,
+      "flux_asymmetry": 0.09019765257835388,
+      "dipole_balance": 0.9098023176193237,
+      "centroid_separation": 2.7605929374694824,
+      "peak_pos_snr": 49.774539947509766,
+      "peak_neg_snr": 38.69987869262695,
+      "min_peak_snr": 38.69987869262695,
+      "total_abs_flux": 57.03633499145508,
+      "net_flux": 9.171895980834961,
+      "border_dist": 5.969992160797119
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.49920883774757385,
+      "neg_flux": 0.8598095178604126,
+      "flux_asymmetry": 0.26533907651901245,
+      "dipole_balance": 0.7346609234809875,
+      "centroid_separation": 0.8311766982078552,
+      "peak_pos_snr": 7.9179158210754395,
+      "peak_neg_snr": 7.1127238273620605,
+      "min_peak_snr": 7.1127238273620605,
+      "total_abs_flux": 4.1255340576171875,
+      "net_flux": -0.0997173860669136,
+      "border_dist": 5.004037857055664
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 6.458264350891113,
+      "neg_flux": 6.507971286773682,
+      "flux_asymmetry": 0.003833574242889881,
+      "dipole_balance": 0.9961664080619812,
+      "centroid_separation": 1.7878636121749878,
+      "peak_pos_snr": 29.667325973510742,
+      "peak_neg_snr": 46.26449966430664,
+      "min_peak_snr": 29.667325973510742,
+      "total_abs_flux": 15.628101348876953,
+      "net_flux": 0.0120748495683074,
+      "border_dist": 5.339838981628418
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.10710353404283524,
+      "neg_flux": 0.2624814212322235,
+      "flux_asymmetry": 0.4204118251800537,
+      "dipole_balance": 0.5795881748199463,
+      "centroid_separation": 9.974014282226562,
+      "peak_pos_snr": 2.521291971206665,
+      "peak_neg_snr": 3.2318925857543945,
+      "min_peak_snr": 2.521291971206665,
+      "total_abs_flux": 3.129055976867676,
+      "net_flux": 0.04850500449538231,
+      "border_dist": 3.6739614009857178
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.39837804436683655,
+      "neg_flux": 0.8348210453987122,
+      "flux_asymmetry": 0.35391122102737427,
+      "dipole_balance": 0.6460887789726257,
+      "centroid_separation": 0.8722293376922607,
+      "peak_pos_snr": 6.590898036956787,
+      "peak_neg_snr": 12.11287784576416,
+      "min_peak_snr": 6.590898036956787,
+      "total_abs_flux": 3.4118127822875977,
+      "net_flux": -0.06908370554447174,
+      "border_dist": 2.8707234859466553
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 17.47232437133789,
+      "neg_flux": 16.841047286987305,
+      "flux_asymmetry": 0.01839739829301834,
+      "dipole_balance": 0.9816026091575623,
+      "centroid_separation": 2.132263660430908,
+      "peak_pos_snr": 42.5671501159668,
+      "peak_neg_snr": 43.447776794433594,
+      "min_peak_snr": 42.5671501159668,
+      "total_abs_flux": 41.073665618896484,
+      "net_flux": 0.22212569415569305,
+      "border_dist": 5.810234546661377
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 20.89676856994629,
+      "neg_flux": 20.7374210357666,
+      "flux_asymmetry": 0.0038273080717772245,
+      "dipole_balance": 0.9961726665496826,
+      "centroid_separation": 2.606571674346924,
+      "peak_pos_snr": 43.16910171508789,
+      "peak_neg_snr": 54.4631462097168,
+      "min_peak_snr": 43.16910171508789,
+      "total_abs_flux": 46.32215118408203,
+      "net_flux": -0.406642347574234,
+      "border_dist": 6.706715106964111
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 3.162381172180176,
+      "neg_flux": 0.05489158630371094,
+      "flux_asymmetry": 0.9658769369125366,
+      "dipole_balance": 0.03412305563688278,
+      "centroid_separation": 0.3201879858970642,
+      "peak_pos_snr": 23.717134475708008,
+      "peak_neg_snr": 2.0600802898406982,
+      "min_peak_snr": 2.0600802898406982,
+      "total_abs_flux": 6.183783054351807,
+      "net_flux": 3.926868200302124,
+      "border_dist": 6.680576324462891
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0625,
+      0.0625,
+      0.875
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 1.0246682167053223,
+      "neg_flux": 1.1922448873519897,
+      "flux_asymmetry": 0.07559008151292801,
+      "dipole_balance": 0.9244099259376526,
+      "centroid_separation": 1.7973992824554443,
+      "peak_pos_snr": 22.300334930419922,
+      "peak_neg_snr": 26.990678787231445,
+      "min_peak_snr": 22.300334930419922,
+      "total_abs_flux": 4.355661869049072,
+      "net_flux": -0.1886860877275467,
+      "border_dist": 6.327314376831055
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.5392126441001892,
+      "neg_flux": 1.5621885061264038,
+      "flux_asymmetry": 0.4868065416812897,
+      "dipole_balance": 0.5131934285163879,
+      "centroid_separation": 6.77448844909668,
+      "peak_pos_snr": 7.282824993133545,
+      "peak_neg_snr": 9.398697853088379,
+      "min_peak_snr": 7.282824993133545,
+      "total_abs_flux": 4.227522850036621,
+      "net_flux": -1.5511225461959839,
+      "border_dist": 2.000333786010742
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 15.921504974365234,
+      "neg_flux": 0.0,
+      "flux_asymmetry": 1.0,
+      "dipole_balance": 0.0,
+      "centroid_separation": 0.0,
+      "peak_pos_snr": 8.219882011413574,
+      "peak_neg_snr": 1.1079835891723633,
+      "min_peak_snr": 1.1079835891723633,
+      "total_abs_flux": 34.109378814697266,
+      "net_flux": 26.088529586791992,
+      "border_dist": 0.004036804661154747
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 9.262398719787598,
+      "neg_flux": 0.0,
+      "flux_asymmetry": 1.0,
+      "dipole_balance": 0.0,
+      "centroid_separation": 0.0,
+      "peak_pos_snr": 7.650524139404297,
+      "peak_neg_snr": 0.9751519560813904,
+      "min_peak_snr": 0.9751519560813904,
+      "total_abs_flux": 18.907550811767578,
+      "net_flux": 12.421640396118164,
+      "border_dist": 0.3872632682323456
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 2.6046290397644043,
+      "neg_flux": 9.700654983520508,
+      "flux_asymmetry": 0.576664924621582,
+      "dipole_balance": 0.4233350455760956,
+      "centroid_separation": 1.4142135381698608,
+      "peak_pos_snr": 4.522035598754883,
+      "peak_neg_snr": 14.83021068572998,
+      "min_peak_snr": 4.522035598754883,
+      "total_abs_flux": 24.39765167236328,
+      "net_flux": -1.676628589630127,
+      "border_dist": 7.0
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.3,
+      0.2,
+      0.5
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 6.549615383148193,
+      "neg_flux": 6.221340179443359,
+      "flux_asymmetry": 0.025704847648739815,
+      "dipole_balance": 0.9742951393127441,
+      "centroid_separation": 2.2663137912750244,
+      "peak_pos_snr": 42.7038459777832,
+      "peak_neg_snr": 42.65188980102539,
+      "min_peak_snr": 42.65188980102539,
+      "total_abs_flux": 15.641393661499023,
+      "net_flux": 0.4343746602535248,
+      "border_dist": 6.167873382568359
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 3.259324550628662,
+      "neg_flux": 2.5277140140533447,
+      "flux_asymmetry": 0.12642227113246918,
+      "dipole_balance": 0.8735777139663696,
+      "centroid_separation": 2.1674771308898926,
+      "peak_pos_snr": 38.3264045715332,
+      "peak_neg_snr": 33.955322265625,
+      "min_peak_snr": 33.955322265625,
+      "total_abs_flux": 8.486095428466797,
+      "net_flux": 0.6407660841941833,
+      "border_dist": 6.3438544273376465
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 2.7440996170043945,
+      "neg_flux": 1.8828492164611816,
+      "flux_asymmetry": 0.1861378699541092,
+      "dipole_balance": 0.813862144947052,
+      "centroid_separation": 4.346955299377441,
+      "peak_pos_snr": 11.144437789916992,
+      "peak_neg_snr": 12.180380821228027,
+      "min_peak_snr": 11.144437789916992,
+      "total_abs_flux": 8.377238273620605,
+      "net_flux": 0.7383134365081787,
+      "border_dist": 4.627108573913574
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      0.6,
+      0.4
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 14.049736022949219,
+      "neg_flux": 9.292449951171875,
+      "flux_asymmetry": 0.20380638539791107,
+      "dipole_balance": 0.7961935997009277,
+      "centroid_separation": 3.3757362365722656,
+      "peak_pos_snr": 9.919363975524902,
+      "peak_neg_snr": 6.8547163009643555,
+      "min_peak_snr": 6.8547163009643555,
+      "total_abs_flux": 36.244789123535156,
+      "net_flux": 1.1284898519515991,
+      "border_dist": 0.002427089726552367
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.47692307692307695,
+      0.16923076923076924,
+      0.35384615384615387
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 7.001816272735596,
+      "neg_flux": 19.625492095947266,
+      "flux_asymmetry": 0.47408753633499146,
+      "dipole_balance": 0.5259124636650085,
+      "centroid_separation": 2.0707032680511475,
+      "peak_pos_snr": 10.972172737121582,
+      "peak_neg_snr": 12.352588653564453,
+      "min_peak_snr": 10.972172737121582,
+      "total_abs_flux": 38.4664192199707,
+      "net_flux": -19.301738739013672,
+      "border_dist": 6.053815841674805
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.23076923076923078,
+      0.7692307692307693
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 0.7683525681495667,
+      "neg_flux": 0.7604547142982483,
+      "flux_asymmetry": 0.005165997892618179,
+      "dipole_balance": 0.9948340058326721,
+      "centroid_separation": 4.529700756072998,
+      "peak_pos_snr": 10.017765998840332,
+      "peak_neg_snr": 9.457429885864258,
+      "min_peak_snr": 9.457429885864258,
+      "total_abs_flux": 4.207836627960205,
+      "net_flux": 0.3852507174015045,
+      "border_dist": 2.0
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.7026781439781189,
+      "neg_flux": 8.198615074157715,
+      "flux_asymmetry": 0.8421177268028259,
+      "dipole_balance": 0.15788225829601288,
+      "centroid_separation": 7.30753755569458,
+      "peak_pos_snr": 11.508854866027832,
+      "peak_neg_snr": 34.117774963378906,
+      "min_peak_snr": 11.508854866027832,
+      "total_abs_flux": 11.649453163146973,
+      "net_flux": -8.491058349609375,
+      "border_dist": 1.0
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 1.0607267618179321,
+      "neg_flux": 10.346773147583008,
+      "flux_asymmetry": 0.8140299320220947,
+      "dipole_balance": 0.18597008287906647,
+      "centroid_separation": 3.2073676586151123,
+      "peak_pos_snr": 9.231342315673828,
+      "peak_neg_snr": 55.11132049560547,
+      "min_peak_snr": 9.231342315673828,
+      "total_abs_flux": 13.066581726074219,
+      "net_flux": -9.244603157043457,
+      "border_dist": 5.994965553283691
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 0.20010371506214142,
+      "neg_flux": 0.40521204471588135,
+      "flux_asymmetry": 0.3388451933860779,
+      "dipole_balance": 0.6611548066139221,
+      "centroid_separation": 4.594725608825684,
+      "peak_pos_snr": 4.407024383544922,
+      "peak_neg_snr": 7.07692813873291,
+      "min_peak_snr": 4.407024383544922,
+      "total_abs_flux": 2.027954578399658,
+      "net_flux": -0.5231602787971497,
+      "border_dist": 4.129584789276123
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.45362311601638794,
+      "neg_flux": 0.09094124287366867,
+      "flux_asymmetry": 0.6660037040710449,
+      "dipole_balance": 0.3339962959289551,
+      "centroid_separation": 0.4833609461784363,
+      "peak_pos_snr": 10.024001121520996,
+      "peak_neg_snr": 2.2259764671325684,
+      "min_peak_snr": 2.2259764671325684,
+      "total_abs_flux": 2.2200989723205566,
+      "net_flux": 0.5977108478546143,
+      "border_dist": 6.571258544921875
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.15217391304347827,
+      0.4855072463768116,
+      0.36231884057971014
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.17546884715557098,
+      "neg_flux": 0.1647990345954895,
+      "flux_asymmetry": 0.03135710209608078,
+      "dipole_balance": 0.9686428904533386,
+      "centroid_separation": 1.023371934890747,
+      "peak_pos_snr": 5.160914897918701,
+      "peak_neg_snr": 3.228680372238159,
+      "min_peak_snr": 3.228680372238159,
+      "total_abs_flux": 1.969728946685791,
+      "net_flux": 0.22018173336982727,
+      "border_dist": 2.0086772441864014
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 3.1554973125457764,
+      "neg_flux": 9.666110038757324,
+      "flux_asymmetry": 0.5077844262123108,
+      "dipole_balance": 0.4922155439853668,
+      "centroid_separation": 7.391070365905762,
+      "peak_pos_snr": 5.433724403381348,
+      "peak_neg_snr": 8.88807201385498,
+      "min_peak_snr": 5.433724403381348,
+      "total_abs_flux": 22.235506057739258,
+      "net_flux": -10.05826473236084,
+      "border_dist": 6.2855706214904785
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.15217391304347827,
+      0.4855072463768116,
+      0.36231884057971014
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 3.5247490406036377,
+      "neg_flux": 20.29421043395996,
+      "flux_asymmetry": 0.7040383815765381,
+      "dipole_balance": 0.2959616184234619,
+      "centroid_separation": 8.805541038513184,
+      "peak_pos_snr": 15.153414726257324,
+      "peak_neg_snr": 38.808494567871094,
+      "min_peak_snr": 15.153414726257324,
+      "total_abs_flux": 28.680458068847656,
+      "net_flux": -16.943647384643555,
+      "border_dist": 0.0
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 0.6092445254325867,
+      "neg_flux": 2.370025873184204,
+      "flux_asymmetry": 0.5910109281539917,
+      "dipole_balance": 0.4089890718460083,
+      "centroid_separation": 0.7390922904014587,
+      "peak_pos_snr": 4.480768203735352,
+      "peak_neg_snr": 7.666893482208252,
+      "min_peak_snr": 4.480768203735352,
+      "total_abs_flux": 7.519729137420654,
+      "net_flux": -0.8687413334846497,
+      "border_dist": 6.045465469360352
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.15217391304347827,
+      0.4855072463768116,
+      0.36231884057971014
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.0,
+      "neg_flux": 8.122249603271484,
+      "flux_asymmetry": 1.0,
+      "dipole_balance": 0.0,
+      "centroid_separation": 0.0,
+      "peak_pos_snr": 1.9818718433380127,
+      "peak_neg_snr": 8.851224899291992,
+      "min_peak_snr": 1.9818718433380127,
+      "total_abs_flux": 15.02558422088623,
+      "net_flux": -9.851920127868652,
+      "border_dist": 7.0
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.9016393442622951,
+      0.03278688524590164,
+      0.06557377049180328
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 7.126009464263916,
+      "neg_flux": 9.228768348693848,
+      "flux_asymmetry": 0.1285715401172638,
+      "dipole_balance": 0.8714284300804138,
+      "centroid_separation": 1.7892460823059082,
+      "peak_pos_snr": 18.977405548095703,
+      "peak_neg_snr": 18.846908569335938,
+      "min_peak_snr": 18.846908569335938,
+      "total_abs_flux": 19.150436401367188,
+      "net_flux": -2.154883623123169,
+      "border_dist": 7.236274719238281
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 8.571885108947754,
+      "neg_flux": 7.0678019523620605,
+      "flux_asymmetry": 0.09617090970277786,
+      "dipole_balance": 0.9038290977478027,
+      "centroid_separation": 2.9033706188201904,
+      "peak_pos_snr": 36.992733001708984,
+      "peak_neg_snr": 35.6283073425293,
+      "min_peak_snr": 35.6283073425293,
+      "total_abs_flux": 18.713186264038086,
+      "net_flux": 2.344165086746216,
+      "border_dist": 5.370266437530518
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 8.296605110168457,
+      "neg_flux": 8.640657424926758,
+      "flux_asymmetry": 0.020313309505581856,
+      "dipole_balance": 0.9796866774559021,
+      "centroid_separation": 1.4856382608413696,
+      "peak_pos_snr": 42.18720626831055,
+      "peak_neg_snr": 40.68052291870117,
+      "min_peak_snr": 40.68052291870117,
+      "total_abs_flux": 19.398723602294922,
+      "net_flux": -0.861549973487854,
+      "border_dist": 5.881771087646484
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.1471673995256424,
+      "neg_flux": 1.0028886795043945,
+      "flux_asymmetry": 0.7440691590309143,
+      "dipole_balance": 0.2559308111667633,
+      "centroid_separation": 7.146274089813232,
+      "peak_pos_snr": 4.366194725036621,
+      "peak_neg_snr": 19.866973876953125,
+      "min_peak_snr": 4.366194725036621,
+      "total_abs_flux": 3.5041232109069824,
+      "net_flux": -0.7129239439964294,
+      "border_dist": 2.1081862449645996
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 0.0,
+      "neg_flux": 17.58446502685547,
+      "flux_asymmetry": 1.0,
+      "dipole_balance": 0.0,
+      "centroid_separation": 0.0,
+      "peak_pos_snr": 0.3482678532600403,
+      "peak_neg_snr": 8.101938247680664,
+      "min_peak_snr": 0.3482678532600403,
+      "total_abs_flux": 29.764041900634766,
+      "net_flux": -28.296737670898438,
+      "border_dist": 7.0
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.9016393442622951,
+      0.03278688524590164,
+      0.06557377049180328
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.20687401294708252,
+      "neg_flux": 1.0632030963897705,
+      "flux_asymmetry": 0.6742339134216309,
+      "dipole_balance": 0.32576605677604675,
+      "centroid_separation": 5.826959133148193,
+      "peak_pos_snr": 5.852199077606201,
+      "peak_neg_snr": 23.602542877197266,
+      "min_peak_snr": 5.852199077606201,
+      "total_abs_flux": 2.8798255920410156,
+      "net_flux": -0.6361954808235168,
+      "border_dist": 2.9806082248687744
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 0.49717047810554504,
+      "neg_flux": 0.44265297055244446,
+      "flux_asymmetry": 0.058008238673210144,
+      "dipole_balance": 0.9419917464256287,
+      "centroid_separation": 16.48043441772461,
+      "peak_pos_snr": 6.367825031280518,
+      "peak_neg_snr": 10.526399612426758,
+      "min_peak_snr": 6.367825031280518,
+      "total_abs_flux": 3.378321409225464,
+      "net_flux": 0.2662200629711151,
+      "border_dist": -1.7763568394002505e-15
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 436.53961181640625,
+      "neg_flux": 0.0,
+      "flux_asymmetry": 1.0,
+      "dipole_balance": 0.0,
+      "centroid_separation": 0.0,
+      "peak_pos_snr": 56.1352653503418,
+      "peak_neg_snr": 0.31223100423812866,
+      "min_peak_snr": 0.31223100423812866,
+      "total_abs_flux": 488.6766662597656,
+      "net_flux": 481.4054870605469,
+      "border_dist": 6.360985279083252
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0625,
+      0.0625,
+      0.875
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 11.409295082092285,
+      "neg_flux": 10.057501792907715,
+      "flux_asymmetry": 0.0629713237285614,
+      "dipole_balance": 0.9370286464691162,
+      "centroid_separation": 2.7577755451202393,
+      "peak_pos_snr": 17.942045211791992,
+      "peak_neg_snr": 20.195329666137695,
+      "min_peak_snr": 17.942045211791992,
+      "total_abs_flux": 26.550785064697266,
+      "net_flux": 1.647705316543579,
+      "border_dist": 6.292791843414307
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 12.035052299499512,
+      "neg_flux": 12.759196281433105,
+      "flux_asymmetry": 0.02920614182949066,
+      "dipole_balance": 0.9707938432693481,
+      "centroid_separation": 1.8923797607421875,
+      "peak_pos_snr": 38.34920120239258,
+      "peak_neg_snr": 46.791725158691406,
+      "min_peak_snr": 38.34920120239258,
+      "total_abs_flux": 27.90031623840332,
+      "net_flux": -0.5113020539283752,
+      "border_dist": 5.502462387084961
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 3.7442071437835693,
+      "neg_flux": 1.8243364095687866,
+      "flux_asymmetry": 0.3447706997394562,
+      "dipole_balance": 0.6552292704582214,
+      "centroid_separation": 0.3451484441757202,
+      "peak_pos_snr": 11.199620246887207,
+      "peak_neg_snr": 3.2356743812561035,
+      "min_peak_snr": 3.2356743812561035,
+      "total_abs_flux": 13.703502655029297,
+      "net_flux": 5.169300556182861,
+      "border_dist": 5.022705078125
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 7.0030741691589355,
+      "neg_flux": 9.153995513916016,
+      "flux_asymmetry": 0.13312570750713348,
+      "dipole_balance": 0.8668742775917053,
+      "centroid_separation": 11.847816467285156,
+      "peak_pos_snr": 5.1956963539123535,
+      "peak_neg_snr": 10.206145286560059,
+      "min_peak_snr": 5.1956963539123535,
+      "total_abs_flux": 24.846277236938477,
+      "net_flux": 0.11567497253417969,
+      "border_dist": 0.5470569133758545
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.47692307692307695,
+      0.16923076923076924,
+      0.35384615384615387
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.6257714033126831,
+      "neg_flux": 0.5093814730644226,
+      "flux_asymmetry": 0.10253237932920456,
+      "dipole_balance": 0.8974676132202148,
+      "centroid_separation": 1.522117257118225,
+      "peak_pos_snr": 7.8950371742248535,
+      "peak_neg_snr": 8.60297966003418,
+      "min_peak_snr": 7.8950371742248535,
+      "total_abs_flux": 3.5149986743927,
+      "net_flux": -0.12227438390254974,
+      "border_dist": 6.264065742492676
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.15217391304347827,
+      0.4855072463768116,
+      0.36231884057971014
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 5.563997745513916,
+      "neg_flux": 8.3939208984375,
+      "flux_asymmetry": 0.20274679362773895,
+      "dipole_balance": 0.7972531914710999,
+      "centroid_separation": 2.4150328636169434,
+      "peak_pos_snr": 21.055654525756836,
+      "peak_neg_snr": 13.48690128326416,
+      "min_peak_snr": 13.48690128326416,
+      "total_abs_flux": 19.579357147216797,
+      "net_flux": -2.705592632293701,
+      "border_dist": 6.957334041595459
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.6768757700920105,
+      "neg_flux": 0.5875707864761353,
+      "flux_asymmetry": 0.07062772661447525,
+      "dipole_balance": 0.929372251033783,
+      "centroid_separation": 1.5110034942626953,
+      "peak_pos_snr": 30.66044807434082,
+      "peak_neg_snr": 29.274877548217773,
+      "min_peak_snr": 29.274877548217773,
+      "total_abs_flux": 2.2447152137756348,
+      "net_flux": 0.1462036520242691,
+      "border_dist": 6.7818732261657715
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 1.0941191911697388,
+      "neg_flux": 0.08619940280914307,
+      "flux_asymmetry": 0.8539387583732605,
+      "dipole_balance": 0.1460612416267395,
+      "centroid_separation": 1.1157300472259521,
+      "peak_pos_snr": 28.37506866455078,
+      "peak_neg_snr": 2.4058032035827637,
+      "min_peak_snr": 2.4058032035827637,
+      "total_abs_flux": 2.7929329872131348,
+      "net_flux": 1.3165028095245361,
+      "border_dist": 7.165033340454102
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0625,
+      0.0625,
+      0.875
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 7.811683654785156,
+      "neg_flux": 7.898816108703613,
+      "flux_asymmetry": 0.00554610975086689,
+      "dipole_balance": 0.9944539070129395,
+      "centroid_separation": 2.159930467605591,
+      "peak_pos_snr": 48.56534957885742,
+      "peak_neg_snr": 49.99442672729492,
+      "min_peak_snr": 48.56534957885742,
+      "total_abs_flux": 17.588476181030273,
+      "net_flux": -0.015547432936728,
+      "border_dist": 5.012849807739258
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 17.582807540893555,
+      "neg_flux": 24.174135208129883,
+      "flux_asymmetry": 0.15784986317157745,
+      "dipole_balance": 0.8421501517295837,
+      "centroid_separation": 1.8801844120025635,
+      "peak_pos_snr": 19.29327392578125,
+      "peak_neg_snr": 15.685401916503906,
+      "min_peak_snr": 15.685401916503906,
+      "total_abs_flux": 52.66596984863281,
+      "net_flux": -3.435397148132324,
+      "border_dist": 6.700827121734619
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.09031984210014343,
+      "neg_flux": 0.21215388178825378,
+      "flux_asymmetry": 0.40279215574264526,
+      "dipole_balance": 0.5972078442573547,
+      "centroid_separation": 1.242679476737976,
+      "peak_pos_snr": 3.678466558456421,
+      "peak_neg_snr": 3.9497358798980713,
+      "min_peak_snr": 3.678466558456421,
+      "total_abs_flux": 1.5791682004928589,
+      "net_flux": -0.13366107642650604,
+      "border_dist": 4.933359622955322
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 3.117861747741699,
+      "neg_flux": 4.3742475509643555,
+      "flux_asymmetry": 0.167694553732872,
+      "dipole_balance": 0.8323054313659668,
+      "centroid_separation": 1.9756475687026978,
+      "peak_pos_snr": 17.001237869262695,
+      "peak_neg_snr": 16.43480110168457,
+      "min_peak_snr": 16.43480110168457,
+      "total_abs_flux": 10.12657642364502,
+      "net_flux": -0.6078906059265137,
+      "border_dist": 6.631129741668701
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.18385781347751617,
+      "neg_flux": 0.22036314010620117,
+      "flux_asymmetry": 0.09031031280755997,
+      "dipole_balance": 0.9096896648406982,
+      "centroid_separation": 5.459529876708984,
+      "peak_pos_snr": 4.235109806060791,
+      "peak_neg_snr": 3.690791368484497,
+      "min_peak_snr": 3.690791368484497,
+      "total_abs_flux": 2.147642135620117,
+      "net_flux": 0.07316820323467255,
+      "border_dist": 2.8318252563476562
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 6.032680511474609,
+      "neg_flux": 1.9778311252593994,
+      "flux_asymmetry": 0.506191074848175,
+      "dipole_balance": 0.49380892515182495,
+      "centroid_separation": 14.432791709899902,
+      "peak_pos_snr": 8.068809509277344,
+      "peak_neg_snr": 6.705380916595459,
+      "min_peak_snr": 6.705380916595459,
+      "total_abs_flux": 15.469085693359375,
+      "net_flux": 9.33613109588623,
+      "border_dist": 0.17059990763664246
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.9163309931755066,
+      "neg_flux": 0.2139330953359604,
+      "flux_asymmetry": 0.6214458346366882,
+      "dipole_balance": 0.37855416536331177,
+      "centroid_separation": 6.949799537658691,
+      "peak_pos_snr": 12.438470840454102,
+      "peak_neg_snr": 2.6472268104553223,
+      "min_peak_snr": 2.6472268104553223,
+      "total_abs_flux": 3.459409236907959,
+      "net_flux": 0.7864136695861816,
+      "border_dist": 6.111690521240234
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.15217391304347827,
+      0.4855072463768116,
+      0.36231884057971014
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 4.861124515533447,
+      "neg_flux": 11.582499504089355,
+      "flux_asymmetry": 0.4087526798248291,
+      "dipole_balance": 0.5912473201751709,
+      "centroid_separation": 1.8696856498718262,
+      "peak_pos_snr": 10.519082069396973,
+      "peak_neg_snr": 11.127096176147461,
+      "min_peak_snr": 10.519082069396973,
+      "total_abs_flux": 24.641756057739258,
+      "net_flux": -11.963106155395508,
+      "border_dist": 6.44798469543457
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.1,
+      0.7,
+      0.2
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 2.2179067134857178,
+      "neg_flux": 1.9541215896606445,
+      "flux_asymmetry": 0.06322705745697021,
+      "dipole_balance": 0.9367729425430298,
+      "centroid_separation": 1.846705436706543,
+      "peak_pos_snr": 11.149834632873535,
+      "peak_neg_snr": 10.478635787963867,
+      "min_peak_snr": 10.478635787963867,
+      "total_abs_flux": 7.1931962966918945,
+      "net_flux": 0.3827565610408783,
+      "border_dist": 6.550249099731445
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.1,
+      0.7,
+      0.2
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 2.3249547481536865,
+      "neg_flux": 2.9116997718811035,
+      "flux_asymmetry": 0.11204574257135391,
+      "dipole_balance": 0.8879542350769043,
+      "centroid_separation": 1.2748206853866577,
+      "peak_pos_snr": 8.650111198425293,
+      "peak_neg_snr": 12.041287422180176,
+      "min_peak_snr": 8.650111198425293,
+      "total_abs_flux": 9.274972915649414,
+      "net_flux": -0.1382092982530594,
+      "border_dist": 6.544600486755371
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.15217391304347827,
+      0.4855072463768116,
+      0.36231884057971014
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.8151484727859497,
+      "neg_flux": 1.3712294101715088,
+      "flux_asymmetry": 0.2543388903141022,
+      "dipole_balance": 0.7456610798835754,
+      "centroid_separation": 1.3497473001480103,
+      "peak_pos_snr": 6.524075508117676,
+      "peak_neg_snr": 13.649112701416016,
+      "min_peak_snr": 6.524075508117676,
+      "total_abs_flux": 4.908053398132324,
+      "net_flux": -1.116875171661377,
+      "border_dist": 0.9999999403953552
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 1.8378344774246216,
+      "neg_flux": 0.7561841607093811,
+      "flux_asymmetry": 0.4169785976409912,
+      "dipole_balance": 0.5830214023590088,
+      "centroid_separation": 6.183211803436279,
+      "peak_pos_snr": 18.611953735351562,
+      "peak_neg_snr": 6.777719020843506,
+      "min_peak_snr": 6.777719020843506,
+      "total_abs_flux": 4.675379276275635,
+      "net_flux": 1.0436606407165527,
+      "border_dist": 6.182499408721924
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 0.7529648542404175,
+      "neg_flux": 0.5862414836883545,
+      "flux_asymmetry": 0.12449416518211365,
+      "dipole_balance": 0.8755058646202087,
+      "centroid_separation": 0.8223976492881775,
+      "peak_pos_snr": 7.576292514801025,
+      "peak_neg_snr": 7.438533782958984,
+      "min_peak_snr": 7.438533782958984,
+      "total_abs_flux": 4.062349319458008,
+      "net_flux": 0.3668004870414734,
+      "border_dist": 1.3610079288482666
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.06268084794282913,
+      "neg_flux": 0.3218528628349304,
+      "flux_asymmetry": 0.6739903688430786,
+      "dipole_balance": 0.3260096311569214,
+      "centroid_separation": 9.109333038330078,
+      "peak_pos_snr": 3.886702060699463,
+      "peak_neg_snr": 3.746642589569092,
+      "min_peak_snr": 3.746642589569092,
+      "total_abs_flux": 1.9376435279846191,
+      "net_flux": -0.4006957411766052,
+      "border_dist": -1.7763568394002505e-15
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.0,
+      "neg_flux": 5.737700939178467,
+      "flux_asymmetry": 1.0,
+      "dipole_balance": 0.0,
+      "centroid_separation": 0.0,
+      "peak_pos_snr": 1.8954877853393555,
+      "peak_neg_snr": 26.93915557861328,
+      "min_peak_snr": 1.8954877853393555,
+      "total_abs_flux": 8.929681777954102,
+      "net_flux": -7.01154899597168,
+      "border_dist": 7.0
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 0.4489770531654358,
+      "neg_flux": 0.5072898268699646,
+      "flux_asymmetry": 0.06097961589694023,
+      "dipole_balance": 0.9390203952789307,
+      "centroid_separation": 10.623017311096191,
+      "peak_pos_snr": 8.56873607635498,
+      "peak_neg_snr": 7.633492469787598,
+      "min_peak_snr": 7.633492469787598,
+      "total_abs_flux": 2.482388734817505,
+      "net_flux": -0.3055928945541382,
+      "border_dist": 6.279006004333496
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.15217391304347827,
+      0.4855072463768116,
+      0.36231884057971014
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.19596387445926666,
+      "neg_flux": 0.523155152797699,
+      "flux_asymmetry": 0.4549890458583832,
+      "dipole_balance": 0.5450109243392944,
+      "centroid_separation": 5.900518894195557,
+      "peak_pos_snr": 2.948744773864746,
+      "peak_neg_snr": 4.858517169952393,
+      "min_peak_snr": 2.948744773864746,
+      "total_abs_flux": 3.0619235038757324,
+      "net_flux": -0.16948267817497253,
+      "border_dist": 0.38370630145072937
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.6966273784637451,
+      "neg_flux": 1.2246555089950562,
+      "flux_asymmetry": 0.27483099699020386,
+      "dipole_balance": 0.7251690030097961,
+      "centroid_separation": 8.030138969421387,
+      "peak_pos_snr": 6.352102756500244,
+      "peak_neg_snr": 10.755400657653809,
+      "min_peak_snr": 6.352102756500244,
+      "total_abs_flux": 4.8180060386657715,
+      "net_flux": -0.6244683265686035,
+      "border_dist": 0.05324406549334526
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 2.490213632583618,
+      "neg_flux": 1.7273964881896973,
+      "flux_asymmetry": 0.18086481094360352,
+      "dipole_balance": 0.8191351890563965,
+      "centroid_separation": 2.0388572216033936,
+      "peak_pos_snr": 20.495752334594727,
+      "peak_neg_snr": 21.13724708557129,
+      "min_peak_snr": 20.495752334594727,
+      "total_abs_flux": 7.312191009521484,
+      "net_flux": 1.7883830070495605,
+      "border_dist": 5.0928635597229
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.0,
+      "neg_flux": 2.5198848247528076,
+      "flux_asymmetry": 1.0,
+      "dipole_balance": 0.0,
+      "centroid_separation": 0.0,
+      "peak_pos_snr": 1.2091127634048462,
+      "peak_neg_snr": 5.698060989379883,
+      "min_peak_snr": 1.2091127634048462,
+      "total_abs_flux": 7.138955116271973,
+      "net_flux": -3.1779541969299316,
+      "border_dist": 7.0
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.9016393442622951,
+      0.03278688524590164,
+      0.06557377049180328
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 3.1191341876983643,
+      "neg_flux": 1.8243364095687866,
+      "flux_asymmetry": 0.2619208097457886,
+      "dipole_balance": 0.7380791902542114,
+      "centroid_separation": 0.36142203211784363,
+      "peak_pos_snr": 11.829150199890137,
+      "peak_neg_snr": 3.4175517559051514,
+      "min_peak_snr": 3.4175517559051514,
+      "total_abs_flux": 9.964231491088867,
+      "net_flux": 0.6460738778114319,
+      "border_dist": 1.0561141967773438
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.3189081847667694,
+      "neg_flux": 0.6423037052154541,
+      "flux_asymmetry": 0.3364456295967102,
+      "dipole_balance": 0.6635543704032898,
+      "centroid_separation": 9.000141143798828,
+      "peak_pos_snr": 5.515366077423096,
+      "peak_neg_snr": 5.740570068359375,
+      "min_peak_snr": 5.515366077423096,
+      "total_abs_flux": 2.6091089248657227,
+      "net_flux": -0.6679622530937195,
+      "border_dist": -1.7763568394002505e-15
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 11.682138442993164,
+      "neg_flux": 11.905372619628906,
+      "flux_asymmetry": 0.009464077651500702,
+      "dipole_balance": 0.9905359148979187,
+      "centroid_separation": 1.183057427406311,
+      "peak_pos_snr": 31.074426651000977,
+      "peak_neg_snr": 25.931812286376953,
+      "min_peak_snr": 25.931812286376953,
+      "total_abs_flux": 26.72412109375,
+      "net_flux": 0.610080897808075,
+      "border_dist": 6.296767234802246
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.5026130676269531,
+      "neg_flux": 0.25251924991607666,
+      "flux_asymmetry": 0.3311920762062073,
+      "dipole_balance": 0.6688079237937927,
+      "centroid_separation": 0.25869765877723694,
+      "peak_pos_snr": 9.935192108154297,
+      "peak_neg_snr": 4.023271560668945,
+      "min_peak_snr": 4.023271560668945,
+      "total_abs_flux": 3.2649734020233154,
+      "net_flux": -0.32060906291007996,
+      "border_dist": 0.5680427551269531
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 1.6615101099014282,
+      "neg_flux": 0.654025673866272,
+      "flux_asymmetry": 0.43509775400161743,
+      "dipole_balance": 0.5649022459983826,
+      "centroid_separation": 0.6753966212272644,
+      "peak_pos_snr": 6.100865364074707,
+      "peak_neg_snr": 10.749449729919434,
+      "min_peak_snr": 6.100865364074707,
+      "total_abs_flux": 5.256589889526367,
+      "net_flux": 1.232179045677185,
+      "border_dist": 1.8108224868774414
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 1.5898131132125854,
+      "neg_flux": 1.5552576780319214,
+      "flux_asymmetry": 0.010987181216478348,
+      "dipole_balance": 0.9890128374099731,
+      "centroid_separation": 2.6847434043884277,
+      "peak_pos_snr": 17.36540412902832,
+      "peak_neg_snr": 13.612539291381836,
+      "min_peak_snr": 13.612539291381836,
+      "total_abs_flux": 5.892874240875244,
+      "net_flux": -0.32195350527763367,
+      "border_dist": 6.428411960601807
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.7030755877494812,
+      "neg_flux": 1.6261787414550781,
+      "flux_asymmetry": 0.39630845189094543,
+      "dipole_balance": 0.603691577911377,
+      "centroid_separation": 2.521671772003174,
+      "peak_pos_snr": 14.466891288757324,
+      "peak_neg_snr": 8.100126266479492,
+      "min_peak_snr": 8.100126266479492,
+      "total_abs_flux": 4.244610786437988,
+      "net_flux": -0.9326420426368713,
+      "border_dist": 6.000208377838135
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.15217391304347827,
+      0.4855072463768116,
+      0.36231884057971014
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 5.614131450653076,
+      "neg_flux": 7.091614246368408,
+      "flux_asymmetry": 0.11628461629152298,
+      "dipole_balance": 0.8837153911590576,
+      "centroid_separation": 0.9745281338691711,
+      "peak_pos_snr": 6.358774662017822,
+      "peak_neg_snr": 9.262134552001953,
+      "min_peak_snr": 6.358774662017822,
+      "total_abs_flux": 35.974365234375,
+      "net_flux": 7.40948486328125,
+      "border_dist": 0.0
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.47692307692307695,
+      0.16923076923076924,
+      0.35384615384615387
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 9.446416854858398,
+      "neg_flux": 9.127493858337402,
+      "flux_asymmetry": 0.01717047207057476,
+      "dipole_balance": 0.9828295111656189,
+      "centroid_separation": 2.6667959690093994,
+      "peak_pos_snr": 16.407318115234375,
+      "peak_neg_snr": 18.052135467529297,
+      "min_peak_snr": 16.407318115234375,
+      "total_abs_flux": 22.77090835571289,
+      "net_flux": -0.3236604332923889,
+      "border_dist": 6.2941436767578125
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 10.230247497558594,
+      "neg_flux": 2.4951393604278564,
+      "flux_asymmetry": 0.607848584651947,
+      "dipole_balance": 0.39215144515037537,
+      "centroid_separation": 7.703088283538818,
+      "peak_pos_snr": 39.824806213378906,
+      "peak_neg_snr": 5.660478591918945,
+      "min_peak_snr": 5.660478591918945,
+      "total_abs_flux": 16.707223892211914,
+      "net_flux": 7.589219570159912,
+      "border_dist": 6.173828125
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 16.537002563476562,
+      "neg_flux": 1.4160182476043701,
+      "flux_asymmetry": 0.8422529101371765,
+      "dipole_balance": 0.1577470749616623,
+      "centroid_separation": 7.790526390075684,
+      "peak_pos_snr": 51.7226448059082,
+      "peak_neg_snr": 10.15885066986084,
+      "min_peak_snr": 10.15885066986084,
+      "total_abs_flux": 22.69005012512207,
+      "net_flux": 14.919523239135742,
+      "border_dist": 7.2284650802612305
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 10.615439414978027,
+      "neg_flux": 7.940980434417725,
+      "flux_asymmetry": 0.1441258043050766,
+      "dipole_balance": 0.8558741807937622,
+      "centroid_separation": 2.3911244869232178,
+      "peak_pos_snr": 28.219196319580078,
+      "peak_neg_snr": 28.82511329650879,
+      "min_peak_snr": 28.219196319580078,
+      "total_abs_flux": 23.49449348449707,
+      "net_flux": 4.72556734085083,
+      "border_dist": 6.308332443237305
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.3308683931827545,
+      "neg_flux": 0.31777656078338623,
+      "flux_asymmetry": 0.020183362066745758,
+      "dipole_balance": 0.9798166155815125,
+      "centroid_separation": 0.9254850745201111,
+      "peak_pos_snr": 5.080750942230225,
+      "peak_neg_snr": 4.739867210388184,
+      "min_peak_snr": 4.739867210388184,
+      "total_abs_flux": 2.023228406906128,
+      "net_flux": 0.06692840903997421,
+      "border_dist": 2.1619551181793213
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 3.407205581665039,
+      "neg_flux": 29.086702346801758,
+      "flux_asymmetry": 0.7902864813804626,
+      "dipole_balance": 0.20971348881721497,
+      "centroid_separation": 7.287578105926514,
+      "peak_pos_snr": 12.665536880493164,
+      "peak_neg_snr": 57.385528564453125,
+      "min_peak_snr": 12.665536880493164,
+      "total_abs_flux": 39.234596252441406,
+      "net_flux": -27.45596694946289,
+      "border_dist": 0.0
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 0.21375533938407898,
+      "neg_flux": 0.15382198989391327,
+      "flux_asymmetry": 0.1630496382713318,
+      "dipole_balance": 0.8369503617286682,
+      "centroid_separation": 5.177314281463623,
+      "peak_pos_snr": 8.111196517944336,
+      "peak_neg_snr": 2.9034345149993896,
+      "min_peak_snr": 2.9034345149993896,
+      "total_abs_flux": 1.7873733043670654,
+      "net_flux": 0.15239247679710388,
+      "border_dist": 6.011312961578369
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.15217391304347827,
+      0.4855072463768116,
+      0.36231884057971014
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.10228715091943741,
+      "neg_flux": 0.6541681885719299,
+      "flux_asymmetry": 0.729561984539032,
+      "dipole_balance": 0.2704380452632904,
+      "centroid_separation": 9.809798240661621,
+      "peak_pos_snr": 3.2615671157836914,
+      "peak_neg_snr": 11.538165092468262,
+      "min_peak_snr": 3.2615671157836914,
+      "total_abs_flux": 2.3215463161468506,
+      "net_flux": -0.2957986891269684,
+      "border_dist": 1.11664617061615
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.1507817953824997,
+      "neg_flux": 1.2877742052078247,
+      "flux_asymmetry": 0.7903706431388855,
+      "dipole_balance": 0.2096293568611145,
+      "centroid_separation": 4.995308876037598,
+      "peak_pos_snr": 4.173016548156738,
+      "peak_neg_snr": 59.962284088134766,
+      "min_peak_snr": 4.173016548156738,
+      "total_abs_flux": 2.6778976917266846,
+      "net_flux": -1.2325936555862427,
+      "border_dist": 2.162371873855591
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 3.044872999191284,
+      "neg_flux": 2.6956446170806885,
+      "flux_asymmetry": 0.06083569675683975,
+      "dipole_balance": 0.9391642808914185,
+      "centroid_separation": 2.25693941116333,
+      "peak_pos_snr": 51.56068420410156,
+      "peak_neg_snr": 54.995487213134766,
+      "min_peak_snr": 51.56068420410156,
+      "total_abs_flux": 7.214704513549805,
+      "net_flux": 0.28008779883384705,
+      "border_dist": 5.213329792022705
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.8683694005012512,
+      "neg_flux": 7.6294169425964355,
+      "flux_asymmetry": 0.7956245541572571,
+      "dipole_balance": 0.20437543094158173,
+      "centroid_separation": 6.007445335388184,
+      "peak_pos_snr": 6.943767547607422,
+      "peak_neg_snr": 55.920631408691406,
+      "min_peak_snr": 6.943767547607422,
+      "total_abs_flux": 10.234504699707031,
+      "net_flux": -7.041981220245361,
+      "border_dist": 1.758634090423584
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 2.2096142768859863,
+      "neg_flux": 14.540427207946777,
+      "flux_asymmetry": 0.7361661195755005,
+      "dipole_balance": 0.2638338804244995,
+      "centroid_separation": 2.9078521728515625,
+      "peak_pos_snr": 12.629352569580078,
+      "peak_neg_snr": 33.42852783203125,
+      "min_peak_snr": 12.629352569580078,
+      "total_abs_flux": 20.474328994750977,
+      "net_flux": -13.165989875793457,
+      "border_dist": 6.0
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 8.322344779968262,
+      "neg_flux": 6.258696556091309,
+      "flux_asymmetry": 0.14152954518795013,
+      "dipole_balance": 0.8584704399108887,
+      "centroid_separation": 2.879079818725586,
+      "peak_pos_snr": 18.346567153930664,
+      "peak_neg_snr": 16.2398624420166,
+      "min_peak_snr": 16.2398624420166,
+      "total_abs_flux": 18.20648956298828,
+      "net_flux": 1.2092877626419067,
+      "border_dist": 6.738193035125732
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.5442962050437927,
+      "neg_flux": 1.078948736190796,
+      "flux_asymmetry": 0.32937267422676086,
+      "dipole_balance": 0.6706272959709167,
+      "centroid_separation": 1.0545318126678467,
+      "peak_pos_snr": 10.278944969177246,
+      "peak_neg_snr": 8.308753967285156,
+      "min_peak_snr": 8.308753967285156,
+      "total_abs_flux": 4.652440071105957,
+      "net_flux": -0.6316827535629272,
+      "border_dist": 1.0
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 48.742149353027344,
+      "neg_flux": 0.0,
+      "flux_asymmetry": 1.0,
+      "dipole_balance": 0.0,
+      "centroid_separation": 0.0,
+      "peak_pos_snr": 22.741491317749023,
+      "peak_neg_snr": 1.1093837022781372,
+      "min_peak_snr": 1.1093837022781372,
+      "total_abs_flux": 64.94368743896484,
+      "net_flux": 60.190067291259766,
+      "border_dist": 6.075192451477051
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0625,
+      0.0625,
+      0.875
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 3.432448625564575,
+      "neg_flux": 0.4231739640235901,
+      "flux_asymmetry": 0.7804899215698242,
+      "dipole_balance": 0.2195100486278534,
+      "centroid_separation": 7.7018232345581055,
+      "peak_pos_snr": 44.38158416748047,
+      "peak_neg_snr": 5.453537464141846,
+      "min_peak_snr": 5.453537464141846,
+      "total_abs_flux": 6.031130790710449,
+      "net_flux": 3.277578115463257,
+      "border_dist": 7.261501312255859
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 13.064095497131348,
+      "neg_flux": 59.731781005859375,
+      "flux_asymmetry": 0.6410759091377258,
+      "dipole_balance": 0.3589240610599518,
+      "centroid_separation": 9.555234909057617,
+      "peak_pos_snr": 5.216689586639404,
+      "peak_neg_snr": 33.10973358154297,
+      "min_peak_snr": 5.216689586639404,
+      "total_abs_flux": 95.4096908569336,
+      "net_flux": -37.31294250488281,
+      "border_dist": 0.013002288527786732
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 20.799949645996094,
+      "neg_flux": 12.859231948852539,
+      "flux_asymmetry": 0.23591533303260803,
+      "dipole_balance": 0.7640846371650696,
+      "centroid_separation": 1.4449738264083862,
+      "peak_pos_snr": 21.646223068237305,
+      "peak_neg_snr": 23.82596778869629,
+      "min_peak_snr": 21.646223068237305,
+      "total_abs_flux": 43.290260314941406,
+      "net_flux": 13.6610689163208,
+      "border_dist": 6.091030597686768
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.7026781439781189,
+      "neg_flux": 6.634371757507324,
+      "flux_asymmetry": 0.8084575533866882,
+      "dipole_balance": 0.19154243171215057,
+      "centroid_separation": 7.007109642028809,
+      "peak_pos_snr": 11.512744903564453,
+      "peak_neg_snr": 25.23552131652832,
+      "min_peak_snr": 11.512744903564453,
+      "total_abs_flux": 9.997154235839844,
+      "net_flux": -6.864826679229736,
+      "border_dist": 1.0
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 1.7655266523361206,
+      "neg_flux": 2.514223098754883,
+      "flux_asymmetry": 0.17493927478790283,
+      "dipole_balance": 0.8250607252120972,
+      "centroid_separation": 1.6574416160583496,
+      "peak_pos_snr": 26.660009384155273,
+      "peak_neg_snr": 25.551483154296875,
+      "min_peak_snr": 25.551483154296875,
+      "total_abs_flux": 6.2874932289123535,
+      "net_flux": -0.7698637247085571,
+      "border_dist": 6.8050456047058105
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.6904333233833313,
+      "neg_flux": 1.236978530883789,
+      "flux_asymmetry": 0.28356432914733887,
+      "dipole_balance": 0.7164356708526611,
+      "centroid_separation": 0.5606247186660767,
+      "peak_pos_snr": 11.571048736572266,
+      "peak_neg_snr": 5.942393779754639,
+      "min_peak_snr": 5.942393779754639,
+      "total_abs_flux": 5.364934921264648,
+      "net_flux": -0.5782259702682495,
+      "border_dist": 3.0
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 1.115973711013794,
+      "neg_flux": 1.0716888904571533,
+      "flux_asymmetry": 0.020242974162101746,
+      "dipole_balance": 0.9797570109367371,
+      "centroid_separation": 3.228407382965088,
+      "peak_pos_snr": 12.566060066223145,
+      "peak_neg_snr": 13.089729309082031,
+      "min_peak_snr": 12.566060066223145,
+      "total_abs_flux": 4.701711177825928,
+      "net_flux": 0.07906849682331085,
+      "border_dist": 7.106861591339111
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      0.6,
+      0.4
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 2.569312334060669,
+      "neg_flux": 94.23700714111328,
+      "flux_asymmetry": 0.9469184875488281,
+      "dipole_balance": 0.05308149755001068,
+      "centroid_separation": 6.266091346740723,
+      "peak_pos_snr": 4.063857555389404,
+      "peak_neg_snr": 42.817466735839844,
+      "min_peak_snr": 4.063857555389404,
+      "total_abs_flux": 114.62947845458984,
+      "net_flux": -96.59835052490234,
+      "border_dist": 2.0
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 1.0394874811172485,
+      "neg_flux": 1.366051435470581,
+      "flux_asymmetry": 0.1357550472021103,
+      "dipole_balance": 0.8642449378967285,
+      "centroid_separation": 1.30613374710083,
+      "peak_pos_snr": 6.7559990882873535,
+      "peak_neg_snr": 13.457801818847656,
+      "min_peak_snr": 6.7559990882873535,
+      "total_abs_flux": 6.994499206542969,
+      "net_flux": -0.24349111318588257,
+      "border_dist": 4.0524115562438965
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 1.636069893836975,
+      "neg_flux": 0.8680921792984009,
+      "flux_asymmetry": 0.3066805303096771,
+      "dipole_balance": 0.6933194398880005,
+      "centroid_separation": 1.6999669075012207,
+      "peak_pos_snr": 12.076614379882812,
+      "peak_neg_snr": 15.054803848266602,
+      "min_peak_snr": 12.076614379882812,
+      "total_abs_flux": 4.326408863067627,
+      "net_flux": 0.9183233380317688,
+      "border_dist": 5.493852138519287
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.4907880425453186,
+      "neg_flux": 0.22122326493263245,
+      "flux_asymmetry": 0.3785962164402008,
+      "dipole_balance": 0.6214038133621216,
+      "centroid_separation": 2.5350453853607178,
+      "peak_pos_snr": 6.714691162109375,
+      "peak_neg_snr": 9.31830883026123,
+      "min_peak_snr": 6.714691162109375,
+      "total_abs_flux": 2.8991968631744385,
+      "net_flux": 0.07040563225746155,
+      "border_dist": 2.9875242710113525
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.21476247906684875,
+      "neg_flux": 0.3911159634590149,
+      "flux_asymmetry": 0.29107075929641724,
+      "dipole_balance": 0.7089292407035828,
+      "centroid_separation": 1.1288199424743652,
+      "peak_pos_snr": 9.456039428710938,
+      "peak_neg_snr": 7.582446098327637,
+      "min_peak_snr": 7.582446098327637,
+      "total_abs_flux": 2.608550786972046,
+      "net_flux": -0.3818438947200775,
+      "border_dist": 0.0
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.9483432173728943,
+      "neg_flux": 0.08022405207157135,
+      "flux_asymmetry": 0.8440081477165222,
+      "dipole_balance": 0.1559918373823166,
+      "centroid_separation": 5.639823913574219,
+      "peak_pos_snr": 16.654735565185547,
+      "peak_neg_snr": 2.8757786750793457,
+      "min_peak_snr": 2.8757786750793457,
+      "total_abs_flux": 2.783048152923584,
+      "net_flux": 1.182831048965454,
+      "border_dist": 6.329957008361816
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 0.41699740290641785,
+      "neg_flux": 5.7972798347473145,
+      "flux_asymmetry": 0.865793764591217,
+      "dipole_balance": 0.13420625030994415,
+      "centroid_separation": 6.804397106170654,
+      "peak_pos_snr": 3.1633517742156982,
+      "peak_neg_snr": 21.713397979736328,
+      "min_peak_snr": 3.1633517742156982,
+      "total_abs_flux": 9.57745361328125,
+      "net_flux": -5.413086891174316,
+      "border_dist": 0.0
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 0.6688866019248962,
+      "neg_flux": 1.0496294498443604,
+      "flux_asymmetry": 0.2215532660484314,
+      "dipole_balance": 0.7784467339515686,
+      "centroid_separation": 1.0568170547485352,
+      "peak_pos_snr": 9.8935546875,
+      "peak_neg_snr": 8.200682640075684,
+      "min_peak_snr": 8.200682640075684,
+      "total_abs_flux": 4.40187931060791,
+      "net_flux": -0.7500295639038086,
+      "border_dist": 2.0
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.0,
+      "neg_flux": 93.3457260131836,
+      "flux_asymmetry": 1.0,
+      "dipole_balance": 0.0,
+      "centroid_separation": 0.0,
+      "peak_pos_snr": 0.10483647882938385,
+      "peak_neg_snr": 15.935544967651367,
+      "min_peak_snr": 0.10483647882938385,
+      "total_abs_flux": 121.16236877441406,
+      "net_flux": -114.4422607421875,
+      "border_dist": 7.0
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.3,
+      0.2,
+      0.5
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 1.6326797008514404,
+      "neg_flux": 4.5546369552612305,
+      "flux_asymmetry": 0.47224950790405273,
+      "dipole_balance": 0.5277504920959473,
+      "centroid_separation": 0.9448348879814148,
+      "peak_pos_snr": 7.16791296005249,
+      "peak_neg_snr": 8.351161003112793,
+      "min_peak_snr": 7.16791296005249,
+      "total_abs_flux": 15.508661270141602,
+      "net_flux": -2.645003080368042,
+      "border_dist": 1.0
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.47692307692307695,
+      0.16923076923076924,
+      0.35384615384615387
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 1.4635818004608154,
+      "neg_flux": 0.06596680730581284,
+      "flux_asymmetry": 0.9137434363365173,
+      "dipole_balance": 0.08625657111406326,
+      "centroid_separation": 10.262845993041992,
+      "peak_pos_snr": 10.205037117004395,
+      "peak_neg_snr": 2.044712781906128,
+      "min_peak_snr": 2.044712781906128,
+      "total_abs_flux": 4.225198268890381,
+      "net_flux": 1.7201467752456665,
+      "border_dist": 0.18573619425296783
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.38590502738952637,
+      "neg_flux": 0.2315426617860794,
+      "flux_asymmetry": 0.2500007450580597,
+      "dipole_balance": 0.7499992847442627,
+      "centroid_separation": 2.0060172080993652,
+      "peak_pos_snr": 7.581246852874756,
+      "peak_neg_snr": 4.363365650177002,
+      "min_peak_snr": 4.363365650177002,
+      "total_abs_flux": 2.497312068939209,
+      "net_flux": 0.03749075159430504,
+      "border_dist": 6.230019569396973
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.15217391304347827,
+      0.4855072463768116,
+      0.36231884057971014
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 21.10650062561035,
+      "neg_flux": 0.0,
+      "flux_asymmetry": 1.0,
+      "dipole_balance": 0.0,
+      "centroid_separation": 0.0,
+      "peak_pos_snr": 8.724091529846191,
+      "peak_neg_snr": 1.1650704145431519,
+      "min_peak_snr": 1.1650704145431519,
+      "total_abs_flux": 40.65761947631836,
+      "net_flux": 37.28314971923828,
+      "border_dist": 0.33679234981536865
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.0,
+      "neg_flux": 20.727602005004883,
+      "flux_asymmetry": 1.0,
+      "dipole_balance": 0.0,
+      "centroid_separation": 0.0,
+      "peak_pos_snr": 0.06688039004802704,
+      "peak_neg_snr": 9.616793632507324,
+      "min_peak_snr": 0.06688039004802704,
+      "total_abs_flux": 32.206485748291016,
+      "net_flux": -30.83766746520996,
+      "border_dist": 7.0
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.9016393442622951,
+      0.03278688524590164,
+      0.06557377049180328
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 7.273789882659912,
+      "neg_flux": 6.378779411315918,
+      "flux_asymmetry": 0.06555619090795517,
+      "dipole_balance": 0.9344438314437866,
+      "centroid_separation": 2.37913179397583,
+      "peak_pos_snr": 35.277671813964844,
+      "peak_neg_snr": 38.89521026611328,
+      "min_peak_snr": 35.277671813964844,
+      "total_abs_flux": 15.578568458557129,
+      "net_flux": 1.549349308013916,
+      "border_dist": 6.401058197021484
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 13.633455276489258,
+      "neg_flux": 12.494281768798828,
+      "flux_asymmetry": 0.043600138276815414,
+      "dipole_balance": 0.9563998579978943,
+      "centroid_separation": 1.438340187072754,
+      "peak_pos_snr": 23.10533332824707,
+      "peak_neg_snr": 31.62694549560547,
+      "min_peak_snr": 23.10533332824707,
+      "total_abs_flux": 32.50147247314453,
+      "net_flux": 0.285267174243927,
+      "border_dist": 6.686573028564453
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 1.8211899995803833,
+      "neg_flux": 1.0938924551010132,
+      "flux_asymmetry": 0.24949467182159424,
+      "dipole_balance": 0.7505053281784058,
+      "centroid_separation": 0.7064664363861084,
+      "peak_pos_snr": 9.74737548828125,
+      "peak_neg_snr": 9.786210060119629,
+      "min_peak_snr": 9.74737548828125,
+      "total_abs_flux": 8.50593376159668,
+      "net_flux": 0.5318543314933777,
+      "border_dist": 1.156299352645874
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.16657386720180511,
+      "neg_flux": 0.06996629387140274,
+      "flux_asymmetry": 0.40841934084892273,
+      "dipole_balance": 0.5915806293487549,
+      "centroid_separation": 13.188630104064941,
+      "peak_pos_snr": 6.066030502319336,
+      "peak_neg_snr": 4.177022933959961,
+      "min_peak_snr": 4.177022933959961,
+      "total_abs_flux": 1.1953153610229492,
+      "net_flux": 0.13049668073654175,
+      "border_dist": 0.07994343340396881
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 5.676016807556152,
+      "neg_flux": 0.6568360924720764,
+      "flux_asymmetry": 0.7925623655319214,
+      "dipole_balance": 0.207437664270401,
+      "centroid_separation": 1.121296763420105,
+      "peak_pos_snr": 9.310649871826172,
+      "peak_neg_snr": 2.868457555770874,
+      "min_peak_snr": 2.868457555770874,
+      "total_abs_flux": 15.919618606567383,
+      "net_flux": 8.710147857666016,
+      "border_dist": 3.9648730754852295
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 2.1552798748016357,
+      "neg_flux": 7.0288238525390625,
+      "flux_asymmetry": 0.5306499004364014,
+      "dipole_balance": 0.46935009956359863,
+      "centroid_separation": 10.616900444030762,
+      "peak_pos_snr": 6.122768402099609,
+      "peak_neg_snr": 11.820570945739746,
+      "min_peak_snr": 6.122768402099609,
+      "total_abs_flux": 14.710265159606934,
+      "net_flux": -7.256189346313477,
+      "border_dist": 6.7913126945495605
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.15217391304347827,
+      0.4855072463768116,
+      0.36231884057971014
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 1.0201810598373413,
+      "neg_flux": 1.1909513473510742,
+      "flux_asymmetry": 0.07723201811313629,
+      "dipole_balance": 0.9227679967880249,
+      "centroid_separation": 1.4003201723098755,
+      "peak_pos_snr": 25.8388671875,
+      "peak_neg_snr": 26.46946907043457,
+      "min_peak_snr": 25.8388671875,
+      "total_abs_flux": 4.169735908508301,
+      "net_flux": -0.2654677927494049,
+      "border_dist": 6.889065742492676
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.0,
+      "neg_flux": 5.919543266296387,
+      "flux_asymmetry": 1.0,
+      "dipole_balance": 0.0,
+      "centroid_separation": 0.0,
+      "peak_pos_snr": 0.653167188167572,
+      "peak_neg_snr": 13.343141555786133,
+      "min_peak_snr": 0.653167188167572,
+      "total_abs_flux": 15.790459632873535,
+      "net_flux": -9.938851356506348,
+      "border_dist": 7.0
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.9016393442622951,
+      0.03278688524590164,
+      0.06557377049180328
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.08253255486488342,
+      "neg_flux": 0.4187001585960388,
+      "flux_asymmetry": 0.6706817150115967,
+      "dipole_balance": 0.3293183147907257,
+      "centroid_separation": 1.1920679807662964,
+      "peak_pos_snr": 3.895374059677124,
+      "peak_neg_snr": 10.102750778198242,
+      "min_peak_snr": 3.895374059677124,
+      "total_abs_flux": 3.1554465293884277,
+      "net_flux": -0.433784544467926,
+      "border_dist": 1.0
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.27442285418510437,
+      "neg_flux": 1.863100290298462,
+      "flux_asymmetry": 0.7432328462600708,
+      "dipole_balance": 0.2567671537399292,
+      "centroid_separation": 14.907081604003906,
+      "peak_pos_snr": 2.9053690433502197,
+      "peak_neg_snr": 5.417757987976074,
+      "min_peak_snr": 2.9053690433502197,
+      "total_abs_flux": 5.440939903259277,
+      "net_flux": -2.7514774799346924,
+      "border_dist": 2.140148878097534
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 5.994287490844727,
+      "neg_flux": 1.692179560661316,
+      "flux_asymmetry": 0.5596989989280701,
+      "dipole_balance": 0.4403010308742523,
+      "centroid_separation": 1.799381971359253,
+      "peak_pos_snr": 7.762447357177734,
+      "peak_neg_snr": 2.9887466430664062,
+      "min_peak_snr": 2.9887466430664062,
+      "total_abs_flux": 16.165212631225586,
+      "net_flux": 3.892608404159546,
+      "border_dist": 2.3472721576690674
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.7242100238800049,
+      "neg_flux": 0.5068986415863037,
+      "flux_asymmetry": 0.1765168011188507,
+      "dipole_balance": 0.8234831690788269,
+      "centroid_separation": 1.6504427194595337,
+      "peak_pos_snr": 15.46284008026123,
+      "peak_neg_snr": 18.497264862060547,
+      "min_peak_snr": 15.46284008026123,
+      "total_abs_flux": 2.686765670776367,
+      "net_flux": 0.4309200942516327,
+      "border_dist": 6.159428119659424
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 1.5556005239486694,
+      "neg_flux": 3.3260645866394043,
+      "flux_asymmetry": 0.3626762628555298,
+      "dipole_balance": 0.6373237371444702,
+      "centroid_separation": 8.65475845336914,
+      "peak_pos_snr": 9.278055191040039,
+      "peak_neg_snr": 19.831745147705078,
+      "min_peak_snr": 9.278055191040039,
+      "total_abs_flux": 8.644495964050293,
+      "net_flux": -1.2826186418533325,
+      "border_dist": 0.1811877340078354
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 0.5751668810844421,
+      "neg_flux": 0.2980942726135254,
+      "flux_asymmetry": 0.3172849416732788,
+      "dipole_balance": 0.6827150583267212,
+      "centroid_separation": 4.834848403930664,
+      "peak_pos_snr": 7.628420829772949,
+      "peak_neg_snr": 4.593006610870361,
+      "min_peak_snr": 4.593006610870361,
+      "total_abs_flux": 3.207343816757202,
+      "net_flux": 0.29795339703559875,
+      "border_dist": 6.451878070831299
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.15217391304347827,
+      0.4855072463768116,
+      0.36231884057971014
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 1.4059209823608398,
+      "neg_flux": 7.177497863769531,
+      "flux_asymmetry": 0.6724100112915039,
+      "dipole_balance": 0.3275899887084961,
+      "centroid_separation": 6.169060707092285,
+      "peak_pos_snr": 11.292363166809082,
+      "peak_neg_snr": 25.025978088378906,
+      "min_peak_snr": 11.292363166809082,
+      "total_abs_flux": 11.54216194152832,
+      "net_flux": -6.095383644104004,
+      "border_dist": 1.8772419691085815
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 1.3596192598342896,
+      "neg_flux": 0.8920684456825256,
+      "flux_asymmetry": 0.20764459669589996,
+      "dipole_balance": 0.7923554182052612,
+      "centroid_separation": 1.7786744832992554,
+      "peak_pos_snr": 11.694225311279297,
+      "peak_neg_snr": 12.131157875061035,
+      "min_peak_snr": 11.694225311279297,
+      "total_abs_flux": 4.380638599395752,
+      "net_flux": 0.5139707922935486,
+      "border_dist": 6.476592063903809
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.8057087659835815,
+      "neg_flux": 0.29245683550834656,
+      "flux_asymmetry": 0.4673720896244049,
+      "dipole_balance": 0.5326279401779175,
+      "centroid_separation": 3.787415027618408,
+      "peak_pos_snr": 8.335477828979492,
+      "peak_neg_snr": 4.648556232452393,
+      "min_peak_snr": 4.648556232452393,
+      "total_abs_flux": 3.348405122756958,
+      "net_flux": 0.7279886603355408,
+      "border_dist": 0.3740859627723694
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.9506450891494751,
+      "neg_flux": 0.7251908183097839,
+      "flux_asymmetry": 0.13453242182731628,
+      "dipole_balance": 0.8654675483703613,
+      "centroid_separation": 0.9858349561691284,
+      "peak_pos_snr": 11.264681816101074,
+      "peak_neg_snr": 4.848588466644287,
+      "min_peak_snr": 4.848588466644287,
+      "total_abs_flux": 4.100301265716553,
+      "net_flux": 0.4977593719959259,
+      "border_dist": 0.004337366670370102
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 3.657750368118286,
+      "neg_flux": 1.5715752840042114,
+      "flux_asymmetry": 0.3989377021789551,
+      "dipole_balance": 0.6010622978210449,
+      "centroid_separation": 1.0759063959121704,
+      "peak_pos_snr": 8.01374340057373,
+      "peak_neg_snr": 3.0855023860931396,
+      "min_peak_snr": 3.0855023860931396,
+      "total_abs_flux": 11.663418769836426,
+      "net_flux": 0.9550399780273438,
+      "border_dist": 3.3450984954833984
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 0.18376223742961884,
+      "neg_flux": 0.49936142563819885,
+      "flux_asymmetry": 0.4619942307472229,
+      "dipole_balance": 0.5380057692527771,
+      "centroid_separation": 4.524025917053223,
+      "peak_pos_snr": 4.993829727172852,
+      "peak_neg_snr": 9.192779541015625,
+      "min_peak_snr": 4.993829727172852,
+      "total_abs_flux": 1.750636100769043,
+      "net_flux": -0.7776303887367249,
+      "border_dist": 3.1204824447631836
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 4.433616638183594,
+      "neg_flux": 10.904627799987793,
+      "flux_asymmetry": 0.4218873679637909,
+      "dipole_balance": 0.5781126022338867,
+      "centroid_separation": 4.132461071014404,
+      "peak_pos_snr": 4.121789455413818,
+      "peak_neg_snr": 12.907137870788574,
+      "min_peak_snr": 4.121789455413818,
+      "total_abs_flux": 29.84644317626953,
+      "net_flux": -0.6394771933555603,
+      "border_dist": 6.298376083374023
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.9016393442622951,
+      0.03278688524590164,
+      0.06557377049180328
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 1.9093337059020996,
+      "neg_flux": 3.005267381668091,
+      "flux_asymmetry": 0.22299546003341675,
+      "dipole_balance": 0.7770045399665833,
+      "centroid_separation": 10.866754531860352,
+      "peak_pos_snr": 8.160017013549805,
+      "peak_neg_snr": 15.6760892868042,
+      "min_peak_snr": 8.160017013549805,
+      "total_abs_flux": 8.411239624023438,
+      "net_flux": -0.7936509251594543,
+      "border_dist": 0.17582669854164124
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 1.4059209823608398,
+      "neg_flux": 0.5251227617263794,
+      "flux_asymmetry": 0.4561254680156708,
+      "dipole_balance": 0.5438745617866516,
+      "centroid_separation": 1.2892686128616333,
+      "peak_pos_snr": 11.418229103088379,
+      "peak_neg_snr": 6.260695934295654,
+      "min_peak_snr": 6.260695934295654,
+      "total_abs_flux": 4.204492568969727,
+      "net_flux": 0.8308711647987366,
+      "border_dist": 4.0
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.8387096774193549,
+      0.052109181141439205,
+      0.10918114143920596
+    ],
+    "class_name": "static"
+  },
+  {
+    "features": {
+      "pos_flux": 1.8768633604049683,
+      "neg_flux": 1.64955735206604,
+      "flux_asymmetry": 0.06445799767971039,
+      "dipole_balance": 0.9355419874191284,
+      "centroid_separation": 2.1222963333129883,
+      "peak_pos_snr": 38.69480514526367,
+      "peak_neg_snr": 45.461788177490234,
+      "min_peak_snr": 38.69480514526367,
+      "total_abs_flux": 5.699674606323242,
+      "net_flux": 0.31674280762672424,
+      "border_dist": 5.357436656951904
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 11.976022720336914,
+      "neg_flux": 12.199801445007324,
+      "flux_asymmetry": 0.009256284683942795,
+      "dipole_balance": 0.9907436966896057,
+      "centroid_separation": 2.4051880836486816,
+      "peak_pos_snr": 44.39606475830078,
+      "peak_neg_snr": 48.05854034423828,
+      "min_peak_snr": 44.39606475830078,
+      "total_abs_flux": 26.60260772705078,
+      "net_flux": -0.31510213017463684,
+      "border_dist": 6.142628192901611
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 8.29773235321045,
+      "neg_flux": 9.684552192687988,
+      "flux_asymmetry": 0.07712145894765854,
+      "dipole_balance": 0.9228785634040833,
+      "centroid_separation": 8.011344909667969,
+      "peak_pos_snr": 16.350265502929688,
+      "peak_neg_snr": 9.185270309448242,
+      "min_peak_snr": 9.185270309448242,
+      "total_abs_flux": 24.345090866088867,
+      "net_flux": -5.315607070922852,
+      "border_dist": 6.059649467468262
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 0.5493968725204468,
+      "neg_flux": 2.618865728378296,
+      "flux_asymmetry": 0.6531872749328613,
+      "dipole_balance": 0.3468126952648163,
+      "centroid_separation": 6.062315940856934,
+      "peak_pos_snr": 12.247808456420898,
+      "peak_neg_snr": 17.047826766967773,
+      "min_peak_snr": 12.247808456420898,
+      "total_abs_flux": 6.062656879425049,
+      "net_flux": -3.3367605209350586,
+      "border_dist": 4.0
+    },
+    "expected_class": 2,
+    "probabilities": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "class_name": "variable"
+  },
+  {
+    "features": {
+      "pos_flux": 1.7690012454986572,
+      "neg_flux": 1.2678759098052979,
+      "flux_asymmetry": 0.165013387799263,
+      "dipole_balance": 0.8349866271018982,
+      "centroid_separation": 0.7161072492599487,
+      "peak_pos_snr": 6.38844108581543,
+      "peak_neg_snr": 9.647991180419922,
+      "min_peak_snr": 6.38844108581543,
+      "total_abs_flux": 8.788942337036133,
+      "net_flux": 0.6729392409324646,
+      "border_dist": 5.342804908752441
+    },
+    "expected_class": 1,
+    "probabilities": [
+      0.15217391304347827,
+      0.4855072463768116,
+      0.36231884057971014
+    ],
+    "class_name": "motion"
+  },
+  {
+    "features": {
+      "pos_flux": 0.04404009133577347,
+      "neg_flux": 0.7354703545570374,
+      "flux_asymmetry": 0.8870057463645935,
+      "dipole_balance": 0.1129942312836647,
+      "centroid_separation": 7.42966890335083,
+      "peak_pos_snr": 2.236751079559326,
+      "peak_neg_snr": 5.683751106262207,
+      "min_peak_snr": 2.236751079559326,
+      "total_abs_flux": 3.114752769470215,
+      "net_flux": -0.8314089775085449,
+      "border_dist": 7.0
+    },
+    "expected_class": 0,
+    "probabilities": [
+      0.9016393442622951,
+      0.03278688524590164,
+      0.06557377049180328
+    ],
+    "class_name": "static"
+  }
+]

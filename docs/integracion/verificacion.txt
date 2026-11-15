@@ -1,0 +1,36 @@
+# Verificacion en limpio, 2026-11-14 23:18 MST, commit 013ddb0, node v26.13.1, npm 12.2.2
+
+$ npm ci --no-audit --no-fund
+added 104 packages in 1s
+exit 0
+
+$ npm run typecheck
+exit 0
+
+$ npm test
+ Test Files  15 passed (15)
+      Tests  64 passed (64)
+exit 0
+
+$ npm run check-data
+OK index.json (13 fields)
+OK results.json (13 fields)
+check-data passed with 0 errors.
+OK index.json (4 fields)
+OK results.json (4 fields)
+check-data passed with 0 errors.
+exit 0
+
+$ npm run build
+✓ 64 modules transformed.
+dist/assets/favicon-BF90A7uD.svg                  0.68 kB │ gzip:   0.35 kB
+dist/index.html                                   1.59 kB │ gzip:   0.81 kB
+dist/assets/spaceapps-color-white-B74b9_L1.svg   10.69 kB │ gzip:   4.43 kB
+dist/assets/index-DN0-x-Sw.css                   34.04 kB │ gzip:   8.09 kB
+dist/assets/index-D3LKCYto.js                   416.18 kB │ gzip: 112.31 kB
+✓ built in 1.04s
+exit 0
+
+$ ls dist/data-sample/index.json dist/data-new/index.json
+.rw-r--r-- 6.1k joako 14 Nov 23:18 dist/data-sample/index.json
+.rw-r--r-- 3.3k joako 14 Nov 23:18 dist/data-new/index.json

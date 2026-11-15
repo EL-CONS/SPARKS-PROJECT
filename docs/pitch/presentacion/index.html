@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sparks · Pitch</title>
+<!-- Las mismas fuentes que la app (Constelación) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;500&family=Nunito:wght@400;600;700;800&family=Unbounded:wght@400;500;600;700&display=swap">
+<style>
+/* ===========================================
+   TEMA: el sistema visual de Sparks (app/src/styles/app.css)
+   Azul = antes. Ámbar = ahora. Nunca para otra cosa.
+   =========================================== */
+:root {
+  --stage-bg: #02040a;
+  --slide-bg: #02040a;
+  --text: #f1f6ff;
+  --text-2: #c6cfde;
+  --text-3: #98a3b6;
+  --rule: rgb(220 236 255 / 0.12);
+  --rule-strong: rgb(220 236 255 / 0.28);
+  --surface: rgb(16 24 36 / 0.72);
+  --before: #62b6e8;
+  --now: #ffb238;
+  --now-ink: #ffc76e;
+  --lens: #fff4dc;
+  --mint: #8de8c6;
+  --font-display: 'Unbounded', sans-serif;
+  --font-text: 'Nunito', sans-serif;
+  --font-data: 'Martian Mono', monospace;
+  --pad: 120px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ===========================================
+   FIXED 16:9 STAGE: MANDATORY BASE STYLES (viewport-base.css, completo)
+   =========================================== */
+html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: var(--stage-bg, #000); }
+.deck-viewport { position: fixed; inset: 0; overflow: hidden; background: var(--stage-bg, #000); }
+.deck-stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; transform-origin: 0 0; background: var(--slide-bg, #fff); }
+.slide { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; display: block; visibility: hidden; opacity: 0; pointer-events: none; background: var(--slide-bg, #fff); }
+.slide.active, .slide.visible { visibility: visible; opacity: 1; pointer-events: auto; z-index: 1; }
+img, video, canvas, svg { max-width: 100%; max-height: 100%; }
+.deck-controls { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 1000; }
+@media print {
+  html, body { width: 1920px; height: auto; overflow: visible; background: #fff; }
+  .deck-viewport { position: static; overflow: visible; background: #fff; }
+  .deck-stage { position: static; width: auto; height: auto; transform: none !important; background: none; }
+  .slide { position: relative; display: block !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; width: 1920px; height: 1080px; break-after: page; page-break-after: always; }
+  .slide:last-child { break-after: auto; page-break-after: auto; }
+  .deck-controls { display: none !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; }
+}
+
+/* ===========================================
+   CIELO DE FONDO: un canvas para todo el deck, se desplaza despacio
+   =========================================== */
+#sky { position: absolute; inset: 0; width: 1920px; height: 1080px; z-index: 0; pointer-events: none; }
+.slide { background: transparent; color: var(--text); font-family: var(--font-text); transition: opacity 0.7s var(--ease), visibility 0.7s; }
+.haze { position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(60% 50% at 85% 10%, rgb(255 170 90 / 0.08), transparent 70%),
+    radial-gradient(55% 55% at 10% 95%, rgb(35 79 78 / 0.22), transparent 70%); }
+
+/* ===========================================
+   TIPOGRAFÍA Y PIEZAS COMUNES
+   =========================================== */
+.kicker { font-family: var(--font-data); font-size: 22px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-3); display: flex; align-items: center; gap: 18px; }
+.kicker .n { color: var(--now-ink); }
+.kicker::after { content: ''; width: 120px; height: 1px; background: var(--rule-strong); }
+h1, h2 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.02em; line-height: 1.06; }
+h2 { font-size: 72px; margin-top: 18px; }
+.lead { font-size: 34px; line-height: 1.4; color: var(--text-2); margin-top: 28px; }
+.src { font-family: var(--font-data); font-size: 17px; color: var(--text-3); letter-spacing: 0.02em; line-height: 1.5; }
+.now { color: var(--now-ink); }
+.pad { position: absolute; inset: 0; padding: 104px var(--pad) 96px; }
+.dot { width: 14px; height: 14px; border-radius: 50%; display: inline-block; flex: none; }
+.dot.b { background: var(--before); } .dot.a { background: var(--now); }
+
+/* Reveal escalonado: cada .r entra cuando su diapositiva se activa */
+.r { opacity: 0; transform: translateY(34px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
+.slide.visible .r { opacity: 1; transform: none; }
+.slide.visible .r.d1 { transition-delay: 0.10s; } .slide.visible .r.d2 { transition-delay: 0.25s; }
+.slide.visible .r.d3 { transition-delay: 0.40s; } .slide.visible .r.d4 { transition-delay: 0.55s; }
+.slide.visible .r.d5 { transition-delay: 0.70s; } .slide.visible .r.d6 { transition-delay: 0.85s; }
+.slide.visible .r.d7 { transition-delay: 1.00s; } .slide.visible .r.d8 { transition-delay: 1.15s; }
+@keyframes fadeIn { to { opacity: 1; } }
+@keyframes fadeOut { to { opacity: 0; } }
+@keyframes blinkSwap { 0%, 49.99% { opacity: 0; } 50%, 100% { opacity: 1; } }
+
+/* ===========================================
+   LOGO QUE RESPIRA: dos PNG transparentes (resplandor y núcleos), sin cuadro
+   =========================================== */
+.logo { position: relative; }
+.logo img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.logo .glow { animation: glowBreath 5.5s ease-in-out infinite; }
+.logo .core { animation: coreBreath 5.5s ease-in-out infinite; }
+@keyframes glowBreath { 0%, 100% { opacity: 0.7; transform: scale(0.97); } 50% { opacity: 1; transform: scale(1.04); } }
+@keyframes coreBreath { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.025); } }
+
+/* ===========================================
+   MARCO DE NAVEGADOR para mostrar la app real
+   =========================================== */
+.browser { border-radius: 16px; overflow: hidden; border: 1px solid var(--rule-strong); background: #050810; box-shadow: 0 40px 120px rgb(0 0 0 / 0.6), 0 0 0 1px rgb(255 178 56 / 0.06); }
+.browser .bar { height: 46px; display: flex; align-items: center; gap: 10px; padding: 0 18px; background: #0c1220; border-bottom: 1px solid var(--rule); }
+.browser .bar i { width: 13px; height: 13px; border-radius: 50%; background: #2a3448; }
+.browser .bar span { margin-left: 16px; flex: 1; font-family: var(--font-data); font-size: 17px; color: var(--text-3); background: #070b14; border-radius: 999px; padding: 6px 18px; }
+.browser .view { position: relative; overflow: hidden; }
+.browser .view img, .browser .view video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ===========================================
+   1 · PORTADA
+   =========================================== */
+.s-title .pad { display: grid; grid-template-columns: 640px 1fr; align-items: center; gap: 60px; padding-top: 70px; }
+.s-title .logo { width: 640px; height: 640px; }
+.s-title h1 { font-size: 220px; font-weight: 700; letter-spacing: -0.04em; }
+.s-title .tag { font-size: 52px; color: var(--text-2); margin-top: 22px; font-weight: 600; }
+.s-title .meta { margin-top: 64px; display: grid; gap: 14px; }
+.s-title .meta div { font-family: var(--font-data); font-size: 24px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); }
+.s-title .meta b { color: var(--text); font-weight: 500; }
+.s-title .sa { position: absolute; right: var(--pad); top: 70px; width: 210px; opacity: 0.9; }
+
+/* ===========================================
+   2 · MIRAR DOS VECES (dos placas que parpadean)
+   =========================================== */
+.s-twice .pad { display: grid; grid-template-columns: 820px 1fr; gap: 110px; align-items: center; }
+.plates { position: relative; width: 820px; height: 560px; }
+.plate { position: absolute; inset: 0; border: 1px solid var(--rule-strong); border-radius: 6px; overflow: hidden; background: #070a10; }
+.plate .lbl { position: absolute; left: 22px; bottom: 18px; font-family: var(--font-data); font-size: 20px; letter-spacing: 0.08em; }
+.plate .lbl.b { color: var(--before); } .plate .lbl.a { color: var(--now-ink); }
+.plate .st { position: absolute; border-radius: 50%; background: #e8eef8; }
+.plate.b { animation: blinkSwap 2s steps(1) infinite; }
+.plate .mover { width: 14px; height: 14px; }
+.plate .ring { position: absolute; width: 64px; height: 64px; border-radius: 50%; border: 3px solid; transform: translate(-50%, -50%); }
+.s-twice h2 { font-size: 64px; }
+.facts { margin-top: 46px; display: grid; gap: 24px; }
+.fact { display: grid; grid-template-columns: 330px 1fr; align-items: baseline; gap: 26px; border-top: 1px solid var(--rule); padding-top: 20px; }
+.fact .big { font-family: var(--font-display); font-size: 60px; font-weight: 600; }
+.fact .txt { font-size: 27px; color: var(--text-2); line-height: 1.35; }
+
+/* ===========================================
+   3 · QUÉ ES SPARKS: las luces y luego la app de verdad
+   =========================================== */
+.s-app .pad { display: grid; grid-template-columns: 1010px 1fr; gap: 80px; align-items: center; }
+.s-app .stagebox { position: relative; width: 1010px; height: 620px; }
+.lights { position: absolute; inset: 0; }
+.lights .field { position: absolute; left: 205px; top: 10px; width: 600px; height: 600px; border-radius: 50%; border: 1px solid var(--rule); background: radial-gradient(closest-side, rgb(16 24 36 / 0.6), transparent); }
+.lights .field::after { content: ''; position: absolute; inset: 110px; border-radius: 50%; border: 1px dashed var(--rule); }
+.orb { position: absolute; border-radius: 50%; transform: translate(-50%, -50%); opacity: 0; }
+.orb-b { left: 420px; top: 380px; width: 140px; height: 140px; background: radial-gradient(circle at 40% 40%, #bfe4fa, var(--before) 55%, rgb(98 182 232 / 0) 72%); box-shadow: 0 0 120px 30px rgb(98 182 232 / 0.35); }
+.orb-a { left: 590px; top: 220px; width: 180px; height: 180px; background: radial-gradient(circle at 40% 40%, var(--lens), var(--now) 55%, rgb(255 178 56 / 0) 72%); box-shadow: 0 0 160px 40px rgb(255 178 56 / 0.4); }
+.trail { position: absolute; left: 420px; top: 380px; width: 226px; height: 3px; transform-origin: 0 50%; transform: rotate(-45deg) scaleX(0); background: repeating-linear-gradient(90deg, var(--text-2) 0 12px, transparent 12px 22px); opacity: 0.8; }
+.lights .lb { position: absolute; font-family: var(--font-data); font-size: 24px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0; }
+.lights .lb.b { left: 330px; top: 480px; color: var(--before); }
+.lights .lb.a { left: 680px; top: 100px; color: var(--now-ink); }
+.slide.visible .orb-b { animation: orbIn 1s var(--ease) 0.4s forwards, orbBreath 4.5s ease-in-out 1.4s infinite; }
+.slide.visible .lights .lb.b { animation: fadeIn 0.8s var(--ease) 0.9s forwards; }
+.slide.visible .trail { animation: trailIn 1.2s var(--ease) 1.5s forwards; }
+.slide.visible .orb-a { animation: orbIn 1s var(--ease) 2.4s forwards, orbBreath 4.5s ease-in-out 3.4s infinite; }
+.slide.visible .lights .lb.a { animation: fadeIn 0.8s var(--ease) 2.9s forwards; }
+.slide.visible .lights { animation: fadeOut 0.9s var(--ease) 5.6s forwards; }
+.s-app .browser { position: absolute; inset: 0; opacity: 0; transform: scale(0.96); }
+.slide.visible .s-app-browser { animation: browserIn 1s var(--ease) 5.9s forwards; }
+@keyframes browserIn { to { opacity: 1; transform: none; } }
+@keyframes orbIn { from { opacity: 0; transform: translate(-50%, -50%) scale(0.4); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+@keyframes orbBreath { 0%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); filter: brightness(1); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.04); filter: brightness(1.15); } }
+@keyframes trailIn { to { transform: rotate(-45deg) scaleX(1); } }
+.s-app .browser .view { height: 574px; }
+.s-app h2 { font-size: 60px; }
+.s-app .lead { font-size: 30px; }
+.legend2 { margin-top: 34px; display: grid; gap: 14px; font-size: 30px; color: var(--text-2); }
+.legend2 > span { display: flex; align-items: center; gap: 16px; }
+.legend2 .dot { width: 22px; height: 22px; }
+.legend2 .dot.b { box-shadow: 0 0 24px var(--before); } .legend2 .dot.a { box-shadow: 0 0 24px var(--now); }
+.legend2 b { color: var(--text); }
+.go { margin-top: 36px; display: inline-flex; align-items: center; gap: 16px; font-family: var(--font-display); font-size: 25px; color: var(--text); text-decoration: none; padding: 18px 30px 18px 22px; border-radius: 999px; border: 2px solid var(--now); background: rgb(255 178 56 / 0.08); }
+.go .dot { background: var(--before); transition: background 0.4s; }
+.go:hover .dot { background: var(--now); }
+
+/* ===========================================
+   4 · BARNARD: la app en resta y luego "¿Qué pasó?"
+   =========================================== */
+.s-proof .pad { display: grid; grid-template-columns: 960px 1fr; gap: 80px; align-items: center; }
+.s-proof .browser .view { height: 540px; }
+.s-proof .view .b2 { opacity: 0; }
+.slide.visible .s-proof-b2 { animation: fadeIn 1s var(--ease) 6s forwards; }
+.s-proof .view .tagm { position: absolute; left: 18px; bottom: 18px; font-family: var(--font-data); font-size: 19px; padding: 8px 16px; border-radius: 999px; background: rgb(2 4 10 / 0.82); color: var(--text); }
+.s-proof .view .tagm.t2 { opacity: 0; }
+.slide.visible .s-proof-t1 { animation: fadeOut 0.6s 5.8s forwards; }
+.slide.visible .s-proof-t2 { animation: fadeIn 0.6s 6.2s forwards; }
+.s-proof h2 { font-size: 60px; }
+.vs { margin-top: 46px; display: grid; gap: 22px; }
+.meas { display: grid; grid-template-columns: 170px 1fr; align-items: center; gap: 18px; }
+.s-proof .kicker { font-size: 18px; letter-spacing: 0.14em; }
+.s-proof .kicker::after { display: none; }
+.s-proof .view img { transform: scale(1.32); transform-origin: 50% 46%; }
+.meas .who { font-family: var(--font-data); font-size: 22px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); }
+.meas .val { white-space: nowrap; font-family: var(--font-display); font-size: 84px; font-weight: 600; letter-spacing: -0.03em; }
+.meas .val small { font-size: 28px; color: var(--text-2); font-weight: 500; letter-spacing: 0; }
+.scale { position: relative; height: 90px; margin-top: 14px; width: 700px; }
+.scale .axis { position: absolute; left: 0; right: 0; top: 54px; height: 2px; background: var(--rule-strong); }
+.scale .band { position: absolute; top: 40px; height: 30px; border-radius: 6px; background: rgb(255 178 56 / 0.22); border: 1px solid rgb(255 178 56 / 0.6); transform-origin: left; transform: scaleX(0); transition: transform 1.2s var(--ease) 0.9s; }
+.slide.visible .scale .band { transform: scaleX(1); }
+.scale .tick { position: absolute; top: 28px; width: 4px; height: 54px; border-radius: 2px; }
+.scale .tick.s { background: var(--now); } .scale .tick.g { background: var(--text); }
+.scale .tl { position: absolute; top: -4px; transform: translateX(-50%); font-family: var(--font-data); font-size: 19px; white-space: nowrap; }
+.scale .ax { position: absolute; top: 66px; transform: translateX(-50%); font-family: var(--font-data); font-size: 17px; color: var(--text-3); }
+.verdict { margin-top: 26px; font-size: 34px; font-weight: 700; }
+.verdict em { font-style: normal; color: var(--mint); }
+
+/* ===========================================
+   5 · LOS CINCO OBJETIVOS DEL RETO
+   =========================================== */
+.s-five h2 { font-size: 66px; }
+.s-five .lead { font-size: 30px; margin-top: 18px; }
+.cards { margin-top: 50px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; }
+.card { border: 1px solid var(--rule); border-radius: 18px; padding: 28px 24px 26px; background: var(--surface); height: 500px; display: flex; flex-direction: column; }
+.card .tag { align-self: flex-start; font-family: var(--font-data); font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--rule-strong); color: var(--text-2); }
+.card .tag.mv { border-color: rgb(255 178 56 / 0.6); color: var(--now-ink); }
+.card h3 { margin-top: 20px; font-family: var(--font-display); font-weight: 600; font-size: 32px; line-height: 1.1; }
+.card .what { margin-top: 10px; font-size: 21px; color: var(--text-3); line-height: 1.35; }
+.card .num { margin-top: auto; font-family: var(--font-display); font-size: 44px; font-weight: 600; letter-spacing: -0.02em; }
+.card .num small { display: block; margin-top: 6px; font-size: 21px; color: var(--text-2); font-weight: 500; letter-spacing: 0; }
+.card .vs2 { margin-top: 8px; font-size: 20px; color: var(--text-2); line-height: 1.4; }
+.card .honest { margin-top: auto; font-size: 24px; line-height: 1.38; }
+
+/* ===========================================
+   6 · A ESCALA (con el teléfono)
+   =========================================== */
+.s-scale .pad { display: grid; grid-template-columns: 1fr 360px; gap: 70px; align-items: center; }
+.s-scale h2 { font-size: 60px; }
+.cols { margin-top: 44px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 46px; }
+.col { border-top: 2px solid var(--rule-strong); padding-top: 26px; }
+.col .k { font-family: var(--font-data); font-size: 18px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-3); }
+.col .big { margin-top: 14px; font-family: var(--font-display); font-size: 70px; font-weight: 600; letter-spacing: -0.03em; line-height: 1; }
+.col .big small { display: block; margin-top: 10px; font-size: 26px; font-weight: 500; color: var(--text-2); letter-spacing: 0; }
+.col p { margin-top: 18px; font-size: 24px; line-height: 1.4; color: var(--text-2); }
+.col p b { color: var(--text); }
+.strip { margin-top: 38px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; padding: 22px 28px; border-radius: 18px; border: 1px solid var(--rule); background: var(--surface); font-size: 22px; color: var(--text-2); line-height: 1.4; }
+.strip b { color: var(--now-ink); }
+.phone { width: 360px; height: 760px; border-radius: 52px; padding: 14px; background: #0b111c; border: 1px solid var(--rule-strong); box-shadow: 0 40px 120px rgb(0 0 0 / 0.6), 0 0 80px rgb(98 182 232 / 0.12); }
+.phone img { width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 40px; display: block; }
+.phone-cap { margin-top: 16px; text-align: center; font-family: var(--font-data); font-size: 17px; color: var(--text-3); }
+
+/* ===========================================
+   7 · CIERRE
+   =========================================== */
+.s-end .pad { display: grid; grid-template-columns: 1fr 420px; gap: 110px; align-items: center; }
+.s-end .line1 { font-size: 42px; color: var(--text-2); line-height: 1.3; font-weight: 600; }
+.s-end .motto { margin-top: 40px; font-family: var(--font-display); font-size: 96px; font-weight: 600; line-height: 1.06; letter-spacing: -0.03em; }
+.s-end .motto .now { text-shadow: 0 0 60px rgb(255 178 56 / 0.45); }
+.s-end .line2 { margin-top: 32px; font-size: 34px; color: var(--text-2); font-weight: 600; }
+.s-end .team { margin-top: 50px; display: flex; align-items: center; gap: 20px; }
+.s-end .team .logo { width: 130px; height: 130px; margin: -20px; }
+.s-end .team div.t { font-family: var(--font-display); font-size: 40px; }
+.s-end .team small { display: block; font-family: var(--font-data); font-size: 19px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); margin-top: 8px; }
+.qr { width: 420px; padding: 30px; border-radius: 22px; background: #f1f6ff; display: grid; place-items: center; }
+.qr #qr { width: 360px; height: 360px; display: grid; place-items: center; }
+.qr #qr img, .qr #qr canvas { width: 360px !important; height: 360px !important; }
+.qr .pending { color: #02040a; font-family: var(--font-data); font-size: 22px; text-align: center; line-height: 1.5; }
+.url { margin-top: 18px; font-family: var(--font-data); font-size: 19px; color: var(--text-2); text-align: center; word-break: break-all; }
+.credits { position: absolute; left: var(--pad); right: var(--pad); bottom: 50px; font-family: var(--font-data); font-size: 17px; color: var(--text-3); }
+
+/* ===========================================
+   CONTROLES FUERA DEL ESCENARIO: progreso, idioma y edición
+   =========================================== */
+.progress { position: fixed; left: 0; bottom: 0; height: 3px; background: linear-gradient(90deg, var(--before), var(--now)); transition: width 0.5s var(--ease); z-index: 1000; }
+.lang { position: fixed; bottom: 14px; right: 16px; z-index: 1001; display: flex; border: 1px solid rgb(220 236 255 / 0.28); border-radius: 999px; overflow: hidden; background: rgb(12 18 32 / 0.85); opacity: 0.35; transition: opacity 0.3s; }
+.lang:hover, .lang:focus-within { opacity: 1; }
+.lang button { font-family: 'Martian Mono', monospace; font-size: 13px; padding: 7px 12px; color: #c6cfde; background: none; border: 0; cursor: pointer; }
+.lang button[aria-pressed="true"] { background: #ffb238; color: #1a1104; }
+.edit-hotzone { position: fixed; top: 0; left: 0; width: 80px; height: 80px; z-index: 10000; cursor: pointer; }
+.edit-toggle { position: fixed; top: 18px; left: 18px; z-index: 10001; opacity: 0; pointer-events: none; transition: opacity 0.3s; font-family: 'Martian Mono', monospace; font-size: 13px; padding: 8px 12px; border-radius: 999px; border: 1px solid #ffb238; background: #101826; color: #f1f6ff; cursor: pointer; }
+.edit-toggle.show, .edit-toggle.active { opacity: 1; pointer-events: auto; }
+body.editing [data-edit] { outline: 1px dashed rgb(255 178 56 / 0.5); outline-offset: 4px; }
+</style>
+</head>
+<body>
+<div class="deck-viewport">
+<main class="deck-stage" id="deckStage">
+  <canvas id="sky" width="1920" height="1080" aria-hidden="true"></canvas>
+
+  <!-- Textos: el español va dentro del elemento; el inglés, en data-en.
+       Imágenes y video con versión en inglés: data-src-en. -->
+
+  <!-- =========================================================
+       1 · PORTADA
+       ========================================================= -->
+  <section class="slide s-title" data-label-es="Portada" data-label-en="Title">
+    <div class="haze"></div>
+    <img class="sa r d6" src="assets/spaceapps-color-white.svg" alt="NASA Space Apps Challenge">
+    <div class="pad">
+      <div class="logo r d1" role="img" aria-label="Sparks">
+        <img class="glow" src="assets/logo-glow.png" alt="">
+        <img class="core" src="assets/logo-core.png" alt="">
+      </div>
+      <div>
+        <h1 class="r d2" data-edit>Sparks</h1>
+        <p class="tag r d3" data-edit data-en="See what moves in the sky.">Mira qué se mueve en el cielo.</p>
+        <div class="meta r d4">
+          <div data-edit data-en="&lt;b&gt;Cosmonautas&lt;/b&gt; · Hermosillo, Sonora, Mexico"><b>Cosmonautas</b> · Hermosillo, Sonora</div>
+          <div data-edit>NASA Space Apps Challenge 2026</div>
+          <div data-edit data-en="Challenge · Planet X and SPHEREx">Reto · Planet X and SPHEREx</div>
+        </div>
+      </div>
+    </div>
+    <!-- NOTAS: "Somos Cosmonautas, de Hermosillo. Nos llamamos Cosmonautas y pasamos semanas mirando al suelo. Este reto nos hizo mirar arriba." -->
+  </section>
+
+  <!-- =========================================================
+       2 · MIRAR DOS VECES
+       ========================================================= -->
+  <section class="slide s-twice" data-label-es="Mirar dos veces" data-label-en="Look twice">
+    <div class="haze"></div>
+    <div class="pad">
+      <div class="r d1">
+        <div class="plates" aria-hidden="true">
+          <div class="plate a"><span class="lbl b" data-en="plate 1">placa 1</span></div>
+          <div class="plate b"><span class="lbl a" data-en="plate 2 · six days later">placa 2 · seis días después</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="kicker r d1"><span class="n">01</span> <span data-en="Look twice">Mirar dos veces</span></div>
+        <h2 class="r d2" data-edit data-en="In 1930, Pluto showed up by comparing two photos.">En 1930, Plutón apareció al comparar dos fotos.</h2>
+        <p class="lead r d3" data-edit data-en="Clyde Tombaugh blinked two plates of the same sky. What jumped had moved.">Clyde Tombaugh alternó dos placas del mismo cielo. Lo que saltó, se había movido.</p>
+        <div class="facts">
+          <div class="fact r d4"><span class="big" data-edit data-en="1,000 M+">+1 000 M</span><span class="txt" data-edit data-en="objects: SPHEREx photographs the whole sky every six months, in 102 colours.">de objetos: SPHEREx fotografía el cielo entero cada seis meses, en 102 colores.</span></div>
+          <div class="fact r d5"><span class="big">1.7 px</span><span class="txt" data-edit data-en="is how far the fastest star in the sky moves in a year. No one can check that by hand.">lo que avanza en un año la estrella más rápida del cielo. Nadie puede revisar eso a mano.</span></div>
+        </div>
+        <p class="src r d6" style="margin-top:30px" data-edit data-en="Tombaugh's plates: 23 and 29 January 1930. SPHEREx: challenge text (NASA). Barnard: 10.39″/yr (Gaia DR3) ÷ 6.15″ per SPHEREx pixel.">Placas de Tombaugh: 23 y 29 de enero de 1930. SPHEREx: texto del reto (NASA). Barnard: 10.39″/año (Gaia DR3) ÷ 6.15″ por píxel de SPHEREx.</p>
+      </div>
+    </div>
+    <!-- NOTAS: "En 1930, un muchacho de Kansas tomó dos fotos del mismo cielo con seis días de diferencia, las alternó y algo saltó: Plutón. Hoy SPHEREx ve más de mil millones de objetos. La estrella más rápida avanza apenas píxel y medio por año. Nadie puede revisar eso a mano." -->
+  </section>
+
+  <!-- =========================================================
+       3 · QUÉ ES SPARKS: primero las luces, luego la app de verdad
+       ========================================================= -->
+  <section class="slide s-app" data-label-es="Qué es Sparks" data-label-en="What Sparks is">
+    <div class="haze"></div>
+    <div class="pad">
+      <div class="stagebox r d1">
+        <div class="lights" aria-hidden="true">
+          <div class="field"></div>
+          <span class="orb orb-b"></span>
+          <span class="trail"></span>
+          <span class="orb orb-a"></span>
+          <span class="lb b" data-en="before">antes</span>
+          <span class="lb a" data-en="now">ahora</span>
+        </div>
+        <!-- Grabación real de la app (capturar-app.mjs): mira, parpadeo, resta y "¿Qué pasó?" -->
+        <div class="browser s-app-browser">
+          <div class="bar"><i></i><i></i><i></i><span>d3hfqg5g7frqp1.cloudfront.net</span></div>
+          <div class="view"><video id="tour" muted playsinline loop preload="auto" src="assets/app/es-recorrido.webm" data-src-en="assets/app/en-recorrido.webm"></video></div>
+        </div>
+      </div>
+      <div>
+        <div class="kicker r d1"><span class="n">02</span> Sparks</div>
+        <h2 class="r d2" data-edit data-en="A spark is a light that changed place.">Una chispa es una luz que cambió de lugar.</h2>
+        <p class="lead r d3" data-edit data-en="Sparks takes SPHEREx photos from different months and blinks them. What didn't move stays still. What moved, jumps.">Sparks toma fotos de SPHEREx de distintos meses y las hace parpadear. Lo que no se movió se queda quieto. Lo que se movió, salta.</p>
+        <div class="legend2 r d4">
+          <span><i class="dot b"></i><span data-en="&lt;b&gt;Blue&lt;/b&gt;: where it was"><b>Azul</b>: donde estaba</span></span>
+          <span><i class="dot a"></i><span data-en="&lt;b&gt;Amber&lt;/b&gt;: where it is now"><b>Ámbar</b>: donde está ahora</span></span>
+        </div>
+        <a class="go r d5" id="goApp" href="#" target="_blank" rel="noopener"><i class="dot"></i><span data-en="Open Sparks live">Abrir Sparks en vivo</span></a>
+      </div>
+    </div>
+    <!-- NOTAS: "Así nació Sparks. Una chispa es una luz que cambió de lugar. Sparks toma fotos de SPHEREx de distintos meses y las hace parpadear. Azul donde estaba, ámbar donde está. (aparece la app) Esto es Sparks, en vivo: eliges un objetivo, el cielo parpadea, restas, y te dice qué pasó." -->
+  </section>
+
+  <!-- =========================================================
+       4 · LA PRUEBA: BARNARD, en la app
+       ========================================================= -->
+  <section class="slide s-proof" data-label-es="Barnard" data-label-en="Barnard">
+    <div class="haze"></div>
+    <div class="pad">
+      <div class="browser r d1">
+        <div class="bar"><i></i><i></i><i></i><span>d3hfqg5g7frqp1.cloudfront.net</span></div>
+        <div class="view">
+          <img class="b1" src="assets/app/es-barnard-resta.jpg" data-src-en="assets/app/en-barnard-resta.jpg" alt="Sparks: resta de Barnard en los seis detectores">
+          <img class="b2 s-proof-b2" src="assets/app/es-barnard-que-paso.jpg" data-src-en="assets/app/en-barnard-que-paso.jpg" alt="Sparks: ¿Qué pasó? con la flecha medida">
+          <span class="tagm s-proof-t1" data-en="Subtract · Aug 2026 − Aug 2025, six detectors">Resta · ago 2026 − ago 2025, seis detectores</span>
+          <span class="tagm t2 s-proof-t2" data-en="What happened? · the measured arrow">¿Qué pasó? · la flecha medida</span>
+        </div>
+      </div>
+      <div>
+        <div class="kicker r d1"><span class="n">03</span> <span data-en="The proof · Barnard's Star">La prueba · Estrella de Barnard</span></div>
+        <h2 class="r d2" data-edit data-en="Blink. Subtract. Measure the arrow.">Parpadea. Restamos. Medimos la flecha.</h2>
+        <div class="vs">
+          <div class="meas r d3"><span class="who">Sparks</span><span class="val now"><span class="count" data-to="10.23" data-dec="2">0.00</span> <small data-en="± 0.43 ″/yr">± 0.43 ″/año</small></span></div>
+          <div class="meas r d4"><span class="who">Gaia DR3</span><span class="val"><span class="count" data-to="10.39" data-dec="2">0.00</span> <small data-en="″/yr">″/año</small></span></div>
+        </div>
+        <!-- Escala 9.0 a 11.5 ″/año en 700 px: x = (v − 9) / 2.5 × 700 -->
+        <div class="scale r d5">
+          <div class="axis"></div>
+          <div class="band" style="left:235.2px; width:240.8px"></div>
+          <div class="tick s" style="left:344.4px"></div><span class="tl now" style="left:346px">Sparks</span>
+          <div class="tick g" style="left:389.2px"></div><span class="tl" style="left:391px; top:86px">Gaia</span>
+          <span class="ax" style="left:0">9</span><span class="ax" style="left:280px">10</span><span class="ax" style="left:560px">11</span>
+        </div>
+        <p class="verdict r d6" data-edit data-en="They agree: &lt;em&gt;0.4 σ&lt;/em&gt; apart.">Coinciden: <em>0.4 σ</em> de diferencia.</p>
+        <p class="src r d7" style="margin-top:12px" data-edit data-en="data-sample/results.json · 6 points in D5 and D6 · Gaia parallax removed">data-sample/results.json · 6 puntos en D5 y D6 · paralaje de Gaia descontada</p>
+      </div>
+    </div>
+    <!-- NOTAS: "Esta es la estrella de Barnard en Sparks. Restamos un año de cielo: lo quieto desaparece, queda azul donde estaba y ámbar donde está. Nuestra flecha dice 10.2 segundos de arco por año. Gaia, 10.4. Coinciden." -->
+  </section>
+
+  <!-- =========================================================
+       5 · LOS CINCO OBJETIVOS DEL RETO
+       ========================================================= -->
+  <section class="slide s-five" data-label-es="Los cinco del reto" data-label-en="The five targets">
+    <div class="haze"></div>
+    <div class="pad">
+      <div class="kicker r d1"><span class="n">04</span> <span data-en="The five challenge targets">Los cinco del reto</span></div>
+      <h2 class="r d2" data-edit data-en="Three move. Two change brightness.">Tres se mueven. Dos cambian de brillo.</h2>
+      <p class="lead r d3" data-edit data-en="And when something can't be measured, Sparks says so instead of making it up.">Y cuando no se puede medir algo, Sparks lo dice en vez de inventarlo.</p>
+      <div class="cards">
+        <article class="card r d3">
+          <span class="tag mv" data-en="moves">se mueve</span>
+          <h3 data-en="Barnard's Star">Estrella de Barnard</h3>
+          <p class="what" data-en="Red dwarf, the fastest star in the sky.">Enana roja, la más rápida del cielo.</p>
+          <p class="num">10.23 <small data-en="± 0.43 ″/yr">± 0.43 ″/año</small></p>
+          <p class="vs2">Gaia DR3: 10.39</p>
+        </article>
+        <article class="card r d4">
+          <span class="tag mv" data-en="moves · cold">se mueve · fría</span>
+          <h3>WISE 0855</h3>
+          <p class="what" data-en="The coldest brown dwarf known. Gaia can't see it.">La enana café más fría conocida. Gaia no la ve.</p>
+          <p class="num">≥ 10× <small data-en="more light in D6 than in D2">más luz en D6 que en D2</small></p>
+          <p class="vs2" data-en="Motion 6.04 ± 0.76 vs 8.09 in the catalogue: 2.7 σ, flagged for review.">Movimiento 6.04 ± 0.76 contra 8.09 del catálogo: 2.7 σ, lo marcamos para revisar.</p>
+        </article>
+        <article class="card r d5">
+          <span class="tag mv" data-en="moves">se mueve</span>
+          <h3>ε Indi B</h3>
+          <p class="what" data-en="A pair of brown dwarfs; SPHEREx sees one point.">Pareja de enanas café; SPHEREx la ve como un punto.</p>
+          <p class="num">4.21 <small data-en="± 0.28 ″/yr">± 0.28 ″/año</small></p>
+          <p class="vs2" data-en="Catalogue: 4.68 · 4 seasons">Catálogo: 4.68 · 4 temporadas</p>
+        </article>
+        <article class="card r d6">
+          <span class="tag" data-en="changes brightness">cambia de brillo</span>
+          <h3>RW Aurigae</h3>
+          <p class="what" data-en="Young stars that dim from time to time.">Estrellas jóvenes que se oscurecen a ratos.</p>
+          <p class="honest" data-edit data-en="No measurable motion: we show it as an upper limit, not as motion.">No se movió de forma medible: lo mostramos como cota superior, no como movimiento.</p>
+        </article>
+        <article class="card r d7">
+          <span class="tag" data-en="changes brightness">cambia de brillo</span>
+          <h3>R Draconis</h3>
+          <p class="what" data-en="Mira-type variable.">Variable tipo Mira.</p>
+          <p class="honest" data-edit data-en="So bright it saturates all six detectors. Sparks explains why there is no measurement.">Tan brillante que satura los seis detectores. Sparks explica por qué no hay medida.</p>
+        </article>
+      </div>
+      <p class="src r d8" style="margin-top:24px" data-edit data-en="data-new/results.json (our own pipeline, 14 Nov 2026) · Barnard: data-sample/results.json · D6 ≈ 4.7 µm, D2 ≈ 1.35 µm">data-new/results.json (canalización propia, 14 nov 2026) · Barnard: data-sample/results.json · D6 ≈ 4.7 µm, D2 ≈ 1.35 µm</p>
+    </div>
+    <!-- NOTAS: "Probamos los cinco objetivos del reto. Tres se mueven, y lo medimos. WISE 0855, la enana café más fría que se conoce: Gaia no la ve; en el infrarrojo largo brilla al menos diez veces más que en el corto. Las dos variables no se mueven: cambian de brillo. R Draconis satura la cámara, y Sparks lo dice en vez de inventar un número." -->
+  </section>
+
+  <!-- =========================================================
+       6 · A ESCALA
+       ========================================================= -->
+  <section class="slide s-scale" data-label-es="A escala" data-label-en="At scale">
+    <div class="haze"></div>
+    <div class="pad">
+      <div>
+        <div class="kicker r d1"><span class="n">05</span> <span data-en="At scale">A escala</span></div>
+        <h2 class="r d2" data-edit data-en="If Sparks covers the whole sky, anyone can look twice.">Si Sparks recorre el cielo entero, cualquiera puede mirar dos veces.</h2>
+        <div class="cols">
+          <div class="col r d3">
+            <div class="k" data-en="The SPHEREx sky">El cielo de SPHEREx</div>
+            <div class="big"><span data-en="1,000+">+1 000</span> <small data-en="million objects">millones de objetos</small></div>
+            <p data-edit data-en="The whole sky every six months. &lt;b&gt;No one can review it alone&lt;/b&gt;.">Todo el cielo cada seis meses. <b>Nadie puede revisarlo solo</b>.</p>
+          </div>
+          <div class="col r d4">
+            <div class="k" data-en="It has worked before">Ya funcionó antes</div>
+            <div class="big"><span data-en="hundreds">cientos</span> <small data-en="of thousands of volunteers">de miles de voluntarios</small></div>
+            <p data-edit data-en="have found asteroids, comets and brown dwarfs by comparing images. &lt;b&gt;Most known brown dwarfs&lt;/b&gt; were found that way.">han encontrado asteroides, cometas y enanas cafés comparando imágenes. <b>La mayoría de las enanas cafés conocidas</b> se encontraron así.</p>
+          </div>
+          <div class="col r d5">
+            <div class="k" data-en="What a field costs">Lo que cuesta un campo</div>
+            <div class="big">≈ <span class="count" data-to="4" data-dec="0">0</span> MB <small data-en="per patch of sky">por pedazo de cielo</small></div>
+            <p data-edit data-en="Sparks runs entirely in the browser, served as a static site. &lt;b&gt;One more patch of sky is one more file&lt;/b&gt;, not one more server.">Sparks corre entero en el navegador, servido como sitio estático. <b>Un pedazo de cielo más es un archivo más</b>, no un servidor más.</p>
+          </div>
+        </div>
+        <div class="strip r d6">
+          <span data-en="&lt;b&gt;Today&lt;/b&gt; · the 5 challenge targets, processed and checked."><b>Hoy</b> · los 5 objetivos del reto, procesados y revisados.</span>
+          <span data-en="&lt;b&gt;Next&lt;/b&gt; · the sky patch by patch, with the same pipeline."><b>Lo que sigue</b> · el cielo por pedazos, con la misma canalización.</span>
+          <span data-en="&lt;b&gt;Always&lt;/b&gt; · candidates to review: the classifier is right 78% of the time on 69 verified objects."><b>Siempre</b> · candidatos para revisar: el clasificador acierta 78 % en 69 objetos verificados.</span>
+        </div>
+        <p class="src r d7" style="margin-top:18px" data-edit data-en="NASA, challenge text (backyardworlds.org) · the 5 fields: 1.8 to 7.9 MB each · resultados_v2.json: 0.7826">NASA, texto del reto (backyardworlds.org) · los 5 campos: de 1.8 a 7.9 MB cada uno · resultados_v2.json: 0.7826</p>
+      </div>
+      <div class="r d4">
+        <div class="phone"><img src="assets/app/es-telefono.jpg" data-src-en="assets/app/en-telefono.jpg" alt="Sparks en un teléfono: Barnard en parpadeo"></div>
+        <p class="phone-cap" data-en="Sparks on a phone · Barnard">Sparks en un teléfono · Barnard</p>
+      </div>
+    </div>
+    <!-- NOTAS: "Pensemos en grande. SPHEREx ve más de mil millones de objetos: nadie puede revisarlo solo. Pero esto ya funcionó: cientos de miles de voluntarios han encontrado asteroides, cometas y enanas cafés comparando imágenes. Sparks corre en el navegador, también en el teléfono: cada pedazo de cielo nuevo es un archivo de unos megas, no un servidor. Hoy son los cinco objetivos; lo que sigue es el cielo entero. Siempre como candidatos para revisar." -->
+  </section>
+
+  <!-- =========================================================
+       7 · CIERRE
+       ========================================================= -->
+  <section class="slide s-end" data-label-es="Cierre" data-label-en="Closing">
+    <div class="haze"></div>
+    <div class="pad">
+      <div>
+        <p class="line1 r d1" data-edit data-en="Pluto was found by a young farmer from Kansas, looking twice.">A Plutón lo encontró un joven granjero de Kansas, mirando dos veces.</p>
+        <p class="motto r d3" data-edit data-en="With Sparks, the next one could be &lt;span class=&quot;now&quot;&gt;found by you&lt;/span&gt;.">Con Sparks, el siguiente lo puedes <span class="now">encontrar tú</span>.</p>
+        <p class="line2 r d4" data-edit data-en="Every spark that moves has a fingerprint.">Cada chispa que se mueve tiene una huella.</p>
+        <div class="team r d5">
+          <div class="logo" aria-hidden="true"><img class="glow" src="assets/logo-glow.png" alt=""><img class="core" src="assets/logo-core.png" alt=""></div>
+          <div class="t">Cosmonautas<small data-en="Hermosillo, Sonora · Thank you">Hermosillo, Sonora · Gracias</small></div>
+        </div>
+      </div>
+      <div class="r d4">
+        <div class="qr"><div id="qr"><p class="pending">d3hfqg5g7frqp1<br>.cloudfront.net</p></div></div>
+        <p class="url" id="urlText"></p>
+      </div>
+    </div>
+    <p class="credits r d6" data-edit data-en="Data: NASA/IPAC IRSA · SPHEREx DR1, QR2 and QR3 · ESA Gaia DR3 · CatWISE2020 · Code: github.com/EL-CONS/SPARKS-PROJECT">Datos: NASA/IPAC IRSA · SPHEREx DR1, QR2 y QR3 · ESA Gaia DR3 · CatWISE2020 · Código: github.com/EL-CONS/SPARKS-PROJECT</p>
+    <!-- NOTAS: "A Plutón lo encontró un joven granjero de Kansas, mirando dos veces. Con Sparks, el siguiente lo puedes encontrar tú. (pausa) Cada chispa que se mueve tiene una huella. Somos Cosmonautas. Gracias." -->
+  </section>
+</main>
+</div>
+
+<div class="progress" id="progress"></div>
+<div class="lang" role="group" aria-label="Idioma / Language">
+  <button type="button" data-lang="es" aria-pressed="true">ES</button>
+  <button type="button" data-lang="en" aria-pressed="false">EN</button>
+</div>
+<div class="edit-hotzone" id="editHotzone"></div>
+<button class="edit-toggle" id="editToggle" title="Editar textos (E)">editar · E</button>
+
+<!-- QR sin servidor: se genera en el navegador. Sin red, queda la URL escrita. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+/* ===========================================
+   CONFIGURACIÓN
+   =========================================== */
+const APP_URL = 'https://d3hfqg5g7frqp1.cloudfront.net/';   // despliegue de Cons en AWS (CloudFront)
+const LIVE_DEMO = lang => `${APP_URL}?ra=133.7602&dec=-7.2407&lang=${lang}#inicio`;
+
+/* ===========================================
+   IDIOMA: español por omisión; ?lang=en, el botón ES/EN o la tecla L
+   =========================================== */
+let LANG = new URLSearchParams(location.search).get('lang') === 'en' ? 'en' : 'es';
+const i18nNodes = [...document.querySelectorAll('[data-en]')];
+i18nNodes.forEach(n => { n.dataset.es = n.innerHTML; });
+const mediaNodes = [...document.querySelectorAll('[data-src-en]')];
+mediaNodes.forEach(n => { n.dataset.srcEs = n.getAttribute('src'); });
+
+function setLang(lang) {
+  LANG = lang;
+  document.documentElement.lang = lang;
+  i18nNodes.forEach(n => { n.innerHTML = lang === 'en' ? n.dataset.en : n.dataset.es; });
+  mediaNodes.forEach(n => {
+    const src = lang === 'en' ? n.dataset.srcEn : n.dataset.srcEs;
+    if (n.getAttribute('src') !== src) n.setAttribute('src', src);
+  });
+  document.querySelectorAll('.lang button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+  document.querySelectorAll('.slide').forEach(s => s.setAttribute('aria-label', s.dataset[lang === 'en' ? 'labelEn' : 'labelEs']));
+  document.getElementById('goApp').href = LIVE_DEMO(lang);
+  const u = new URL(location.href);
+  if (lang === 'en') u.searchParams.set('lang', 'en'); else u.searchParams.delete('lang');
+  history.replaceState(null, '', u);
+  loadEdits();
+  if (window.deck) window.deck.restartMedia();
+}
+document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+
+/* ===========================================
+   CONTROLADOR DE DIAPOSITIVAS (escenario fijo 1920×1080)
+   Flechas, espacio, PgUp/PgDn, Inicio/Fin, rueda y deslizar.
+   =========================================== */
+class SlidePresentation {
+  constructor() {
+    this.slides = [...document.querySelectorAll('.slide')];
+    this.stage = document.getElementById('deckStage');
+    this.progress = document.getElementById('progress');
+    this.tour = document.getElementById('tour');
+    this.current = 0;
+    this.lock = false;
+    this.timer = null;
+    this.scale();
+    window.addEventListener('resize', () => this.scale());
+    document.addEventListener('keydown', e => this.onKey(e));
+    window.addEventListener('wheel', e => this.onWheel(e), { passive: true });
+    let x0 = null;
+    window.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
+    window.addEventListener('touchend', e => {
+      if (x0 === null) return;
+      const dx = e.changedTouches[0].clientX - x0;
+      if (Math.abs(dx) > 50) this.go(this.current + (dx < 0 ? 1 : -1));
+      x0 = null;
+    });
+    window.addEventListener('hashchange', () => {
+      const n = parseInt(location.hash.replace('#', ''), 10);
+      if (Number.isFinite(n) && n - 1 !== this.current) this.show(n - 1);
+    });
+    const start = parseInt(location.hash.replace('#', ''), 10);
+    this.show(Number.isFinite(start) ? start - 1 : 0);
+  }
+  scale() {
+    const f = Math.min(innerWidth / 1920, innerHeight / 1080);
+    this.stage.style.transform = `translate(${(innerWidth - 1920 * f) / 2}px, ${(innerHeight - 1080 * f) / 2}px) scale(${f})`;
+  }
+  onKey(e) {
+    if (document.body.classList.contains('editing')) return;
+    if (['ArrowRight', 'ArrowDown', ' ', 'PageDown'].includes(e.key)) { e.preventDefault(); this.go(this.current + 1); }
+    if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); this.go(this.current - 1); }
+    if (e.key === 'Home') this.go(0);
+    if (e.key === 'End') this.go(this.slides.length - 1);
+    if (e.key === 'l' || e.key === 'L') setLang(LANG === 'es' ? 'en' : 'es');
+  }
+  onWheel(e) {
+    if (this.lock || Math.abs(e.deltaY) < 30) return;
+    this.lock = true;
+    this.go(this.current + (e.deltaY > 0 ? 1 : -1));
+    setTimeout(() => { this.lock = false; }, 800);
+  }
+  go(i) { this.show(Math.max(0, Math.min(i, this.slides.length - 1))); }
+  show(i) {
+    this.current = Math.max(0, Math.min(i, this.slides.length - 1));
+    this.slides.forEach((s, k) => {
+      s.classList.toggle('active', k === this.current);
+      s.classList.toggle('visible', k === this.current);
+    });
+    this.progress.style.width = `${((this.current + 1) / this.slides.length) * 100}%`;
+    const u = new URL(location.href);
+    u.hash = `#${this.current + 1}`;
+    history.replaceState(null, '', u);
+    runCounters(this.slides[this.current]);
+    this.restartMedia();
+  }
+  /* El video de la app arranca cuando aparece el navegador (5.9 s) y se pausa fuera de su diapositiva */
+  restartMedia() {
+    clearTimeout(this.timer);
+    const v = this.tour;
+    if (!v) return;
+    v.pause();
+    if (this.slides[this.current].contains(v)) {
+      v.currentTime = 0;
+      this.timer = setTimeout(() => v.play().catch(() => {}), 5900);
+    }
+  }
+}
+
+/* ===========================================
+   CONTADORES: las cifras suben hasta su valor al entrar la diapositiva
+   =========================================== */
+function runCounters(slide) {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  slide.querySelectorAll('.count').forEach(el => {
+    const to = parseFloat(el.dataset.to);
+    const dec = parseInt(el.dataset.dec || '0', 10);
+    if (reduce) { el.textContent = to.toFixed(dec); return; }
+    const t0 = performance.now() + 500;
+    const tick = now => {
+      const p = Math.max(0, Math.min(1, (now - t0) / 1400));
+      el.textContent = (to * (1 - Math.pow(1 - p, 3))).toFixed(dec);
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  });
+}
+
+/* ===========================================
+   PLACAS DE TOMBAUGH (diapositiva 2): mismas estrellas, un punto cambia
+   de lugar. Es un dibujo, no datos.
+   =========================================== */
+function buildPlates() {
+  const a = document.querySelector('.plate.a');
+  const b = document.querySelector('.plate.b');
+  let seed = 7;
+  const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+  for (let k = 0; k < 140; k++) {
+    const x = rnd() * 800 + 10, y = rnd() * 500 + 10, s = 2 + rnd() * rnd() * 7, o = 0.35 + rnd() * 0.65;
+    for (const p of [a, b]) {
+      const d = document.createElement('i');
+      d.className = 'st';
+      Object.assign(d.style, { left: `${x}px`, top: `${y}px`, width: `${s}px`, height: `${s}px`, opacity: o });
+      p.appendChild(d);
+    }
+  }
+  const put = (plate, x, y, color) => {
+    const d = document.createElement('i');
+    d.className = 'st mover';
+    Object.assign(d.style, { left: `${x - 7}px`, top: `${y - 7}px` });
+    plate.appendChild(d);
+    const r = document.createElement('i');
+    r.className = 'ring';
+    Object.assign(r.style, { left: `${x}px`, top: `${y}px`, borderColor: color });
+    plate.appendChild(r);
+  };
+  put(a, 430, 250, '#62b6e8');
+  put(b, 482, 236, '#ffb238');
+}
+
+/* ===========================================
+   CIELO DE FONDO: estrellas a distintas profundidades que se desplazan
+   despacio (las cercanas, más rápido), titilan, y de vez en cuando una
+   chispa pasa de azul (antes) a ámbar (ahora)
+   =========================================== */
+function buildSky() {
+  const c = document.getElementById('sky');
+  const ctx = c.getContext('2d');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let seed = 3;
+  const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+  const stars = Array.from({ length: 420 }, () => {
+    const depth = rnd();                       // 0 = lejos, 1 = cerca
+    return { x: rnd() * 1920, y: rnd() * 1080, r: 0.4 + depth * depth * 1.9, v: 4 + depth * 22, p: rnd() * Math.PI * 2, s: 0.4 + rnd() * 1.2 };
+  });
+  const sparks = Array.from({ length: 3 }, () => ({ x: rnd() * 1920, y: 120 + rnd() * 840, ph: rnd() * 10 }));
+  let last = performance.now();
+  const draw = t => {
+    const dt = Math.min(0.1, Math.max(0, (t - last) / 1000));
+    last = t;
+    ctx.clearRect(0, 0, 1920, 1080);
+    for (const s of stars) {
+      s.x -= s.v * dt;                         // deriva hacia la izquierda
+      s.y += s.v * 0.12 * dt;                  // y un poco hacia abajo
+      if (s.x < -4) s.x += 1928;
+      if (s.y > 1084) s.y -= 1088;
+      const a = 0.35 + 0.35 * Math.sin(s.p + t * 0.0008 * s.s);
+      ctx.fillStyle = `rgba(241,246,255,${a})`;
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.fill();
+    }
+    for (const k of sparks) {
+      k.x -= 10 * dt;
+      if (k.x < -40) k.x += 2000;
+      const cyc = ((t / 1000 + k.ph) % 8) / 8;
+      const now = cyc > 0.5;
+      const glow = Math.sin(cyc * Math.PI * 2) ** 2;
+      const x = k.x + (now ? 14 : 0);
+      const col = now ? '255,178,56' : '98,182,232';
+      const g = ctx.createRadialGradient(x, k.y, 0, x, k.y, 26);
+      g.addColorStop(0, `rgba(${col},${0.55 * glow})`); g.addColorStop(1, `rgba(${col},0)`);
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, k.y, 26, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = `rgba(${col},${0.9 * glow})`; ctx.beginPath(); ctx.arc(x, k.y, 2.6, 0, Math.PI * 2); ctx.fill();
+    }
+    if (!reduce) requestAnimationFrame(draw);
+  };
+  requestAnimationFrame(draw);
+}
+
+/* ===========================================
+   QR DEL CIERRE
+   =========================================== */
+function setupQr() {
+  document.getElementById('urlText').textContent = APP_URL.replace(/^https?:\/\//, '').replace(/\/$/, '');
+  if (!window.QRCode) return;
+  const box = document.getElementById('qr');
+  box.innerHTML = '';
+  new QRCode(box, { text: APP_URL, width: 360, height: 360, colorDark: '#02040a', colorLight: '#f1f6ff', correctLevel: QRCode.CorrectLevel.M });
+}
+
+/* ===========================================
+   EDICIÓN EN EL NAVEGADOR: tecla E (o esquina superior izquierda);
+   se guarda en este navegador, aparte para cada idioma
+   =========================================== */
+const editNodes = [...document.querySelectorAll('[data-edit]')];
+const editKey = () => `sparks-pitch-edits-${LANG}`;
+function loadEdits() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(editKey()) || '{}');
+    editNodes.forEach((n, i) => { if (saved[i] !== undefined) n.innerHTML = saved[i]; });
+  } catch { /* sin almacenamiento: no pasa nada */ }
+}
+function setupEditing() {
+  const btn = document.getElementById('editToggle');
+  const hot = document.getElementById('editHotzone');
+  let on = false, hide = null;
+  const toggle = () => {
+    on = !on;
+    document.body.classList.toggle('editing', on);
+    btn.classList.toggle('active', on);
+    btn.textContent = on ? 'guardar · E' : 'editar · E';
+    editNodes.forEach(n => n.setAttribute('contenteditable', on ? 'true' : 'false'));
+    if (!on) {
+      try { localStorage.setItem(editKey(), JSON.stringify(editNodes.map(n => n.innerHTML))); } catch { /* nada */ }
+    }
+  };
+  btn.addEventListener('click', toggle);
+  hot.addEventListener('click', toggle);
+  const show = () => { clearTimeout(hide); btn.classList.add('show'); };
+  const later = () => { hide = setTimeout(() => { if (!on) btn.classList.remove('show'); }, 400); };
+  hot.addEventListener('mouseenter', show); hot.addEventListener('mouseleave', later);
+  btn.addEventListener('mouseenter', show); btn.addEventListener('mouseleave', later);
+  document.addEventListener('keydown', e => {
+    if ((e.key === 'e' || e.key === 'E') && !e.target.isContentEditable) toggle();
+    else if (e.key === 'Escape' && on) toggle();
+  });
+}
+
+buildPlates();
+buildSky();
+setupQr();
+setupEditing();
+window.deck = new SlidePresentation();
+setLang(LANG);
+</script>
+</body>
+</html>

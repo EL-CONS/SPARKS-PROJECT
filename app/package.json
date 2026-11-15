@@ -1,0 +1,27 @@
+{
+  "name": "sparks-app",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "check-data": "node scripts/check-data.mjs ../data-sample && node scripts/check-data.mjs ../data-new",
+    "preview": "vite preview",
+    "sync-ml": "node -e \"for (const f of ['modelo_v2.json:modelo.json','resultados_v2.json:resultados_v2.json']) { const [a,b]=f.split(':'); require('fs').copyFileSync('../ml-clasificador/'+a,'src/core/'+b); }\""
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.2",
+    "vitest": "^4.1.12"
+  }
+}

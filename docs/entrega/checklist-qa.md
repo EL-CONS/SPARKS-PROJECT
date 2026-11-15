@@ -1,8 +1,8 @@
 # Lista de verificación QA manual · Sparks
 
-Lista de pruebas para ejecutar sobre la rama integrada con `app/` (`origin/cons` o `main` tras fusionar) antes de la entrega del domingo.
+Lista de pruebas para ejecutar sobre la rama integrada (`carlos` o `main`) antes de la entrega del domingo.
 
-**Cómo iniciar localmente (en la rama con `app/`):**
+**Cómo iniciar localmente (en la rama integrada):**
 
 ```bash
 cd app
@@ -17,7 +17,7 @@ Abrir la URL local (`http://localhost:5173`) en el navegador. Anotar cualquier f
 ## 1. Resoluciones y diseño adaptable (`390 px` y `1440 px`)
 
 - [ ] **Escritorio (`1440 × 900`):**
-  - El encabezado muestra logotipo, pestañas (`Inicio` / `Explorar`), selector de idioma (`ES`/`EN`), interruptor de tema y distintivo `NASA Space Apps Challenge 2026` sin superposiciones.
+  - El encabezado muestra logotipo, pestañas (`Inicio` / `Explorar`), selector de idioma (`ES`/`EN`) y distintivo `NASA Space Apps Challenge 2026` sin superposiciones.
   - No existe desplazamiento horizontal (`scrollWidth <= innerWidth`) en `Inicio` ni en los 3 pasos de `Explorar`.
   - La mira polar (`SkyScope`) y el escenario de 6 detectores (`D1`–`D6`) muestran etiquetas legibles sin cortarse ni montarse unas sobre otras.
 - [ ] **Móvil (`390 × 844`):**
@@ -27,13 +27,9 @@ Abrir la URL local (`http://localhost:5173`) en el navegador. Anotar cualquier f
 
 ---
 
-## 2. Modo oscuro y modo claro
+## 2. Tema oscuro único
 
-- [ ] **Modo oscuro (predeterminado):** fondo espacial `#06080C`, texto legible con alto contraste, estrella de fondo (`Starfield`) atenuada en modo `explorar` (`quiet`), icono lunar/solar coherente y logotipo claro (`symbol.svg`, `spaceapps-color-white.svg`).
-- [ ] **Modo claro:** pulsar el interruptor de tema (`role="switch"` en el encabezado):
-  - Cambia `aria-checked` a `"true"` y actualiza la paleta de fondo, texto, bordes y paneles.
-  - El logotipo y el distintivo de Space Apps cambian a sus variantes oscuras (`symbol-flat-light.svg`, `spaceapps-color-black.svg`) para mantener contraste.
-  - En los paneles `Subtract B−A`, los marcadores azul (**antes**) y ámbar (**ahora**) siguen distinguiéndose con claridad.
+- [ ] **Modo oscuro único (sin interruptor de modo claro, decisión `bd9a632`):** fondo espacial `#06080C`, texto legible con alto contraste, estrella de fondo (`Starfield`) atenuada en modo `explorar` (`quiet`), logotipo claro (`symbol.svg`, `spaceapps-color-white.svg`) y marcadores azul (**antes**) y ámbar (**ahora**) claramente distinguibles en `Subtract B−A`.
 
 ---
 
@@ -60,7 +56,7 @@ Probar cada objetivo seleccionándolo desde `SkyScope` (paso 1) y avanzando a pa
   - La URL refleja coordenadas y parámetros sin errores en consola.
 - [ ] **2. ε Indi B (`331.0441 / −56.7828`, J2000):**
   - Verificar que las coordenadas mostradas correspondan a **ε Indi B** (`331.044 / −56.783`) y **no** a ε Indi A (`330.84 / −56.786`).
-  - Si `data-new/` está integrado, comprobar que carga las 4 temporadas (`DR1 + QR3`, `4.21 ± 0.28″/año` en `data-new/results.json`) o, si aún falta en el paquete activo, verificar que muestra el estado honesto correspondiente sin inventar datos.
+  - Comprobar que carga las 4 temporadas (`DR1 + QR3`, `4.21 ± 0.28″/año` en `data-new/results.json`) sin inventar datos.
 - [ ] **3. WISE 0855 (`133.7951 / −7.2451`):**
   - Muestra la etiqueta **"Not in Gaia DR3"** (o equivalente en español).
   - En `D5` y `D6` (ampliando el panel), se aprecia la fuente infrarroja y en paso 3 se muestra la huella de 102 colores apagada en longitudes cortas y encendida en `4–5 µm` (`D6/D2 >= 10.09` en `data-new/results.json`).
