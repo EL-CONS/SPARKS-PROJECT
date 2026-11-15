@@ -148,14 +148,19 @@ def _cold(man: dict) -> dict | None:
     cold = (man.get("target") or {}).get("cold") or {}
     if cold.get("ratio") is None and cold.get("long_mjy") is None:
         return None
-    return {
+    out = {
         "ratio": _round(cold.get("ratio"), 2),
         "ratio_kind": cold.get("ratio_kind") or "sin datos",
         "methane_depth": _round(cold.get("methane_depth"), 2),
         "methane_err": _round(cold.get("methane_err"), 2),
         "long_mjy": _round(cold.get("long_mjy"), 3),
+        "long_err": _round(cold.get("long_err"), 3),
         "short_mjy": _round(cold.get("short_mjy"), 3),
+        "short_err": _round(cold.get("short_err"), 3),
     }
+    if cold.get("short_upper_limit_3sigma_mjy") is not None:
+        out["short_upper_limit_3sigma_mjy"] = _round(cold.get("short_upper_limit_3sigma_mjy"), 3)
+    return out
 
 
 def _field(field_id: str) -> dict:

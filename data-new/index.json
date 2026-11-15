@@ -16,9 +16,9 @@
    "releases": [
     "DR1"
    ],
-   "mu_measured": 6.044035446864533,
-   "mu_err": 0.7553316917025782,
-   "pa": 289.08337676145425,
+   "mu_measured": 6.044035850837958,
+   "mu_err": 0.7553318218348722,
+   "pa": 289.083376658943,
    "mu_expected": 8.087789,
    "pa_expected": 277.357342,
    "in_gaia": false,
@@ -43,9 +43,9 @@
     "DR1",
     "QR3"
    ],
-   "mu_measured": 4.205409597275849,
-   "mu_err": 0.2809012111527352,
-   "pa": 124.91845453220645,
+   "mu_measured": 4.205409607594857,
+   "mu_err": 0.28090121194539314,
+   "pa": 124.9184545518969,
    "mu_expected": 4.684165,
    "pa_expected": 121.778186,
    "in_gaia": false,
@@ -113,20 +113,14 @@
    "collection": "spherex_dr1",
    "release": "DR1",
    "doi": "10.26131/IRSA678",
-   "n_images": 338
-  },
-  {
-   "collection": "spherex_dr1_deep",
-   "release": "DR1",
-   "doi": "10.26131/IRSA678",
-   "n_images": 58
+   "n_images": 106
   },
   {
    "collection": "spherex_qr3",
    "release": "QR3",
    "doi": "10.26131/IRSA662",
-   "n_images": 74
+   "n_images": 24
   }
  ],
- "generated_utc": "2026-11-15T01:57:02Z"
+ "generated_utc": "2026-11-15T02:35:23Z"
 }

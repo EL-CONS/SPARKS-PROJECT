@@ -132,6 +132,109 @@ def star_mask(
     return np.hypot(xx - star_xy[0], yy - star_xy[1]) <= radius_px
 
 
+def subtract_star_psf(
+    image: np.ndarray,
+    sigma: np.ndarray | None,
+    star_xy: tuple[float, float],
+    psf_sigma: float = DEFAULT_PSF_SIGMA_PX,
+    *,
+    mask: np.ndarray | None = None,
+    fit_radius_px: float = 3.5,
+) -> tuple[np.ndarray, float]:
+    """Resta la PSF gaussiana de la estrella vecina en posicion fija ``star_xy``.
+
+    Ajusta por minimos cuadrados ponderados (1/sigma^2) la amplitud de una
+    Gaussiana de ancho ``psf_sigma`` (fijado desde D1) mas un fondo constante en
+    ``r <= fit_radius_px`` alrededor de la estrella, y resta ``max(0, A) * G``.
+    Se usa en las bandas cortas (D1-D4 de WISE 0855) donde el objetivo no
+    aparece y la estrella vecina domina el flujo.
+    """
+    img = np.asarray(image, dtype=float).copy()
+    ny, nx = img.shape
+    yy, xx = np.mgrid[0:ny, 0:nx]
+    g_star = np.exp(-((xx - star_xy[0]) ** 2 + (yy - star_xy[1]) ** 2) / (2.0 * psf_sigma**2))
+    r_star = np.hypot(xx - star_xy[0], yy - star_xy[1])
+    bad = np.zeros_like(img, dtype=bool) if mask is None else np.asarray(mask, dtype=bool)
+    reg = (r_star <= fit_radius_px) & ~bad & np.isfinite(img)
+    if sigma is not None:
+        sig = np.asarray(sigma, dtype=float)
+        reg = reg & np.isfinite(sig) & (sig > 0)
+    if int(reg.sum()) < 5:
+        return img, 0.0
+    X = np.column_stack([g_star[reg], np.ones(int(reg.sum()))])
+    if sigma is not None:
+        w = 1.0 / np.asarray(sigma, dtype=float)[reg] ** 2
+    else:
+        w = np.ones(int(reg.sum()))
+    sw = np.sqrt(w)
+    beta, *_ = np.linalg.lstsq(X * sw[:, None], img[reg] * sw, rcond=None)
+    amp = max(0.0, float(beta[0]))
+    if amp > 0:
+        img = img - amp * g_star
+    return img, amp
+
+
+def psf_flux(
+    image: np.ndarray,
+    sigma: np.ndarray | None,
+    target_xy: tuple[float, float],
+    *,
+    psf_sigma: float = DEFAULT_PSF_SIGMA_PX,
+    mask: np.ndarray | None = None,
+    fit_radius_px: float = 5.0,
+) -> dict[str, Any]:
+    """Fotometria PSF lineal ponderada (Gaussiana normalizada + fondo constante).
+
+    En cada cuadro ajusta ``F * G_norm(x - x0, y - y0) + b`` con pesos
+    ``1/sigma^2`` dentro de ``fit_radius_px`` excluyendo ``mask``. Es mucho
+    menos sensible a las alas residuales y al ruido de cielo que una apertura de
+    3 px (area efectiva 4*pi*sigma^2 ~ 4.7 px frente a 28.3 px).
+    """
+    image = np.asarray(image, dtype=float)
+    ny, nx = image.shape
+    yy, xx = np.mgrid[0:ny, 0:nx]
+    r = np.hypot(xx - target_xy[0], yy - target_xy[1])
+    bad = np.zeros_like(image, dtype=bool) if mask is None else np.asarray(mask, dtype=bool)
+    gt = np.exp(-((xx - target_xy[0]) ** 2 + (yy - target_xy[1]) ** 2) / (2.0 * psf_sigma**2))
+    gt_sum = float(gt.sum())
+    if gt_sum <= 0:
+        return {"ok": False, "note": "PSF vacia"}
+    gt = gt / gt_sum
+
+    reg = (r <= fit_radius_px) & ~bad & np.isfinite(image)
+    if sigma is not None:
+        sig = np.asarray(sigma, dtype=float)
+        reg = reg & np.isfinite(sig) & (sig > 0)
+    if int(reg.sum()) < 6 or not np.any(gt[reg] > 0.05):
+        return {"ok": False, "note": "sin pixeles utiles en el nucleo de la PSF"}
+
+    X = np.column_stack([gt[reg], np.ones(int(reg.sum()))])
+    if sigma is not None:
+        w = 1.0 / np.asarray(sigma, dtype=float)[reg] ** 2
+    else:
+        med = float(np.median(image[reg]))
+        mad = float(1.4826 * np.median(np.abs(image[reg] - med)))
+        w = np.full(int(reg.sum()), 1.0 / max(mad, 1e-6) ** 2)
+    XtW = X.T * w
+    cov = np.linalg.pinv(XtW @ X)
+    beta = cov @ (XtW @ image[reg])
+    flux = float(beta[0])
+    bkg = float(beta[1])
+    noise = float(math.sqrt(max(float(cov[0, 0]), 1e-16)))
+    snr = flux / noise if np.isfinite(noise) and noise > 0 else 0.0
+    return {
+        "ok": bool(np.isfinite(flux) and np.isfinite(noise) and noise > 0),
+        "flux_mjy_sr": flux,
+        "noise_mjy_sr": noise,
+        "flux_mjy": flux_to_mjy(flux),
+        "flux_err_mjy": flux_to_mjy(noise),
+        "snr": float(snr),
+        "bkg": bkg,
+        "n_pix": int(reg.sum()),
+        "masked": int((bad & (r <= fit_radius_px)).sum()),
+    }
+
+
 def aperture_flux(
     image: np.ndarray,
     sigma: np.ndarray | None,
@@ -241,9 +344,11 @@ def cold_index(points: Iterable[dict[str, Any]]) -> dict[str, Any]:
         denom = max(short_f, 0.0) + MIN_SNR_FLUX * short_e
         out["ratio"] = float(long_f / denom) if denom > 0 else None
         out["ratio_kind"] = "lower_limit"
+        out["short_upper_limit_3sigma_mjy"] = float(denom)
     else:
         out["ratio"] = float(long_f / short_f) if short_f != 0 else None
         out["ratio_kind"] = "measured"
+        out["short_upper_limit_3sigma_mjy"] = None
 
     ch4 = summary["ch4"]
     cont = summary["ch4_cont"]

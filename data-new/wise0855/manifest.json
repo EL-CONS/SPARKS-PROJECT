@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "pipeline_version": "0.1.0",
- "generated_utc": "2026-11-15T01:54:20Z",
+ "generated_utc": "2026-11-15T02:35:17Z",
  "status": "ok",
  "blockers": [
   "spherex_qr2 no aparece en SIA2 para esta posicion; se usan las releases que SIA2 devuelve para este campo (ver docs/pipeline/metodo.md)",
@@ -99,34 +99,34 @@
  ],
  "scales": {
   "1": {
-   "lo": -28.943230740491476,
-   "hi": 144.8995354073483,
-   "noise": 0.009757866596598067
+   "lo": -28.9432315826416,
+   "hi": 144.8995361328125,
+   "noise": 0.009757866598136265
   },
   "2": {
-   "lo": -5.366712946456399,
-   "hi": 141.50402143314972,
-   "noise": 0.007249782287962172
+   "lo": -5.366713047027588,
+   "hi": 141.5040283203125,
+   "noise": 0.007249782291431439
   },
   "3": {
-   "lo": -7.638781670706501,
-   "hi": 76.6305517011128,
-   "noise": 0.0068119752103115916
+   "lo": -7.638781547546387,
+   "hi": 76.63055419921875,
+   "noise": 0.0068119752019036445
   },
   "4": {
-   "lo": -2.435118365697813,
-   "hi": 121.28914063879776,
-   "noise": 0.00621754211992647
+   "lo": -2.4351184368133545,
+   "hi": 121.28913879394531,
+   "noise": 0.00621754217782309
   },
   "5": {
-   "lo": -23.044840670095436,
-   "hi": 12282.271302724388,
-   "noise": 0.008861893150000008
+   "lo": -23.04483985900879,
+   "hi": 12282.271484375,
+   "noise": 0.008861893128647495
   },
   "6": {
-   "lo": -689.9493717100992,
-   "hi": 1994.001225323335,
-   "noise": 0.01240575195095818
+   "lo": -689.9494018554688,
+   "hi": 1994.001220703125,
+   "noise": 0.012405751941135409
   }
  },
  "coadds": [
@@ -138,9 +138,9 @@
    "lam_mean": 1.0291723381535396,
    "lam_min": 0.9930079240783084,
    "lam_max": 1.065859585066056,
-   "sigma_single": 0.01825322544096183,
-   "sigma_coadd": 0.010051094480050402,
-   "snr_gain": 1.8160435639313877,
+   "sigma_single": 0.018253225658181542,
+   "sigma_coadd": 0.010051094463766928,
+   "snr_gain": 1.8160435884850532,
    "png": "png/coadd_D1_S0.png"
   },
   {
@@ -151,9 +151,9 @@
    "lam_mean": 0.8421967564319133,
    "lam_min": 0.749380548805912,
    "lam_max": 0.9915637251580111,
-   "sigma_single": 0.019331217886190376,
-   "sigma_coadd": 0.009757866596598067,
-   "snr_gain": 1.9810906097988585,
+   "sigma_single": 0.0193312178845386,
+   "sigma_coadd": 0.009757866598136265,
+   "snr_gain": 1.9810906093172895,
    "png": "png/coadd_D1_S1.png"
   },
   {
@@ -164,9 +164,9 @@
    "lam_mean": 0.897474487210492,
    "lam_min": 0.7616473986491544,
    "lam_max": 1.0912760798779122,
-   "sigma_single": 0.017634368265692146,
-   "sigma_coadd": 0.007797396167156061,
-   "snr_gain": 2.261571412771235,
+   "sigma_single": 0.01763436833389797,
+   "sigma_coadd": 0.007797396149372672,
+   "snr_gain": 2.261571426676419,
    "png": "png/coadd_D1_S2.png"
   },
   {
@@ -177,9 +177,9 @@
    "lam_mean": 1.4487372697307406,
    "lam_min": 1.280147844324882,
    "lam_max": 1.6287059537227968,
-   "sigma_single": 0.017532491025006883,
-   "sigma_coadd": 0.007201447887437751,
-   "snr_gain": 2.4345786151685784,
+   "sigma_single": 0.017532491194597405,
+   "sigma_coadd": 0.007201447937466195,
+   "snr_gain": 2.434578621805069,
    "png": "png/coadd_D2_S0.png"
   },
   {
@@ -190,9 +190,9 @@
    "lam_mean": 1.3409804566318408,
    "lam_min": 1.1012038261699009,
    "lam_max": 1.5919744429054403,
-   "sigma_single": 0.018332740564835887,
-   "sigma_coadd": 0.007909254756250227,
-   "snr_gain": 2.3178846970820586,
+   "sigma_single": 0.018332740398930306,
+   "sigma_coadd": 0.007909254751371572,
+   "snr_gain": 2.317884677535663,
    "png": "png/coadd_D2_S1.png"
   },
   {
@@ -203,9 +203,9 @@
    "lam_mean": 1.3764603069570966,
    "lam_min": 1.1115909287432257,
    "lam_max": 1.5903631298128063,
-   "sigma_single": 0.017522116729912184,
-   "sigma_coadd": 0.007249782287962172,
-   "snr_gain": 2.416916265058967,
+   "sigma_single": 0.017522116709259232,
+   "sigma_coadd": 0.007249782291431439,
+   "snr_gain": 2.416916261053622,
    "png": "png/coadd_D2_S2.png"
   },
   {
@@ -216,9 +216,9 @@
    "lam_mean": 2.328774595811555,
    "lam_min": 2.2087410278557273,
    "lam_max": 2.413294869163195,
-   "sigma_single": 0.014767308620704325,
-   "sigma_coadd": 0.010229476150324143,
-   "snr_gain": 1.443603602344426,
+   "sigma_single": 0.014767308519213328,
+   "sigma_coadd": 0.010229476157676535,
+   "snr_gain": 1.4436035913854157,
    "png": "png/coadd_D3_S0.png"
   },
   {
@@ -229,9 +229,9 @@
    "lam_mean": 1.9932185395620055,
    "lam_min": 1.6313546043380702,
    "lam_max": 2.3854153838595202,
-   "sigma_single": 0.016327860731217895,
-   "sigma_coadd": 0.0068119752103115916,
-   "snr_gain": 2.396934842995565,
+   "sigma_single": 0.016327860752413426,
+   "sigma_coadd": 0.0068119752019036445,
+   "snr_gain": 2.3969348490655857,
    "png": "png/coadd_D3_S1.png"
   },
   {
@@ -242,9 +242,9 @@
    "lam_mean": 2.0045820717237075,
    "lam_min": 1.6391503349728964,
    "lam_max": 2.364174040610596,
-   "sigma_single": 0.014844151890658656,
-   "sigma_coadd": 0.006269971951628858,
-   "snr_gain": 2.367498930645509,
+   "sigma_single": 0.014844151901658872,
+   "sigma_coadd": 0.006269971961143275,
+   "snr_gain": 2.3674989288073576,
    "png": "png/coadd_D3_S2.png"
   },
   {
@@ -255,9 +255,9 @@
    "lam_mean": 3.498424222799381,
    "lam_min": 3.3594430099541945,
    "lam_max": 3.639820178509788,
-   "sigma_single": 0.011851060783927224,
-   "sigma_coadd": 0.00621754211992647,
-   "snr_gain": 1.9060684359412714,
+   "sigma_single": 0.011851060868379434,
+   "sigma_coadd": 0.00621754217782309,
+   "snr_gain": 1.9060684317752026,
    "png": "png/coadd_D4_S0.png"
   },
   {
@@ -268,9 +268,9 @@
    "lam_mean": 2.995090963046776,
    "lam_min": 2.7767823375880476,
    "lam_max": 3.3542966258688973,
-   "sigma_single": 0.01291891677345714,
-   "sigma_coadd": 0.0075664327535428285,
-   "snr_gain": 1.7073986109779564,
+   "sigma_single": 0.01291891652313163,
+   "sigma_coadd": 0.0075664327563759026,
+   "snr_gain": 1.7073985772549718,
    "png": "png/coadd_D4_S1.png"
   },
   {
@@ -281,9 +281,9 @@
    "lam_mean": 2.993185117258649,
    "lam_min": 2.4767748171333834,
    "lam_max": 3.736923355831194,
-   "sigma_single": 0.011963348172359379,
-   "sigma_coadd": 0.005127195993758766,
-   "snr_gain": 2.3333120455941465,
+   "sigma_single": 0.011963348302818227,
+   "sigma_coadd": 0.005127196032847847,
+   "snr_gain": 2.3333120532497587,
    "png": "png/coadd_D4_S2.png"
   },
   {
@@ -294,9 +294,9 @@
    "lam_mean": 4.221675203037609,
    "lam_min": 4.039245067014314,
    "lam_max": 4.40689002657013,
-   "sigma_single": 0.03626485595321115,
-   "sigma_coadd": 0.012983057513032893,
-   "snr_gain": 2.7932446511006432,
+   "sigma_single": 0.03626485636644143,
+   "sigma_coadd": 0.012983057483491049,
+   "snr_gain": 2.79324468928486,
    "png": "png/coadd_D5_S0.png"
   },
   {
@@ -307,9 +307,9 @@
    "lam_mean": 4.110195375510402,
    "lam_min": 3.8215518616844366,
    "lam_max": 4.40812004151103,
-   "sigma_single": 0.03382047665448391,
-   "sigma_coadd": 0.0070646550448699354,
-   "snr_gain": 4.787279271199938,
+   "sigma_single": 0.03382047690906512,
+   "sigma_coadd": 0.007064655052084485,
+   "snr_gain": 4.7872793023469855,
    "png": "png/coadd_D5_S1.png"
   },
   {
@@ -320,9 +320,9 @@
    "lam_mean": 4.124899993351116,
    "lam_min": 3.8351743234924407,
    "lam_max": 4.369418310410683,
-   "sigma_single": 0.034126558897845556,
-   "sigma_coadd": 0.008861893150000008,
-   "snr_gain": 3.850933239682034,
+   "sigma_single": 0.034126558906082884,
+   "sigma_coadd": 0.008861893128647495,
+   "snr_gain": 3.8509332498902853,
    "png": "png/coadd_D5_S2.png"
   },
   {
@@ -333,9 +333,9 @@
    "lam_mean": 4.944156557295922,
    "lam_min": 4.860464152696237,
    "lam_max": 5.004033443385403,
-   "sigma_single": 0.06807767566916403,
-   "sigma_coadd": 0.03942289558996196,
-   "snr_gain": 1.7268563014051734,
+   "sigma_single": 0.06807767522999082,
+   "sigma_coadd": 0.03942289607759072,
+   "snr_gain": 1.7268562689053286,
    "png": "png/coadd_D6_S0.png"
   },
   {
@@ -346,9 +346,9 @@
    "lam_mean": 4.692439016527244,
    "lam_min": 4.41784801559635,
    "lam_max": 4.982155535933818,
-   "sigma_single": 0.05546094302612011,
-   "sigma_coadd": 0.01240575195095818,
-   "snr_gain": 4.470582939701329,
+   "sigma_single": 0.05546094304706875,
+   "sigma_coadd": 0.012405751941135409,
+   "snr_gain": 4.470582944929722,
    "png": "png/coadd_D6_S1.png"
   },
   {
@@ -359,9 +359,9 @@
    "lam_mean": 4.723602611216159,
    "lam_min": 4.4242854017489215,
    "lam_max": 4.967930134629008,
-   "sigma_single": 0.05340891994573515,
-   "sigma_coadd": 0.01165397273458408,
-   "snr_gain": 4.58289384762674,
+   "sigma_single": 0.053408920194688056,
+   "sigma_coadd": 0.011653972743227901,
+   "snr_gain": 4.582893865589643,
    "png": "png/coadd_D6_S2.png"
   }
  ],
@@ -376,7 +376,7 @@
    "lambda_matched": false,
    "n_a": 4,
    "n_b": 4,
-   "sigma": 0.01408934787331492
+   "sigma": 0.014089347802134227
   },
   {
    "i": 1,
@@ -388,7 +388,7 @@
    "lambda_matched": true,
    "n_a": 4,
    "n_b": 6,
-   "sigma": 0.012772967451240723
+   "sigma": 0.012772967393805717
   },
   {
    "i": 2,
@@ -400,7 +400,7 @@
    "lambda_matched": true,
    "n_a": 4,
    "n_b": 6,
-   "sigma": 0.012624596459846983
+   "sigma": 0.01262459643773335
   },
   {
    "i": 3,
@@ -412,7 +412,7 @@
    "lambda_matched": true,
    "n_a": 6,
    "n_b": 6,
-   "sigma": 0.010770422743817279
+   "sigma": 0.010770422753547221
   },
   {
    "i": 4,
@@ -424,7 +424,7 @@
    "lambda_matched": true,
    "n_a": 6,
    "n_b": 6,
-   "sigma": 0.010358501519784163
+   "sigma": 0.010358501536213318
   },
   {
    "i": 5,
@@ -436,7 +436,7 @@
    "lambda_matched": true,
    "n_a": 6,
    "n_b": 6,
-   "sigma": 0.010816796351158953
+   "sigma": 0.010816796303032342
   },
   {
    "i": 6,
@@ -448,7 +448,7 @@
    "lambda_matched": true,
    "n_a": 3,
    "n_b": 6,
-   "sigma": 0.01224093085091458
+   "sigma": 0.012240930882535398
   },
   {
    "i": 7,
@@ -460,7 +460,7 @@
    "lambda_matched": true,
    "n_a": 3,
    "n_b": 6,
-   "sigma": 0.011961470097107865
+   "sigma": 0.011961470127389412
   },
   {
    "i": 8,
@@ -472,7 +472,7 @@
    "lambda_matched": true,
    "n_a": 6,
    "n_b": 6,
-   "sigma": 0.009330763767300082
+   "sigma": 0.009330763792331016
   },
   {
    "i": 9,
@@ -484,7 +484,7 @@
    "lambda_matched": false,
    "n_a": 4,
    "n_b": 3,
-   "sigma": 0.009890941475600261
+   "sigma": 0.009890941461562011
   },
   {
    "i": 10,
@@ -496,7 +496,7 @@
    "lambda_matched": true,
    "n_a": 4,
    "n_b": 6,
-   "sigma": 0.008102680506200409
+   "sigma": 0.008102680523071407
   },
   {
    "i": 11,
@@ -508,7 +508,7 @@
    "lambda_matched": true,
    "n_a": 3,
    "n_b": 6,
-   "sigma": 0.009165027355149069
+   "sigma": 0.009165027375568862
   },
   {
    "i": 12,
@@ -520,7 +520,7 @@
    "lambda_matched": true,
    "n_a": 8,
    "n_b": 25,
-   "sigma": 0.014780584300869152
+   "sigma": 0.014780584301119132
   },
   {
    "i": 13,
@@ -532,7 +532,7 @@
    "lambda_matched": true,
    "n_a": 8,
    "n_b": 15,
-   "sigma": 0.015727263982705415
+   "sigma": 0.01572726397682684
   },
   {
    "i": 14,
@@ -544,7 +544,7 @@
    "lambda_matched": true,
    "n_a": 25,
    "n_b": 15,
-   "sigma": 0.011324698010203962
+   "sigma": 0.011324698037110857
   },
   {
    "i": 15,
@@ -556,7 +556,7 @@
    "lambda_matched": true,
    "n_a": 3,
    "n_b": 21,
-   "sigma": 0.04133058247960642
+   "sigma": 0.04133058211994384
   },
   {
    "i": 16,
@@ -568,7 +568,7 @@
    "lambda_matched": true,
    "n_a": 3,
    "n_b": 21,
-   "sigma": 0.0411248952939629
+   "sigma": 0.04112489592830435
   },
   {
    "i": 17,
@@ -580,7 +580,7 @@
    "lambda_matched": true,
    "n_a": 21,
    "n_b": 21,
-   "sigma": 0.017028534910290747
+   "sigma": 0.017028534936291168
   }
  ],
  "frames": [
@@ -7063,16 +7063,16 @@
    "mu_err": null
   },
   "measured": {
-   "mu_ra": -5.711878275567926,
-   "mu_ra_err": 0.6643869832439824,
-   "chi2_ra": 0.1834821190288979,
-   "mu_dec": 1.976059474826132,
-   "mu_dec_err": 0.3593270112115689,
-   "chi2_dec": 0.0525927222114302,
-   "mu": 6.044035446864533,
-   "mu_err": 0.7553316917025782,
-   "pa_deg": 289.08337676145425,
-   "pa_err_deg": 3.8213714437743747,
+   "mu_ra": -5.711878660875996,
+   "mu_ra_err": 0.6643869260731291,
+   "chi2_ra": 0.18348209219671796,
+   "mu_dec": 1.9760595966832484,
+   "mu_dec_err": 0.35932739046652945,
+   "chi2_dec": 0.052592835315171435,
+   "mu": 6.044035850837958,
+   "mu_err": 0.7553318218348722,
+   "pa_deg": 289.083376658943,
+   "pa_err_deg": 3.821373951000892,
    "baseline_yr": 0.9981359459146751,
    "n_points": 5,
    "detectors": [
@@ -7083,16 +7083,16 @@
    "per_detector_intercept": true,
    "per_detector": {
     "5": {
-     "mu_ra": -6.260778962578617,
-     "mu_ra_err": 0.21749591299413207,
-     "chi2_ra": 0.014508019770012804,
-     "mu_dec": 1.9829459236240092,
-     "mu_dec_err": 0.5795517415502088,
-     "chi2_dec": 0.10512137214641996,
-     "mu": 6.56729988307859,
-     "mu_err": 0.6190191380749315,
-     "pa_deg": 287.5743022505685,
-     "pa_err_deg": 4.854180533907065,
+     "mu_ra": -6.260779295649349,
+     "mu_ra_err": 0.21749568363325525,
+     "chi2_ra": 0.014507989914944595,
+     "mu_dec": 1.9829461965801018,
+     "mu_dec_err": 0.5795523375923664,
+     "chi2_dec": 0.10512159553177221,
+     "mu": 6.5673002830206455,
+     "mu_err": 0.6190196155275479,
+     "pa_deg": 287.57430364340246,
+     "pa_err_deg": 4.854185058065965,
      "baseline_yr": 0.9981359459146751,
      "n_points": 3,
      "detectors": [
@@ -7106,12 +7106,12 @@
   "comparison": {
    "available": true,
    "mu_expected": 8.087789,
-   "delta_mu": -2.043753553135468,
-   "sigma_mu": 2.705769631522654,
+   "delta_mu": -2.0437531491620424,
+   "sigma_mu": 2.7057686305302253,
    "expected_err_used": false,
    "pa_expected": 277.357342,
-   "delta_pa": 11.72603476145423,
-   "sigma_pa": 3.0685409502805117,
+   "delta_pa": 11.726034658942979,
+   "sigma_pa": 3.0685389101665126,
    "verdict": "acuerdo dentro de 3 sigma"
   },
   "reason": "",
@@ -7173,7 +7173,7 @@
     "ex": 0.5899,
     "ey": 0.6156,
     "snr": 2.106,
-    "flux": 0.47719,
+    "flux": 0.477191,
     "bkg": 0.691388,
     "blended": true,
     "use": false,
@@ -7212,43 +7212,44 @@
   ],
   "spectrum": [],
   "cold": {
-   "long_mjy": 0.4421875745863902,
-   "long_err": 0.04306143556009264,
-   "short_mjy": 0.5344548118750471,
-   "short_err": 0.020345756218244093,
+   "long_mjy": 0.2844306489302269,
+   "long_err": 0.01867009309444175,
+   "short_mjy": -0.006297321035270365,
+   "short_err": 0.009399775937729136,
    "n_short": 18,
    "n_long": 44,
    "bands": {
     "short": {
-     "flux_mjy": 0.5344548118750471,
-     "err_mjy": 0.020345756218244093,
+     "flux_mjy": -0.006297321035270365,
+     "err_mjy": 0.009399775937729136,
      "n": 18
     },
     "long": {
-     "flux_mjy": 0.4421875745863902,
-     "err_mjy": 0.04306143556009264,
+     "flux_mjy": 0.2844306489302269,
+     "err_mjy": 0.01867009309444175,
      "n": 44
     },
     "ch4": {
-     "flux_mjy": 0.1482310970544952,
-     "err_mjy": 0.03799297801892723,
+     "flux_mjy": -0.03486311131061809,
+     "err_mjy": 0.01738486932664546,
      "n": 3
     },
     "ch4_cont": {
-     "flux_mjy": 0.23742123795022518,
-     "err_mjy": 0.043616038717300014,
+     "flux_mjy": 0.17694559651884892,
+     "err_mjy": 0.020123355134310808,
      "n": 15
     }
    },
-   "ratio": 0.8273619485902795,
+   "ratio": 10.08643364886212,
    "ratio_kind": "lower_limit",
-   "methane_depth": 0.3756620160258304,
-   "methane_err": 0.1968821500919266,
+   "short_upper_limit_3sigma_mjy": 0.02819932781318741,
+   "methane_depth": 1.1970272897235075,
+   "methane_err": 0.10077253755262386,
    "n_points": 152,
-   "method": "apertura de 3 px con fondo del anillo 6-10 px en cada cuadro, con el nucleo de la estrella de fondo enmascarado; media ponderada por 1/error^2 en cada banda de docs/methods.md",
-   "psf_sigma_px": 0.6103793337239865,
+   "method": "fotometria PSF gaussiana ponderada (1/sigma^2) en cada cuadro, restando la PSF de la estrella vecina en D1-D4 (posicion y sigma fijados desde D1) y enmascarando su nucleo de 0.7 px; media ponderada por 1/error^2 en cada banda de docs/methods.md",
+   "psf_sigma_px": 0.6103793393840152,
    "star_subtracted": true,
-   "ratio_note": "la mascara quita el nucleo de la estrella de fondo pero no sus alas; la banda corta queda contaminada, asi que el cociente es una cota inferior"
+   "ratio_note": "en D1-D4 se resto la PSF gaussiana de la estrella vecina fijada desde D1; la banda corta no se detecta a 3 sigma y el cociente se reporta como cota inferior usando 3*short_err"
   },
   "snr": {},
   "lightcurve": null,
@@ -7260,7 +7261,7 @@
    "gaia": {
     "epoch_mjd": 57388.5,
     "service": "Gaia DR3 (docs/sprint-13-30/gaia-fotometria.csv)",
-    "queried": "2026-11-15T01:54:20Z",
+    "queried": "2026-11-15T02:35:17Z",
     "error": "sin contraparte Gaia DR3 conocida",
     "sources": []
    }
@@ -7294,10 +7295,10 @@
   "6000": 0.174726
  },
  "timings": {
-  "discovery_s": 9.81,
-  "download_s": 256.1,
-  "analysis_s": 0.2,
-  "cold_s": 0.25
+  "discovery_s": 9.82,
+  "download_s": 0.27,
+  "analysis_s": 0.13,
+  "cold_s": 0.31
  },
  "registration": {
   "method": "residuos de los centroides frente al modelo de movimiento propio",
@@ -7320,7 +7321,7 @@
  },
  "note": "Enana marron T, sin contraparte Gaia. A 2.3 pc. Las coordenadas estan a la epoca WISE de 2010, no a J2000; tratarlas como J2000 desplazaba la malla ~14 px.",
  "caveats": [
-  "Una estrella de fondo a ~7 arcsec (1.2 px) al este contamina el fotocentro. En D1 (0.75-1.1 um) solo se ve la estrella y WISE 0855 no aparece; por eso el movimiento se mide unicamente en D5 y D6, restando la estrella con un ajuste de dos fuentes y su posicion fijada desde D1. Ver docs/pipeline/metodo.md."
+  "Una estrella de fondo a ~7 arcsec (1.2 px) al este contamina el fotocentro. En D1 (0.75-1.1 um) solo se ve la estrella y WISE 0855 no aparece; por eso el movimiento se mide unicamente en D5 y D6 enmascarando el nucleo de la estrella (radio 0.7 px fijado desde D1), y en la fotometria de D1-D4 se ajusta y resta ademas su PSF gaussiana (sigma 0.61 px). Tras la resta, la banda corta no se detecta a 3 sigma (-0.006 +- 0.009 mJy; cota superior 3 sigma de 0.028 mJy) y F_D6/F_D2 = 10.09 se reporta como cota inferior. Ver docs/pipeline/metodo.md."
  ],
  "kind": "mover",
  "ml": {
@@ -7350,10 +7351,10 @@
   ],
   "star_subtraction": {
    "xy": [
-    32.72099496042816,
-    31.218870315048324
+    32.72099495173238,
+    31.218870316457807
    ],
-   "sigma_px": 0.6103793337239865,
+   "sigma_px": 0.6103793393840152,
    "detectors": [
     5,
     6
@@ -7370,7 +7371,7 @@
     "file": "_work\\wise0855\\sia_r0.060.xml",
     "bytes": 66078554,
     "seconds": 9.8,
-    "utc": "2026-11-15T01:50:03Z"
+    "utc": "2026-11-15T02:35:16Z"
    }
   ]
  },

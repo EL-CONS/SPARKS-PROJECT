@@ -392,10 +392,14 @@ def run_target(
         blockers.append(motion_result.get("reason") or "sin movimiento propio medible")
     log(f"movimiento: {motion_result.get('measured') and motion_result['measured'].get('mu')}")
 
-    # --- 5b. Indice de frio (fotometria por cuadro) -----------------------
+    # --- 5b. Indice de frio (fotometria PSF por cuadro) -------------------
     # Cada cuadro aporta un punto (lambda, flujo). La longitud de onda sale del
     # pixel del objeto en la tabla WCS-WAVE y varia de un apuntado a otro, que es
     # lo que permite muestrear las bandas de metano dentro de D4 y D5.
+    # En WISE 0855, en D1-D4 (donde el objetivo no se ve y domina la estrella de
+    # fondo a ~1.2 px) se ajusta y resta la PSF gaussiana de la estrella vecina
+    # (posicion y sigma fijados desde las coadds de D1) antes de medir, ademas de
+    # enmascarar su nucleo (0.7 px).
     t0 = time.time()
     cold_points: list[dict[str, Any]] = []
     for fr in frames:
@@ -407,11 +411,20 @@ def run_target(
         target_xy = (float(np.ravel(xp)[0]), float(np.ravel(yp)[0]))
         sig = np.sqrt(np.asarray(fr["variance"], dtype=float))
         mask = np.asarray(fr["mask"], dtype=bool) > 0
+        img_phot = np.asarray(fr["image"], dtype=float)
         if star:
+            if target.motion_detectors and int(fr["det"]) not in target.motion_detectors:
+                img_phot, _ = photometry.subtract_star_psf(
+                    img_phot,
+                    sig,
+                    star["xy"],
+                    psf_sigma,
+                    mask=mask,
+                )
             mask = mask | photometry.star_mask(
-                fr["image"].shape, star["xy"], float(star["mask_radius"])
+                img_phot.shape, star["xy"], float(star["mask_radius"])
             )
-        flux = photometry.aperture_flux(fr["image"], sig, target_xy, mask=mask)
+        flux = photometry.psf_flux(img_phot, sig, target_xy, psf_sigma=psf_sigma, mask=mask)
         if not flux.get("ok"):
             continue
         cold_points.append(
@@ -427,9 +440,10 @@ def run_target(
     cold = photometry.cold_index(cold_points)
     cold["n_points"] = len(cold_points)
     cold["method"] = (
-        "apertura de 3 px con fondo del anillo 6-10 px en cada cuadro"
+        "fotometria PSF gaussiana ponderada (1/sigma^2) en cada cuadro"
         + (
-            ", con el nucleo de la estrella de fondo enmascarado"
+            ", restando la PSF de la estrella vecina en D1-D4 (posicion y sigma "
+            "fijados desde D1) y enmascarando su nucleo de 0.7 px"
             if star
             else ""
         )
@@ -438,13 +452,10 @@ def run_target(
     cold["psf_sigma_px"] = float(psf_sigma)
     cold["star_subtracted"] = bool(star)
     if star and cold.get("ratio") is not None:
-        # La mascara quita el nucleo de la estrella, no sus alas. La banda corta
-        # queda contaminada, asi que el cociente solo puede ser una cota
-        # inferior: el flujo corto verdadero es menor y el cociente mayor.
-        cold["ratio_kind"] = "lower_limit"
         cold["ratio_note"] = (
-            "la banda corta incluye las alas de la estrella de fondo; el cociente "
-            "es una cota inferior"
+            "en D1-D4 se resto la PSF gaussiana de la estrella vecina fijada "
+            "desde D1; la banda corta no se detecta a 3 sigma y el cociente se "
+            "reporta como cota inferior usando 3*short_err"
         )
     cold_s = time.time() - t0
     log(

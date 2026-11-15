@@ -412,21 +412,25 @@ index no existe) y no se toca el resultado para que cuadre. El veredicto literal
 
 ### 9b. Indice de frio
 
-Se calcula en `photometry.py` con la definicion del procesamiento anterior
-(`docs/methods.md`):
+Se calcula en `photometry.py` mediante fotometria PSF gaussiana ponderada por
+`1/sigma^2` en cada cuadro individual (ancho `psf_sigma` fijado desde las
+coadds), usando las bandas de `docs/methods.md`:
 
-- **Cociente** `F_D6/F_D2`: media ponderada por `1/error^2` de los flujos de
-  apertura (3 px, fondo del anillo 6-10 px) de los cuadros de D6 con
-  `4.42 <= lambda <= 5.01` um y de D2 con `1.10 <= lambda <= 1.63` um. Si el
-  flujo corto no llega a 3 sigma, el cociente usa `flujo + 3*error` en el
-  denominador y se marca `ratio_kind = lower_limit`.
+- **Resta de la estrella vecina en WISE 0855 (D1-D4)**: en las bandas cortas
+  (D1 a D4), donde WISE 0855 no aparece y domina la estrella de fondo a ~1.2 px
+  `(32.72, 31.22)`, se ajusta en cada cuadro por minimos cuadrados ponderados
+  (`1/sigma^2`, radio 3.5 px) la amplitud de una Gaussiana con la posicion y
+  `sigma = 0.61 px` fijados desde las coadds de D1 mas un fondo constante, y se
+  resta antes de medir en la posicion propagada del objetivo. Ademas se mantiene
+  la mascara de nucleo de `0.7 px`.
+- **Cociente** `F_D6/F_D2`: media ponderada por `1/error^2` de los flujos PSF
+  de los cuadros de D6 con `4.42 <= lambda <= 5.01` um y de D2 con
+  `1.10 <= lambda <= 1.63` um. Si el flujo corto no llega a 3 sigma, el cociente
+  usa `max(flujo, 0) + 3*error` en el denominador (`short_upper_limit_3sigma_mjy`)
+  y se marca `ratio_kind = lower_limit`.
 - **Metano** `1 - F(3.15-3.45)/F(3.90-4.10)`: el numerador sale de los cuadros
   de D4 y el denominador de los de D5, elegidos por su longitud de onda. El
   error se propaga de los errores de las medias.
-- En WISE 0855 la mascara quita el nucleo de la estrella pero no sus alas; la
-  banda corta queda contaminada, asi que el cociente se marca `lower_limit`
-  aunque la apertura sea positiva. El flujo corto verdadero es menor y el
-  cociente verdadero mayor.
 
 ## 10. Formato de salida
 
@@ -532,22 +536,23 @@ La razon va en `blockers` y en `data-new/index.json`; no se esconde.
 
 Definicion en la seccion 9b. Resultados con la corrida final:
 
-| objetivo | F(D6) mJy | F(D2) mJy | cociente | tipo | metano | error | cuadros |
-|---|---|---|---|---|---|---|---|
-| `wise0855` | 0.442 +- 0.043 (44) | 0.534 +- 0.020 (18) | 0.827 | `lower_limit` | 0.376 | 0.197 | 152 |
-| `epsindib` | 16.277 +- 0.079 (22) | 13.534 +- 0.031 (22) | 1.203 | `measured` | 0.807 | 0.002 | 115 |
+| objetivo | F(D6) mJy | F(D2) mJy | cota 3 sigma D2 (mJy) | cociente | tipo | metano | error | cuadros |
+|---|---|---|---|---|---|---|---|---|
+| `wise0855` | 0.284 +- 0.019 (44) | -0.006 +- 0.009 (18) | 0.028 | 10.09 | `lower_limit` | 1.20 | 0.10 | 152 |
+| `epsindib` | 17.130 +- 0.069 (19) | 13.099 +- 0.029 (22) | - | 1.31 | `measured` | 0.80 | 0.002 | 112 |
 
-En `wise0855` el cociente es una cota inferior: la mascara quita el nucleo de
-la estrella de fondo pero no sus alas, y la banda corta (1.1-1.6 um) queda
-contaminada. El valor del procesamiento anterior del equipo (`ratio > 10.9`,
-`lower_limit`) usaba la banda corta casi sin flujo; aqui el flujo corto
-medido es 0.534 mJy y el cociente baja a 0.83. **No es comparable
-directamente**: son dos tratamientos distintos de la misma estrella de fondo.
-Con 0.376 de metano y 0.827 de cociente, WISE 0855 no pasaria la regla
-`CH4_MIN = 0.5` o `RATIO_MIN = 10.0` de `prototipo/veredicto.py`; se declara.
-`epsindib` da metano 0.807 +- 0.002, consistente con el 0.81 del
-procesamiento anterior, y un cociente 1.203 (antes 1.73); la diferencia esta
-en la apertura y en la correccion de longitud de onda.
+En `wise0855`, tras restar la PSF gaussiana de la estrella vecina en D1-D4
+(posicion `(32.72, 31.22)` y `sigma = 0.61 px` fijados desde las coadds de D1),
+la banda corta (1.1-1.6 um) queda en `-0.006 +- 0.009 mJy` (no detectada a 3
+sigma; cota superior 3 sigma de `0.028 mJy`, S/N apilado `-0.67` en D2 frente a
+`19.02` en D5 y `15.60` en D6). Con `F(D6) = 0.284 +- 0.019 mJy` el cociente da
+`F_D6/F_D2 >= 10.09` (`lower_limit`) y la profundidad de metano `1.20 +- 0.10`,
+consistente con el procesamiento anterior (`ratio > 10.88`, `methane_depth =
+1.03 +- 0.07`) y por encima de los umbrales `CH4_MIN = 0.5` y `RATIO_MIN = 10.0`
+de `prototipo/veredicto.py`.
+En `epsindib` la fotometria PSF da metano `0.797 +- 0.002` (redondeado a `0.80`,
+consistente con el `0.81` del procesamiento anterior) y un cociente `1.31`
+(`measured`).
 
 ### Mezcla de releases
 

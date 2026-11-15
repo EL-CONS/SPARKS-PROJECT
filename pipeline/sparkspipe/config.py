@@ -215,9 +215,12 @@ TARGETS: tuple[Target, ...] = (
         caveats=(
             "Una estrella de fondo a ~7 arcsec (1.2 px) al este contamina el "
             "fotocentro. En D1 (0.75-1.1 um) solo se ve la estrella y WISE 0855 "
-            "no aparece; por eso el movimiento se mide unicamente en D5 y D6, "
-            "restando la estrella con un ajuste de dos fuentes y su posicion "
-            "fijada desde D1. Ver docs/pipeline/metodo.md.",
+            "no aparece; por eso el movimiento se mide unicamente en D5 y D6 "
+            "enmascarando el nucleo de la estrella (radio 0.7 px fijado desde D1), "
+            "y en la fotometria de D1-D4 se ajusta y resta ademas su PSF gaussiana "
+            "(sigma 0.61 px). Tras la resta, la banda corta no se detecta a 3 sigma "
+            "(-0.006 +- 0.009 mJy; cota superior 3 sigma de 0.028 mJy) y F_D6/F_D2 = "
+            "10.09 se reporta como cota inferior. Ver docs/pipeline/metodo.md.",
         ),
         full_detectors=(5, 6),
         motion_detectors=(5, 6),

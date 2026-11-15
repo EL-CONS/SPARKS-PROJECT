@@ -1,7 +1,7 @@
 {
- "generated_utc": "2026-11-15 02:00 UTC",
+ "generated_utc": "2026-11-15 02:39 UTC",
  "archive": {
-  "queried_utc": "2026-11-15 02:00 UTC",
+  "queried_utc": "2026-11-15 02:39 UTC",
   "service": "IRSA SIA2 (conteo por coleccion en data-new/index.json)",
   "by_collection": {
    "spherex_dr1": 338,
@@ -43,42 +43,45 @@
    "in_gaia": false,
    "nearest_gaia_arcsec": null,
    "cold": {
-    "ratio": 0.83,
+    "ratio": 10.09,
     "ratio_kind": "lower_limit",
-    "methane_depth": 0.38,
-    "methane_err": 0.2,
-    "long_mjy": 0.442,
-    "short_mjy": 0.534
+    "methane_depth": 1.2,
+    "methane_err": 0.1,
+    "long_mjy": 0.284,
+    "long_err": 0.019,
+    "short_mjy": -0.006,
+    "short_err": 0.009,
+    "short_upper_limit_3sigma_mjy": 0.028
    },
    "snr": {
     "1": {
-     "single": 7.3,
-     "stacked": 26.38,
+     "single": 0.87,
+     "stacked": 2.24,
      "n": 14
     },
     "2": {
-     "single": 5.95,
-     "stacked": 26.27,
+     "single": -0.1,
+     "stacked": -0.67,
      "n": 18
     },
     "3": {
-     "single": 5.33,
-     "stacked": 20.0,
+     "single": 0.73,
+     "stacked": 2.18,
      "n": 14
     },
     "4": {
-     "single": 3.59,
-     "stacked": 11.43,
+     "single": -0.16,
+     "stacked": 1.01,
      "n": 13
     },
     "5": {
-     "single": 2.41,
-     "stacked": 17.79,
+     "single": 2.71,
+     "stacked": 19.02,
      "n": 48
     },
     "6": {
-     "single": 1.56,
-     "stacked": 10.21,
+     "single": 2.41,
+     "stacked": 15.6,
      "n": 45
     }
    },
@@ -268,43 +271,45 @@
    "in_gaia": false,
    "nearest_gaia_arcsec": null,
    "cold": {
-    "ratio": 1.2,
+    "ratio": 1.31,
     "ratio_kind": "measured",
-    "methane_depth": 0.81,
+    "methane_depth": 0.8,
     "methane_err": 0.0,
-    "long_mjy": 16.277,
-    "short_mjy": 13.534
+    "long_mjy": 17.13,
+    "long_err": 0.069,
+    "short_mjy": 13.099,
+    "short_err": 0.029
    },
    "snr": {
     "1": {
-     "single": 35.76,
-     "stacked": 92.27,
+     "single": 46.09,
+     "stacked": 89.13,
      "n": 14
     },
     "2": {
-     "single": 108.15,
-     "stacked": 437.3,
+     "single": 115.57,
+     "stacked": 450.57,
      "n": 22
     },
     "3": {
-     "single": 131.28,
-     "stacked": 556.77,
+     "single": 120.19,
+     "stacked": 517.97,
      "n": 22
     },
     "4": {
-     "single": 104.89,
-     "stacked": 338.97,
-     "n": 14
+     "single": 105.61,
+     "stacked": 411.83,
+     "n": 13
     },
     "5": {
-     "single": 121.29,
-     "stacked": 490.33,
+     "single": 116.03,
+     "stacked": 500.48,
      "n": 22
     },
     "6": {
-     "single": 50.38,
-     "stacked": 194.23,
-     "n": 21
+     "single": 53.89,
+     "stacked": 235.49,
+     "n": 19
     }
    },
    "coadd_noise": [
@@ -882,16 +887,16 @@
   ],
   "max_per_group": null,
   "n_images": 153,
-  "seconds": 256.1,
-  "measured_utc": "2026-11-15T01:54:20Z",
+  "seconds": 0.3,
+  "measured_utc": "2026-11-15T02:35:17Z",
   "note": "todos los cuadros de D5 y D6; el resto de detectores se usa solo para fotometria de apoyo con tope por temporada"
  },
  "frozen": {
-  "frozen_utc": "2026-11-15 02:00 UTC",
+  "frozen_utc": "2026-11-15 02:39 UTC",
   "sha256": {
-   "pipeline/sparkspipe/run.py": "dddeec3ebdc50cffccf2b15a54c5a730dd47fd06eefdecf9b238d406157e454b",
+   "pipeline/sparkspipe/run.py": "48a25ed3a7f3696ec0ef496d4966b524db2f67e6a077b90ae317b8fa63f96e1f",
    "pipeline/sparkspipe/motion.py": "2a34b86bac821dce7c2a23c832ffc36307b1c39e2932e10a7e0b89cc3fd1fe7a",
-   "pipeline/sparkspipe/photometry.py": "df97c620c33d22db34257e03f116969c1acea2a0657e184fdaa32b5fe6bfa63c",
+   "pipeline/sparkspipe/photometry.py": "32c641ac51367c7547c3d3714e8653a5a71654b8002d1fb9c909db468b5de3a2",
    "pipeline/sparkspipe/manifest.py": "86fe8140c9d5b9ddc3a4db2de4bcaf1247ea38ebda23c4a9a89d733126b70880"
   }
  },
