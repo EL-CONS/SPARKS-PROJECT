@@ -1,13 +1,13 @@
 # Recortes locales y compartidos en la nube (cuatro campos)
 
-**Fecha:** sabado 14 de noviembre de 2026 · **Rama:** `carlos` · **Script:** [`recortes.py`](recortes.py)
+**Fecha:** sábado 14 de noviembre de 2026 · **Rama:** `carlos` · **Script:** [`recortes.py`](recortes.py)
 
-Los recortes de los cuatro campos asignados ya estan descargados fuera de Git en `/home/carlos/Documents/SPARKS-PROJECT-data/recortes`. **Horacio y Cons:** los archivos no suben al repositorio; si Horacio no alcanza a subir `pipeline/`, Cons puede tomar directamente estos FITS y los `resumen.json` desde la carpeta compartida.
+Los recortes de los cuatro campos asignados ya están descargados fuera de Git en `/home/carlos/Documents/SPARKS-PROJECT-data/recortes`. **Horacio y Cons:** los archivos no suben al repositorio; si Horacio no alcanza a subir `pipeline/`, Cons puede tomar directamente estos FITS y los `resumen.json` desde la carpeta compartida.
 
 ## Enlace en la nube
 
-- **Carpeta compartida:** `[[PENDIENTE: enlace de la carpeta compartida en la nube]]`
-- **Origen local a subir:** `/home/carlos/Documents/SPARKS-PROJECT-data/recortes`
+- **Carpeta compartida:** `[[PENDIENTE: enlace de la carpeta compartida en la nube]]` (sin cliente ni credenciales de nube en esta máquina; pendiente de subir manualmente)
+- **Origen local:** `/home/carlos/Documents/SPARKS-PROJECT-data/recortes` (`578` archivos FITS, `81,783,360 B`; `82,741,594 B` incluyendo JSON)
 
 ## Estructura de carpetas
 
@@ -38,9 +38,9 @@ recortes/
 
 ## Resumen de descarga por campo
 
-Parametros aplicados en `recortes.py`: hasta 8 cuadros por detector y temporada, `size=0.11` (64 × 64 px), 6 hilos (`--workers 6`), reintentos con espera y eliminacion del HDU `EPSF` antes de guardar (conservando `PRIMARY`, `FLAGS`, `VARIANCE`, `ZODI` y `WCS-WAVE`). Para WISE 0855 y ε Indi B se propago la coordenada del catalogo a la epoca de cada cuadro al centrar el recorte.
+Parámetros aplicados en `recortes.py`: hasta 8 cuadros por detector y temporada, `size=0.11` (64 × 64 px), 6 hilos (`--workers 6`), reintentos con espera y eliminación del HDU `EPSF` antes de guardar (conservando `PRIMARY`, `IMAGE`, `FLAGS`, `VARIANCE`, `ZODI` y `WCS-WAVE`). Para WISE 0855 y ε Indi B se propagó la coordenada del catálogo a la época de cada cuadro al centrar el recorte.
 
-| Campo | RA / Dec catalogo | Temporadas | Filas SIA | Seleccionados | Descargados | Faltantes | Bajado (con EPSF) | Guardado (sin EPSF) |
+| Campo | RA / Dec catálogo | Temporadas | Filas SIA | Seleccionados | Descargados | Faltantes | Bajado (con EPSF) | Guardado (sin EPSF) |
 |---|---|---:|---:|---:|---:|---:|---:|---:|
 | R Draconis | 248.1674 / +66.7550 | 3 | 539 | 144 | 144 | 0 | 579.2 MB | 20.2 MB |
 | RW Aurigae | 76.9561 / +30.4012 | 3 | 335 | 144 | 144 | 0 | 579.5 MB | 20.4 MB |
@@ -50,5 +50,6 @@ Parametros aplicados en `recortes.py`: hasta 8 cuadros por detector y temporada,
 
 Notas:
 - Coordenadas vigentes de ε Indi: **ε Indi B** en `331.044 / −56.783` (`331.0441 / −56.7828`, J2000) y **ε Indi A** en `330.84 / −56.786` (`330.8404 / −56.7869`).
-- Cada archivo guardado sin `EPSF` pesa ~140 KB en lugar de ~4.0 MB (reduccion de ~28.5×).
-- Fuente de las cifras: `/home/carlos/Documents/SPARKS-PROJECT-data/recortes/resumen.json` (generado `2026-11-14T19:28:26-07:00`) y los `resumen.json` individuales por carpeta.
+- Cada archivo guardado sin `EPSF` pesa ~140 KB (144,000 B en los FITS revisados) en lugar de ~4.0 MB (`3,977,280–4,095,360 B` en `consultas.json`; reducción de ~28.5×). Verificación directa de cabeceras FITS sobre los 578 archivos en disco: `0/578` contienen HDU `EPSF` o `PSF`.
+- `recortes.py` ahora genera automáticamente tanto el `resumen.json` global como el `resumen.json` individual de cada campo (junto con `seleccion.json` y `consultas.json`). Si se vuelve a ejecutar por línea de comando, la clave de `argparse` es `'epsilon Indi B'` en ASCII.
+- Fuente de las cifras: `/home/carlos/Documents/SPARKS-PROJECT-data/recortes/resumen.json` (generado `2026-11-14T19:28:26-07:00`) y los `resumen.json` y `consultas.json` individuales por carpeta.

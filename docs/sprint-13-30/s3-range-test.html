@@ -3,6 +3,11 @@
   Prueba minima: lectura de un recorte 64x64 directo desde S3 (nasa-irsa-spherex)
   con peticiones HTTP Range en el navegador, sin pasar por el servidor de recortes de IRSA.
 
+  Soporta dos modos:
+    - Slab contiguo de 64 filas (2+ peticiones, ~551 KB en < 1 s)
+    - 64 rangos de fila de 256 B (65+ peticiones, ~42-45 KB)
+  Y centrado por coordenadas RA/Dec (WCS TAN + SIP inversa) o centro geometrico.
+
   Uso:
     python3 -m http.server 8765
     Abrir http://127.0.0.1:8765/s3-range-test.html
@@ -13,14 +18,26 @@
 <title>SPHEREx S3 Range Test</title>
 <style>
   body { font-family: monospace; background: #06080C; color: #E6EDF3; padding: 16px; }
-  input, button { font-family: monospace; padding: 6px 10px; }
-  input { width: 680px; max-width: 100%; }
+  input, select, button { font-family: monospace; padding: 6px 10px; margin: 2px 4px 2px 0; }
+  input#url { width: 720px; max-width: 100%; }
+  input.coord { width: 130px; }
+  .row { margin-bottom: 8px; }
   pre { background: #11161F; padding: 12px; overflow-x: auto; }
   canvas { border: 1px solid #30363D; margin-top: 12px; image-rendering: pixelated; }
 </style>
 <h1>SPHEREx S3 HTTP Range Test (64x64)</h1>
-<div>
+<div class="row">
   <input id="url" type="text" placeholder="https://nasa-irsa-spherex.s3.amazonaws.com/dr1/level2/..." />
+</div>
+<div class="row">
+  <label>RA (deg): <input id="ra" class="coord" type="text" placeholder="opcional (ej. 133.795129)" /></label>
+  <label>Dec (deg): <input id="dec" class="coord" type="text" placeholder="opcional (ej. -7.245147)" /></label>
+  <label>Modo:
+    <select id="mode">
+      <option value="slab">Slab contiguo 64 filas (~551 KB, 2+ peticiones)</option>
+      <option value="rows">64 rangos de 256 B (~45 KB, 65+ peticiones)</option>
+    </select>
+  </label>
   <button id="run">Probar Range</button>
 </div>
 <pre id="log">Listo. Pega una URL S3 de cloud_access y pulsa "Probar Range".</pre>
@@ -44,23 +61,38 @@ function parseFitsCards(buf, offset) {
   return cards;
 }
 
+function parseCardValue(card) {
+  const rhs = card.slice(10).trim();
+  if (rhs.startsWith("'")) {
+    const endQ = rhs.indexOf("'", 1);
+    return endQ > 0 ? rhs.slice(1, endQ).trim() : rhs.slice(1).trim();
+  }
+  return rhs.split('/')[0].trim();
+}
+
 function findHduLayout(buf) {
   let pos = 0;
   const hdus = [];
   while (pos + 2880 <= buf.byteLength) {
     const hStart = pos;
     let naxis = 0, bitpix = 0, dims = [], extname = 'PRIMARY', foundEnd = false;
+    const cardsMap = {};
     while (pos + 2880 <= buf.byteLength) {
       const cards = parseFitsCards(buf, pos);
       pos += 2880;
       for (const c of cards.slice(0, 36)) {
-        if (c.startsWith('BITPIX  =')) bitpix = parseInt(c.slice(10, 30), 10);
-        else if (c.startsWith('NAXIS   =')) naxis = parseInt(c.slice(10, 30), 10);
-        else if (c.startsWith('NAXIS1  =')) dims[0] = parseInt(c.slice(10, 30), 10);
-        else if (c.startsWith('NAXIS2  =')) dims[1] = parseInt(c.slice(10, 30), 10);
-        else if (c.startsWith('NAXIS3  =')) dims[2] = parseInt(c.slice(10, 30), 10);
-        else if (c.startsWith('EXTNAME =')) extname = c.split('=')[1].split('/')[0].replace(/[' ]/g, '');
-        else if (c.startsWith('END     ')) { foundEnd = true; break; }
+        const key = c.slice(0, 8).trim();
+        if (key === 'END') { foundEnd = true; break; }
+        if (c.slice(8, 10) === '= ') {
+          const val = parseCardValue(c);
+          cardsMap[key] = val;
+          if (key === 'BITPIX') bitpix = parseInt(val, 10);
+          else if (key === 'NAXIS') naxis = parseInt(val, 10);
+          else if (key === 'NAXIS1') dims[0] = parseInt(val, 10);
+          else if (key === 'NAXIS2') dims[1] = parseInt(val, 10);
+          else if (key === 'NAXIS3') dims[2] = parseInt(val, 10);
+          else if (key === 'EXTNAME') extname = val.toUpperCase();
+        }
       }
       if (foundEnd) break;
     }
@@ -68,10 +100,71 @@ function findHduLayout(buf) {
     const elem = dims.reduce((a, b) => a * b, 1);
     const dataBytes = naxis > 0 ? elem * (Math.abs(bitpix) / 8) : 0;
     const padded = dataBytes > 0 ? Math.ceil(dataBytes / 2880) * 2880 : 0;
-    hdus.push({ extname, headerStart: hStart, dataStart: pos, bitpix, dims, dataBytes });
+    hdus.push({ extname, headerStart: hStart, dataStart: pos, bitpix, dims, dataBytes, cards: cardsMap });
     pos += padded;
   }
   return hdus;
+}
+
+function evalSipPoly(cards, prefix, x, y) {
+  const order = parseInt(cards[`${prefix}_ORDER`] ?? '-1', 10);
+  if (!(order >= 0)) return 0;
+  let sum = 0;
+  for (let p = 0; p <= order; p++) {
+    for (let q = 0; q <= order - p; q++) {
+      const raw = cards[`${prefix}_${p}_${q}`];
+      if (raw !== undefined) {
+        sum += parseFloat(raw) * (x ** p) * (y ** q);
+      }
+    }
+  }
+  return sum;
+}
+
+function skyToPixelSip(cards, raDeg, decDeg) {
+  const rad = Math.PI / 180;
+  const ra0 = parseFloat(cards.CRVAL1) * rad;
+  const dec0 = parseFloat(cards.CRVAL2) * rad;
+  const ra = raDeg * rad;
+  const dec = decDeg * rad;
+  const crpix1 = parseFloat(cards.CRPIX1);
+  const crpix2 = parseFloat(cards.CRPIX2);
+
+  const cosC = Math.sin(dec0) * Math.sin(dec) + Math.cos(dec0) * Math.cos(dec) * Math.cos(ra - ra0);
+  if (cosC <= 0) throw new Error('Coordenada fuera del hemisferio tangente.');
+  const xi = (Math.cos(dec) * Math.sin(ra - ra0) / cosC) / rad;
+  const eta = ((Math.cos(dec0) * Math.sin(dec) - Math.sin(dec0) * Math.cos(dec) * Math.cos(ra - ra0)) / cosC) / rad;
+
+  const cdelt1 = cards.CDELT1 !== undefined ? parseFloat(cards.CDELT1) : 1;
+  const cdelt2 = cards.CDELT2 !== undefined ? parseFloat(cards.CDELT2) : 1;
+  const cd11 = cards.CD1_1 !== undefined ? parseFloat(cards.CD1_1) : parseFloat(cards.PC1_1) * cdelt1;
+  const cd12 = cards.CD1_2 !== undefined ? parseFloat(cards.CD1_2) : parseFloat(cards.PC1_2) * cdelt1;
+  const cd21 = cards.CD2_1 !== undefined ? parseFloat(cards.CD2_1) : parseFloat(cards.PC2_1) * cdelt2;
+  const cd22 = cards.CD2_2 !== undefined ? parseFloat(cards.CD2_2) : parseFloat(cards.PC2_2) * cdelt2;
+  const det = cd11 * cd22 - cd12 * cd21;
+  if (Math.abs(det) < 1e-18) throw new Error('Matriz CD singular en cabecera WCS.');
+
+  const U = (cd22 * xi - cd12 * eta) / det;
+  const V = (-cd21 * xi + cd11 * eta) / det;
+
+  let u = U + evalSipPoly(cards, 'AP', U, V);
+  let v = V + evalSipPoly(cards, 'BP', U, V);
+  if (cards.A_ORDER !== undefined && cards.B_ORDER !== undefined) {
+    for (let it = 0; it < 5; it++) {
+      u = U - evalSipPoly(cards, 'A', u, v);
+      v = V - evalSipPoly(cards, 'B', u, v);
+    }
+  }
+  return { x1: crpix1 + u, y1: crpix2 + v };
+}
+
+function fnv1aHex(bytes) {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < bytes.length; i++) {
+    h ^= bytes[i];
+    h = Math.imul(h, 0x01000193) >>> 0;
+  }
+  return h.toString(16).padStart(8, '0');
 }
 
 async function fetchRange(url, start, end) {
@@ -80,56 +173,138 @@ async function fetchRange(url, start, end) {
   return { status: res.status, headers: res.headers, buf };
 }
 
+function concatBuffers(chunks) {
+  const total = chunks.reduce((s, c) => s + c.byteLength, 0);
+  const out = new Uint8Array(total);
+  let off = 0;
+  for (const c of chunks) {
+    out.set(new Uint8Array(c), off);
+    off += c.byteLength;
+  }
+  return out.buffer;
+}
+
 document.getElementById('run').addEventListener('click', async () => {
   const url = document.getElementById('url').value.trim();
+  const raStr = document.getElementById('ra').value.trim();
+  const decStr = document.getElementById('dec').value.trim();
+  const mode = document.getElementById('mode').value;
   if (!url) return;
-  logEl.textContent = `[${new Date().toISOString()}] Iniciando prueba: ${url}`;
+
+  logEl.textContent = `[${new Date().toISOString()}] Iniciando prueba (${mode}): ${url}`;
   let totalBytes = 0;
+  let headerBytesRead = 0;
   let requests = 0;
   const t0 = performance.now();
 
   try {
-    const hdrRes = await fetchRange(url, 0, 23039);
-    requests++;
-    totalBytes += hdrRes.buf.byteLength;
-    log(`Header HTTP ${hdrRes.status}, ACAO=${hdrRes.headers.get('access-control-allow-origin')}, bytes=${hdrRes.buf.byteLength}`);
-    if (hdrRes.status !== 206 && hdrRes.status !== 200) {
-      throw new Error(`HTTP inesperado: ${hdrRes.status}`);
+    const chunkSize = 28800; // 10 bloques FITS de 2880 B
+    const maxHeaderScan = 144000; // tope de seguridad (50 bloques FITS)
+    const chunks = [];
+    let hdus = [];
+    let img = null;
+    let offset = 0;
+
+    while (offset < maxHeaderScan) {
+      const end = offset + chunkSize - 1;
+      const hdrRes = await fetchRange(url, offset, end);
+      requests++;
+      totalBytes += hdrRes.buf.byteLength;
+      headerBytesRead += hdrRes.buf.byteLength;
+      chunks.push(hdrRes.buf);
+      const cr = hdrRes.headers.get('content-range');
+      log(`Header chunk [${offset}-${end}] HTTP ${hdrRes.status}, Content-Range=${cr}, bytes=${hdrRes.buf.byteLength}`);
+      if (hdrRes.status !== 206 && hdrRes.status !== 200) {
+        throw new Error(`HTTP inesperado: ${hdrRes.status}`);
+      }
+      const merged = concatBuffers(chunks);
+      hdus = findHduLayout(merged);
+      img = hdus.find(h => h.extname === 'IMAGE') || (hdus.length > 1 ? hdus[1] : null);
+      if (img && img.dims[0] && img.dims[1]) break;
+      if (hdrRes.status === 200 || hdrRes.buf.byteLength < chunkSize) break;
+      offset += hdrRes.buf.byteLength;
     }
 
-    const hdus = findHduLayout(hdrRes.buf);
-    const img = hdus.find(h => h.extname === 'IMAGE') || hdus[1] || hdus[0];
     if (!img || !img.dims[0] || !img.dims[1]) {
-      throw new Error('No se encontro cabecera IMAGE completa en los primeros 23,040 bytes.');
+      throw new Error(`No se encontro cabecera IMAGE completa en los primeros ${headerBytesRead} bytes.`);
     }
-    log(`HDU ${img.extname}: ${img.dims[0]}x${img.dims[1]}, BITPIX=${img.bitpix}, dataStart=${img.dataStart}`);
+    log(`HDU ${img.extname}: ${img.dims[0]}x${img.dims[1]}, BITPIX=${img.bitpix}, dataStart=${img.dataStart} (cabeceras PRIMARY+IMAGE = ${img.dataStart} B)`);
 
     const nx = img.dims[0], ny = img.dims[1];
     const bpp = Math.abs(img.bitpix) / 8;
-    const y0 = Math.floor(ny / 2) - 32;
-    const x0 = Math.floor(nx / 2) - 32;
-    const slabStart = img.dataStart + y0 * nx * bpp;
-    const slabEnd = slabStart + 64 * nx * bpp - 1;
-    const slabRes = await fetchRange(url, slabStart, slabEnd);
-    requests++;
-    totalBytes += slabRes.buf.byteLength;
+    let x0 = Math.floor(nx / 2) - 32;
+    let y0 = Math.floor(ny / 2) - 32;
+
+    if (raStr !== '' && decStr !== '') {
+      const raDeg = parseFloat(raStr);
+      const decDeg = parseFloat(decStr);
+      const px = skyToPixelSip(img.cards, raDeg, decDeg);
+      const x0b = px.x1 - 1;
+      const y0b = px.y1 - 1;
+      x0 = Math.max(0, Math.min(nx - 64, Math.round(x0b) - 32));
+      y0 = Math.max(0, Math.min(ny - 64, Math.round(y0b) - 32));
+      log(`WCS+SIP (${raDeg}, ${decDeg}) -> pixel 1-based=(${px.x1.toFixed(3)}, ${px.y1.toFixed(3)}), caja x=${x0}..${x0 + 63}, y=${y0}..${y0 + 63}`);
+    } else {
+      log(`Centro geometrico -> caja x=${x0}..${x0 + 63}, y=${y0}..${y0 + 63}`);
+    }
+
+    const patchRaw = new Uint8Array(64 * 64 * bpp);
+    let dataBytes = 0;
+
+    if (mode === 'rows') {
+      const tData0 = performance.now();
+      for (let r = 0; r < 64; r++) {
+        const rowStart = img.dataStart + ((y0 + r) * nx + x0) * bpp;
+        const rowEnd = rowStart + 64 * bpp - 1;
+        const rowRes = await fetchRange(url, rowStart, rowEnd);
+        requests++;
+        totalBytes += rowRes.buf.byteLength;
+        dataBytes += rowRes.buf.byteLength;
+        if (rowRes.status !== 206 && rowRes.status !== 200) {
+          throw new Error(`HTTP inesperado en fila ${r}: ${rowRes.status}`);
+        }
+        patchRaw.set(new Uint8Array(rowRes.buf), r * 64 * bpp);
+      }
+      log(`64 rangos de 256 B: dataBytes=${dataBytes} B, ${(performance.now() - tData0).toFixed(1)} ms`);
+    } else {
+      const slabStart = img.dataStart + y0 * nx * bpp;
+      const slabEnd = slabStart + 64 * nx * bpp - 1;
+      const slabRes = await fetchRange(url, slabStart, slabEnd);
+      requests++;
+      totalBytes += slabRes.buf.byteLength;
+      dataBytes = slabRes.buf.byteLength;
+      if (slabRes.status !== 206 && slabRes.status !== 200) {
+        throw new Error(`HTTP inesperado en slab: ${slabRes.status}`);
+      }
+      const slabBytes = new Uint8Array(slabRes.buf);
+      for (let r = 0; r < 64; r++) {
+        const srcOff = (r * nx + x0) * bpp;
+        patchRaw.set(slabBytes.subarray(srcOff, srcOff + 64 * bpp), r * 64 * bpp);
+      }
+      log(`Slab 64 filas [${slabStart}-${slabEnd}] HTTP ${slabRes.status}, bytes=${slabRes.buf.byteLength}`);
+    }
+
     const elapsed = (performance.now() - t0).toFixed(1);
-    log(`Slab 64 filas HTTP ${slabRes.status}, bytes=${slabRes.buf.byteLength}`);
     log(`TOTAL: ${requests} peticiones, ${totalBytes} bytes (${(totalBytes / 1024).toFixed(1)} KB), ${elapsed} ms`);
 
-    const view = new DataView(slabRes.buf);
+    const view = new DataView(patchRaw.buffer);
     const vals = new Float32Array(64 * 64);
-    let min = Infinity, max = -Infinity;
-    for (let r = 0; r < 64; r++) {
-      for (let c = 0; c < 64; c++) {
-        const v = view.getFloat32((r * nx + (x0 + c)) * 4, false);
-        vals[r * 64 + c] = v;
-        if (Number.isFinite(v)) {
-          if (v < min) min = v;
-          if (v > max) max = v;
-        }
+    let min = Infinity, max = -Infinity, sum = 0, finiteCount = 0;
+    for (let i = 0; i < 64 * 64; i++) {
+      const v = view.getFloat32(i * 4, false);
+      vals[i] = v;
+      if (Number.isFinite(v)) {
+        finiteCount++;
+        sum += v;
+        if (v < min) min = v;
+        if (v > max) max = v;
       }
     }
+    const mean = finiteCount > 0 ? sum / finiteCount : NaN;
+    const centerVal = vals[32 * 64 + 32];
+    const hash = fnv1aHex(patchRaw);
+    log(`Recorte 64x64: ${finiteCount}/4096 pixeles finitos, min=${min.toFixed(6)}, max=${max.toFixed(6)}, mean=${mean.toFixed(6)}, center=${centerVal.toFixed(6)}, fnv1a=${hash}`);
+
     const imgData = ctx.createImageData(64, 64);
     const span = max > min ? max - min : 1;
     for (let i = 0; i < 64 * 64; i++) {

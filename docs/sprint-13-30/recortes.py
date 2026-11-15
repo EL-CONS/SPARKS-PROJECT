@@ -454,6 +454,39 @@ def main() -> int:
         corridas = int(previo.get("corridas", 0) or 0) + 1
         bytes_desc = sum(x.get("bytes_descargados", 0) for x in log if x.get("tipo") == "cutout" and x.get("ok"))
         bytes_saved = sum(x.get("bytes_guardados", 0) for x in log if x.get("tipo") == "cutout" and x.get("ok"))
+
+        descargados_list = []
+        faltantes_list = []
+        for f in seleccion:
+            rel = Path(f"temporada_{f['temporada']}") / f["detector"] / f"{f['obs_id']}_{f['detector']}.fits"
+            fpath = field_dir / rel
+            item = {
+                "temporada": f["temporada"],
+                "detector": f["detector"],
+                "obs_id": f["obs_id"],
+                "fecha": f["fecha"],
+                "archivo": rel.as_posix(),
+            }
+            if fpath.exists():
+                item["bytes"] = fpath.stat().st_size
+                descargados_list.append(item)
+            else:
+                faltantes_list.append(item)
+        write_json(field_dir / "resumen.json", {
+            "campo": nombre,
+            "ra": info["ra"],
+            "dec": info["dec"],
+            "generado": iso_now(),
+            "temporadas": nseasons,
+            "filas_sia": nrows,
+            "seleccionados": total,
+            "descargados_count": len(descargados_list),
+            "faltantes_count": len(faltantes_list),
+            "bytes_descargados": bytes_desc,
+            "bytes_guardados": bytes_saved,
+            "descargados": descargados_list,
+            "faltantes": faltantes_list,
+        })
         resumen["campos"][nombre] = {
             "temporadas": nseasons, "filas_sia": nrows,
             "seleccionados": total, "archivos_presentes": presentes,
