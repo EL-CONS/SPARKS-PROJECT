@@ -1,38 +1,38 @@
-# Declaración de uso de SI (IA) en Sparks
+# Use of SI (AI) Tools Disclosure · Sparks
 
-Las normas del NASA Space Apps Challenge 2026 piden que la entrega describa cómo se usaron herramientas de "Superinteligencia" (SI) durante el desarrollo. Este es el borrador en español; abajo va la versión en inglés para pegar en el sitio.
+NASA Space Apps Challenge 2026 rules require submissions to describe how "Superintelligence" (SI) / AI tools were used during development.
 
-**Estado: borrador.** Lo marcado con [CONFIRMAR] lo tiene que responder cada persona; no se puede saber desde el repositorio.
+**Status: draft.** Items marked with `[CONFIRM]` must be confirmed by each team member; they cannot be inferred from the repository history alone.
 
-## Qué herramienta se usó
+## Tools Used
 
-Claude, de Anthropic, a través de Claude Code (asistente de programación). Los commits llevan la marca `Co-Authored-By` con el modelo usado: Claude Sonnet 5.5, Claude Opus 5.5 y Claude Fable 5.2.
+Anthropic Claude, via the Claude Code coding assistant. Commits include `Co-Authored-By` trailers indicating the model used (Claude Sonnet 5.5, Claude Opus 5.5, and Claude Fable 5.2).
 
-Al 14 de noviembre a las 23:17, en la historia de la rama de entrega (`joako-integracion`), 49 de 74 commits llevan esa marca; todos son de la cuenta de Joaquín (52 commits). Los 22 de la cuenta de Cons no la llevan; eso no prueba que no usara SI. (A las 20:40, en todas las ramas, eran 47 de 90.) [CONFIRMAR con Cons, Horacio y Carlos si usaron algún asistente y para qué.]
+As of November 14 at 23:17, in the integration branch history (`joako-integracion`), 49 of 74 commits carry that trailer; all 49 are from Joaquin's account (52 commits). The 22 commits from Cons's account do not carry it; that does not prove no SI tool was used. (At 20:40 across all branches, it was 47 of 90.) `[CONFIRM with Cons, Horacio, and Carlos whether they used any assistant and for what.]`
 
-## Para qué se usó
+## Where SI Was Used
 
-| Parte | Uso de SI | Qué hizo una persona |
+| Area | Use of SI | Human Contribution |
 |---|---|---|
-| Interfaz web (`app/src/ui/`, `app/src/styles/`) | El asistente escribió la mayor parte del código de las tres iteraciones de diseño y de la elegida ("Constelación") | Joaquín dio la dirección, eligió entre iteraciones y revisó el resultado en el navegador. Cons integra y mantiene la rama |
-| Lógica de la app (`app/src/core/`: coordenadas, URL, reproductor, campo de visión, espectro) | Campo de visión y espectro al vuelo los escribió el asistente, con pruebas automáticas. [CONFIRMAR con Cons el resto] | Revisión de Joaquín; las pruebas corren con `npm test` |
-| Clasificador de tipo de objeto (`ml-clasificador/`) | El asistente escribió el entrenamiento, el reentrenamiento de la v2 y la inferencia en JavaScript | Horacio revisó la ciencia (encontró la fuga de la v1 y la etiqueta de Wolf 489) y armó el catálogo verificado de 69 objetos; Joaquín revisó la evaluación dejando uno fuera |
-| Canalización de datos (`pipeline/`, `data-new/`) | [CONFIRMAR con Horacio] | Horacio |
-| Investigación (`docs/sprint-*`, `Investigacion.md`, cobertura de IRSA) | [CONFIRMAR con Carlos y Horacio] | Carlos y Horacio |
-| Planes de trabajo y documentos (`docs/reto/`, planes de sprint, auditoría de requisitos, este documento, `README.md`) | Redactados con el asistente | Joaquín los revisa antes de usarlos |
-| Logo e ilustraciones | `ASSETS_CREDITS.md` dice que los íconos y los astros se dibujaron en SVG por el equipo. [CONFIRMAR si el logo se hizo con alguna herramienta de SI] | — |
-| Textos del pitch, página del equipo y guion del video (`docs/pitch/`) | [CONFIRMAR con Carlos] | Carlos |
+| Web UI (`app/src/ui/`, `app/src/styles/`) | The assistant wrote most of the code for the three design iterations and the chosen one ("Constelacion") | Joaquin set the direction, chose between iterations, and reviewed the result in the browser. Cons integrates and maintains the branch |
+| App logic (`app/src/core/`: coordinates, URL, player, field of view, spectrum) | Field of view and on-the-fly spectrum were written with the assistant, along with automated tests. `[CONFIRM the rest with Cons]` | Reviewed by Joaquin; tests run via `npm test` |
+| Object-type classifier (`ml-clasificador/`) | The assistant wrote the training scripts, v2 retraining, and JavaScript inference | Horacio reviewed the science (found the v1 data leakage and the Wolf 489 label) and built the verified 69-object catalog; Joaquin reviewed the leave-one-out evaluation |
+| Data pipeline (`pipeline/`, `data-new/`) | `[CONFIRM with Horacio]` | Horacio |
+| Research (`docs/sprint-*`, `Investigacion.md`, IRSA coverage) | `[CONFIRM with Carlos and Horacio]` | Carlos and Horacio |
+| Work plans and documents (`docs/reto/`, sprint plans, requirement audits, this document, `README.md`) | Drafted with the assistant | Joaquin reviews them before use |
+| Logo and illustrations | `ASSETS_CREDITS.md` states that icons and astronomical characters were hand-drawn in SVG by the team. `[CONFIRM whether the logo used any SI tool]` | — |
+| Pitch copy, team page, and video script (`docs/pitch/`) | `[CONFIRM with Carlos]` | Carlos |
 
-## Para qué no se usó
+## Where SI Was NOT Used
 
-- **Las imágenes del cielo no están generadas ni retocadas con SI.** Son datos públicos de SPHEREx bajados de NASA/IPAC IRSA y procesados con código propio.
-- **Ninguna cifra científica la produjo un modelo de lenguaje.** Los movimientos propios, el ruido, las banderas y los espectros salen de la canalización y de los archivos de datos; la app los lee de ahí.
-- La app no llama a ningún servicio de SI cuando alguien la usa.
-- El clasificador de tipo de objeto es un bosque aleatorio entrenado por el equipo con 69 objetos de clase verificada (v2; sus cifras están en `ml-clasificador/resultados_v2.json`). Es aprendizaje automático clásico, no un modelo generativo, y se presenta como candidato a clase, con sus límites.
-- No hay música, voz ni video generados con SI en el repositorio. [CONFIRMAR para el video de 30 segundos cuando se grabe.]
+- **Sky images are not generated or retouched with SI.** They are public NASA SPHEREx / WISE data downloaded from NASA/IPAC IRSA and processed with our own code.
+- **No scientific number was produced by a language model.** Proper motions, noise, flags, and spectra are computed by the pipeline and data files; the app reads them from there.
+- The app does not call any SI service at run time.
+- The object-type classifier is a classical machine-learning model trained by the team on 69 verified-class objects (v2; its metrics are in `ml-clasificador/`). It is classical ML, not a generative model, and is presented as a candidate class with its limitations.
+- There is no SI-generated music, voice, or video in the repository. `[CONFIRM for the 30-second video once recorded.]`
 
-## Versión en inglés (para el sitio)
+## Short Summary (for the Submission Form)
 
-> **Use of SI tools.** We used Claude (Anthropic), through the Claude Code assistant, to speed up development: it wrote most of the front-end code, parts of the application logic with their automated tests, the training and inference code of our small object-class classifier, and drafts of our planning and documentation. Team members set the direction, chose between design iterations, and reviewed the code and the results in the browser. [ADD: what Cons, Horacio and Carlos used, if anything.]
+> **Use of SI tools.** We used Claude (Anthropic), through the Claude Code assistant, to speed up development: it wrote most of the front-end code, parts of the application logic with their automated tests, the training and inference code of our small object-class classifier, and drafts of our planning and documentation. Team members set the direction, chose between design iterations, and reviewed the code and the results in the browser. `[ADD: what Cons, Horacio and Carlos used, if anything.]`
 >
-> SI was not used to create or alter any sky image: every image is public SPHEREx data from NASA/IPAC IRSA processed by our own code. No scientific number in Sparks was produced by a language model: proper motions, noise, flags and spectra are computed from the data. The app calls no SI service at run time. Our classifier is a classical random forest trained on 69 objects with a verified class; it is shown as a candidate class, with its limits.
+> SI was not used to create or alter any sky image: every image is public SPHEREx data from NASA/IPAC IRSA processed by our own code. No scientific number in Sparks was produced by a language model: proper motions, noise, flags and spectra are computed from the data. The app calls no SI service at run time. Our classifier is a classical ML model trained on 69 objects with a verified class; it is shown as a candidate class, with its limits.

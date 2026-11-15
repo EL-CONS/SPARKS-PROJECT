@@ -1,88 +1,88 @@
 # Sparks
 
-Herramienta web del equipo Cosmonautas para el reto **Planet X and SPHEREx** del NASA Space Apps Challenge 2026 (sede Hermosillo).
+Web tool by Team Cosmonautas for the **Planet X and SPHEREx** challenge at the NASA Space Apps Challenge 2026 (Hermosillo local site).
 
-Escribes una posición del cielo y Sparks pone a parpadear las fotos que el telescopio SPHEREx de la NASA tomó de ese lugar en fechas distintas. Lo que salta, se movió. Azul es dónde estaba; ámbar, dónde está ahora.
+Enter a sky position and Sparks blinks the images NASA's SPHEREx telescope captured of that field on different dates. Anything that jumps has moved. Blue shows where it was; amber shows where it is now.
 
-Sparks muestra **candidatos para revisar**, nunca descubrimientos. Es un proyecto independiente, no afiliado ni respaldado por la NASA.
+Sparks surfaces **candidates to review**, never discovery claims. It is an independent project, not affiliated with or endorsed by NASA.
 
-## Qué hace
+## What it does
 
-- Acepta coordenadas en grados (`269.4486 4.7672`), en horas y grados (`08h55m10.831s -7d14m42.53s`, `17:57:48.5 +04:41:36`) o el nombre de un objetivo del reto.
-- Muestra el parche en los seis detectores de SPHEREx, en tres vistas: **parpadeo** (alterna las temporadas, a 1, 2 o 3 cambios por segundo), **suma** (promedio de las temporadas, con menos ruido) y **resta** (una temporada menos otra, en múltiplos del ruido).
-- **Campo de visión elegible**: el recorte completo, la mitad o la cuarta parte.
-- **Espectro al vuelo**: tocas un punto y Sparks lo mide en cada foto suelta.
-- Capas de **Gaia DR3** y **CatWISE2020** encima de la foto.
-- Banderas de calidad de la NASA, ruido por detector, y cada cifra con su fuente.
-- Todo el estado viaja en la URL, para compartir o incrustar: `?ra=269.4486&dec=4.7672&fov=3.28&mode=diff&det=all&lang=es#explorar`.
-- Español e inglés. Un solo tema, oscuro (decisión de Joaquín, 14 de noviembre).
+- Accepts coordinates in degrees (`269.4486 4.7672`), in hours and degrees (`08h55m10.831s -7d14m42.53s`, `17:57:48.5 +04:41:36`), or by selecting a challenge target name.
+- Displays the field across all six SPHEREx detectors in three viewing modes: **blink** (alternating seasons at 1, 2, or 3 changes per second), **sum** (average across seasons, with lower noise), and **difference** (one season minus another, in units of noise sigma).
+- **Selectable field of view**: full cutout, half, or quarter.
+- **On-the-fly spectrum**: click any point and Sparks measures it across every individual exposure.
+- **Gaia DR3** and **CatWISE2020** catalog overlays on top of the image.
+- NASA quality flags, per-detector noise levels, and source attribution for every measurement.
+- Full state encoded in the URL for sharing or embedding: `?ra=269.4486&dec=4.7672&fov=3.28&mode=diff&det=all&lang=en#explorar`.
+- English and Spanish support. Single dark theme (team decision, November 14).
 
-Qué requisitos del reto se cumplen y cuáles no, con evidencia: [`docs/auditoria/requisitos.md`](docs/auditoria/requisitos.md).
+Challenge requirements checklist and evidence: [`docs/auditoria/requisitos.md`](docs/auditoria/requisitos.md).
 
-## Cómo correrlo
+## How to run it
 
-Probado con Node 26; Vite 5 pide Node 18 o más reciente.
+Tested with Node 26 (and Node 20); Vite 5 requires Node 18 or newer.
 
 ```bash
 cd app
 npm ci
-npm run dev        # abre http://localhost:5173
+npm run dev        # opens http://localhost:5173
 ```
 
-Otros comandos, también dentro de `app/`:
+Other commands inside `app/`:
 
-| Comando | Qué hace |
+| Command | Purpose |
 |---|---|
-| `npm test` | Pruebas de la lógica (coordenadas, URL, reproductor, campo de visión, espectro) |
-| `npm run typecheck` | Revisión de tipos |
-| `npm run check-data` | Revisa que `data-sample/` y `data-new/` cumplan el formato |
-| `npm run build` | Genera el sitio en `app/dist/`, con los datos incluidos |
-| `npm run preview` | Sirve `app/dist/` en http://localhost:4173 para probarlo antes de publicar |
+| `npm test` | Logic unit tests (coordinates, URL state, player, field of view, spectrum, classifier, verdict) |
+| `npm run typecheck` | TypeScript type checking |
+| `npm run check-data` | Validates `data-sample/` and `data-new/` against the schema |
+| `npm run build` | Builds the static site into `app/dist/`, including data files |
+| `npm run preview` | Serves `app/dist/` at http://localhost:4173 for pre-deployment testing |
 
-## Cómo publicarlo
+## How to deploy
 
-`npm run build` deja en `app/dist/` un sitio estático completo (unos 21 MB con los datos). Sirve en cualquier alojamiento de archivos estáticos gratuito.
+`npm run build` outputs a complete static site in `app/dist/` (around 21 MB with data). It works on any free static hosting provider.
 
-- **En la raíz de un dominio** (Netlify, Cloudflare Pages, Vercel): `npm run build` y publicar `app/dist/`.
-- **En una subcarpeta**, como GitHub Pages en `https://<usuario>.github.io/SPARKS-PROJECT/`: la base tiene que llevar el nombre del repositorio.
+- **At a domain root** (Netlify, Cloudflare Pages, Vercel): run `npm run build` and deploy `app/dist/`.
+- **In a subfolder**, such as GitHub Pages at `https://<user>.github.io/SPARKS-PROJECT/`: set the base path to the repository name.
 
 ```bash
 VITE_BASE=/SPARKS-PROJECT/ npm run build
 ```
 
-Para GitHub Pages el repositorio tiene que ser público (o la cuenta, de pago).
+For GitHub Pages, the repository must be public (or on a paid plan).
 
-## Qué es cada carpeta
+## Repository structure
 
-| Carpeta | Qué es |
+| Folder | Description |
 |---|---|
-| `app/` | La aplicación web (Vite, React, TypeScript). `src/core/` es lógica pura con pruebas; `src/data/` lee los datos; `src/ui/` es la interfaz; `src/i18n/` son los textos en español e inglés; `src/styles/` son los estilos |
-| `data-sample/` | Campo de la estrella de Barnard ya procesado, más el índice de objetivos. Formato en [`data-sample/README.md`](data-sample/README.md) |
-| `data-new/` | Campos de WISE 0855, ε Indi B, RW Aurigae y R Draconis, procesados durante el hackatón con `pipeline/` |
-| `ml-clasificador/` | Clasificador de tipo de objeto: v2, bosque aleatorio con 69 objetos de clase verificada; cifras en `resultados_v2.json` (la v1 queda como historia) |
-| `docs/reto/` | El enunciado del reto, sus recursos y las normas del evento |
-| `docs/auditoria/` | Auditoría de requisitos, mapa de ramas, procedencia del material y capturas |
-| `docs/entrega/` | Lo que se pega en el sitio de Space Apps: declaración de uso de SI y lista de entrega |
-| `Logo/`, `branding/` | Identidad de Sparks |
-| `design-proto/` | Prototipos de diseño descartados y el elegido |
+| `app/` | Web application (Vite, React, TypeScript). `src/core/` holds pure logic with unit tests; `src/data/` loads datasets; `src/ui/` contains the UI; `src/i18n/` provides English and Spanish copy; `src/styles/` holds stylesheets |
+| `data-sample/` | Pre-processed Barnard's Star field plus the target index. Format documented in [`data-sample/README.md`](data-sample/README.md) |
+| `data-new/` | WISE 0855, ε Indi B, RW Aurigae, and R Draconis fields, processed during the hackathon with `pipeline/` |
+| `ml-clasificador/` | Object-type classifier: v2 Random Forest trained on 69 verified-class objects; metrics in `resultados_v2.json` (v1 kept for historical reference) |
+| `docs/reto/` | Challenge prompt, official resources, and event rules |
+| `docs/auditoria/` | Requirements audit, branch map, asset provenance, and screenshots |
+| `docs/entrega/` | Space Apps submission copy: SI/AI usage disclosure and submission checklist |
+| `Logo/`, `branding/` | Sparks visual identity |
+| `design-proto/` | Discarded design prototypes and the selected design |
 
-La canalización que baja y procesa las imágenes (`pipeline/`) y su método (`docs/pipeline/`) están en la rama `Horacio`. Quién tiene qué en cada rama: [`docs/auditoria/mapa-de-ramas.md`](docs/auditoria/mapa-de-ramas.md).
+The pipeline that downloads and processes images (`pipeline/`) and its methodology (`docs/pipeline/`) live on the `Horacio` branch. Branch ownership map: [`docs/auditoria/mapa-de-ramas.md`](docs/auditoria/mapa-de-ramas.md).
 
-## De dónde salen los datos
+## Data sources
 
-- **Imágenes**: misión SPHEREx de la NASA, del archivo NASA/IPAC Infrared Science Archive (IRSA). Lanzamientos QR2 (DOI 10.26131/IRSA652), QR3 (DOI 10.26131/IRSA662) y DR1, según el campo; cada manifiesto dice cuáles usó.
-- **Posiciones y movimientos de referencia**: Gaia DR3 (ESA/Gaia/DPAC) y CatWISE2020.
-- **Procesado**: recortes de 64 × 64 píxeles (6.56′ de lado, 6.15″ por píxel), alineados y sumados por detector y temporada. La app no retoca las imágenes: solo las amplía sin suavizar y dibuja marcas en una capa aparte.
+- **Images**: NASA's SPHEREx mission via the NASA/IPAC Infrared Science Archive (IRSA). Releases QR2 (DOI `10.26131/IRSA652`), QR3 (DOI `10.26131/IRSA662`), and DR1, depending on the field; each manifest records the exact releases used.
+- **Reference positions and proper motions**: Gaia DR3 (ESA/Gaia/DPAC) and CatWISE2020.
+- **Processing**: 64 × 64 pixel cutouts (6.56′ wide, 6.15″ per pixel), aligned and coadded per detector and season. The app never alters the raw sky images: it displays them with nearest-neighbor scaling and renders overlays on a separate layer.
 
-## Cómo sumar un campo o un lanzamiento nuevo
+## Adding a new field or data release
 
-1. Procesar el campo con `pipeline/` (rama `Horacio`; pasos en `docs/pipeline/`). Sale una carpeta con `manifest.json`, `catalogs.json`, los cubos `.bin` y `png/`.
-2. Copiar la carpeta a `data-new/<id>/` y añadir el campo a `data-new/index.json`.
-3. Correr `npm run check-data` dentro de `app/`.
-4. `npm run build` y publicar.
+1. Process the field with `pipeline/` (`Horacio` branch; instructions in `docs/pipeline/`). This outputs a folder containing `manifest.json`, `catalogs.json`, `.bin` cubes, and `png/`.
+2. Copy the folder to `data-new/<id>/` and register the field in `data-new/index.json`.
+3. Run `npm run check-data` inside `app/`.
+4. Run `npm run build` and deploy.
 
-Aviso: hoy la app solo lee `data-sample/`. El cargador que también lee `data-new/` está en curso (ver la auditoría).
+Note: `data-new/` support in the loader is integrated alongside `data-sample/` (see the audit docs for details).
 
-## Equipo
+## Team
 
-Cosmonautas, Hermosillo, Sonora. Uso de herramientas de SI durante el desarrollo: [`docs/entrega/uso-de-si.md`](docs/entrega/uso-de-si.md).
+Cosmonautas, Hermosillo, Sonora, Mexico. SI (AI) tools usage disclosure: [`docs/entrega/uso-de-si.md`](docs/entrega/uso-de-si.md).
