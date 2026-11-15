@@ -632,11 +632,11 @@
 }
 .k--one,
 .bar--one {
-  background: var(--text-3);
+  background: #ff3b83;
 }
 .k--stack,
 .bar--stack {
-  background: var(--ok, #8de8c6);
+  background: #29bc75;
 }
 .bars__row {
   display: grid;
@@ -683,21 +683,24 @@
   font-weight: 700;
 }
 .stack__seg--sat {
-  background: var(--rule-strong);
-  color: var(--text);
+  background: var(--now);
+  color: var(--on-now);
 }
 .stack__seg--ok {
-  background: var(--ok, #8de8c6);
+  background: #2c885c;
+  color: #0a9f4d;
 }
 .stack__seg--none {
-  background: var(--text-3);
+  background: #7c8da1;
+  color: #ffffff;
 }
 .stack__seg--star {
-  background: var(--surface-2);
-  color: var(--text);
+  background: #2092ef;
+  color: #ffffff;
 }
 .stack__seg--bad {
-  background: var(--danger);
+  background: #fa8193;
+  color: #ffffff;
 }
 .stack__legend {
   margin: 0;

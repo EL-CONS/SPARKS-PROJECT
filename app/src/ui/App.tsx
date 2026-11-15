@@ -6,16 +6,13 @@ import { parseSkyQuery } from '../core/coords';
 import { useSparks, SPEEDS, type Sparks } from './kit/useSparks';
 import { Starfield } from './kit/Starfield';
 import { Insights } from './kit/Insights';
-import { useTheme } from './useTheme';
 import { Stage } from './components/Stage';
 import { Term } from './components/Term';
-import { IconMoon, IconNext, IconPause, IconPlay, IconPrev, IconSun } from './components/Icons';
+import { IconNext, IconPause, IconPlay, IconPrev } from './components/Icons';
 import { seasonLabel, toDms, toHms } from './sky';
 import symbol from './assets/symbol.svg';
 import spaceAppsWhite from './assets/spaceapps/spaceapps-color-white.svg';
-import spaceAppsBlack from './assets/spaceapps/spaceapps-color-black.svg';
 import spaceAppsSmallWhite from './assets/spaceapps/spaceapps-small-white.svg';
-import spaceAppsSmallBlack from './assets/spaceapps/spaceapps-small-black.svg';
 
 function useBodyLabels(s: Sparks) {
   return useMemo(() => {
@@ -37,13 +34,12 @@ function Spark({ children, primary, className, ...rest }: React.ButtonHTMLAttrib
 
 export default function App() {
   const s = useSparks();
-  const { theme, toggle } = useTheme();
   const labels = useBodyLabels(s);
   const [step, setStep] = useState(0);
   const es = s.url.lang === 'es';
   return (
     <div className="cn">
-      <Starfield theme={theme} labels={labels} quiet={s.tab === 'explorar'} />
+      <Starfield theme="dark" labels={labels} quiet={s.tab === 'explorar'} />
       <a className="skip" href="#cielo">{s.t.skip}</a>
       <header className="band band--top">
         <div className="cn-top">
@@ -56,14 +52,11 @@ export default function App() {
           <button type="button" aria-current={s.tab === 'explorar' ? 'page' : undefined} onClick={() => s.setTab('explorar')}>{s.intro.tabs.explore}</button>
         </nav>
         <span className="cn-tools">
-          <button type="button" onClick={() => s.setLang(es ? 'en' : 'es')} lang={es ? 'en' : 'es'} aria-label={`${s.t.nav.lang}: ${s.t.nav.langName}`}>{es ? 'EN' : 'ES'}</button>
-          <button type="button" role="switch" aria-checked={theme === 'light'} aria-label={`${s.t.nav.theme}: ${theme === 'light' ? s.t.nav.themeLight : s.t.nav.themeDark}`} onClick={toggle}>
-            {theme === 'light' ? <IconSun /> : <IconMoon />}
-          </button>
+          <button type="button" onClick={() => s.setLang(es ? 'en' : 'es')} lang={es ? 'es' : 'en'} aria-label={`${s.t.nav.lang}: ${s.t.nav.langName}`}>{es ? 'ES' : 'EN'}</button>
         </span>
         <a className="cn-spaceapps" href="https://www.spaceappschallenge.org/" target="_blank" rel="noreferrer" aria-label="NASA Space Apps Challenge 2026">
-          <img className="cn-spaceapps__full" src={theme === 'light' ? spaceAppsBlack : spaceAppsWhite} alt="NASA Space Apps Challenge" width={112} height={44} />
-          <img className="cn-spaceapps__small" src={theme === 'light' ? spaceAppsSmallBlack : spaceAppsSmallWhite} alt="" width={34} height={34} />
+          <img className="cn-spaceapps__full" src={spaceAppsWhite} alt="NASA Space Apps Challenge" width={112} height={44} />
+          <img className="cn-spaceapps__small" src={spaceAppsSmallWhite} alt="" width={34} height={34} />
         </a>
         </div>
       </header>
@@ -71,7 +64,7 @@ export default function App() {
       <footer className="band band--foot">
         <div className="foot">
           <a className="foot__logo" href="https://www.spaceappschallenge.org/" target="_blank" rel="noreferrer">
-            <img src={theme === 'light' ? spaceAppsBlack : spaceAppsWhite} alt="NASA Space Apps Challenge" width={224} height={88} />
+            <img src={spaceAppsWhite} alt="NASA Space Apps Challenge" width={224} height={88} />
           </a>
           <div className="foot__text">
             <p className="foot__who">
@@ -389,7 +382,7 @@ function Route({ s, step, setStep }: { s: Sparks; step: number; setStep: (n: num
                         padding: '0.2rem 0.5rem',
                         borderRadius: '4px',
                         background: 'rgba(255, 178, 56, 0.15)',
-                        color: '#ffb238',
+                        color: 'var(--now-ink)',
                         border: '1px solid rgba(255, 178, 56, 0.3)',
                         verticalAlign: 'middle',
                       }}
@@ -400,7 +393,7 @@ function Route({ s, step, setStep }: { s: Sparks; step: number; setStep: (n: num
                 </p>
                 <p className="who__note">{t.targets[s.selected.id]?.note ?? s.selected.note}</p>
                 {s.selected.status === 'parcial' && s.selected.reason && (
-                  <p className="hint" style={{ marginTop: '0.25rem', color: '#ffb238', fontStyle: 'italic' }}>
+                  <p className="hint" style={{ marginTop: '0.25rem', color: 'var(--now-ink)', fontStyle: 'italic' }}>
                     ⚠ {s.selected.reason}
                   </p>
                 )}

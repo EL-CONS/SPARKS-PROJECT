@@ -17,7 +17,7 @@ import { validateManifestJson } from '../../data/contract';
 import { I18N } from '../../i18n';
 import { UI } from '../../i18n/ui';
 import { INTRO } from '../../i18n/intro';
-import { readFlag, writeFlag } from '../useTheme';
+import { writeFlag } from '../useTheme';
 import { angularDistanceDeg, loadCubes, loadGaia, type Cubes, type FullManifest, type GaiaSource } from '../sky';
 
 export const BASE = import.meta.env.BASE_URL;
@@ -231,10 +231,6 @@ export function useSparks() {
   );
 
   const play = useCallback(() => {
-    if (!readFlag(FLASH_KEY)) {
-      setAskFlash(true);
-      return;
-    }
     if (url.mode !== 'blink') updateUrl({ mode: 'blink' });
     player.play();
   }, [player, url.mode, updateUrl]);

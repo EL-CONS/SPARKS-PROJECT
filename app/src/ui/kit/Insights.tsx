@@ -114,7 +114,7 @@ function ManifestNotice({
       }}
     >
       <figcaption className="insight__say" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
-        <span style={{ fontWeight: 700, color: isParcial ? '#ffb238' : 'inherit' }}>
+        <span style={{ fontWeight: 700, color: isParcial ? 'var(--now-ink)' : 'inherit' }}>
           {isParcial ? `[${L.manifestStatus.partialBadge.toUpperCase()}]` : `[${L.manifestStatus.okBadge.toUpperCase()}]`}
         </span>
         {field.reason && <span>{field.reason}</span>}
@@ -128,7 +128,7 @@ function ManifestNotice({
 
       {hasCaveats && (
         <div style={{ marginTop: '0.6rem' }}>
-          <b style={{ fontSize: '0.9rem', color: '#ffb238' }}>{L.manifestStatus.caveatsTitle}:</b>
+          <b style={{ fontSize: '0.9rem', color: 'var(--now-ink)' }}>{L.manifestStatus.caveatsTitle}:</b>
           <ul style={{ margin: '0.3rem 0 0 1.2rem', padding: 0, fontSize: '0.88rem', lineHeight: '1.45' }}>
             {caveats.map((c, i) => (
               <li key={i}>{c}</li>
@@ -177,9 +177,9 @@ function ClassifierPanel({ field, lang, L }: { field: IndexField; lang: Lang; L:
 
       <p className="insight__body" style={{ marginTop: '0.4rem', lineHeight: '1.4' }}>
         {c.coinciden ? (
-          <span style={{ color: '#4ade80' }}>✓ {L.classifier.agreement}</span>
+          <span style={{ color: 'var(--ok)' }}>✓ {L.classifier.agreement}</span>
         ) : (
-          <span style={{ color: '#fbbf24' }}>⚠ {c.discrepanciaNota}</span>
+          <span style={{ color: 'var(--now-ink)' }}>⚠ {c.discrepanciaNota}</span>
         )}
       </p>
 
