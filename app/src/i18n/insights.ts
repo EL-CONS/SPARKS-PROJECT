@@ -17,7 +17,10 @@ export interface InsightsDict {
     imageVariable: string;
     agreement: string;
     discrepancy: (ml: string, rule: string) => string;
-    disclaimer: string;
+    /** Resumen del modelo con cifras leídas de resultados_v2.json */
+    disclaimer: (pct: string, n: number, variablesMal: boolean) => string;
+    imageSource: string;
+    modelSource: string;
     breakdown: string;
     limitNote: string;
   };
@@ -94,7 +97,9 @@ export const INSIGHTS: Record<Lang, InsightsDict> = {
       imageVariable: 'Clasificado como variable por la imagen de SPHEREx (residuo sin dipolo de movimiento); el modelo ML de Gaia solo distingue entre estrella, enana marrón y enana blanca.',
       agreement: 'Coincide con el veredicto de la regla física de dos pasos.',
       discrepancy: (ml, rule) => `Discrepancia metodológica: el modelo ML predice "${ml}", mientras que la regla astrofísica deduce "${rule}".`,
-      disclaimer: 'candidato a clase; acierta 75 % en 69 objetos con clase verificada; separa mal las variables',
+      disclaimer: (pct, n, variablesMal) => `candidato a clase; acierta ${pct} % en ${n} objetos con clase verificada${variablesMal ? '; separa mal las variables' : ''}`,
+      imageSource: 'variable: por la imagen',
+      modelSource: 'clase: candidato del modelo',
       breakdown: 'Probabilidades ML (solo entre clases no variables)',
       limitNote: 'La separación "variable" frente a objeto en movimiento sale de la imagen (dipolo / kind); el bosque aleatorio con Gaia DR3 solo decide entre estrella, enana marrón y enana blanca.',
     },
@@ -169,7 +174,9 @@ export const INSIGHTS: Record<Lang, InsightsDict> = {
       imageVariable: 'Classified as variable from the SPHEREx image (residual without motion dipole); the Gaia ML model only distinguishes star, brown dwarf, and white dwarf.',
       agreement: 'Agrees with the two-step physical rule verdict.',
       discrepancy: (ml, rule) => `Methodological discrepancy: ML model predicts "${ml}", while physical rule deduces "${rule}".`,
-      disclaimer: 'candidate class; 75% accuracy on 69 verified objects; separates variables poorly',
+      disclaimer: (pct, n, variablesMal) => `candidate class; right ${pct}% of the time on ${n} objects with a verified class${variablesMal ? '; separates variables poorly' : ''}`,
+      imageSource: 'variable: from the image',
+      modelSource: 'class: model candidate',
       breakdown: 'ML probabilities (non-variable classes only)',
       limitNote: 'The "variable" vs. moving decision comes from the image (dipole / kind); the Gaia DR3 random forest only decides among star, brown dwarf, and white dwarf.',
     },

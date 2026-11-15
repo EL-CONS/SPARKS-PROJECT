@@ -9,7 +9,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "check-data": "node scripts/check-data.mjs ../data-sample && node scripts/check-data.mjs ../data-new",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "sync-ml": "node -e \"for (const f of ['modelo_v2.json:modelo.json','resultados_v2.json:resultados_v2.json']) { const [a,b]=f.split(':'); require('fs').copyFileSync('../ml-clasificador/'+a,'src/core/'+b); }\""
   },
   "dependencies": {
     "react": "^18.3.1",

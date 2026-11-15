@@ -6,7 +6,8 @@ import {
   predecir,
   featuresDeCampo,
   useClase,
-  ModeloBosque,
+  resumenModelo,
+  RESULTADOS_ML,
 } from '../src/core/clasificador';
 import type { IndexField } from '../src/data/loader';
 
@@ -76,7 +77,7 @@ describe('ML Random Forest Classifier v2', () => {
     expect(claseRes!.claseML).toBe('estrella');
     expect(claseRes!.coinciden).toBe(true);
     expect(Object.keys(claseRes!.probabilidades)).toEqual(['estrella', 'enana marron', 'enana blanca']);
-    expect(claseRes!.disclaimer).toBe('candidato a clase; acierta 75 % en 69 objetos con clase verificada; separa mal las variables');
+    expect(claseRes!.disclaimer).toBe(resumenModelo(RESULTADOS_ML, 'es'));
   });
 
   it('decides variable from the image (kind) while ML only separates non-variable classes', () => {
@@ -104,5 +105,31 @@ describe('ML Random Forest Classifier v2', () => {
     expect(res!.claseML).toBe('variable');
     expect(res!.coinciden).toBe(true);
     expect(Object.keys(res!.probabilidades)).toEqual(['estrella', 'enana marron', 'enana blanca']);
+  });
+});
+
+const ML_DIR = path.resolve(__dirname, '../../ml-clasificador');
+
+describe('cifras del panel leídas de resultados_v2.json', () => {
+  it('la app usa copias idénticas de modelo_v2.json y resultados_v2.json', () => {
+    const same = (a: string, b: string) =>
+      expect(fs.readFileSync(path.resolve(__dirname, '../src/core', b), 'utf-8')).toBe(fs.readFileSync(path.join(ML_DIR, a), 'utf-8'));
+    same('modelo_v2.json', 'modelo.json');
+    same('resultados_v2.json', 'resultados_v2.json');
+  });
+
+  it('el texto sale de las cifras del archivo', () => {
+    const r = JSON.parse(fs.readFileSync(path.join(ML_DIR, 'resultados_v2.json'), 'utf-8'));
+    const pct = (r.exactitud_ml_loo * 100).toFixed(0);
+    expect(resumenModelo(RESULTADOS_ML, 'es')).toBe(
+      `candidato a clase; acierta ${pct} % en ${r.n_objetos} objetos con clase verificada; separa mal las variables`,
+    );
+    expect(resumenModelo(RESULTADOS_ML, 'en')).toContain(`${pct}%`);
+  });
+
+  it('si cambian las cifras, cambia el texto', () => {
+    const otro = { n_objetos: 80, exactitud_ml_loo: 0.851, recall_por_clase: { variable: 0.8 } };
+    expect(resumenModelo(otro, 'es')).toBe('candidato a clase; acierta 85 % en 80 objetos con clase verificada');
+    expect(resumenModelo(otro, 'en')).toBe('candidate class; right 85% of the time on 80 objects with a verified class');
   });
 });

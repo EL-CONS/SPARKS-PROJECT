@@ -1,6 +1,8 @@
 import type { IndexField } from '../data/loader';
 import { GAIA_PHOTOMETRY, veredicto, FieldFeatures } from './veredicto';
 import modeloJson from './modelo.json';
+import resultadosJson from './resultados_v2.json';
+import { INSIGHTS } from '../i18n/insights';
 
 export const FALTA = -999.0;
 
@@ -41,6 +43,29 @@ export interface ClaseResultado {
 }
 
 export const MODELO_ML: ModeloBosque = modeloJson as ModeloBosque;
+
+/** Lo que el panel necesita de ml-clasificador/resultados_v2.json (copiado en core/). */
+export interface ResultadosModelo {
+  n_objetos: number;
+  exactitud_ml_loo: number;
+  recall_por_clase: Record<string, number>;
+}
+
+export const RESULTADOS_ML: ResultadosModelo = resultadosJson as ResultadosModelo;
+
+/** Debajo de este recall, el panel dice que el modelo separa mal las variables. */
+export const RECALL_VARIABLE_ACEPTABLE = 0.7;
+
+/**
+ * Texto del panel con las cifras del archivo de resultados, nunca escritas a mano:
+ * exactitud dejando uno fuera, número de objetos con clase verificada y si el
+ * recall de "variable" queda por debajo de RECALL_VARIABLE_ACEPTABLE.
+ */
+export function resumenModelo(res: ResultadosModelo, lang: 'es' | 'en'): string {
+  const pct = (res.exactitud_ml_loo * 100).toFixed(0);
+  const variablesMal = (res.recall_por_clase.variable ?? 0) < RECALL_VARIABLE_ACEPTABLE;
+  return INSIGHTS[lang].classifier.disclaimer(pct, res.n_objetos, variablesMal);
+}
 
 /**
  * Inferencia pura de Random Forest (árboles de decisión en ensamble).
@@ -150,9 +175,7 @@ export function useClase(
   const coinciden = claseML === claseRegla;
 
   const es = lang === 'es';
-  const disclaimer = es
-    ? 'candidato a clase; acierta 75 % en 69 objetos con clase verificada; separa mal las variables'
-    : 'candidate class; 75% accuracy on 69 verified objects; separates variables poorly';
+  const disclaimer = resumenModelo(RESULTADOS_ML, lang);
 
   let discrepanciaNota: string | undefined;
   if (!coinciden) {

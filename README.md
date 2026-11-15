@@ -59,7 +59,7 @@ Para GitHub Pages el repositorio tiene que ser público (o la cuenta, de pago).
 | `app/` | La aplicación web (Vite, React, TypeScript). `src/core/` es lógica pura con pruebas; `src/data/` lee los datos; `src/ui/` es la interfaz; `src/i18n/` son los textos en español e inglés; `src/styles/` son los estilos |
 | `data-sample/` | Campo de la estrella de Barnard ya procesado, más el índice de objetivos. Formato en [`data-sample/README.md`](data-sample/README.md) |
 | `data-new/` | Campos de WISE 0855, ε Indi B, RW Aurigae y R Draconis, procesados durante el hackatón con `pipeline/` |
-| `ml-clasificador/` | Clasificador de tipo de objeto (bosque aleatorio, 36 objetos) con su evaluación |
+| `ml-clasificador/` | Clasificador de tipo de objeto: v2, bosque aleatorio con 69 objetos de clase verificada; cifras en `resultados_v2.json` (la v1 queda como historia) |
 | `docs/reto/` | El enunciado del reto, sus recursos y las normas del evento |
 | `docs/auditoria/` | Auditoría de requisitos, mapa de ramas, procedencia del material y capturas |
 | `docs/entrega/` | Lo que se pega en el sitio de Space Apps: declaración de uso de SI y lista de entrega |
