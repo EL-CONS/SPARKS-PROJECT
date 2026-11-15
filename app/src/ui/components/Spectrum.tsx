@@ -4,7 +4,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { ShellDict } from '../../i18n/shell';
 import { apertureSpectrum, summarizeSpectrum, type SpectrumFrame } from '../../core/spectrum';
-import { N, loadFrames, type FrameCubes, type FullManifest } from '../sky';
+import { N, loadFrames, targetPixel, type FrameCubes, type FullManifest } from '../sky';
 
 interface Props {
   shell: ShellDict;
@@ -73,7 +73,7 @@ export function Spectrum({ shell, base, fieldId, folder, manifest, season, pick,
   }, [pick, load, meta, manifest]);
   const summary = useMemo(() => (samples ? summarizeSpectrum(samples) : null), [samples]);
 
-  const targetNow = manifest.target.points.find(p => p.season === season) ?? manifest.target.points[0];
+  const targetNow = targetPixel(manifest.target.points, season);
   const centre = { x: (N - 1) / 2, y: (N - 1) / 2 };
   const nudge = (dx: number, dy: number) => {
     if (!pick) return;

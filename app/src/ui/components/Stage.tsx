@@ -21,6 +21,7 @@ import {
   paintGray,
   stackDetector,
   seasonLabel,
+  isMeasured,
 } from '../sky';
 
 interface StageProps {
@@ -70,7 +71,7 @@ function CanvasPanel({ draw, label, style }: { draw: (ctx: CanvasRenderingContex
 type MarksProps = Pick<StageProps, 'manifest' | 'mode' | 'frame' | 'pair' | 'showGaia' | 'gaia' | 'showWise' | 'catwise' | 'pick'> & { det: number; zoom: number; showTarget: boolean };
 
 function Marks({ manifest, det, mode, frame, pair, showGaia, gaia, showWise, catwise, pick, zoom, showTarget }: MarksProps) {
-  const pts = manifest.target.points.filter(p => p.det === det);
+  const pts = manifest.target.points.filter(isMeasured).filter(p => p.det === det);
   const at = (s: number) => pts.find(p => p.season === s);
   // In blink the live season is "now"; the first season is the "before" reference.
   const nowSeason = mode === 'diff' ? pair[1] : frame;

@@ -50,9 +50,28 @@ export interface MotionFit {
 export interface TargetPoint {
   det: number;
   season: number;
-  x: number;
-  y: number;
+  /** null cuando la canalización no pudo medir la posición (p. ej. R Draconis, estado parcial) */
+  x: number | null;
+  y: number | null;
   use: boolean;
+}
+
+/** Punto del objetivo con posición medida. */
+export type MeasuredPoint = TargetPoint & { x: number; y: number };
+
+export function isMeasured(p: TargetPoint): p is MeasuredPoint {
+  return typeof p.x === 'number' && Number.isFinite(p.x) && typeof p.y === 'number' && Number.isFinite(p.y);
+}
+
+/**
+ * Dónde medir "el objetivo": su posición medida en esa temporada, o en cualquier
+ * otra; si ninguna se midió, el centro del recorte, que es la posición de catálogo.
+ */
+export function targetPixel(points: TargetPoint[], season: number): { x: number; y: number; measured: boolean } {
+  const ok = points.filter(isMeasured);
+  const p = ok.find(q => q.season === season) ?? ok[0];
+  if (p) return { x: p.x, y: p.y, measured: true };
+  return { x: (N - 1) / 2, y: (N - 1) / 2, measured: false };
 }
 
 export interface SpectrumPoint {

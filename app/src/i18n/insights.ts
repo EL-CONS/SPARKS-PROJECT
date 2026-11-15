@@ -4,7 +4,7 @@ import type { Lang } from '../core/urlState';
 
 export interface InsightsDict {
   title: string;
-  motion: { say: (mu: string, err: string, cat: string, exp: string) => string; agree: string; disagree: string; kid: (px: string) => string; sparks: string; perYear: string; band: string };
+  motion: { say: (mu: string, err: string, cat: string, exp: string) => string; bound: (mu: string, err: string, cat: string, exp: string) => string; agree: string; disagree: string; kid: (px: string) => string; sparks: string; perYear: string; band: string };
   direction: { say: (dir: string, pa: string) => string; kid: string; dirs: string[] };
   noise: { say: (x: string) => string; kid: string; one: string; stack: string; unit: string };
   color: { say: (sat: number, total: number) => string; kid: string; sat: string; ok: string; none: string };
@@ -38,6 +38,7 @@ export const INSIGHTS: Record<Lang, InsightsDict> = {
     title: 'Qué nos dice cada cosa',
     motion: {
       say: (mu, err, cat, exp) => `Se mueve ${mu} ± ${err} ″ por año. ${cat} esperaba ${exp}.`,
+      bound: (mu, err, cat, exp) => `Aquí no se midió movimiento: el ajuste da ${mu} ± ${err} ″ por año, que no llega a 3 veces su error, así que solo es una cota superior.${cat ? ` ${cat} esperaba ${exp}.` : ''}`,
       agree: 'Coinciden: la medida es buena.',
       disagree: 'No coinciden del todo: hay que revisarla.',
       kid: px => `Son ${px} cuadritos de la foto por año.`,
@@ -112,6 +113,7 @@ export const INSIGHTS: Record<Lang, InsightsDict> = {
     title: 'What each thing tells us',
     motion: {
       say: (mu, err, cat, exp) => `It moves ${mu} ± ${err} ″ per year. ${cat} expected ${exp}.`,
+      bound: (mu, err, cat, exp) => `No motion was measured here: the fit gives ${mu} ± ${err} ″ per year, less than 3 times its error, so it is only an upper limit.${cat ? ` ${cat} expected ${exp}.` : ''}`,
       agree: 'They agree: the measurement holds.',
       disagree: 'They don’t fully agree: it needs review.',
       kid: px => `That is ${px} squares of the photo per year.`,

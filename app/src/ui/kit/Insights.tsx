@@ -1,5 +1,6 @@
 // Charts that answer one question each. The heading IS the answer; the chart
 // shows it with labels on the marks (no legend hunting); a kid line follows.
+import { estadoMovimiento } from '../../core/movimiento';
 import type { Lang } from '../../core/urlState';
 import type { IndexField } from '../../data/loader';
 import type { UiDict } from '../../i18n/ui';
@@ -26,6 +27,7 @@ export function Insights({ lang, t, manifest: m, field, det, season }: Props) {
   const L = INSIGHTS[lang];
   const fit = m.target.measured;
   const exp = m.target.expected;
+  const mov = estadoMovimiento(fit, field?.status);
   return (
     <section className="insights" aria-labelledby="ins-title">
       <h2 id="ins-title" className="insights__title">{L.title}</h2>
@@ -33,8 +35,13 @@ export function Insights({ lang, t, manifest: m, field, det, season }: Props) {
         <ManifestNotice field={field} manifest={m} L={L} />
         <Verdict field={field} lang={lang} t={t} />
         <ClassifierPanel field={field} lang={lang} L={L} />
-        {fit && exp && <Motion L={L} mu={fit.mu} err={fit.mu_err} exp={exp.mu} cat={exp.catalog} px={fit.mu / m.field.pixel_arcsec} t={t} />}
-        {fit && <Direction L={L} pa={fit.pa_deg} paErr={fit.pa_err_deg} t={t} />}
+        {fit && exp && mov === 'detectado' && <Motion L={L} mu={fit.mu} err={fit.mu_err} exp={exp.mu} cat={exp.catalog} px={fit.mu / m.field.pixel_arcsec} t={t} />}
+        {fit && mov === 'detectado' && <Direction L={L} pa={fit.pa_deg} paErr={fit.pa_err_deg} t={t} />}
+        {fit && mov === 'cota' && (
+          <figure className="insight insight--wide">
+            <figcaption className="insight__say">{L.motion.bound(fit.mu.toFixed(2), fit.mu_err.toFixed(2), exp?.catalog ?? '', exp ? exp.mu.toFixed(2) : '')}</figcaption>
+          </figure>
+        )}
         <Noise L={L} m={m} t={t} />
         <Color L={L} m={m} t={t} />
         <Quality L={L} m={m} det={det} season={season} t={t} />
