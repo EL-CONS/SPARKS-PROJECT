@@ -322,7 +322,7 @@ export const UI: Record<Lang, UiDict> = {
     },
     footer: {
       data: 'Datos públicos de SPHEREx (NASA/IPAC, IRSA) y Gaia DR3 (ESA).',
-      built: 'Hecho con Astropy y Aladin Lite.',
+      built: 'Datos procesados con Astropy.',
       team: 'Sparks · Cosmonautas · NASA Space Apps Challenge 2026, Hermosillo',
       honest: 'Mostramos candidatos a revisar, nunca descubrimientos. Lo que no medimos, lo decimos.',
     },
@@ -531,7 +531,7 @@ export const UI: Record<Lang, UiDict> = {
     },
     footer: {
       data: 'Public data from SPHEREx (NASA/IPAC, IRSA) and Gaia DR3 (ESA).',
-      built: 'Built with Astropy and Aladin Lite.',
+      built: 'Data processed with Astropy.',
       team: 'Sparks · Cosmonautas · NASA Space Apps Challenge 2026, Hermosillo',
       honest: 'We show candidates to review, never discoveries. What we did not measure, we say.',
     },

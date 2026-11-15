@@ -80,7 +80,7 @@ export const SHELL: Record<Lang, ShellDict> = {
     footer: {
       who: 'Equipo Cosmonautas · NASA Space Apps Challenge 2026, Hermosillo · reto “Planet X and SPHEREx”.',
       credits:
-        'Proyecto independiente, no afiliado ni respaldado por la NASA. Datos: SPHEREx, NASA/IPAC IRSA, CatWISE2020, ESA/Gaia/DPAC. Herramientas: Astropy, Aladin Lite (CDS).',
+        'Proyecto independiente, no afiliado ni respaldado por la NASA. Datos: SPHEREx, NASA/IPAC IRSA, CatWISE2020, ESA/Gaia/DPAC. Herramientas: Astropy.',
       illustrations:
         'Los astros que cruzan el fondo son ilustraciones de los objetivos del reto; las fotos de SPHEREx están solo en el escenario.',
     },
@@ -167,7 +167,7 @@ export const SHELL: Record<Lang, ShellDict> = {
     footer: {
       who: 'Team Cosmonautas · NASA Space Apps Challenge 2026, Hermosillo · “Planet X and SPHEREx” challenge.',
       credits:
-        'Independent project, not affiliated with or endorsed by NASA. Data: SPHEREx, NASA/IPAC IRSA, CatWISE2020, ESA/Gaia/DPAC. Tools: Astropy, Aladin Lite (CDS).',
+        'Independent project, not affiliated with or endorsed by NASA. Data: SPHEREx, NASA/IPAC IRSA, CatWISE2020, ESA/Gaia/DPAC. Tools: Astropy.',
       illustrations:
         'The bodies crossing the background are illustrations of the challenge targets; SPHEREx photos appear only on the stage.',
     },
