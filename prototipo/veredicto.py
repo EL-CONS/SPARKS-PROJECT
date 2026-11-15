@@ -1,10 +1,10 @@
-"""Prueba rapida del clasificador por reglas (jerarquia de dos pasos de Horacio).
-Solo lee data-sample/results.json. No es un modelo entrenado ni una validacion."""
+"""Quick test of the rule-based classifier (Horacio's two-step hierarchy).
+Reads only data-sample/results.json. Not a trained model or a validation."""
 import json, sys
 
 R = json.load(open("data-sample/results.json"))["fields"]
 
-# Etiqueta "verdadera": sale de la nota de cada campo en index.json (conocimiento previo, no de la regla).
+# "Ground truth" label: taken from each field's note in index.json (prior knowledge, not from the rule).
 TRUTH = {
     "barnard": "estrella", "teegarden": "estrella", "wolf359": "estrella", "kapteyn": "estrella",
     "t452800": "estrella", "t744064": "estrella", "t605760": "estrella", "t503424": "estrella",
@@ -12,11 +12,11 @@ TRUTH = {
     "rwaur": "variable", "rdra": "variable",
 }
 
-CH4_MIN = 0.5      # profundidad de metano para llamarla candidata a enana fria
-RATIO_MIN = 10.0   # cociente D6/D2 (limite inferior vale)
+CH4_MIN = 0.5      # methane depth threshold to flag a cold brown dwarf candidate
+RATIO_MIN = 10.0   # D6/D2 ratio threshold (lower limit counts)
 
 def veredicto(f):
-    """Devuelve (clase, razon)."""
+    """Return (class, reason)."""
     if f.get("kind") == "variable":
         return "variable", "residuo sin dipolo: cambia de brillo, no de posicion"
     c = f.get("cold") or {}
