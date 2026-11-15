@@ -1,34 +1,34 @@
-> **ACTUALIZACION (v2, 14 nov, noche).** La revision cientifica de Horacio (`docs/ml/revision-ciencia-clasificador.md`) encontro que el 91.7 % de abajo (v1) estaba inflado: tres variables (movimiento propio de catalogo, paralaje y magnitud G) reflejaban el sesgo de distancia de la muestra y no la fisica de cada clase, y los datos faltantes se leian como "enana marron". La **v2** quita esas variables, usa solo luminosidad y color de Gaia (`mg_gaia`, `bp_rp`) mas banderas de si hay dato, y se entrena con el catalogo ampliado de **69 objetos**.
+> **UPDATE (v2, Nov 14 night).** Horacio's scientific review (`docs/ml/revision-ciencia-clasificador.md`) found that the 91.7% figure below (v1) was inflated: three features (catalog proper motion, parallax, and G magnitude) reflected sample distance bias rather than the physics of each class, and missing values were interpreted as "brown dwarf". **v2** removes those features, uses only Gaia luminosity and color (`mg_gaia`, `bp_rp`) plus data-availability flags, and is trained on the expanded **69-object** catalog.
 >
-> **Resultado honesto de la v2 (LOO, 69 objetos): 75.4 % (52 de 69)**, contra 29.0 % de la clase mayoritaria; prueba de permutacion p = 0.032. Recall: enana marron 0.90, enana blanca 0.82, estrella 0.75, **variable 0.56**. Las variables no se separan bien solo con Gaia: para eso hace falta la imagen de diferencia de SPHEREx (dipolo contra monopolo), que este modelo todavia no usa. Archivos: `entrenar_v2.py`, `modelo_v2.json` (usa el mismo `predecir.mjs`, con 4 variables: `[en_gaia, tiene_fotometria, mg_gaia, bp_rp]`), `resultados_v2.json`, `paridad_v2.json`. Ojo: en `datos/verdad-terreno-v2.csv` el objeto `Gaia DR3 3713594960831605760` (Wolf 489) sigue etiquetado como estrella aunque Horacio lo identifico como enana blanca; el modelo lo llama enana blanca y cuenta como fallo hasta que se corrija la etiqueta.
+> **Honest v2 result (LOO, 69 objects): 75.4% (52 of 69)**, vs. 29.0% for the majority class; permutation test `p = 0.032`. Per-class recall: brown dwarf 0.90, white dwarf 0.82, star 0.75, **variable 0.56**. Variables do not separate well using Gaia alone: that requires SPHEREx difference-image features (dipole vs. monopole), which this model does not yet use. Files: `entrenar_v2.py`, `modelo_v2.json` (uses the same `predecir.mjs`, with 4 features: `[en_gaia, tiene_fotometria, mg_gaia, bp_rp]`), `resultados_v2.json`, `paridad_v2.json`. Note: in `datos/verdad-terreno-v2.csv`, object `Gaia DR3 3713594960831605760` (Wolf 489) is still labeled as a star even though Horacio identified it as a white dwarf; the model predicts white dwarf and counts it as a miss until the label is corrected.
 >
-> **Lo que se puede decir en el pitch:** "un bosque aleatorio sobre luminosidad y color de Gaia acierta 75 % en 69 objetos con clase verificada y supera con claridad el azar; separa muy bien las enanas marrones y mal las variables, que requieren la imagen de SPHEREx". Todo lo de abajo es la v1, que se deja como historia.
+> **What can be stated in the pitch:** "A random forest on Gaia luminosity and color achieves 75% on 69 verified-class objects and clearly beats chance; it separates brown dwarfs very well and struggles on variables, which require SPHEREx imagery." Everything below is v1, kept for historical reference.
 
-# Clasificador de ML por clase de objeto
+# Object-Class ML Classifier
 
-Un bosque aleatorio (200 arboles, profundidad 4, semilla 42) que clasifica un objeto en **estrella, enana marron, enana blanca o variable** a partir de seis variables de Gaia DR3: si esta en Gaia, paralaje, magnitud absoluta, color BP-RP, magnitud G y movimiento propio. Se entrena con los 36 objetos de `datos/verdad-terreno.csv` (clase verificada con SIMBAD o articulo) y `datos/gaia-fotometria.csv`, ambos de Horacio.
+A random forest (200 trees, depth 4, seed 42) that classifies an object into **star, brown dwarf, white dwarf, or variable** using six Gaia DR3 features: Gaia presence, parallax, absolute magnitude, BP-RP color, G magnitude, and proper motion. Trained on the 36 objects in `datos/verdad-terreno.csv` (class verified with SIMBAD or literature) and `datos/gaia-fotometria.csv`, both curated by Horacio.
 
-## Resultados (leave-one-out, 36 objetos)
+## Results (leave-one-out, 36 objects)
 
-| | Exactitud |
+| | Accuracy |
 |---|---|
-| **Bosque aleatorio (ML)** | **91.7 % (33 de 36)** |
-| Clase mayoritaria (no aprende nada) | 47.2 % |
-| Regla fisica solo con variables de Gaia, sin entrenar | 77.8 % |
+| **Random forest (ML)** | **91.7% (33 of 36)** |
+| Majority class (learns nothing) | 47.2% |
+| Untrained physical rule on Gaia variables only | 77.8% |
 
-Prueba de permutacion (40 repeticiones con etiquetas barajadas): ninguna igualo el acierto, p = 0.024. Recall por clase: estrella 1.00, enana marron 0.88, enana blanca 0.80, variable 0.83. Con el split de Horacio (entrenar con 33, probar con 3 estrellas de prueba): 3 de 3.
+Permutation test (40 shuffles of labels): none matched the accuracy, `p = 0.024`. Per-class recall: star 1.00, brown dwarf 0.88, white dwarf 0.80, variable 0.83. With Horacio's split (train on 33, test on 3 held-out stars): 3 of 3.
 
-Los tres fallos: Mira (variable, sin paralaje en Gaia, el modelo la llama enana marron), Luhman 16 (enana marron con Gaia, la llama variable) y Procyon B (enana blanca sin fotometria de Gaia, la llama enana marron). Los tres tienen datos de Gaia ausentes o raros.
+The three misses: Mira (variable, missing Gaia parallax, predicted brown dwarf), Luhman 16 (brown dwarf in Gaia, predicted variable), and Procyon B (white dwarf missing Gaia photometry, predicted brown dwarf). All three have missing or unusual Gaia entries.
 
-## Limites (leelos antes de decirlo en el pitch)
-- **Son 36 objetos.** Es una prueba de concepto honesta, no una validacion a escala. El intervalo de confianza de 33/36 es ancho.
-- La regla de enana blanca y el modelo usan variables parecidas (magnitud absoluta y color), asi que el ML no descubre fisica nueva ahi: la reproduce.
-- La regla de "solo Gaia" no puede separar variables, asi que la comparacion con ella no es justa; la regla completa de la app usa ademas la imagen de diferencia.
-- Las enanas marrones salen casi siempre por no estar en Gaia. Para separarlas de otros objetos debiles hay que usar la huella de SPHEREx (cociente D6/D2 y metano), que este modelo todavia no usa.
-- Es "candidato a clase", no una identificacion definitiva.
+## Limitations (read before citing in the pitch)
+- **Only 36 objects.** This is an honest proof of concept, not a large-scale validation. The confidence interval on 33/36 is wide.
+- The white-dwarf rule and the model use similar variables (absolute magnitude and color), so ML does not discover new physics there: it reproduces the rule.
+- The "Gaia-only" rule cannot separate variables, so comparing against it is not fair; the full app rule also uses the difference image.
+- Brown dwarfs are mostly flagged because they are absent from Gaia. Separating them from other faint objects requires the SPHEREx spectral fingerprint (`D6/D2` ratio and methane), which this model does not yet use.
+- Outputs are a "candidate class", never a definitive identification.
 
-## Archivos
-- `entrenar.py`: entrena, evalua y exporta. Requiere `scikit-learn` y `numpy`.
-- `modelo.json`: el bosque exportado. `predecir.mjs`: inferencia en JavaScript sin dependencias, para el navegador.
-- `probar-paridad.mjs`: comprueba que `predecir.mjs` da lo mismo que scikit-learn en los 36 objetos (corre con `node`): 0 clases distintas, diferencia maxima de probabilidad de 7e-8.
-- `resultados.json`: todas las cifras de arriba, la matriz de confusion y la importancia de variables.
+## Files
+- `entrenar.py`: trains, evaluates, and exports. Requires `scikit-learn` and `numpy`.
+- `modelo.json`: the exported forest. `predecir.mjs`: zero-dependency JavaScript inference for the browser.
+- `probar-paridad.mjs`: verifies that `predecir.mjs` matches `scikit-learn` across all 36 objects (run with `node`): 0 class mismatches, max probability difference `7e-8`.
+- `resultados.json`: all numbers above, confusion matrix, and feature importances.
