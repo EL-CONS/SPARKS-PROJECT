@@ -61,4 +61,4 @@ Todo término técnico es un `<Term>`: se abre con toque, clic o teclado, y se c
 
 ## Temas
 
-Un solo tema: la noche. Los datos del cielo son oscuros y la luz del logo se lee sobre noche. El tema claro ("papel") existió hasta el commit `881eb30` de Cons ("oblitarated light mode", 14 de noviembre) y se retiró; la decisión de no restaurarlo es provisional (paso C de `docs/integracion/estado.md`). Las columnas "papel" de la tabla de color quedan como referencia histórica y no se usan en el código. Ya no hay `localStorage` `sparks-theme` ni parámetro `?theme=`.
+Un solo tema: la noche. Los datos del cielo son oscuros y la luz del logo se lee sobre noche. El tema claro ("papel") existió hasta el commit `881eb30` de Cons ("oblitarated light mode", 14 de noviembre) y se retiró; Joaquín confirmó el 14 de noviembre a las 23:24 que no se restaura. Las columnas "papel" de la tabla de color quedan como referencia histórica y no se usan en el código. Ya no hay `localStorage` `sparks-theme` ni parámetro `?theme=`.

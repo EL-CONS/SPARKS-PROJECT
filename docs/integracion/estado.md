@@ -53,6 +53,7 @@ Fuente: `docs/reto/reto.md` y `docs/reto/normas.md` (rama `joako`) y los planes 
 - 23:03 y 23:04 `93f88fc`, `5261b36`: tres fallos vistos en el navegador, arreglados con prueba.
 - 23:10 `0d5eb3b`: QA de los cinco objetivos (`docs/qa/navegador-cinco-objetivos.md`).
 - 23:10 `0d87293`: tema solo oscuro (opción b, provisional; sin respuesta en el paso C).
+- 23:24: Joaquín confirma solo el tema oscuro; deja de ser provisional.
 - 23:12 `74e6f5e`: clasificador v2 reentrenado en la app, cifras de `resultados_v2.json`.
 - 23:13 `587fe9e`: "variable" por la imagen (kind o indicio de dipolo).
 - 23:14 `8c39463`: publicación comprobada con `curl`.
@@ -103,7 +104,6 @@ La interfaz ya no tiene cifras escritas a mano del clasificador (`74e6f5e`). Las
 | Qué | Dueño | ¿Bloquea "listo"? |
 |---|---|---|
 | Desplegar en AWS y probar la URL en un teléfono (`docs/backend/despliegue-aws.md`) | Cons | No (es el paso siguiente a la subida) |
-| Confirmar o revertir la decisión provisional del tema (solo oscuro) | Joaquín | No |
 | Procedencia del material previo al 14 de noviembre (Barnard de `data-sample/`, `docs/auditoria/procedencia.md`) | Joaquín | No para la subida; sí antes de enviar |
 | Corregir cifras de la página del equipo, guion y diapositivas (tabla de cifras); fundir su `README-borrador.md` y `uso-de-si.md` en los de esta rama; quitar el modo claro de `checklist-qa.md` | Carlos | No |
 | Grabar el video y hacer las diapositivas | Carlos | No para la subida; sí antes de enviar |

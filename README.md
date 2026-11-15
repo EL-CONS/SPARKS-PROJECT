@@ -15,7 +15,7 @@ Sparks muestra **candidatos para revisar**, nunca descubrimientos. Es un proyect
 - Capas de **Gaia DR3** y **CatWISE2020** encima de la foto.
 - Banderas de calidad de la NASA, ruido por detector, y cada cifra con su fuente.
 - Todo el estado viaja en la URL, para compartir o incrustar: `?ra=269.4486&dec=4.7672&fov=3.28&mode=diff&det=all&lang=es#explorar`.
-- Español e inglés. Un solo tema, oscuro (decisión provisional del 14 de noviembre: ver `docs/integracion/estado.md`).
+- Español e inglés. Un solo tema, oscuro (decisión de Joaquín, 14 de noviembre).
 
 Qué requisitos del reto se cumplen y cuáles no, con evidencia: [`docs/auditoria/requisitos.md`](docs/auditoria/requisitos.md).
 
