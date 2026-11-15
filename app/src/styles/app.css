@@ -1177,7 +1177,7 @@ html {
 }
 .foot {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: auto minmax(0, 1fr) auto;
   gap: 24px 48px;
   align-items: center;
   max-width: 1240px;
@@ -1215,6 +1215,25 @@ html {
 .foot__fine {
   font-size: 0.78rem;
   color: var(--text-3);
+}
+.foot__social {
+  display: grid;
+  gap: 6px;
+  justify-items: end;
+}
+.foot__social a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-data);
+  font-size: 0.78rem;
+  color: var(--text-2);
+  text-decoration: none;
+  transition: color 0.18s ease;
+}
+.foot__social a:hover,
+.foot__social a:focus-visible {
+  color: var(--now-ink);
 }
 
 /* ---------------------------------------------------------------- edge arrows */
@@ -1345,6 +1364,9 @@ html {
   }
   .foot {
     grid-template-columns: minmax(0, 1fr);
+    justify-items: start;
+  }
+  .foot__social {
     justify-items: start;
   }
   .foot__logo img {

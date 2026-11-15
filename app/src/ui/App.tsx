@@ -38,6 +38,23 @@ function Spark({ children, primary, className, ...rest }: React.ButtonHTMLAttrib
   );
 }
 
+const TEAM_INSTAGRAM = [
+  { handle: '@jqnx.24', url: 'https://www.instagram.com/jqnx.24/' },
+  { handle: '@el_cons', url: 'https://www.instagram.com/el_cons/' },
+  { handle: '@nerux23', url: 'https://www.instagram.com/nerux23/' },
+  { handle: '@carlos.notok', url: 'https://www.instagram.com/carlos.notok/' },
+];
+
+function IconInstagram() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+    </svg>
+  );
+}
+
 export default function App() {
   const s = useSparks();
   const labels = useBodyLabels(s);
@@ -85,6 +102,14 @@ export default function App() {
               {sh.footer.illustrations}
             </p>
           </div>
+          <nav className="foot__social" aria-label="Instagram">
+            {TEAM_INSTAGRAM.map(m => (
+              <a key={m.handle} href={m.url} target="_blank" rel="noreferrer">
+                <IconInstagram />
+                <span>{m.handle}</span>
+              </a>
+            ))}
+          </nav>
         </div>
       </footer>
       <ScrollHint sh={sh} />
