@@ -79,3 +79,52 @@ Combinando `data-new/results.json` (nuestra canalizacion `pipeline/sparkspipe` c
 | `rdra` | R Draconis | `variable` | saturada | - | `lightcurve` por alas PSF | - | nulo (nucleo saturado) |
 
 Con la actualizacion del conjunto verificado (`docs/sprint-13-30/verdad-terreno.csv` y `gaia-fotometria.csv`, ampliado de 36 a **69 objetos**: `20 estrellas`, `20 enanas marrones` L/T/Y, `18 variables` de distintos tipos —Mira, T Tauri, RR Lyrae, Cefeidas, UV Ceti, BY Draconis, RV Tauri y cataclismicas— y `11 enanas blancas` DA/DC/DQ/DZ), el clasificador puede reentrenarse eliminando `g_mag` y `log10_paralaje` crudos y evaluando en un split estratificado que incluya las cuatro clases.
+
+---
+
+## 4. Revision cientifica de la v2 (`entrenar_v2.py`, rama `joako`, commit `da9bb1c`)
+
+La v2 elimina `log10_mu`, `log10_paralaje` y `g_mag`, dejando solo cuatro entradas de Gaia (`en_gaia`, `tiene_fotometria`, `mg_gaia`, `bp_rp`) sobre 69 objetos. La exactitud LOO baja de `91.7 %` a **`75.4 %` (52/69)** (`p = 0.0323` en 30 permutaciones; linea base mayoritaria `29.0 %`), con recall `0.900` en enana marron, `0.818` en enana blanca, `0.750` en estrella y `0.556` (10/18) en variable.
+
+### 4.1 Correccion de Wolf 489 y efecto en la evaluacion
+- En `docs/sprint-13-30/verdad-terreno.csv`, la fila `t605760` (`Gaia DR3 3713594960831605760`, **Wolf 489**, enana blanca DZ10 segun SIMBAD y Giammichele et al. 2012) quedaba aun etiquetada como `estrella`. En `resultados_v2.json`, el modelo ya la predice como `enana blanca`, por lo que aparecia como falso error en LOO.
+- Se corrigio `t605760` a `enana blanca` en `docs/sprint-13-30/verdad-terreno.csv` (con fuente SIMBAD `WD*` y Giammichele et al. 2012) y se verifico el resto de las 69 filas: no hay otras etiquetas de clase invertidas.
+
+### 4.2 Fugas y limitaciones residuales en v2
+1. **El centinela `FALTA = -999.0` sigue codificando "sin fotometria de Gaia = enana marron":**
+   - En `resultados_v2.json`, exactamente los tres objetos no marrones sin `mg_gaia` ni `bp_rp` (**Mira**, **R Leonis** y **Procyon B**) son clasificados como **`enana marron`** (los unicos 3 falsos positivos hacia `enana marron` de toda la matriz). El bosque no distingue entre "no detectado en optico por frio" (WISE 0855) y "sin paralaje en Gaia por saturacion o estrella companera brillante" (Mira, R Leo, Procyon B).
+2. **Separacion parcial de `variable` por luminosidad (`mg_gaia`, importancia `0.4273`), no por variabilidad:**
+   - El modelo acierta 10/18 variables porque las gigantes Mira, Cefeidas y T Tauri muy luminosas tienen $M_G < 2$ o $BP-RP > 4$. En cambio, confunde con `estrella` a las cinco variables de menor luminosidad o en secuencia principal/subgigante (**RW Aurigae**, **TW Hydrae**, **SS Cygni**, **U Geminorum**, **Z Camelopardalis**), a **RR Lyrae** con `enana blanca`, y envia cuatro enanas G/K normales (**61 Cygni A**, **Epsilon Eridani**, **Delta Pavonis**, **82 G. Eridani**) a `variable`.
+   - Conclusion: con fotometria estatica de Gaia es fisicamente imposible separar estrellas variables de estrellas de secuencia principal.
+3. **Afirmacion para el pitch en `ml-clasificador/README.md`:**
+   - La redaccion actual (*"acierta 75 % en 69 objetos con clase verificada y supera con claridad el azar; separa muy bien las enanas marrones y mal las variables, que requieren la imagen de SPHEREx"*) es cientificamente honesta, siempre que se anada el matiz de que el `0.90` de recall en enanas marrones depende parcialmente de `en_gaia = 0` / `mg_gaia = -999` para las T/Y.
+
+---
+
+## 5. Variables en imagenes de diferencia para separar variables (`pipeline/dipole_features.py`)
+
+Para distinguir **"se movio" (dipolo)** de **"cambio de brillo" (monopolo)** en las imagenes de diferencia (`diffs.bin` y `diffs_sig.bin`) de los 5 campos disponibles (`data-sample/barnard/` y `data-new/*`), se implemento `pipeline/dipole_features.py`.
+
+### 5.1 Definicion de las metricas
+Sobre cada imagen de diferencia $D(x, y)$ dentro de una apertura de radio $r \le 10\text{ px}$ centrada en $(31.5, 31.5)$, tras restar el fondo mediano del anillo $10 \le r \le 22\text{ px}$ y exigir $\max |D/\sigma_D| \ge 4.0$:
+1. **`dipole_balance` ($B_{\text{dip}}$):**
+   $$B_{\text{dip}} = \frac{2 \min(F_+, F_-)}{F_+ + F_-} \in [0, 1]$$
+   donde $F_+ = \sum_{D/\sigma_D > 2} D$ y $F_- = \sum_{D/\sigma_D < -2} |D|$. En un movimiento propio puro, ambos lobulos conservan flujo ($F_+ \approx F_- \implies B_{\text{dip}} \to 1$); en una variable pura, domina un solo signo ($B_{\text{dip}} \to 0$).
+2. **`peak_snr_balance` ($B_{\text{pico}}$):**
+   $$B_{\text{pico}} = \frac{\min(\text{SNR}_+, \text{SNR}_-)}{\max(\text{SNR}_+, \text{SNR}_-)} \in [0, 1]$$
+   cociente entre los picos positivo y negativo de relacion senal/ruido. Resiste mejor la saturacion parcial del nucleo que la suma integrada.
+3. **`lobe_sep_px` ($d_{+-}$):** distancia en pixeles entre el centroide ponderado del lobulo positivo y el del lobulo negativo (cuando ambos tienen pixeles con $\text{SNR} > 2$).
+
+### 5.2 Resultados medidos en los cinco campos
+
+| Campo | Clase | Diferencias con $\max|\text{SNR}|\ge 4$ | `dipole_balance` mediana [min–max] | `peak_snr_balance` mediana [min–max] | `lobe_sep_px` mediana |
+|---|---|---|---|---|---|
+| `barnard` | `estrella` (mover) | 18 | **0.746** [0.409–0.987] | **0.811** [0.524–0.949] | 7.82 px |
+| `epsindib` | `enana marron` (mover) | 30 | **0.790** [0.052–0.985] | **0.672** [0.128–0.984] | 1.94 px |
+| `wise0855` | `enana marron` (mover) | 14 | **0.806** [0.280–0.992] | **0.679** [0.174–0.981] | 3.55 px |
+| `rwaur` | `variable` | 18 | **0.134** [0.000–0.967] | **0.205** [0.006–0.882] | 2.02 px |
+| `rdra` | `variable` | 6 | **0.000** [0.000–0.036] | **0.000** [0.000–0.169] | 0.00 px |
+
+### 5.3 Separabilidad y viabilidad
+- En los cinco campos reales, **`dipole_balance` separa limpiamente a los 3 objetos en movimiento ($\text{mediana} \ge 0.746$) de las 2 variables ($\text{mediana} \le 0.134$)**, con una brecha $> 0.61$; `peak_snr_balance` muestra una separacion analoga ($\ge 0.672$ vs $\le 0.205$).
+- Con solo 5 campos no se debe entrenar un modelo supervisado sobre estas dos variables, pero si queda demostrado que **son el rasgo fisico que falta en `entrenar_v2.py`**: cuando se procesen ~15–20 campos de variables y movers con `sparkspipe` (por ejemplo en Yuca), anadir `dipole_balance` y `peak_snr_balance` junto con `F_D6/F_D2` y `methane_depth` eliminara la dependencia de `mg_gaia` para detectar variabilidad y de `FALTA = -999` para las enanas marrones.
