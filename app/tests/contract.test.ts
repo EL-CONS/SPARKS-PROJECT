@@ -8,6 +8,7 @@ import {
 } from '../src/data/contract';
 
 const DATA_ROOT = path.resolve(__dirname, '../../data-sample');
+const DATA_NEW_ROOT = path.resolve(__dirname, '../../data-new');
 
 describe('data contract validators', () => {
   it('validates real data-sample/index.json', () => {
@@ -26,6 +27,25 @@ describe('data contract validators', () => {
     const raw = JSON.parse(fs.readFileSync(path.join(DATA_ROOT, 'results.json'), 'utf-8'));
     const res = validateResultsJson(raw);
     expect(res.ok).toBe(true);
+  });
+
+  it('validates real data-new/index.json and results.json', () => {
+    const rawIndex = JSON.parse(fs.readFileSync(path.join(DATA_NEW_ROOT, 'index.json'), 'utf-8'));
+    const resIndex = validateIndexJson(rawIndex);
+    expect(resIndex.ok).toBe(true);
+
+    const rawResults = JSON.parse(fs.readFileSync(path.join(DATA_NEW_ROOT, 'results.json'), 'utf-8'));
+    const resResults = validateResultsJson(rawResults);
+    expect(resResults.ok).toBe(true);
+  });
+
+  it('validates all manifests in data-new/', () => {
+    for (const id of ['wise0855', 'epsindib', 'rdra', 'rwaur']) {
+      const manifestPath = path.join(DATA_NEW_ROOT, id, 'manifest.json');
+      const raw = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
+      const res = validateManifestJson(raw);
+      expect(res.ok).toBe(true);
+    }
   });
 
   it('reports clear path issues on malformed index, manifest, and results', () => {

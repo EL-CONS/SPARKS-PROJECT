@@ -100,8 +100,8 @@ async function fetchF32(url: string): Promise<Float32Array> {
   return new Float32Array(await res.arrayBuffer());
 }
 
-export async function loadCubes(base: string, fieldId: string): Promise<Cubes> {
-  const root = `${base}data-sample/${fieldId}/`;
+export async function loadCubes(base: string, fieldId: string, folder: 'data-sample' | 'data-new' = 'data-sample'): Promise<Cubes> {
+  const root = `${base}${folder}/${fieldId}/`;
   const [coadds, coaddsSig, diffs, diffsSig] = await Promise.all([
     fetchF32(`${root}coadds.bin`),
     fetchF32(`${root}coadds_sig.bin`),
@@ -111,15 +111,15 @@ export async function loadCubes(base: string, fieldId: string): Promise<Cubes> {
   return { coadds, coaddsSig, diffs, diffsSig };
 }
 
-export async function loadFullManifest(base: string, fieldId: string): Promise<FullManifest> {
-  const res = await fetch(`${base}data-sample/${fieldId}/manifest.json`);
+export async function loadFullManifest(base: string, fieldId: string, folder: 'data-sample' | 'data-new' = 'data-sample'): Promise<FullManifest> {
+  const res = await fetch(`${base}${folder}/${fieldId}/manifest.json`);
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return (await res.json()) as FullManifest;
 }
 
-export async function loadGaia(base: string, fieldId: string): Promise<GaiaSource[]> {
+export async function loadGaia(base: string, fieldId: string, folder: 'data-sample' | 'data-new' = 'data-sample'): Promise<GaiaSource[]> {
   try {
-    const res = await fetch(`${base}data-sample/${fieldId}/catalogs.json`);
+    const res = await fetch(`${base}${folder}/${fieldId}/catalogs.json`);
     if (!res.ok) return [];
     const data = await res.json();
     return (data?.gaia?.sources ?? []) as GaiaSource[];

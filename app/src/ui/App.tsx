@@ -378,8 +378,32 @@ function Route({ s, step, setStep }: { s: Sparks; step: number; setStep: (n: num
             )}
             {s.selected && (
               <div className="who">
-                <p className="who__name">{s.selected.id === 'barnard' ? (es ? 'Estrella de Barnard' : 'Barnard’s Star') : s.selected.name}</p>
+                <p className="who__name">
+                  {s.selected.id === 'barnard' ? (es ? 'Estrella de Barnard' : 'Barnard’s Star') : s.selected.name}
+                  {s.selected.status === 'parcial' && (
+                    <span
+                      style={{
+                        marginLeft: '0.6rem',
+                        fontSize: '0.75rem',
+                        fontWeight: 600,
+                        padding: '0.2rem 0.5rem',
+                        borderRadius: '4px',
+                        background: 'rgba(255, 178, 56, 0.15)',
+                        color: '#ffb238',
+                        border: '1px solid rgba(255, 178, 56, 0.3)',
+                        verticalAlign: 'middle',
+                      }}
+                    >
+                      {es ? 'Procesamiento parcial' : 'Partial processing'}
+                    </span>
+                  )}
+                </p>
                 <p className="who__note">{t.targets[s.selected.id]?.note ?? s.selected.note}</p>
+                {s.selected.status === 'parcial' && s.selected.reason && (
+                  <p className="hint" style={{ marginTop: '0.25rem', color: '#ffb238', fontStyle: 'italic' }}>
+                    ⚠ {s.selected.reason}
+                  </p>
+                )}
               </div>
             )}
             {s.selected && s.data.status === 'loading' && (

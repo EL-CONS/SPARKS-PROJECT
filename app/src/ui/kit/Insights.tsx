@@ -7,6 +7,7 @@ import { INSIGHTS } from '../../i18n/insights';
 import { Term } from '../components/Term';
 import type { FullManifest } from '../sky';
 import { useVeredicto } from './useVeredicto';
+import { useClase } from '../../core/clasificador';
 
 interface Props {
   lang: Lang;
@@ -29,7 +30,9 @@ export function Insights({ lang, t, manifest: m, field, det, season }: Props) {
     <section className="insights" aria-labelledby="ins-title">
       <h2 id="ins-title" className="insights__title">{L.title}</h2>
       <div className="insights__grid">
+        <ManifestNotice field={field} manifest={m} L={L} />
         <Verdict field={field} lang={lang} t={t} />
+        <ClassifierPanel field={field} lang={lang} L={L} />
         {fit && exp && <Motion L={L} mu={fit.mu} err={fit.mu_err} exp={exp.mu} cat={exp.catalog} px={fit.mu / m.field.pixel_arcsec} t={t} />}
         {fit && <Direction L={L} pa={fit.pa_deg} paErr={fit.pa_err_deg} t={t} />}
         <Noise L={L} m={m} t={t} />
@@ -81,6 +84,136 @@ function Verdict({ field, lang, t }: { field: IndexField; lang: Lang; t: UiDict 
         </div>
       )}
       <p className="insight__src">{t.verdict.ruleNote}</p>
+    </figure>
+  );
+}
+
+function ManifestNotice({
+  field,
+  manifest: m,
+  L,
+}: {
+  field: IndexField;
+  manifest: FullManifest;
+  L: L;
+}) {
+  const isParcial = field.status === 'parcial' || m.status === 'parcial';
+  const caveats = m.caveats ?? [];
+  const blockers = m.blockers ?? [];
+  const hasCaveats = caveats.length > 0;
+  const hasBlockers = blockers.length > 0;
+
+  if (!isParcial && !hasCaveats && !hasBlockers) return null;
+
+  return (
+    <figure
+      className={`insight insight--wide insight--caveat ${isParcial ? 'is-parcial' : ''}`}
+      style={{
+        borderColor: isParcial ? '#ffb238' : undefined,
+        background: isParcial ? 'rgba(255, 178, 56, 0.05)' : undefined,
+      }}
+    >
+      <figcaption className="insight__say" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+        <span style={{ fontWeight: 700, color: isParcial ? '#ffb238' : 'inherit' }}>
+          {isParcial ? `[${L.manifestStatus.partialBadge.toUpperCase()}]` : `[${L.manifestStatus.okBadge.toUpperCase()}]`}
+        </span>
+        {field.reason && <span>{field.reason}</span>}
+      </figcaption>
+
+      {isParcial && (
+        <p className="insight__body" style={{ marginTop: '0.4rem', fontStyle: 'italic', opacity: 0.9 }}>
+          {L.manifestStatus.partialNotice}
+        </p>
+      )}
+
+      {hasCaveats && (
+        <div style={{ marginTop: '0.6rem' }}>
+          <b style={{ fontSize: '0.9rem', color: '#ffb238' }}>{L.manifestStatus.caveatsTitle}:</b>
+          <ul style={{ margin: '0.3rem 0 0 1.2rem', padding: 0, fontSize: '0.88rem', lineHeight: '1.45' }}>
+            {caveats.map((c, i) => (
+              <li key={i}>{c}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {hasBlockers && (
+        <div style={{ marginTop: '0.6rem' }}>
+          <b style={{ fontSize: '0.9rem', opacity: 0.85 }}>{L.manifestStatus.blockersTitle}:</b>
+          <ul style={{ margin: '0.3rem 0 0 1.2rem', padding: 0, fontSize: '0.88rem', lineHeight: '1.4' }}>
+            {blockers.map((b, i) => (
+              <li key={i}>{b}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </figure>
+  );
+}
+
+function ClassifierPanel({ field, lang, L }: { field: IndexField; lang: Lang; L: L }) {
+  const c = useClase(field, lang);
+  if (!c) return null;
+  const es = lang === 'es';
+
+  const classNames: Record<string, string> = {
+    estrella: es ? 'estrella' : 'star',
+    'enana marron': es ? 'enana marrón' : 'brown dwarf',
+    'enana blanca': es ? 'enana blanca' : 'white dwarf',
+    variable: es ? 'objeto variable' : 'variable object',
+  };
+
+  const candidateText = L.classifier.candidate(classNames[c.claseML] ?? c.claseML);
+  const probPct = (c.mejorProbabilidad * 100).toFixed(1);
+
+  return (
+    <figure className="insight insight--wide insight--classifier">
+      <figcaption className="insight__say">
+        <span>{L.classifier.title}:</span> <b>{candidateText}</b>
+        <span style={{ marginLeft: '0.5rem', fontWeight: 400, opacity: 0.9 }}>
+          ({L.classifier.probability(probPct)})
+        </span>
+      </figcaption>
+
+      <p className="insight__body" style={{ marginTop: '0.4rem', lineHeight: '1.4' }}>
+        {c.coinciden ? (
+          <span style={{ color: '#4ade80' }}>✓ {L.classifier.agreement}</span>
+        ) : (
+          <span style={{ color: '#fbbf24' }}>⚠ {c.discrepanciaNota}</span>
+        )}
+      </p>
+
+      {/* Mandatory visible disclaimer */}
+      <div
+        style={{
+          marginTop: '0.5rem',
+          padding: '0.35rem 0.6rem',
+          background: 'rgba(255, 178, 56, 0.08)',
+          borderRadius: '4px',
+          borderLeft: '3px solid #ffb238',
+        }}
+      >
+        <span style={{ fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.02em' }}>
+          "{c.disclaimer}"
+        </span>
+      </div>
+
+      {/* Probabilities breakdown */}
+      <div style={{ marginTop: '0.6rem', fontSize: '0.85rem' }}>
+        <span style={{ fontWeight: 600, opacity: 0.85 }}>{L.classifier.breakdown}:</span>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '0.4rem', marginTop: '0.3rem' }}>
+          {Object.entries(c.probabilidades).map(([clase, prob]) => (
+            <div key={clase} style={{ padding: '0.25rem 0.4rem', background: 'rgba(255,255,255,0.04)', borderRadius: '3px' }}>
+              <span style={{ opacity: 0.75 }}>{classNames[clase] ?? clase}:</span>{' '}
+              <b>{(prob * 100).toFixed(1)}%</b>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <p className="insight__src" style={{ marginTop: '0.5rem' }}>
+        {L.classifier.limitNote}
+      </p>
     </figure>
   );
 }

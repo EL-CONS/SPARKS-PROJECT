@@ -10,6 +10,23 @@ export interface InsightsDict {
   color: { say: (sat: number, total: number) => string; kid: string; sat: string; ok: string; none: string };
   quality: { say: (src: string, bad: string) => string; kid: string; star: string; problems: string; names: Record<string, string> };
   data: { say: (n: number, seasons: number, rel: string) => string };
+  classifier: {
+    title: string;
+    candidate: (clase: string) => string;
+    probability: (p: string) => string;
+    agreement: string;
+    discrepancy: (ml: string, rule: string) => string;
+    disclaimer: string;
+    breakdown: string;
+    limitNote: string;
+  };
+  manifestStatus: {
+    partialBadge: string;
+    okBadge: string;
+    caveatsTitle: string;
+    blockersTitle: string;
+    partialNotice: string;
+  };
   all: string;
   source: string;
   sourceLine: (s: string) => string;
@@ -68,6 +85,23 @@ export const INSIGHTS: Record<Lang, InsightsDict> = {
     data: {
       say: (n, s, rel) => `Usamos ${n} fotos de SPHEREx en ${s} temporadas (${rel}).`,
     },
+    classifier: {
+      title: 'Clasificador de aprendizaje automático (Bosque aleatorio)',
+      candidate: (c) => `Candidato a ${c}`,
+      probability: (p) => `${p} % de probabilidad del ensamble`,
+      agreement: 'Coincide con el veredicto de la regla física de dos pasos.',
+      discrepancy: (ml, rule) => `Discrepancia metodológica: el modelo ML predice "${ml}", mientras que la regla astrofísica deduce "${rule}".`,
+      disclaimer: 'candidato a clase, entrenado con 36 objetos (33 de 36 al dejar uno fuera)',
+      breakdown: 'Distribución de probabilidades por clase',
+      limitNote: 'Son candidatos a revisar a partir de variables de Gaia DR3; no constituyen una identificación definitiva.',
+    },
+    manifestStatus: {
+      partialBadge: 'Procesamiento parcial',
+      okBadge: 'Procesamiento completo',
+      caveatsTitle: 'Salvedades y advertencias del campo',
+      blockersTitle: 'Bloqueos metodológicos declarados',
+      partialNotice: 'Este campo tiene cobertura o detección parcial; no se declara movimiento medido definitivo.',
+    },
     all: 'Todas las cifras, con su fuente',
     source: 'Fuente',
     sourceLine: s => `Fuente: ${s}`,
@@ -123,6 +157,23 @@ export const INSIGHTS: Record<Lang, InsightsDict> = {
     },
     data: {
       say: (n, s, rel) => `We used ${n} SPHEREx photos across ${s} seasons (${rel}).`,
+    },
+    classifier: {
+      title: 'Machine learning classifier (Random forest)',
+      candidate: (c) => `Candidate ${c}`,
+      probability: (p) => `${p}% ensemble probability`,
+      agreement: 'Agrees with the two-step physical rule verdict.',
+      discrepancy: (ml, rule) => `Methodological discrepancy: ML model predicts "${ml}", while physical rule deduces "${rule}".`,
+      disclaimer: 'candidate class, trained on 36 objects (33 of 36 leave-one-out)',
+      breakdown: 'Probability breakdown by class',
+      limitNote: 'These are candidate classifications from Gaia DR3 features; they are not definitive identifications.',
+    },
+    manifestStatus: {
+      partialBadge: 'Partial processing',
+      okBadge: 'Complete processing',
+      caveatsTitle: 'Field caveats and warnings',
+      blockersTitle: 'Declared pipeline blockers',
+      partialNotice: 'This field has partial coverage or detection; no definitive measured motion is claimed.',
     },
     all: 'All the numbers, with their source',
     source: 'Source',

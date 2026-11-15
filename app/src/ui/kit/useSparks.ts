@@ -138,7 +138,8 @@ export function useSparks() {
     setGaia([]);
     player.setFrame(0);
     (async () => {
-      const head = await fetch(`${BASE}data-sample/${selected.id}/manifest.json`).catch(() => null);
+      const folder = selected.folder || 'data-sample';
+      const head = await fetch(`${BASE}${folder}/${selected.id}/manifest.json`).catch(() => null);
       if (!alive) return;
       if (!head) return setData({ status: 'error', message: 'No se pudo conectar para obtener manifest.json' });
       // A missing folder is a 404, or Vite's SPA fallback (HTML with 200) in dev.
@@ -155,7 +156,7 @@ export function useSparks() {
         });
       }
       const manifest = check.data as unknown as FullManifest;
-      const plates = buildPlatesFromManifest(selected.id, manifest, BASE);
+      const plates = buildPlatesFromManifest(selected.id, manifest, BASE, folder);
       let done = 0;
       const total = plates.length;
       setData({ status: 'loading', done, total });
@@ -176,8 +177,8 @@ export function useSparks() {
       if (!alive) return;
       setPair([0, manifest.seasons.length - 1]);
       setData({ status: 'ready', manifest, plates });
-      loadCubes(BASE, selected.id).then(c => alive && setCubes(c)).catch(() => undefined);
-      loadGaia(BASE, selected.id).then(g => alive && setGaia(g));
+      loadCubes(BASE, selected.id, folder).then(c => alive && setCubes(c)).catch(() => undefined);
+      loadGaia(BASE, selected.id, folder).then(g => alive && setGaia(g));
     })().catch((err) => {
       if (!alive) return;
       const message = err instanceof Error ? err.message : undefined;

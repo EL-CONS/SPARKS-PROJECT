@@ -17,6 +17,10 @@ export interface IndexField {
   pa_expected?: number | null;
   in_gaia: boolean;
   thumb?: string;
+  gallery?: boolean;
+  status?: string;
+  reason?: string;
+  folder?: 'data-sample' | 'data-new';
 }
 
 export interface IndexData {
@@ -48,6 +52,9 @@ export interface SeasonMeta {
 export interface FieldManifest {
   schema: number;
   pipeline_version: string;
+  status?: string;
+  blockers?: string[];
+  caveats?: string[];
   field: {
     id: string;
     name: string;
@@ -83,28 +90,81 @@ export type FieldAssetsResult =
     };
 
 export async function fetchFieldIndex(baseUrl = '/'): Promise<IndexField[]> {
-  const res = await fetch(`${baseUrl}data-sample/index.json`);
-  if (!res.ok) {
-    throw new Error(`Failed to load index.json (HTTP ${res.status})`);
+  const [resSample, resNew] = await Promise.allSettled([
+    fetch(`${baseUrl}data-sample/index.json`),
+    fetch(`${baseUrl}data-new/index.json`),
+  ]);
+
+  const sampleFields: IndexField[] = [];
+  if (resSample.status === 'fulfilled' && resSample.value.ok) {
+    try {
+      const raw = await resSample.value.json();
+      const checked = validateIndexJson(raw);
+      if (checked.ok) {
+        for (const f of checked.data.fields as unknown as IndexField[]) {
+          sampleFields.push({ ...f, folder: 'data-sample' });
+        }
+      }
+    } catch {
+      // Ignore sample parsing failure
+    }
   }
-  const raw = await res.json();
-  const checked = validateIndexJson(raw);
-  if (!checked.ok) {
-    const first = checked.issues[0];
-    throw new Error(`Invalid index.json at ${first.path}: ${first.message}`);
+
+  const newFields: IndexField[] = [];
+  if (resNew.status === 'fulfilled' && resNew.value.ok) {
+    try {
+      const raw = await resNew.value.json();
+      const checked = validateIndexJson(raw);
+      if (checked.ok) {
+        for (const f of checked.data.fields as unknown as IndexField[]) {
+          newFields.push({ ...f, folder: 'data-new' });
+        }
+      }
+    } catch {
+      // Ignore new parsing failure
+    }
   }
-  return checked.data.fields as unknown as IndexField[];
+
+  if (sampleFields.length === 0 && newFields.length === 0) {
+    throw new Error('Failed to load index.json (no accessible data in data-sample or data-new)');
+  }
+
+  const map = new Map<string, IndexField>();
+  for (const f of sampleFields) {
+    map.set(f.id, f);
+  }
+  for (const f of newFields) {
+    map.set(f.id, f);
+  }
+
+  const MAIN_5 = ['barnard', 'wise0855', 'epsindib', 'rwaur', 'rdra'];
+  const ordered: IndexField[] = [];
+
+  for (const id of MAIN_5) {
+    const f = map.get(id);
+    if (f) {
+      ordered.push(f);
+      map.delete(id);
+    }
+  }
+
+  for (const f of map.values()) {
+    ordered.push(f);
+  }
+
+  return ordered;
 }
 
 export function buildPlatesFromManifest(
   fieldId: string,
   manifest: FieldManifest,
-  baseUrl = '/'
+  baseUrl = '/',
+  folder: 'data-sample' | 'data-new' = 'data-sample'
 ): PlateAsset[] {
   return manifest.coadds.map(c => ({
     det: c.det,
     season: c.season,
-    pngUrl: `${baseUrl}data-sample/${fieldId}/${c.png}`,
+    pngUrl: `${baseUrl}${folder}/${fieldId}/${c.png}`,
     lamMean: c.lam_mean,
     snrGain: c.snr_gain,
   }));
@@ -114,7 +174,8 @@ export async function loadFieldAssets(
   field: IndexField,
   baseUrl = '/'
 ): Promise<FieldAssetsResult> {
-  const res = await fetch(`${baseUrl}data-sample/${field.id}/manifest.json`);
+  const folder = field.folder || 'data-sample';
+  const res = await fetch(`${baseUrl}${folder}/${field.id}/manifest.json`);
   if (res.status === 404) {
     return { status: 'soon', field };
   }
@@ -132,7 +193,7 @@ export async function loadFieldAssets(
     status: 'ready',
     field,
     manifest,
-    plates: buildPlatesFromManifest(field.id, manifest, baseUrl),
+    plates: buildPlatesFromManifest(field.id, manifest, baseUrl, folder),
   };
 }
 

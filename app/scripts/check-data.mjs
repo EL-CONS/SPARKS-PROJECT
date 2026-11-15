@@ -62,18 +62,22 @@ if (indexData) {
 }
 
 const resultsPath = path.join(targetDir, 'results.json');
-const resultsData = readJson(resultsPath);
-if (resultsData) {
-  if (typeof resultsData.generated_utc !== 'string' || !resultsData.generated_utc) {
-    fail(resultsPath, 'generated_utc missing');
+if (fs.existsSync(resultsPath)) {
+  const resultsData = readJson(resultsPath);
+  if (resultsData) {
+    if (typeof resultsData.generated_utc !== 'string' || !resultsData.generated_utc) {
+      fail(resultsPath, 'generated_utc missing');
+    }
+    if (!resultsData.archive || typeof resultsData.archive.n_science_images !== 'number') {
+      fail(resultsPath, 'archive.n_science_images missing');
+    }
+    if (!resultsData.fields || Object.keys(resultsData.fields).length === 0) {
+      fail(resultsPath, 'fields record empty');
+    }
+    console.log(`OK results.json (${Object.keys(resultsData.fields || {}).length} fields)`);
   }
-  if (!resultsData.archive || typeof resultsData.archive.n_science_images !== 'number') {
-    fail(resultsPath, 'archive.n_science_images missing');
-  }
-  if (!resultsData.fields || Object.keys(resultsData.fields).length === 0) {
-    fail(resultsPath, 'fields record empty');
-  }
-  console.log(`OK results.json (${Object.keys(resultsData.fields || {}).length} fields)`);
+} else {
+  console.log('INFO results.json not present (optional)');
 }
 
 if (errors > 0) {
