@@ -1372,7 +1372,8 @@ html {
   .edge__tip {
     display: none;
   }
-  .scrollhint {
+  /* above the sticky player and step buttons on phones */
+  body:has(.stepnav) .scrollhint {
     display: none;
   }
 }

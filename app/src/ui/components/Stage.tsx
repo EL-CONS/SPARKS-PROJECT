@@ -5,6 +5,8 @@ import { useEffect, useMemo, useRef } from 'react';
 import type { ViewMode, DetectorSelection } from '../../core/urlState';
 import type { PlateAsset } from '../../data/loader';
 import type { UiDict } from '../../i18n/ui';
+import type { ShellDict } from '../../i18n/shell';
+import { panelToPixel } from '../../core/fov';
 import { IconExpand, IconGrid } from './Icons';
 import { Term } from './Term';
 import {
@@ -12,6 +14,7 @@ import {
   type Cubes,
   type FullManifest,
   type GaiaSource,
+  type WiseSource,
   DIFF_CLIP,
   diffColor,
   paintDiff,
@@ -33,20 +36,40 @@ interface StageProps {
   showMarks: boolean;
   showGaia: boolean;
   gaia: GaiaSource[];
+  shell: ShellDict;
+  /** 1 = the whole cutout; 2 and 4 show its central half and quarter */
+  zoom?: number;
+  showWise?: boolean;
+  catwise?: WiseSource[];
+  /** Point chosen for the spectrum, in cube pixels */
+  pick?: { x: number; y: number } | null;
+  onPick?: (p: { x: number; y: number }) => void;
 }
 
 const DETS = [1, 2, 3, 4, 5, 6];
 
-function CanvasPanel({ draw, label }: { draw: (ctx: CanvasRenderingContext2D) => void; label: string }) {
+/** Catalogue marks drawn per panel: the brightest ones in view, so the photo stays readable. */
+export const MAX_CATALOG_MARKS = 40;
+
+function brightest<T>(list: T[], mag: (s: T) => number): T[] {
+  return list
+    .slice()
+    .sort((a, b) => mag(a) - mag(b))
+    .slice(0, MAX_CATALOG_MARKS);
+}
+
+function CanvasPanel({ draw, label, style }: { draw: (ctx: CanvasRenderingContext2D) => void; label: string; style?: React.CSSProperties }) {
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const ctx = ref.current?.getContext('2d');
     if (ctx) draw(ctx);
   }, [draw]);
-  return <canvas ref={ref} width={N} height={N} className="panel__pixels" role="img" aria-label={label} />;
+  return <canvas ref={ref} width={N} height={N} className="panel__pixels" role="img" aria-label={label} style={style} />;
 }
 
-function Marks({ manifest, det, mode, frame, pair, showGaia, gaia }: Pick<StageProps, 'manifest' | 'mode' | 'frame' | 'pair' | 'showGaia' | 'gaia'> & { det: number }) {
+type MarksProps = Pick<StageProps, 'manifest' | 'mode' | 'frame' | 'pair' | 'showGaia' | 'gaia' | 'showWise' | 'catwise' | 'pick'> & { det: number; zoom: number; showTarget: boolean };
+
+function Marks({ manifest, det, mode, frame, pair, showGaia, gaia, showWise, catwise, pick, zoom, showTarget }: MarksProps) {
   const pts = manifest.target.points.filter(p => p.det === det);
   const at = (s: number) => pts.find(p => p.season === s);
   // In blink the live season is "now"; the first season is the "before" reference.
@@ -56,22 +79,41 @@ function Marks({ manifest, det, mode, frame, pair, showGaia, gaia }: Pick<StageP
   const before = at(beforeSeason);
   const sx = (x: number) => x + 0.5;
   const sy = (y: number) => N - 0.5 - y;
+  // The marks follow the field of view: the view box is the central part of the cutout.
+  const side = N / zoom;
+  const origin = (N - side) / 2;
+  const inView = (g: { x: number; y: number }) => sx(g.x) >= origin && sx(g.x) <= origin + side && sy(g.y) >= origin && sy(g.y) <= origin + side;
+  const k = 1 / zoom; // keeps mark sizes constant on screen
   return (
-    <svg className="panel__marks" viewBox={`0 0 ${N} ${N}`} aria-hidden="true">
-      {showGaia &&
-        gaia
-          .filter(g => g.x >= 0 && g.x < N && g.y >= 0 && g.y < N)
-          .map(g => <circle key={g.id} cx={sx(g.x)} cy={sy(g.y)} r={1.6} className="mark-gaia" />)}
-      {mode !== 'stack' && before && now && before.season !== now.season && (
-        <circle cx={sx(before.x)} cy={sy(before.y)} r={7} className="mark-before" />
+    <svg className="panel__marks" viewBox={`${origin} ${origin} ${side} ${side}`} aria-hidden="true">
+      {showGaia && brightest(gaia.filter(inView), g => g.g).map(g => <circle key={g.id} cx={sx(g.x)} cy={sy(g.y)} r={1.6 * k} className="mark-gaia" />)}
+      {showWise &&
+        brightest((catwise ?? []).filter(inView), w => w.w1 ?? 99).map(w => {
+          const r = 2 * k;
+          const cx = sx(w.x);
+          const cy = sy(w.y);
+          return <path key={w.id} d={`M${cx} ${cy - r}L${cx + r} ${cy}L${cx} ${cy + r}L${cx - r} ${cy}Z`} className="mark-wise" />;
+        })}
+      {showTarget && mode !== 'stack' && before && now && before.season !== now.season && (
+        <circle cx={sx(before.x)} cy={sy(before.y)} r={7 * k} className="mark-before" />
       )}
-      {mode !== 'stack' && now && <circle cx={sx(now.x)} cy={sy(now.y)} r={7} className="mark-now" />}
+      {showTarget && mode !== 'stack' && now && <circle cx={sx(now.x)} cy={sy(now.y)} r={7 * k} className="mark-now" />}
+      {pick && (
+        <g className="mark-pick">
+          <line x1={sx(pick.x) - 4 * k} x2={sx(pick.x) - 1.5 * k} y1={sy(pick.y)} y2={sy(pick.y)} />
+          <line x1={sx(pick.x) + 1.5 * k} x2={sx(pick.x) + 4 * k} y1={sy(pick.y)} y2={sy(pick.y)} />
+          <line x1={sx(pick.x)} x2={sx(pick.x)} y1={sy(pick.y) - 4 * k} y2={sy(pick.y) - 1.5 * k} />
+          <line x1={sx(pick.x)} x2={sx(pick.x)} y1={sy(pick.y) + 1.5 * k} y2={sy(pick.y) + 4 * k} />
+        </g>
+      )}
     </svg>
   );
 }
 
 export function Stage(props: StageProps) {
-  const { t, manifest, plates, cubes, mode, frame, pair, det, onDet, showMarks, showGaia, gaia } = props;
+  const { t, manifest, plates, cubes, mode, frame, pair, det, onDet, showMarks, showGaia, gaia, shell, showWise, catwise, pick, onPick } = props;
+  const zoom = props.zoom ?? 1;
+  const view = zoom === 1 ? undefined : { transform: `scale(${zoom})` };
   const seasons = manifest.seasons;
   const months = t.months;
   const modeName = mode === 'blink' ? t.modes.blink : mode === 'stack' ? t.modes.stack : t.modes.diff;
@@ -102,11 +144,11 @@ export function Stage(props: StageProps) {
           let pixels: React.ReactNode = null;
           if (mode === 'blink') {
             pixels = plate ? (
-              <img className="panel__pixels" src={plate.pngUrl} alt={alt} width={N * 4} height={N * 4} draggable={false} />
+              <img className="panel__pixels" src={plate.pngUrl} alt={alt} width={N * 4} height={N * 4} draggable={false} style={view} />
             ) : null;
           } else if (mode === 'stack' && stacks && cubes) {
             const sc = manifest.scales[String(d)];
-            pixels = <CanvasPanel key={`s${d}`} label={alt} draw={ctx => paintGray(ctx, stacks[d], sc.lo, sc.hi)} />;
+            pixels = <CanvasPanel key={`s${d}`} label={alt} style={view} draw={ctx => paintGray(ctx, stacks[d], sc.lo, sc.hi)} />;
           } else if (mode === 'diff' && cubes) {
             const entry = manifest.diffs.find(x => x.det === d && x.a === pair[0] && x.b === pair[1]);
             if (entry) {
@@ -115,6 +157,7 @@ export function Stage(props: StageProps) {
                 <CanvasPanel
                   key={`d${d}-${pair.join('-')}`}
                   label={alt}
+                  style={view}
                   draw={ctx => paintDiff(ctx, cubes.diffs, cubes.diffsSig, off)}
                 />
               );
@@ -122,14 +165,26 @@ export function Stage(props: StageProps) {
           }
           return (
             <li key={d} className="panel">
-              <div className="panel__frame">
+              <div
+                className={`panel__frame${onPick ? ' panel__frame--pick' : ''}`}
+                onClick={
+                  onPick
+                    ? e => {
+                        const r = e.currentTarget.getBoundingClientRect();
+                        onPick(panelToPixel((e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height, zoom, N));
+                      }
+                    : undefined
+                }
+              >
                 {pixels ?? <div className="panel__pixels panel__pixels--wait" aria-hidden="true" />}
-                {showMarks && <Marks manifest={manifest} det={d} mode={mode} frame={frame} pair={pair} showGaia={showGaia} gaia={gaia} />}
-                {!showMarks && showGaia && <Marks manifest={manifest} det={d} mode="stack" frame={frame} pair={pair} showGaia gaia={gaia} />}
+                <Marks manifest={manifest} det={d} mode={mode} frame={frame} pair={pair} showGaia={showGaia} gaia={gaia} showWise={showWise} catwise={catwise} pick={pick} zoom={zoom} showTarget={showMarks} />
                 <button
                   type="button"
                   className="panel__zoom"
-                  onClick={() => onDet(det === 'all' ? (d as DetectorSelection) : 'all')}
+                  onClick={e => {
+                    e.stopPropagation();
+                    onDet(det === 'all' ? (d as DetectorSelection) : 'all');
+                  }}
                   aria-label={det === 'all' ? t.stage.focusOne(d) : t.stage.focusAll}
                 >
                   {det === 'all' ? <IconExpand /> : <IconGrid />}
@@ -162,10 +217,30 @@ export function Stage(props: StageProps) {
               <span>+{DIFF_CLIP}σ · {t.stage.diffScaleHigh}</span>
             </figcaption>
           </figure>
-        ) : null}
+        ) : (
+          <figure className="scale" aria-label={`${shell.gray.low} – ${shell.gray.high}, ${shell.gray.unit}`}>
+            <div className="scale__bar scale__bar--gray" />
+            <figcaption className="scale__ticks">
+              <span>{shell.gray.low}</span>
+              <span>{shell.gray.unit}</span>
+              <span>{shell.gray.high}</span>
+            </figcaption>
+            <p className="scale__dets">
+              <span className="scale__dets-t">{shell.gray.perDetector}:</span>{' '}
+              {visible.map(d => {
+                const sc = manifest.scales[String(d)];
+                return sc ? (
+                  <span key={d} className="scale__det">
+                    D{d} {sc.lo.toFixed(2)} – {sc.hi.toFixed(2)}
+                  </span>
+                ) : null;
+              })}
+            </p>
+          </figure>
+        )}
         <p className="stage__note">
-          {mode === 'blink' && t.stage.blinkLegend}
-          {mode === 'stack' && t.stage.stackLegend}
+          {mode === 'blink' && `${shell.gray.blink} ${t.stage.noData}`}
+          {mode === 'stack' && `${shell.gray.stack(seasons.length)} ${t.stage.noData}`}
           {mode === 'diff' && (
             <>
               {t.stage.diffLegend(seasonLabel(seasons[pair[0]].start, months), seasonLabel(seasons[pair[1]].start, months))}{' '}
@@ -173,7 +248,7 @@ export function Stage(props: StageProps) {
             </>
           )}{' '}
           <span className="stage__meta">
-            {t.stage.northEast} · {t.stage.fov(manifest.field.fov_arcmin.toFixed(2), manifest.field.pixel_arcsec.toFixed(2))} ·{' '}
+            {t.stage.northEast} · {t.stage.fov((manifest.field.fov_arcmin / zoom).toFixed(2), manifest.field.pixel_arcsec.toFixed(2))} ·{' '}
             <Term id="detector" t={t} />
           </span>
         </p>

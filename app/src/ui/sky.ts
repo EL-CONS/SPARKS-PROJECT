@@ -30,6 +30,7 @@ export interface FrameEntry {
   dlam: number;
   release: string;
   version: string;
+  sigma?: number;
   flag_pixels: Record<string, number>;
   pix_total: number;
   png: string;
@@ -126,6 +127,60 @@ export async function loadGaia(base: string, fieldId: string, folder: 'data-samp
   } catch {
     return [];
   }
+}
+
+export interface WiseSource {
+  id: string;
+  x: number;
+  y: number;
+  /** W1 magnitude (3.4 µm) */
+  w1?: number;
+}
+
+export interface Catalogs {
+  gaia: GaiaSource[];
+  catwise: WiseSource[];
+}
+
+/** Gaia DR3 and CatWISE2020 sources of the field, with their pixel positions. */
+export async function loadCatalogs(base: string, fieldId: string, folder: 'data-sample' | 'data-new' = 'data-sample'): Promise<Catalogs> {
+  try {
+    const res = await fetch(`${base}${folder}/${fieldId}/catalogs.json`);
+    if (!res.ok) return { gaia: [], catwise: [] };
+    const data = await res.json();
+    // keep only the sources that fall inside the cutout
+    const inside = (g: { x: number; y: number }) => g.x >= 0 && g.x < N && g.y >= 0 && g.y < N;
+    return {
+      gaia: ((data?.gaia?.sources ?? []) as GaiaSource[]).filter(inside),
+      catwise: ((data?.catwise?.sources ?? []) as WiseSource[]).filter(inside),
+    };
+  } catch {
+    return { gaia: [], catwise: [] };
+  }
+}
+
+export interface FrameCubes {
+  frames: Int16Array;
+  masks: Uint8Array | null;
+}
+
+/** Every single exposure of the field (int16, see core/spectrum.ts) and its flag masks. */
+export async function loadFrames(base: string, fieldId: string, folder: 'data-sample' | 'data-new' = 'data-sample'): Promise<FrameCubes> {
+  const root = `${base}${folder}/${fieldId}/`;
+  const res = await fetch(`${root}frames.bin`);
+  if (!res.ok || (res.headers.get('content-type') ?? '').includes('html')) throw new Error(`HTTP ${res.status} for frames.bin`);
+  const frames = new Int16Array(await res.arrayBuffer());
+  let masks: Uint8Array | null = null;
+  try {
+    const mr = await fetch(`${root}masks.bin`);
+    if (mr.ok && !(mr.headers.get('content-type') ?? '').includes('html')) {
+      const m = new Uint8Array(await mr.arrayBuffer());
+      if (m.length === frames.length) masks = m;
+    }
+  } catch {
+    masks = null;
+  }
+  return { frames, masks };
 }
 
 /** Inverse-variance weighted mean of every season for one detector. */

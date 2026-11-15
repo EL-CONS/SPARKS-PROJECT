@@ -9,6 +9,7 @@ app/.vite/
 
 # Local data copy in public
 app/public/data-sample/
+app/.vite/
 
 # Logs and environment
 npm-debug.log*

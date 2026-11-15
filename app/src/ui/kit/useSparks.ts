@@ -17,7 +17,8 @@ import { validateManifestJson } from '../../data/contract';
 import { I18N } from '../../i18n';
 import { UI } from '../../i18n/ui';
 import { INTRO } from '../../i18n/intro';
-import { angularDistanceDeg, loadCubes, loadGaia, type Cubes, type FullManifest, type GaiaSource } from '../sky';
+import { angularDistanceDeg, loadCatalogs, loadCubes, type Cubes, type FullManifest, type GaiaSource, type WiseSource } from '../sky';
+import { SHELL } from '../../i18n/shell';
 
 function writeFlag(key: string) {
   try {
@@ -38,6 +39,7 @@ export type FieldData =
   | { status: 'loading'; done: number; total: number }
   | { status: 'ready'; manifest: FullManifest; plates: PlateAsset[] }
   | { status: 'soon' }
+  | { status: 'none' }
   | { status: 'error'; message?: string };
 
 export function nearestField(fields: IndexField[], ra: number, dec: number) {
@@ -70,6 +72,7 @@ export function useSparks() {
   const [attempt, setAttempt] = useState(0);
   const [cubes, setCubes] = useState<Cubes | null>(null);
   const [gaia, setGaia] = useState<GaiaSource[]>([]);
+  const [catwise, setCatwise] = useState<WiseSource[]>([]);
   const [pair, setPair] = useState<[number, number]>([0, 2]);
   const [askFlash, setAskFlash] = useState(false);
   const [flashKey, setFlashKey] = useState(0);
@@ -82,6 +85,7 @@ export function useSparks() {
   const t = UI[url.lang];
   const core = I18N[url.lang];
   const intro = INTRO[url.lang];
+  const shell = SHELL[url.lang];
   const player = usePlayer({ totalFrames: 3, initialFps: 1, loop: true });
   const paused = useRef(false);
 
@@ -131,18 +135,33 @@ export function useSparks() {
       .then(list => {
         setFields(list);
         const u = parseUrlState(window.location.search);
-        setSelected(nearestField(list, u.ra, u.dec).field ?? list[0] ?? null);
+        const near = nearestField(list, u.ra, u.dec);
+        // Coordinates in a shared link that fall on no processed field: say so
+        // instead of opening the nearest field as if it were that point.
+        if (near.field && near.deg > FAR_DEG && new URLSearchParams(window.location.search).has('ra')) {
+          setFar({ field: near.field, deg: near.deg });
+          setSelected(null);
+          return;
+        }
+        setSelected(near.field ?? list[0] ?? null);
       })
       .catch((err) => setIndexError(err instanceof Error ? err.message : 'Error desconocido al cargar index.json'));
   }, []);
   useEffect(loadIndex, [loadIndex]);
 
   useEffect(() => {
-    if (!selected) return;
+    if (!selected) {
+      setData({ status: 'none' });
+      setCubes(null);
+      setGaia([]);
+      setCatwise([]);
+      return;
+    }
     let alive = true;
     setData({ status: 'loading', done: 0, total: 0 });
     setCubes(null);
     setGaia([]);
+    setCatwise([]);
     player.setFrame(0);
     (async () => {
       const folder = selected.folder || 'data-sample';
@@ -185,7 +204,11 @@ export function useSparks() {
       setPair([0, manifest.seasons.length - 1]);
       setData({ status: 'ready', manifest, plates });
       loadCubes(BASE, selected.id, folder).then(c => alive && setCubes(c)).catch(() => undefined);
-      loadGaia(BASE, selected.id, folder).then(g => alive && setGaia(g));
+      loadCatalogs(BASE, selected.id, folder).then(c => {
+        if (!alive) return;
+        setGaia(c.gaia);
+        setCatwise(c.catwise);
+      });
     })().catch((err) => {
       if (!alive) return;
       const message = err instanceof Error ? err.message : undefined;
@@ -224,6 +247,7 @@ export function useSparks() {
     if (n.deg > FAR_DEG) {
       updateUrl({ ra: r.ra, dec: r.dec });
       setFar({ field: n.field, deg: n.deg });
+      setSelected(null);
       return;
     }
     pickField(n.field);
@@ -326,6 +350,9 @@ export function useSparks() {
     retryField: () => setAttempt(a => a + 1),
     cubes,
     gaia,
+    catwise,
+    shell,
+    setFov: (fov: number) => updateUrl({ fov }),
     player,
     pair,
     setPair,

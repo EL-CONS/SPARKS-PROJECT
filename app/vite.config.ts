@@ -28,6 +28,13 @@ function createStaticDirHandler(baseDir: string) {
   };
 }
 
+// Carpetas con datos del cielo: se sirven en dev y preview y se copian junto a
+// index.html al terminar `vite build`, para que el sitio publicado traiga sus datos.
+const DATA_FOLDERS: Array<[string, string]> = [
+  ['data-sample', DATA_SAMPLE_DIR],
+  ['data-new', DATA_NEW_DIR],
+];
+
 function serveDataStatic(base: string): Plugin {
   const sampleHandler = createStaticDirHandler(DATA_SAMPLE_DIR);
   const newHandler = createStaticDirHandler(DATA_NEW_DIR);
@@ -35,8 +42,18 @@ function serveDataStatic(base: string): Plugin {
   const sampleMount = `${normalizedBase}/data-sample`;
   const newMount = `${normalizedBase}/data-new`;
 
+  let outDir = '';
   return {
     name: 'serve-data-static',
+    configResolved(config) {
+      outDir = path.resolve(config.root, config.build.outDir);
+    },
+    closeBundle() {
+      if (!outDir || !fs.existsSync(outDir)) return;
+      for (const [name, dir] of DATA_FOLDERS) {
+        if (fs.existsSync(dir)) fs.cpSync(dir, path.join(outDir, name), { recursive: true });
+      }
+    },
     configureServer(server) {
       server.middlewares.use('/data-sample', sampleHandler);
       server.middlewares.use('/data-new', newHandler);

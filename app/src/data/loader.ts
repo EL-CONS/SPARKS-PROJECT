@@ -226,3 +226,14 @@ export async function fetchLiveFieldStatus(
   const data = (await res.json()) as LiveFieldResponse;
   return data;
 }
+
+/**
+ * Un objetivo tiene fotos si el índice lo trae desde una carpeta y con estado
+ * `ok` o `parcial`. Los índices sin campo `status` (data-sample) cuentan como
+ * con fotos solo si traen miniatura (`thumb`), que apunta a su carpeta.
+ */
+export function tieneFotos(f: IndexField): boolean {
+  if (!f.folder) return false;
+  if (f.status !== undefined) return f.status === 'ok' || f.status === 'parcial';
+  return typeof f.thumb === 'string' && f.thumb.length > 0;
+}
