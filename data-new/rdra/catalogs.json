@@ -1,0 +1,25 @@
+{
+ "gaia": {
+  "epoch_mjd": 57388.5,
+  "service": "Gaia DR3 (docs/sprint-13-30/gaia-fotometria.csv)",
+  "queried": "2026-11-15T01:02:17Z",
+  "error": null,
+  "sources": [
+   {
+    "id": "1648328016354496384",
+    "cat": "Gaia DR3",
+    "ra": 248.1674,
+    "dec": 66.755,
+    "g": 6.3744,
+    "bp_rp": 3.2825,
+    "plx": 1.2509,
+    "pmra": -20.643,
+    "pmdec": 6.149,
+    "ruwe": 1.298,
+    "mg": -3.139,
+    "epoch_mjd": 57388.5,
+    "source": "docs/sprint-13-30/gaia-fotometria.csv (Gaia DR3 por source_id)"
+   }
+  ]
+ }
+}
