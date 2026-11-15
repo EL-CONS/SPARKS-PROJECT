@@ -1,12 +1,14 @@
 // Charts that answer one question each. The heading IS the answer; the chart
 // shows it with labels on the marks (no legend hunting); a kid line follows.
 import { estadoMovimiento } from '../../core/movimiento';
+import { balanceDipoloCampo, UMBRAL_INDICIO } from '../../core/dipolo';
 import type { Lang } from '../../core/urlState';
 import type { IndexField } from '../../data/loader';
 import type { UiDict } from '../../i18n/ui';
 import { INSIGHTS } from '../../i18n/insights';
 import { Term } from '../components/Term';
-import type { FullManifest } from '../sky';
+import type { Cubes, FullManifest } from '../sky';
+import { useMemo } from 'react';
 import { useVeredicto } from './useVeredicto';
 import { useClase } from '../../core/clasificador';
 
@@ -15,6 +17,8 @@ interface Props {
   t: UiDict;
   manifest: FullManifest;
   field: IndexField;
+  /** Cubos de la canalización; se usan para el indicio de dipolo si el manifiesto no trae kind */
+  cubes?: Cubes | null;
   det: number;
   season: number;
 }
@@ -23,7 +27,7 @@ function compassWord(pa: number, dirs: string[]) {
   return dirs[Math.round((((pa % 360) + 360) % 360) / 45) % 8];
 }
 
-export function Insights({ lang, t, manifest: m, field, det, season }: Props) {
+export function Insights({ lang, t, manifest: m, field, det, season, cubes }: Props) {
   const L = INSIGHTS[lang];
   const fit = m.target.measured;
   const exp = m.target.expected;
@@ -34,7 +38,7 @@ export function Insights({ lang, t, manifest: m, field, det, season }: Props) {
       <div className="insights__grid">
         <ManifestNotice field={field} manifest={m} L={L} />
         <Verdict field={field} lang={lang} t={t} />
-        <ClassifierPanel field={field} lang={lang} L={L} />
+        <ClassifierPanel field={field} lang={lang} L={L} manifest={m} cubes={cubes} />
         {fit && exp && mov === 'detectado' && <Motion L={L} mu={fit.mu} err={fit.mu_err} exp={exp.mu} cat={exp.catalog} px={fit.mu / m.field.pixel_arcsec} t={t} />}
         {fit && mov === 'detectado' && <Direction L={L} pa={fit.pa_deg} paErr={fit.pa_err_deg} t={t} />}
         {fit && mov === 'cota' && (
@@ -158,8 +162,14 @@ function ManifestNotice({
   );
 }
 
-function ClassifierPanel({ field, lang, L }: { field: IndexField; lang: Lang; L: L }) {
-  const c = useClase(field, lang);
+function ClassifierPanel({ field, lang, L, manifest, cubes }: { field: IndexField; lang: Lang; L: L; manifest: FullManifest; cubes?: Cubes | null }) {
+  const kindManifiesto = (manifest as unknown as { kind?: string }).kind;
+  // El dipolo solo se mide si el manifiesto no dice kind (es el segundo recurso).
+  const dipolo = useMemo(
+    () => (kindManifiesto || !cubes ? null : balanceDipoloCampo(cubes.diffs, cubes.diffsSig, manifest.diffs.length)),
+    [kindManifiesto, cubes, manifest],
+  );
+  const c = useClase(field, lang, { kind: kindManifiesto, dipolo });
   if (!c) return null;
   const es = lang === 'es';
 
@@ -183,6 +193,22 @@ function ClassifierPanel({ field, lang, L }: { field: IndexField; lang: Lang; L:
           </span>
         )}
       </figcaption>
+
+      <ul className="insight__body" style={{ marginTop: '0.4rem', lineHeight: '1.4', paddingLeft: '1.1rem' }}>
+        <li>
+          <b>{L.classifier.imageSource}</b>:{' '}
+          {c.variable.esVariable === null ? L.classifier.variableUnknown : c.variable.esVariable ? L.classifier.variableYes : L.classifier.variableNo}
+          {' · '}
+          {c.variable.origen === 'kind'
+            ? L.classifier.fromKind(c.variable.kind ?? '')
+            : c.variable.origen === 'dipolo'
+              ? L.classifier.fromDipole((c.variable.balance ?? 0).toFixed(2), c.variable.nRestas ?? 0, UMBRAL_INDICIO.toFixed(2))
+              : L.classifier.fromNothing}
+        </li>
+        <li>
+          <b>{L.classifier.modelSource}</b>: {c.decididoPorImagen ? '—' : `${classNames[c.claseML] ?? c.claseML} (${probPct} %)`}
+        </li>
+      </ul>
 
       <p className="insight__body" style={{ marginTop: '0.4rem', lineHeight: '1.4' }}>
         {c.decididoPorImagen ? (

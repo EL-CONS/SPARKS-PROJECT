@@ -426,7 +426,7 @@ function Route({ s, step, setStep }: { s: Sparks; step: number; setStep: (n: num
 
           <Leg n={3} id="l3" title={titles[2]} active={step === 2} panelRef={el => (panels.current[2] = el)}>
             {s.data.status === 'ready' ? (
-              <Insights lang={s.url.lang} t={t} manifest={s.data.manifest} field={s.selected!} det={s.det === 'all' ? 6 : s.det} season={s.mode === 'diff' ? s.pair[1] : s.player.frame} />
+              <Insights lang={s.url.lang} t={t} manifest={s.data.manifest} cubes={s.cubes} field={s.selected!} det={s.det === 'all' ? 6 : s.det} season={s.mode === 'diff' ? s.pair[1] : s.player.frame} />
             ) : (
               <p className="note">{sh.needTarget}</p>
             )}

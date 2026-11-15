@@ -21,6 +21,12 @@ export interface InsightsDict {
     disclaimer: (pct: string, n: number, variablesMal: boolean) => string;
     imageSource: string;
     modelSource: string;
+    variableYes: string;
+    variableNo: string;
+    variableUnknown: string;
+    fromKind: (kind: string) => string;
+    fromDipole: (balance: string, n: number, umbral: string) => string;
+    fromNothing: string;
     breakdown: string;
     limitNote: string;
   };
@@ -100,6 +106,12 @@ export const INSIGHTS: Record<Lang, InsightsDict> = {
       disclaimer: (pct, n, variablesMal) => `candidato a clase; acierta ${pct} % en ${n} objetos con clase verificada${variablesMal ? '; separa mal las variables' : ''}`,
       imageSource: 'variable: por la imagen',
       modelSource: 'clase: candidato del modelo',
+      variableYes: 'sí',
+      variableNo: 'no',
+      variableUnknown: 'sin decidir',
+      fromKind: k => `campo kind del manifiesto ("${k}")`,
+      fromDipole: (b, n, u) => `indicio de dipolo: balance mediano ${b} en ${n} restas; debajo de ${u} se toma como variable. Es un indicio medido en solo 5 campos, no una regla validada`,
+      fromNothing: 'el manifiesto no trae kind y las restas no dan señal suficiente: no se decide si es variable',
       breakdown: 'Probabilidades ML (solo entre clases no variables)',
       limitNote: 'La separación "variable" frente a objeto en movimiento sale de la imagen (dipolo / kind); el bosque aleatorio con Gaia DR3 solo decide entre estrella, enana marrón y enana blanca.',
     },
@@ -177,6 +189,12 @@ export const INSIGHTS: Record<Lang, InsightsDict> = {
       disclaimer: (pct, n, variablesMal) => `candidate class; right ${pct}% of the time on ${n} objects with a verified class${variablesMal ? '; separates variables poorly' : ''}`,
       imageSource: 'variable: from the image',
       modelSource: 'class: model candidate',
+      variableYes: 'yes',
+      variableNo: 'no',
+      variableUnknown: 'undecided',
+      fromKind: k => `manifest kind field ("${k}")`,
+      fromDipole: (b, n, u) => `dipole hint: median balance ${b} over ${n} differences; below ${u} it is taken as variable. A hint measured on only 5 fields, not a validated rule`,
+      fromNothing: 'the manifest has no kind and the differences carry too little signal: variability is not decided',
       breakdown: 'ML probabilities (non-variable classes only)',
       limitNote: 'The "variable" vs. moving decision comes from the image (dipole / kind); the Gaia DR3 random forest only decides among star, brown dwarf, and white dwarf.',
     },

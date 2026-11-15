@@ -3,6 +3,7 @@ import { GAIA_PHOTOMETRY, veredicto, FieldFeatures } from './veredicto';
 import modeloJson from './modelo.json';
 import resultadosJson from './resultados_v2.json';
 import { INSIGHTS } from '../i18n/insights';
+import { decidirVariable, type DecisionVariable } from './variable';
 
 export const FALTA = -999.0;
 
@@ -35,6 +36,8 @@ export interface ClaseResultado {
   claseRegla: string;
   coinciden: boolean;
   decididoPorImagen: boolean;
+  /** De dónde sale "variable o no": kind del manifiesto, indicio de dipolo o ninguno */
+  variable: DecisionVariable;
   probabilidades: Record<string, number>;
   mejorProbabilidad: number;
   features: number[];
@@ -131,7 +134,8 @@ export function featuresDeCampo(campo: IndexField): number[] {
  */
 export function useClase(
   campo: IndexField | null | undefined,
-  lang: 'es' | 'en' = 'es'
+  lang: 'es' | 'en' = 'es',
+  imagen?: { kind?: string | null; dipolo?: { mediana: number; n: number } | null }
 ): ClaseResultado | null {
   if (!campo) return null;
 
@@ -146,7 +150,9 @@ export function useClase(
   const reg = veredicto(feat, campo.id);
   const claseRegla = reg.clase;
 
-  const decididoPorImagen = campo.kind === 'variable';
+  // kind del manifiesto si se pasa; si no, el del índice; si no, el indicio de dipolo.
+  const variable = decidirVariable(imagen?.kind ?? campo.kind, imagen?.dipolo);
+  const decididoPorImagen = variable.esVariable === true;
 
   // Filtrar probabilidades a las 3 clases no variables cuando la imagen no es variable
   const sumaNoVar = CLASES_ESTELARES.reduce((acc, c) => acc + (pred.probabilidad[c] ?? 0), 0);
@@ -189,6 +195,7 @@ export function useClase(
     claseRegla,
     coinciden,
     decididoPorImagen,
+    variable,
     probabilidades,
     mejorProbabilidad,
     features,
