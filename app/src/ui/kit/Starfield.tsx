@@ -5,7 +5,6 @@
 import { useEffect, useRef } from 'react';
 
 interface Props {
-  theme: string;
   labels: Record<string, string>;
   /** extra density multiplier (1 = default) */
   density?: number;
@@ -112,7 +111,7 @@ const BODIES: Omit<Body, 'x' | 'y'>[] = [
   },
 ];
 
-export function Starfield({ theme, labels, density = 1, quiet = false }: Props) {
+export function Starfield({ labels, density = 1, quiet = false }: Props) {
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const c = ref.current!;
@@ -159,7 +158,6 @@ export function Starfield({ theme, labels, density = 1, quiet = false }: Props) 
       const dt = Math.min(64, now - last) / 1000;
       last = now;
       ctx.clearRect(0, 0, w, h);
-      if (theme === 'light') return;
       px += (tx - px) * Math.min(1, dt * 3);
       py += (ty - py) * Math.min(1, dt * 3);
       for (const st of stars) {
@@ -256,6 +254,6 @@ export function Starfield({ theme, labels, density = 1, quiet = false }: Props) 
       window.removeEventListener('pointermove', onMove);
       document.removeEventListener('visibilitychange', onVis);
     };
-  }, [theme, labels, density, quiet]);
+  }, [labels, density, quiet]);
   return <canvas ref={ref} className="starfield" aria-hidden="true" />;
 }

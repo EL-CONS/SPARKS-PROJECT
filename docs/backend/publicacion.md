@@ -1,39 +1,26 @@
-# Opciones gratuitas de publicación (app estática)
+# Publicación estática de Sparks
 
-Sparks compila a archivos estáticos (`app/dist/` + `data-sample/`), por lo que no necesita servidor Node/Python en producción mientras use datos precalculados.
+Sparks compila a archivos estáticos en `app/dist/` y consume los datos precalculados de `data-sample/` y `data-new/`.
 
-| Plataforma | Plan gratuito | ¿Funciona con repo **privado**? | Límites principales (plan gratis) | Notas para Sparks |
-|---|---|---|---|---|
-| **Cloudflare Pages** | Free (`$0`) | **Sí** | Builds ilimitados (1 a la vez; ancho de banda ilimitado en sitios estáticos; máx. 20,000 archivos y 25 MB por archivo) | Muy buena opción si el repo es privado; también permite montar el Worker CORS en la misma cuenta. |
-| **Netlify** | Starter (`$0`) | **Sí** | 100 GB/mes de ancho de banda, 300 min/mes de build | Soporta repos privados de GitHub sin costo; `Base directory: app`, `Publish: app/dist`. |
-| **Vercel** | Hobby (`$0`) | **Sí** (solo uso personal/no comercial) | 100 GB/mes de ancho de banda, 100 deploys/día | Si el repo pertenece a una **organización** de GitHub (no usuario personal), Vercel Hobby bloquea el deploy automático y pide plan Pro. |
-| **Render** | Static Sites (`$0`) | **Sí** | 100 GB/mes de ancho de banda | Conecta directo a repo privado; build command `npm ci && npm run build`. |
-| **GitHub Pages** | Free (`$0`) | **No** (solo repos **públicos** en cuenta gratuita) | 100 GB/mes suave, 1 GB de tamaño recomendado por sitio | Requiere `VITE_BASE=/SPARKS-PROJECT/` si no usa dominio propio y que el repo sea público (o GitHub Pro/Team). |
+## Qué se verificó en esta corrida (14 de noviembre de 2026)
 
-## Recomendación práctica
+1. **Compilación en raíz (`VITE_BASE` por omisión `/`):**
+   - Comando: `npm --prefix app run build` (`tsc && vite build`).
+   - Salida observada: `dist/index.html` (`1.59 kB`), `dist/assets/index-vO7vYyZr.css` (`32.25 kB`), `dist/assets/index-BctVQ2eU.js` (`394.23 kB`, `104.92 kB` gzip).
+2. **Previsualización local con datos (`npm run preview`):**
+   - Comando: `npm --prefix app run preview -- --port 4173 --host 127.0.0.1`.
+   - El plugin `serveDataStatic` en `app/vite.config.ts` (`configurePreviewServer`) sirve `data-sample/` y `data-new/` tanto en `/data-sample` y `/data-new` como bajo el prefijo `VITE_BASE` cuando es distinto de `/`.
+   - Respuestas comprobadas con `curl` y Chromium headless:
+     - `GET /` -> HTTP `200`
+     - `GET /data-sample/index.json` -> HTTP `200`
+     - `GET /data-new/index.json` -> HTTP `200`
+3. **Configuración de `base` en Vite para subrutas (no raíz):**
+   - `app/vite.config.ts` lee `process.env.VITE_BASE || '/'`.
+   - `app/src/ui/kit/useSparks.ts` usa `import.meta.env.BASE_URL` (`BASE`) para construir las rutas de `fetchFieldIndex(BASE)`, manifiestos, cubos y catálogo Gaia.
+   - Prueba real con subruta: `VITE_BASE=/SPARKS-PROJECT/ npm --prefix app run build` generó `dist/index.html` (`1.62 kB`) y reportó `Remote assets in dist/assets/ will be served with base: /SPARKS-PROJECT/`.
+   - **Nota importante para hosting estático en producción:** `npm run build` solo copia `app/src/` y `app/public/` a `app/dist/`; las carpetas `data-sample/` y `data-new/` viven en la raíz del repositorio y en local las sirve el middleware `serveDataStatic` de Vite (`dev` y `preview`). Al publicar `app/dist/` en un servidor estático externo, es necesario copiar o publicar `data-sample/` y `data-new/` dentro de la ruta publicada (por ejemplo `dist/data-sample/` y `dist/data-new/`), o ajustar la ruta pública correspondiente.
 
-- Si el repo sigue **privado**: **Cloudflare Pages** o **Netlify Starter** (no bloquean organizaciones ni repos privados, sin tarjeta).
-- Si el repo pasa a **público** (requisito habitual al entregar en Space Apps): **GitHub Pages** o **Cloudflare Pages**.
-- **Cuidado con el tamaño de `data-sample/`:** hoy pesa ~8 MB (entra cómodo en cualquiera). Si se agregan muchos campos con `frames.bin` completos (~1.8 GB por campo), rebasará el límite por archivo/sitio de hosting estático; en ese caso hay que subir solo `index.json`, `manifest.json` y los PNG de coadds/diffs.
+## Plataformas externas y repositorios privados
 
----
-
-## Verificación Real en Entorno Local (Sprint 18:00–20:00)
-
-Se comprobó de extremo a extremo la compilación y el servicio en modo de previsualización estática:
-1. **Compilación de producción:**
-   ```bash
-   cd app && npm run build
-   ```
-   Genera `dist/index.html` (1.83 kB), estilos y chunks JS sin advertencias críticas.
-2. **Servicio con `vite preview` y `data-sample/`:**
-   En `app/vite.config.ts` se implementó el hook `configurePreviewServer` en el plugin `serveDataSample`.
-   - `GET /` responde HTTP 200 (HTML de la aplicación montada).
-   - `GET /data-sample/index.json` responde HTTP 200 con los 13 campos astronómicos activos.
-3. **Configuración de `base` para subrutas:**
-   - Variable de entorno `VITE_BASE`: ya soportada en `vite.config.ts` mediante `base: process.env.VITE_BASE || '/'`.
-   - Para publicar en GitHub Pages (`https://<org>.github.io/SPARKS-PROJECT/`):
-     ```bash
-     VITE_BASE=/SPARKS-PROJECT/ npm run build
-     ```
-   - Para Cloudflare Pages, Netlify o dominio raíz propio, no se requiere variable (usa `/` por omisión).
+- No se realizó ningún despliegue real en Cloudflare Pages, Netlify, Vercel, Render ni GitHub Pages durante esta sesión, por lo que **no se afirma** soporte ni funcionamiento con repositorios privados en dichas plataformas hasta probarlo directamente en cada proveedor.
+- Para publicar en una subruta como GitHub Pages (`https://<org>.github.io/SPARKS-PROJECT/`), se requiere compilar con `VITE_BASE=/SPARKS-PROJECT/` y asegurar que `data-sample/` y `data-new/` queden accesibles bajo `/SPARKS-PROJECT/data-sample/` y `/SPARKS-PROJECT/data-new/`.

@@ -170,16 +170,20 @@ function ClassifierPanel({ field, lang, L }: { field: IndexField; lang: Lang; L:
     <figure className="insight insight--wide insight--classifier">
       <figcaption className="insight__say">
         <span>{L.classifier.title}:</span> <b>{candidateText}</b>
-        <span style={{ marginLeft: '0.5rem', fontWeight: 400, opacity: 0.9 }}>
-          ({L.classifier.probability(probPct)})
-        </span>
+        {!c.decididoPorImagen && (
+          <span style={{ marginLeft: '0.5rem', fontWeight: 400, opacity: 0.9 }}>
+            ({L.classifier.probability(probPct)})
+          </span>
+        )}
       </figcaption>
 
       <p className="insight__body" style={{ marginTop: '0.4rem', lineHeight: '1.4' }}>
-        {c.coinciden ? (
-          <span style={{ color: 'var(--ok)' }}>✓ {L.classifier.agreement}</span>
+        {c.decididoPorImagen ? (
+          <span>{L.classifier.imageVariable}</span>
+        ) : c.coinciden ? (
+          <span style={{ color: 'var(--ok)' }}>{L.classifier.agreement}</span>
         ) : (
-          <span style={{ color: 'var(--now-ink)' }}>⚠ {c.discrepanciaNota}</span>
+          <span style={{ color: 'var(--now-ink)' }}>{c.discrepanciaNota}</span>
         )}
       </p>
 

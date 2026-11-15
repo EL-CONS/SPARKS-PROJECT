@@ -17,8 +17,15 @@ import { validateManifestJson } from '../../data/contract';
 import { I18N } from '../../i18n';
 import { UI } from '../../i18n/ui';
 import { INTRO } from '../../i18n/intro';
-import { writeFlag } from '../useTheme';
 import { angularDistanceDeg, loadCubes, loadGaia, type Cubes, type FullManifest, type GaiaSource } from '../sky';
+
+function writeFlag(key: string) {
+  try {
+    localStorage.setItem(key, '1');
+  } catch {
+    /* ignore */
+  }
+}
 
 export const BASE = import.meta.env.BASE_URL;
 const FLASH_KEY = 'sparks-flash-ok';

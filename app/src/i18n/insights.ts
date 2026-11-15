@@ -14,6 +14,7 @@ export interface InsightsDict {
     title: string;
     candidate: (clase: string) => string;
     probability: (p: string) => string;
+    imageVariable: string;
     agreement: string;
     discrepancy: (ml: string, rule: string) => string;
     disclaimer: string;
@@ -86,14 +87,15 @@ export const INSIGHTS: Record<Lang, InsightsDict> = {
       say: (n, s, rel) => `Usamos ${n} fotos de SPHEREx en ${s} temporadas (${rel}).`,
     },
     classifier: {
-      title: 'Clasificador de aprendizaje automático (Bosque aleatorio)',
+      title: 'Clasificador (imagen + bosque aleatorio Gaia DR3)',
       candidate: (c) => `Candidato a ${c}`,
-      probability: (p) => `${p} % de probabilidad del ensamble`,
+      probability: (p) => `${p} % entre estrella, enana marrón y enana blanca`,
+      imageVariable: 'Clasificado como variable por la imagen de SPHEREx (residuo sin dipolo de movimiento); el modelo ML de Gaia solo distingue entre estrella, enana marrón y enana blanca.',
       agreement: 'Coincide con el veredicto de la regla física de dos pasos.',
       discrepancy: (ml, rule) => `Discrepancia metodológica: el modelo ML predice "${ml}", mientras que la regla astrofísica deduce "${rule}".`,
-      disclaimer: 'candidato a clase, entrenado con 36 objetos (33 de 36 al dejar uno fuera)',
-      breakdown: 'Distribución de probabilidades por clase',
-      limitNote: 'Son candidatos a revisar a partir de variables de Gaia DR3; no constituyen una identificación definitiva.',
+      disclaimer: 'candidato a clase; acierta 75 % en 69 objetos con clase verificada; separa mal las variables',
+      breakdown: 'Probabilidades ML (solo entre clases no variables)',
+      limitNote: 'La separación "variable" frente a objeto en movimiento sale de la imagen (dipolo / kind); el bosque aleatorio con Gaia DR3 solo decide entre estrella, enana marrón y enana blanca.',
     },
     manifestStatus: {
       partialBadge: 'Procesamiento parcial',
@@ -159,14 +161,15 @@ export const INSIGHTS: Record<Lang, InsightsDict> = {
       say: (n, s, rel) => `We used ${n} SPHEREx photos across ${s} seasons (${rel}).`,
     },
     classifier: {
-      title: 'Machine learning classifier (Random forest)',
+      title: 'Classifier (image + Gaia DR3 random forest)',
       candidate: (c) => `Candidate ${c}`,
-      probability: (p) => `${p}% ensemble probability`,
+      probability: (p) => `${p}% among star, brown dwarf, and white dwarf`,
+      imageVariable: 'Classified as variable from the SPHEREx image (residual without motion dipole); the Gaia ML model only distinguishes star, brown dwarf, and white dwarf.',
       agreement: 'Agrees with the two-step physical rule verdict.',
       discrepancy: (ml, rule) => `Methodological discrepancy: ML model predicts "${ml}", while physical rule deduces "${rule}".`,
-      disclaimer: 'candidate class, trained on 36 objects (33 of 36 leave-one-out)',
-      breakdown: 'Probability breakdown by class',
-      limitNote: 'These are candidate classifications from Gaia DR3 features; they are not definitive identifications.',
+      disclaimer: 'candidate class; 75% accuracy on 69 verified objects; separates variables poorly',
+      breakdown: 'ML probabilities (non-variable classes only)',
+      limitNote: 'The "variable" vs. moving decision comes from the image (dipole / kind); the Gaia DR3 random forest only decides among star, brown dwarf, and white dwarf.',
     },
     manifestStatus: {
       partialBadge: 'Partial processing',

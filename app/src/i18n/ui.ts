@@ -42,7 +42,7 @@ export interface AstroCopy {
 
 export interface UiDict {
   skip: string;
-  nav: { glossary: string; theme: string; themeDark: string; themeLight: string; lang: string; langName: string; share: string; copied: string };
+  nav: { glossary: string; lang: string; langName: string; share: string; copied: string };
   search: { label: string; placeholder: string; submit: string; hint: string; tryLabel: string; soonTag: string; noField: (name: string, deg: string) => string; nearest: string };
   layer1: { generic: string; cta: string; ctaPlaying: string };
   stage: {
@@ -157,11 +157,8 @@ export const UI: Record<Lang, UiDict> = {
     skip: 'Saltar al cielo',
     nav: {
       glossary: 'Glosario',
-      theme: 'Tema',
-      themeDark: 'Noche',
-      themeLight: 'Día',
       lang: 'Idioma',
-      langName: 'English',
+      langName: 'Español',
       share: 'Copiar enlace',
       copied: 'Enlace copiado',
     },
@@ -366,11 +363,8 @@ export const UI: Record<Lang, UiDict> = {
     skip: 'Skip to the sky',
     nav: {
       glossary: 'Glossary',
-      theme: 'Theme',
-      themeDark: 'Night',
-      themeLight: 'Day',
       lang: 'Language',
-      langName: 'Español',
+      langName: 'English',
       share: 'Copy link',
       copied: 'Link copied',
     },
