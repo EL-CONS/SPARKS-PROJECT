@@ -1,0 +1,13 @@
+# Entorno propio de la canalizacion (Python 3.12, probado en Windows)
+# Instalacion:
+#   python -m venv pipeline/.venv
+#   pipeline/.venv/Scripts/python -m pip install -r pipeline/requirements.txt
+numpy==2.5.4
+astropy==8.0.2
+pyvo==1.10.0
+requests==2.34.2
+reproject==0.21.0
+scipy==1.18.1
+matplotlib==3.11.2
+pillow==13.0.0
+pytest==9.2.0

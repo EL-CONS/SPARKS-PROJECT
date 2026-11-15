@@ -1,0 +1,10 @@
+# Entorno y cache de la canalizacion
+pipeline/.venv/
+pipeline/_work/
+pipeline/.pytest_cache/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Datos crudos de trabajo (los recortes y respuestas SIA pesan cientos de MB)
+data-new/**/raw/
