@@ -110,5 +110,6 @@ La interfaz ya no tiene cifras escritas a mano del clasificador (`74e6f5e`). Las
 | Declarar uso de SI de Cons y Horacio | Cons, Horacio | No |
 | Motivos de `parcial` y salvedades del manifiesto solo en español y sin acentos (se ven así en la interfaz en inglés) | Horacio (datos) | No |
 | Catálogos Gaia y CatWISE en `data-new/` (hoy vacíos) | Horacio | No |
+| Escalas de gris de `data-new/` (`scales` del manifiesto y PNG de parpadeo) dominadas por píxeles muy brillantes: en WISE 0855 los PNG de D5 van de 0 a 12 sobre 255 y los de D6 son casi planos (105–130), así que el parpadeo y la suma no muestran el objeto. La resta sí (usa sigma). En la demo, enseñar WISE 0855 en Resta. Visto el 14 nov 23:43 en la app | Horacio (regenerar escalas, p. ej. por percentiles) | No para la subida; afecta la demo |
 | Fuente al lado de las cifras de las notas de objetivos (`app/src/i18n/ui.ts`) | Horacio | No |
 | Leer la Project Submission Guide y la Judging and Awards Guide | Joaquín | No para la subida; sí antes de enviar |

@@ -1,80 +1,58 @@
-# Pitch · 3 minutos · español
+# Pitch · 3 minutos · español · 7 diapositivas
 
-Tono: humilde, frases cortas, una idea por frase. Pausas marcadas con **(pausa)**. Nada de jerga. Cada número sale de `fuentes.md`.
+Versión del 14 de noviembre, 23:40, alineada con la presentación `docs/pitch/presentacion/index.html` (7 diapositivas, el máximo de la regla; portada y cierre incluidos). Sustituye a la versión anterior, que citaba cifras del 5 de noviembre (WISE 0855 "7.9 contra 8.1", "1 607 473 imágenes", "ocho de nueve sin falsas alarmas") que ya no son las de `data-new/results.json`.
 
-Antes de subir: abrir `?field=barnard` y `?field=wise0855&det=6` en dos pestañas, **en pantalla completa (F11)**; en un proyector de 1280×720 los 6 paneles quedan chicos, así que para cada momento wow se toca un panel para ampliarlo (o se usa `det=N` en la URL). El QR listo en la diapositiva final; el video de respaldo en el escritorio.
+Tono: humilde, frases cortas, una idea por frase. **(pausa)** marca un silencio. Nunca "descubrimos": "candidatos para revisar".
+
+Cómo presentar: abrir `docs/pitch/presentacion/index.html` en el navegador, pantalla completa (F11). Flechas o espacio para avanzar. La tecla `E` permite corregir un texto en vivo; se guarda en ese navegador. Si Cons ya tiene la URL de AWS, pegarla en `APP_URL` al final del archivo: el botón "Abrir Sparks en vivo" y el QR del cierre la usan.
 
 ---
 
-### 0:00 · Mundo ordinario (20 s)
-**Pantalla:** negro. Luego el logotipo de Sparks (los dos cuadritos: uno azul, uno ámbar).
-
+### 1 · Portada (0:00–0:15)
 > Somos Cosmonautas. Estudiamos Ciencias de la Computación aquí, en Hermosillo.
-> Nos llamamos Cosmonautas… y pasamos semanas mirando al suelo.
-> Radares que miden la Tierra. Incendios. Hasta le pusimos nombre al proyecto: Sparks. Chispas.
+> Nos llamamos Cosmonautas… y pasamos semanas mirando al suelo. **(pausa)** Este reto nos hizo mirar arriba.
+
+### 2 · Mirar dos veces (0:15–0:45)
+> En 1930, Clyde Tombaugh tomó dos fotos del mismo cielo, con seis días de diferencia. Las alternó. Algo saltó. Era Plutón.
 > **(pausa)**
-> Algo no cuadraba.
+> Hoy la NASA tiene SPHEREx, un telescopio que fotografía el cielo entero cada seis meses, en 102 colores.
+> La estrella más rápida del cielo avanza apenas un píxel y medio en un año. Nadie puede revisar eso a mano.
 
-### 0:20 · El llamado (25 s)
-**Pantalla:** dos fotos viejas del cielo, lado a lado (placas de Plutón, con crédito).
+Fuentes: placas del 23 y 29 de enero de 1930 (`docs/pitch/revision-ciencia.md`, verificado por Horacio). Barnard 10.39″/año (Gaia DR3) ÷ 6.15″ por píxel = 1.7 píxeles. 102 bandas y cielo completo cada seis meses: `docs/reto/reto.md`.
 
-> Entonces leímos este reto.
-> En 1930, un muchacho de una granja de Kansas, sin título universitario, tomó dos fotografías del mismo cielo. Con seis días de diferencia.
-> Las puso una contra otra. Y algo saltó.
-> Era Plutón.
-> **(pausa)**
-> Eso nos atrapó. No hacía falta un telescopio gigante. Hacía falta mirar dos veces.
+### 3 · Sparks (0:45–1:15)
+> Esto es Sparks. Escribes unas coordenadas… y el cielo parpadea.
+> Azul es donde estaba. Ámbar, donde está ahora.
+> Aquí, la estrella de Barnard, con un año de diferencia, en uno de los seis detectores de SPHEREx.
+> Puedes sumar las fotos para limpiar el ruido, restarlas para ver solo lo que cambió, acercar el campo, encimar los catálogos de Gaia y de WISE, y tocar cualquier punto para ver su espectro.
 
-### 0:45 · La prueba (30 s)
-**Pantalla:** un contador grande: 1,607,473. Debajo: "imágenes de SPHEREx, hoy".
+Opcional, si sobra tiempo: clic en "Abrir Sparks en vivo" (abre la app; volver con Alt+Tab).
 
-> Hoy la NASA tiene un telescopio, SPHEREx, que fotografía el cielo entero en 102 colores.
-> Ya hay más de un millón seiscientas mil imágenes. Nadie puede compararlas a mano.
-> Y no es fácil. Un punto que se mueve, apenas avanza un par de cuadritos de la imagen en un año.
-> Cada foto está tomada en un color distinto.
-> Y el detector tiene su propio ruido, sus reflejos, sus manchas.
-> Es como rastrear un satélite… cuando tu cámara cambia de color en cada foto.
+### 4 · La prueba: Barnard (1:15–1:45)
+> Restamos el cielo de hace un año al de hoy. Lo que no se movió desaparece.
+> Nuestra flecha dice: diez punto dos segundos de arco por año, más menos cuatro décimas.
+> La de Gaia, el mejor catálogo de estrellas del mundo, dice diez punto cuatro.
+> **(pausa)** Coinciden.
 
-### 1:15 · La recompensa: Barnard (30 s)
-**Pantalla:** Sparks en vivo. Botón "Barnard's Star". Vista "Subtract B−A": la mancha ámbar arriba, la azul abajo. Luego la tarjeta con las dos flechas.
+Fuente: `data-sample/results.json` (Barnard: 10.23 ± 0.43″/año contra 10.39, 0.4 σ; 6 puntos en D5 y D6, paralaje de Gaia descontada). Ojo: esta corrida es del 5 de noviembre; ver la decisión de procedencia en `docs/auditoria/procedencia.md`.
 
-> Esto es Sparks. Eliges un pedazo de cielo… y el cielo parpadea.
-> Esta es la estrella de Barnard. Restamos el cielo de hace un año al de hoy.
-> Lo azul es donde estaba. Lo ámbar, donde está.
-> **(pausa)**
-> Nuestra flecha dice: 10.2 segundos de arco por año.
-> La de Gaia, el mejor catálogo de estrellas del mundo, dice 10.4.
-> Coinciden.
-> **(pausa)**
-> La primera vez que vimos las dos flechas juntas, nos quedamos callados.
+### 5 · Los cinco del reto (1:45–2:20)
+> Probamos los cinco objetivos del reto. Tres se mueven. Dos cambian de brillo.
+> WISE 0855 es la enana café más fría que se conoce. Gaia no la ve. En el infrarrojo largo brilla al menos diez veces más que en el corto: eso dice que es fría.
+> Su movimiento nos da seis, el catálogo dice ocho. No lo escondemos: lo marcamos para revisar.
+> Las dos variables no se mueven. R Draconis es tan brillante que satura la cámara, y Sparks lo dice en vez de inventar un número.
 
-### 1:45 · La recompensa: WISE 0855 (35 s)
-**Pantalla:** botón "WISE 0855". Panel D6 solo, con el punto en la retícula. Luego la línea "Not in Gaia DR3". Luego la huella de 102 colores: oscura arriba, encendida abajo.
+Fuentes (`data-new/results.json`): WISE 0855 6.04 ± 0.76 contra 8.088 (2.7 σ), cociente D6/D2 ≥ 10.09 (cota inferior); ε Indi B 4.21 ± 0.28 contra 4.684; RW Aurigae 1.32 ± 0.57, cota superior, no detección; R Draconis sin detecciones utilizables (satura).
 
-> Ahora, algo más difícil. WISE 0855. La enana café más fría que se conoce. Unos 23 grados bajo cero. Como un congelador.
-> Gaia no la ve. No está en su catálogo.
-> En luz casi visible, aquí no hay nada. **(pausa)** En el infrarrojo largo… ahí está.
-> Y esta es su huella en 102 colores.
-> Apagada aquí. Encendida al final.
-> Esa forma dice: es fría. El metano de su atmósfera se come la luz.
-> Y también se mueve: nuestra flecha marca 7.9 por año; el catálogo infrarrojo, 8.1.
+### 6 · Candidatos, no descubrimientos (2:20–2:45)
+> No decimos que descubrimos nada. Damos candidatos para revisar, con su margen de error.
+> Nuestro clasificador acierta 78 % en 69 objetos con clase verificada. Donde falla, en las variables, dejamos que decida la imagen.
+> Y funciona en cualquier navegador, también en el teléfono. Para voluntarios, para escuelas, para el astrónomo que quiere un primer vistazo.
 
-### 2:20 · El regreso con el elixir (25 s)
-**Pantalla:** el campo de coordenadas; luego el botón "Open on phone" con el QR.
+Fuentes: `ml-clasificador/resultados_v2.json` (exactitud dejando uno fuera 0.7826, 69 objetos; recall de variable 0.556). 64 pruebas automáticas (`npm test`). QA: `docs/qa/navegador-cinco-objetivos.md`.
 
-> Sparks es para cualquiera. Escribes coordenadas, o abres el enlace en tu teléfono.
-> Los cinco objetivos del reto abren al instante. Un pedazo de cielo nuevo tarda un par de minutos: Sparks lo arma en vivo.
-> Para voluntarios que buscan enanas cafés. Para clubes. Para una escuela en Sonora.
-> Y para el astrónomo que quiere un primer vistazo antes de bajar gigas de datos.
-> SPHEREx publica imágenes nuevas cada semana. Sparks no tiene los lotes escritos a mano: le pregunta al archivo cuáles hay. Hoy usa dos; el siguiente entrará solo.
-> Lo probamos una sola vez con nueve estrellas veloces que nunca habíamos usado: encontró ocho, sin falsas alarmas.
-> No decimos que descubrimos nada. Te damos candidatos para revisar.
-
-### 2:45 · Cierre (15 s)
-**Pantalla:** QR grande + "Every spark that moves has a fingerprint."
-
-> Plutón se encontró mirando dos veces.
-> Nosotros miramos un millón de veces, en 102 colores.
+### 7 · Cierre (2:45–3:00)
+> Plutón se encontró mirando dos veces. Nosotros miramos en 102 colores.
 > **(pausa)**
 > Cada chispa que se mueve tiene una huella.
 > Somos Cosmonautas. Gracias.
@@ -82,14 +60,10 @@ Antes de subir: abrir `?field=barnard` y `?field=wise0855&det=6` en dos pestaña
 ---
 
 ## Si la demo en vivo falla
-**Regla:** no se arregla en el escenario. A los 5 segundos se cambia al video de respaldo **`docs/pitch/demo-backup.webm`** (36 s, grabado de la app real: Barnard → WISE 0855 → QR; se regenera con `tests/e2e/record_demo.py`) y a las capturas de `docs/screenshots/`.
+No se arregla en el escenario. La presentación no depende de la red, salvo las fuentes y el QR: el parpadeo y la resta son imágenes reales guardadas en `docs/pitch/presentacion/assets/`. Se sigue el guion igual.
 
-Frase puente:
-> El Wi-Fi decidió ser un asteroide. **(pausa)** Les muestro la grabación de hace una hora, con los mismos datos.
-
-Luego se sigue el guion igual, señalando las capturas `v1-barnard-sub-1440.png` y `v1-wise0855-stack-1440.png`. Toda la app funciona sin internet si se corre local (`make build` + `python -m http.server` dentro de `app/dist`): tener esa pestaña abierta antes de subir.
-
-## Lema: 3 opciones
-1. **"Every spark that moves has a fingerprint."** ← elegido: junta las dos ideas del producto (se mueve + huella de colores) y suena bien en inglés y en español ("Cada chispa que se mueve tiene una huella").
-2. "Look twice. In 102 colors."
-3. "The coldest sparks glow in infrared."
+## Preguntas difíciles
+Las diez preguntas de un jurado astrofísico, con respuesta y fuente, están en `docs/pitch/revision-ciencia.md` (Horacio). Las tres más probables:
+- **¿El 8 de 9 lo logró el ML?** Ya no lo citamos en este pitch. Si sale: fue la regla física, en una prueba previa (`data-sample/results.json`), no el modelo.
+- **¿Por qué WISE 0855 da 6 y no 8?** Una estrella de fondo a 1.2 píxeles obliga a enmascararla y eso sesga el centroide; lo reportamos tal cual (P4 de la revisión).
+- **¿Por qué R Draconis no tiene movimiento?** Satura las seis bandas; no usamos píxeles saturados ni rellenamos con Gaia (P8).

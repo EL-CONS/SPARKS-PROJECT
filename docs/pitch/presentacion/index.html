@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sparks · Pitch</title>
+<!-- Las mismas fuentes que la app (Constelación) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;500&family=Nunito:wght@400;600;700;800&family=Unbounded:wght@400;500;600;700&display=swap">
+<style>
+/* ===========================================
+   TEMA: el sistema visual de Sparks (app/src/styles/app.css)
+   Azul = antes. Ámbar = ahora. Nunca para otra cosa.
+   =========================================== */
+:root {
+  --stage-bg: #02040a;
+  --slide-bg: #02040a;
+  --bg: #02040a;
+  --text: #f1f6ff;
+  --text-2: #c6cfde;
+  --text-3: #98a3b6;
+  --rule: rgb(220 236 255 / 0.12);
+  --rule-strong: rgb(220 236 255 / 0.28);
+  --surface: rgb(16 24 36 / 0.7);
+  --before: #62b6e8;
+  --now: #ffb238;
+  --now-ink: #ffc76e;
+  --lens: #fff4dc;
+  --mint: #8de8c6;
+  --font-display: 'Unbounded', sans-serif;
+  --font-text: 'Nunito', sans-serif;
+  --font-data: 'Martian Mono', monospace;
+  --pad: 120px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ===========================================
+   FIXED 16:9 STAGE: MANDATORY BASE STYLES (viewport-base.css, completo)
+   =========================================== */
+html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: var(--stage-bg, #000); }
+.deck-viewport { position: fixed; inset: 0; overflow: hidden; background: var(--stage-bg, #000); }
+.deck-stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; transform-origin: 0 0; background: var(--slide-bg, #fff); }
+.slide { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; display: block; visibility: hidden; opacity: 0; pointer-events: none; background: var(--slide-bg, #fff); }
+.slide.active, .slide.visible { visibility: visible; opacity: 1; pointer-events: auto; z-index: 1; }
+img, video, canvas, svg { max-width: 100%; max-height: 100%; }
+.deck-controls { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 1000; }
+@media print {
+  html, body { width: 1920px; height: auto; overflow: visible; background: #fff; }
+  .deck-viewport { position: static; overflow: visible; background: #fff; }
+  .deck-stage { position: static; width: auto; height: auto; transform: none !important; background: none; }
+  .slide { position: relative; display: block !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; width: 1920px; height: 1080px; break-after: page; page-break-after: always; }
+  .slide:last-child { break-after: auto; page-break-after: auto; }
+  .deck-controls { display: none !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; }
+}
+
+/* ===========================================
+   CIELO DE FONDO (un canvas para todo el deck, debajo de las diapositivas)
+   =========================================== */
+#sky { position: absolute; inset: 0; width: 1920px; height: 1080px; z-index: 0; pointer-events: none; }
+.slide { background: transparent; color: var(--text); font-family: var(--font-text); transition: opacity 0.7s var(--ease), visibility 0.7s; }
+.haze { position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(60% 50% at 85% 10%, rgb(255 170 90 / 0.08), transparent 70%),
+    radial-gradient(55% 55% at 10% 95%, rgb(35 79 78 / 0.22), transparent 70%); }
+
+/* ===========================================
+   TIPOGRAFÍA Y PIEZAS COMUNES
+   =========================================== */
+.kicker { font-family: var(--font-data); font-size: 22px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-3); display: flex; align-items: center; gap: 18px; }
+.kicker .n { color: var(--now-ink); }
+.kicker::after { content: ''; width: 120px; height: 1px; background: var(--rule-strong); }
+h1, h2 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.02em; line-height: 1.04; }
+h2 { font-size: 84px; }
+.lead { font-size: 38px; line-height: 1.35; color: var(--text-2); max-width: 900px; }
+.src { font-family: var(--font-data); font-size: 17px; color: var(--text-3); letter-spacing: 0.02em; line-height: 1.5; }
+.before { color: var(--before); }
+.now { color: var(--now-ink); }
+.pad { position: absolute; inset: 0; padding: 110px var(--pad) 100px; }
+.foot { position: absolute; left: var(--pad); right: var(--pad); bottom: 54px; display: flex; justify-content: space-between; align-items: center; }
+.pg { font-family: var(--font-data); font-size: 18px; color: var(--text-3); }
+
+/* Reveal escalonado: cada .r entra cuando su diapositiva se activa */
+.r { opacity: 0; transform: translateY(34px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
+.slide.visible .r { opacity: 1; transform: none; }
+.slide.visible .r.d1 { transition-delay: 0.10s; } .slide.visible .r.d2 { transition-delay: 0.25s; }
+.slide.visible .r.d3 { transition-delay: 0.40s; } .slide.visible .r.d4 { transition-delay: 0.55s; }
+.slide.visible .r.d5 { transition-delay: 0.70s; } .slide.visible .r.d6 { transition-delay: 0.85s; }
+.slide.visible .r.d7 { transition-delay: 1.00s; } .slide.visible .r.d8 { transition-delay: 1.15s; }
+
+/* Imágenes de SPHEREx: sin filtros ni efectos, solo ampliadas píxel a píxel */
+.sky-img { image-rendering: pixelated; display: block; width: 100%; height: 100%; }
+
+/* ===========================================
+   1 · PORTADA
+   =========================================== */
+.s-title .pad { display: grid; grid-template-columns: 560px 1fr; align-items: center; gap: 90px; padding-top: 80px; }
+.s-title .mark { width: 560px; height: 560px; position: relative; }
+.s-title .mark img { width: 100%; height: 100%; mix-blend-mode: screen; } /* el SVG del logo trae fondo #06080C: con screen desaparece sobre el cielo */
+.s-title h1 { font-size: 220px; font-weight: 700; letter-spacing: -0.04em; }
+.s-title .tag { font-size: 52px; color: var(--text-2); margin-top: 26px; font-weight: 600; }
+.s-title .meta { margin-top: 70px; display: grid; gap: 14px; }
+.s-title .meta div { font-family: var(--font-data); font-size: 24px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); }
+.s-title .meta b { color: var(--text); font-weight: 500; }
+.s-title .sa { position: absolute; right: var(--pad); top: 70px; width: 210px; opacity: 0.9; }
+
+/* ===========================================
+   2 · MIRAR DOS VECES (dos placas que parpadean)
+   =========================================== */
+.s-twice .pad { display: grid; grid-template-columns: 820px 1fr; gap: 110px; align-items: center; }
+.plates { position: relative; width: 820px; height: 560px; }
+.plate { position: absolute; inset: 0; border: 1px solid var(--rule-strong); border-radius: 6px; overflow: hidden; background: #070a10; }
+.plate .lbl { position: absolute; left: 22px; bottom: 18px; font-family: var(--font-data); font-size: 20px; letter-spacing: 0.08em; }
+.plate .st { position: absolute; border-radius: 50%; background: #e8eef8; }
+/* Las dos placas alternan; solo cambia de lugar un punto (la "chispa") */
+.plate.b { animation: plateBlink 2s steps(1) infinite; }
+@keyframes plateBlink { 0%, 49.99% { opacity: 0; } 50%, 100% { opacity: 1; } }
+.plate .mover { width: 14px; height: 14px; box-shadow: 0 0 0 10px rgb(255 255 255 / 0.04); }
+.plate .ring { position: absolute; width: 64px; height: 64px; border-radius: 50%; border: 3px solid; transform: translate(-50%, -50%); }
+.s-twice h2 { font-size: 66px; }
+.s-twice .lead { margin-top: 34px; font-size: 36px; }
+.facts { margin-top: 54px; display: grid; gap: 26px; }
+.fact { display: grid; grid-template-columns: 210px 1fr; align-items: baseline; gap: 26px; border-top: 1px solid var(--rule); padding-top: 22px; }
+.fact .big { font-family: var(--font-display); font-size: 64px; font-weight: 600; color: var(--text); }
+.fact .txt { font-size: 28px; color: var(--text-2); line-height: 1.35; }
+
+/* ===========================================
+   3 · SPARKS (el parpadeo real de Barnard)
+   =========================================== */
+.s-app .pad { display: grid; grid-template-columns: 700px 1fr; gap: 110px; align-items: center; }
+.blink { position: relative; width: 700px; }
+.blink .frame { position: relative; width: 700px; height: 700px; border-radius: 14px; overflow: hidden; border: 1px solid var(--rule-strong); }
+.blink .frame img { position: absolute; inset: 0; }
+.blink .frame .f2 { animation: plateBlink 2s steps(1) infinite; }
+.blink .marks { position: absolute; inset: 0; width: 700px; height: 700px; }
+.blink .cap { display: flex; justify-content: space-between; margin-top: 18px; font-family: var(--font-data); font-size: 21px; color: var(--text-3); }
+.blink .when { position: absolute; top: 20px; left: 20px; font-family: var(--font-data); font-size: 24px; padding: 8px 16px; border-radius: 999px; background: rgb(2 4 10 / 0.75); }
+.blink .when .b, .blink .when .a { display: inline-flex; align-items: center; gap: 10px; }
+.blink .when .a { animation: plateBlink 2s steps(1) infinite; position: absolute; left: 16px; top: 8px; }
+.blink .when .b { animation: plateBlinkInv 2s steps(1) infinite; }
+@keyframes plateBlinkInv { 0%, 49.99% { opacity: 1; } 50%, 100% { opacity: 0; } }
+.dot { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
+.dot.b { background: var(--before); } .dot.a { background: var(--now); }
+.s-app h2 { font-size: 72px; }
+.steps { margin-top: 48px; display: grid; gap: 30px; }
+.step { display: grid; grid-template-columns: 74px 1fr; gap: 26px; align-items: start; }
+.step .num { width: 62px; height: 62px; border-radius: 50%; border: 2px solid var(--rule-strong); display: grid; place-items: center; font-family: var(--font-display); font-size: 26px; }
+.step:last-child .num { border-color: var(--now); color: var(--now-ink); box-shadow: 0 0 40px rgb(255 178 56 / 0.35); }
+.step b { display: block; font-family: var(--font-display); font-weight: 500; font-size: 34px; }
+.step span { display: block; margin-top: 6px; font-size: 26px; color: var(--text-2); line-height: 1.35; }
+.chips { margin-top: 46px; display: flex; flex-wrap: wrap; gap: 14px; }
+.chip { font-family: var(--font-data); font-size: 19px; padding: 10px 18px; border-radius: 999px; border: 1px solid var(--rule-strong); color: var(--text-2); }
+.go { margin-top: 40px; display: inline-flex; align-items: center; gap: 16px; font-family: var(--font-display); font-size: 26px; color: var(--text); text-decoration: none; padding: 18px 30px 18px 22px; border-radius: 999px; border: 2px solid var(--now); background: rgb(255 178 56 / 0.08); }
+.go .dot { background: var(--before); transition: background 0.4s; }
+.go:hover .dot { background: var(--now); }
+
+/* ===========================================
+   4 · BARNARD: LA RESTA Y LAS DOS FLECHAS
+   =========================================== */
+.s-proof .pad { display: grid; grid-template-columns: 640px 1fr; gap: 120px; align-items: center; }
+.diffimg { width: 640px; height: 640px; border-radius: 14px; overflow: hidden; border: 1px solid var(--rule-strong); position: relative; }
+.legend { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-family: var(--font-data); font-size: 20px; color: var(--text-2); }
+.legend span { display: flex; align-items: center; gap: 12px; }
+.s-proof h2 { font-size: 72px; }
+.vs { margin-top: 56px; display: grid; gap: 34px; }
+.meas { display: grid; grid-template-columns: 250px 1fr; align-items: center; gap: 30px; }
+.meas .who { font-family: var(--font-data); font-size: 24px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); }
+.meas .val { font-family: var(--font-display); font-size: 104px; font-weight: 600; letter-spacing: -0.03em; }
+.meas .val small { font-size: 40px; color: var(--text-2); font-weight: 500; letter-spacing: 0; }
+/* Escala horizontal con la barra de error de Sparks y la marca de Gaia */
+.scale { position: relative; height: 90px; margin-top: 10px; }
+.scale .axis { position: absolute; left: 0; right: 0; top: 54px; height: 2px; background: var(--rule-strong); }
+.scale .band { position: absolute; top: 40px; height: 30px; border-radius: 6px; background: rgb(255 178 56 / 0.22); border: 1px solid rgb(255 178 56 / 0.6); transform-origin: left; transform: scaleX(0); transition: transform 1.2s var(--ease) 0.9s; }
+.slide.visible .scale .band { transform: scaleX(1); }
+.scale .tick { position: absolute; top: 28px; width: 4px; height: 54px; border-radius: 2px; }
+.scale .tick.s { background: var(--now); }
+.scale .tick.g { background: var(--text); }
+.scale .tl { position: absolute; top: -4px; transform: translateX(-50%); font-family: var(--font-data); font-size: 19px; white-space: nowrap; }
+.scale .ax { position: absolute; top: 66px; transform: translateX(-50%); font-family: var(--font-data); font-size: 17px; color: var(--text-3); }
+.verdict { margin-top: 30px; font-size: 36px; color: var(--text); font-weight: 700; }
+.verdict em { font-style: normal; color: var(--mint); }
+
+/* ===========================================
+   5 · LOS CINCO OBJETIVOS DEL RETO
+   =========================================== */
+.s-five h2 { font-size: 72px; }
+.s-five .lead { margin-top: 22px; font-size: 32px; max-width: 1500px; }
+.cards { margin-top: 60px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 26px; }
+.card { border: 1px solid var(--rule); border-radius: 18px; padding: 30px 26px 28px; background: var(--surface); height: 470px; display: flex; flex-direction: column; }
+.card .tag { align-self: flex-start; font-family: var(--font-data); font-size: 16px; letter-spacing: 0.08em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--rule-strong); color: var(--text-2); }
+.card .tag.mv { border-color: rgb(255 178 56 / 0.6); color: var(--now-ink); }
+.card h3 { margin-top: 22px; font-family: var(--font-display); font-weight: 600; font-size: 34px; line-height: 1.1; }
+.card .what { margin-top: 10px; font-size: 22px; color: var(--text-3); line-height: 1.35; }
+.card .num { margin-top: auto; font-family: var(--font-display); font-size: 44px; font-weight: 600; letter-spacing: -0.02em; }
+.card .num small { display: block; margin-top: 6px; font-size: 22px; color: var(--text-2); font-weight: 500; letter-spacing: 0; }
+.card .vs2 { margin-top: 8px; font-size: 21px; color: var(--text-2); line-height: 1.4; }
+.card .honest { margin-top: auto; font-size: 25px; line-height: 1.38; color: var(--text); }
+
+/* ===========================================
+   6 · CANDIDATOS, NO DESCUBRIMIENTOS
+   =========================================== */
+.s-honest h2 { font-size: 80px; max-width: 1500px; }
+.cols { margin-top: 80px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 70px; }
+.col { border-top: 2px solid var(--rule-strong); padding-top: 34px; }
+.col .k { font-family: var(--font-data); font-size: 20px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-3); }
+.col .big { margin-top: 18px; font-family: var(--font-display); font-size: 92px; font-weight: 600; letter-spacing: -0.03em; line-height: 1; }
+.col .big small { font-size: 34px; font-weight: 500; color: var(--text-2); letter-spacing: 0; }
+.col p { margin-top: 22px; font-size: 28px; line-height: 1.4; color: var(--text-2); }
+.col p b { color: var(--text); }
+
+/* ===========================================
+   7 · CIERRE
+   =========================================== */
+.s-end .pad { display: grid; grid-template-columns: 1fr 420px; gap: 120px; align-items: center; }
+.s-end .line1 { font-size: 46px; color: var(--text-2); line-height: 1.3; font-weight: 600; }
+.s-end .motto { margin-top: 44px; font-family: var(--font-display); font-size: 92px; font-weight: 600; line-height: 1.06; letter-spacing: -0.03em; }
+.s-end .motto .now { text-shadow: 0 0 60px rgb(255 178 56 / 0.45); }
+.s-end .team { margin-top: 56px; display: flex; align-items: center; gap: 26px; }
+.s-end .team img { width: 92px; mix-blend-mode: screen; }
+.s-end .team div { font-family: var(--font-display); font-size: 40px; }
+.s-end .team small { display: block; font-family: var(--font-data); font-size: 19px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); margin-top: 8px; }
+.qr { width: 420px; padding: 30px; border-radius: 22px; background: #f1f6ff; display: grid; place-items: center; }
+.qr #qr { width: 360px; height: 360px; display: grid; place-items: center; }
+.qr #qr img, .qr #qr canvas { width: 360px !important; height: 360px !important; }
+.qr .pending { color: #02040a; font-family: var(--font-data); font-size: 22px; text-align: center; line-height: 1.5; }
+.url { margin-top: 18px; font-family: var(--font-data); font-size: 19px; color: var(--text-2); text-align: center; word-break: break-all; }
+.credits { position: absolute; left: var(--pad); right: var(--pad); bottom: 50px; font-family: var(--font-data); font-size: 17px; color: var(--text-3); letter-spacing: 0.02em; }
+
+/* ===========================================
+   CONTROLES FUERA DEL ESCENARIO (barra de progreso)
+   =========================================== */
+.progress { position: fixed; left: 0; bottom: 0; height: 3px; background: linear-gradient(90deg, var(--before), var(--now)); transition: width 0.5s var(--ease); z-index: 1000; }
+.edit-hotzone { position: fixed; top: 0; left: 0; width: 80px; height: 80px; z-index: 10000; cursor: pointer; }
+.edit-toggle { position: fixed; top: 18px; left: 18px; z-index: 10001; opacity: 0; pointer-events: none; transition: opacity 0.3s; font-family: 'Martian Mono', monospace; font-size: 13px; padding: 8px 12px; border-radius: 999px; border: 1px solid #ffb238; background: #101826; color: #f1f6ff; cursor: pointer; }
+.edit-toggle.show, .edit-toggle.active { opacity: 1; pointer-events: auto; }
+body.editing [data-edit] { outline: 1px dashed rgb(255 178 56 / 0.5); outline-offset: 4px; }
+</style>
+</head>
+<body>
+<div class="deck-viewport">
+<main class="deck-stage" id="deckStage">
+  <canvas id="sky" width="1920" height="1080" aria-hidden="true"></canvas>
+
+  <!-- =========================================================
+       1 · PORTADA (0:00–0:15)
+       ========================================================= -->
+  <section class="slide s-title" aria-label="Portada">
+    <div class="haze"></div>
+    <img class="sa r d6" src="assets/spaceapps-color-white.svg" alt="NASA Space Apps Challenge">
+    <div class="pad">
+      <div class="mark r d1"><img src="assets/symbol-animated.svg" alt="Logo de Sparks: un punto azul y uno ámbar"></div>
+      <div>
+        <h1 class="r d2" data-edit>Sparks</h1>
+        <p class="tag r d3" data-edit>Mira qué se mueve en el cielo.</p>
+        <div class="meta r d4">
+          <div data-edit><b>Cosmonautas</b> · Hermosillo, Sonora</div>
+          <div data-edit>NASA Space Apps Challenge 2026</div>
+          <div data-edit>Reto · Planet X and SPHEREx</div>
+        </div>
+      </div>
+    </div>
+    <!-- NOTAS: "Somos Cosmonautas, de Hermosillo. Nos llamamos Cosmonautas y pasamos semanas mirando al suelo. Este reto nos hizo mirar arriba." -->
+  </section>
+
+  <!-- =========================================================
+       2 · MIRAR DOS VECES (0:15–0:45)
+       ========================================================= -->
+  <section class="slide s-twice" aria-label="Mirar dos veces">
+    <div class="haze"></div>
+    <div class="pad">
+      <div class="r d1">
+        <div class="plates" id="plates" aria-label="Dos placas del mismo cielo que alternan; un punto cambia de lugar">
+          <!-- placa A y placa B: mismas estrellas, un punto movido (dibujo, no datos) -->
+          <div class="plate a"><span class="lbl before">placa 1</span></div>
+          <div class="plate b"><span class="lbl now">placa 2 · seis días después</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="kicker r d1"><span class="n">01</span> Mirar dos veces</div>
+        <h2 class="r d2" data-edit>En 1930, Plutón apareció al comparar dos fotos.</h2>
+        <p class="lead r d3" data-edit>Clyde Tombaugh alternó dos placas del mismo cielo. Lo que saltó, se había movido.</p>
+        <div class="facts">
+          <div class="fact r d4"><span class="big" data-edit>102</span><span class="txt" data-edit>colores: así fotografía SPHEREx el cielo entero, cada seis meses.</span></div>
+          <div class="fact r d5"><span class="big" data-edit>1.7 px</span><span class="txt" data-edit>lo que avanza en un año la estrella más rápida del cielo. Nadie puede revisar eso a mano.</span></div>
+        </div>
+        <p class="src r d6" style="margin-top:34px" data-edit>Placas de Tombaugh: 23 y 29 de enero de 1930. Barnard: 10.39″/año (Gaia DR3) ÷ 6.15″ por píxel de SPHEREx.</p>
+      </div>
+    </div>
+    <!-- NOTAS: "En 1930, un muchacho de Kansas tomó dos fotos del mismo cielo con seis días de diferencia, las alternó y algo saltó: Plutón. Hoy SPHEREx fotografía todo el cielo en 102 colores. La estrella más rápida avanza apenas píxel y medio por año. Nadie puede revisar eso a mano." -->
+  </section>
+
+  <!-- =========================================================
+       3 · SPARKS: ESCRIBES COORDENADAS Y EL CIELO PARPADEA (0:45–1:15)
+       ========================================================= -->
+  <section class="slide s-app" aria-label="Qué hace Sparks">
+    <div class="haze"></div>
+    <div class="pad">
+      <figure class="blink r d1">
+        <div class="frame">
+          <!-- Fotos reales de SPHEREx: Barnard, detector D2, sumas de ago 2025 y ago 2026, tal como las muestra la app -->
+          <img class="sky-img f1" src="assets/barnard-coadd_D2_S0.png" alt="Estrella de Barnard en agosto de 2025, detector D2 de SPHEREx">
+          <img class="sky-img f2" src="assets/barnard-coadd_D2_S2.png" alt="Estrella de Barnard en agosto de 2026, detector D2 de SPHEREx">
+          <!-- Capa de marcas aparte (dibujo): posición medida en cada temporada -->
+          <svg class="marks" viewBox="0 0 700 700" aria-hidden="true">
+            <circle cx="369.5" cy="347.0" r="46" fill="none" stroke="#62b6e8" stroke-width="4"/>
+            <circle cx="369.3" cy="334.8" r="46" fill="none" stroke="#ffb238" stroke-width="4" class="f2"/>
+          </svg>
+          <div class="when"><span class="b"><i class="dot b"></i>ago 2025</span><span class="a"><i class="dot a"></i>ago 2026</span></div>
+        </div>
+        <figcaption class="cap"><span>Estrella de Barnard · SPHEREx D2</span><span>parpadeo real, 1 cambio/s</span></figcaption>
+      </figure>
+      <div>
+        <div class="kicker r d1"><span class="n">02</span> Sparks</div>
+        <h2 class="r d2" data-edit>Escribes coordenadas. El cielo parpadea.</h2>
+        <div class="steps">
+          <div class="step r d3"><span class="num">1</span><div><b data-edit>Apuntas</b><span data-edit>Ascensión recta y declinación, o uno de los cinco objetivos del reto.</span></div></div>
+          <div class="step r d4"><span class="num">2</span><div><b data-edit>Miras</b><span data-edit>Parpadeo, suma y resta en los seis detectores de SPHEREx.</span></div></div>
+          <div class="step r d5"><span class="num">3</span><div><b data-edit>¿Qué pasó?</b><span data-edit>Cuánto se movió, con su margen de error y su fuente.</span></div></div>
+        </div>
+        <div class="chips r d6">
+          <span class="chip">campo de visión</span><span class="chip">Gaia y CatWISE encima</span><span class="chip">espectro al vuelo</span><span class="chip">enlace con coordenadas</span><span class="chip">español · English</span>
+        </div>
+        <a class="go r d7" id="goApp" href="#" target="_blank" rel="noopener"><i class="dot"></i>Abrir Sparks en vivo</a>
+      </div>
+    </div>
+    <!-- NOTAS: "Esto es Sparks. Escribes coordenadas y el cielo parpadea. Azul es donde estaba, ámbar donde está. Aquí la estrella de Barnard, con un año de diferencia." Si da tiempo: clic en "Abrir Sparks en vivo". -->
+  </section>
+
+  <!-- =========================================================
+       4 · BARNARD: LA PRUEBA (1:15–1:45)
+       ========================================================= -->
+  <section class="slide s-proof" aria-label="Barnard: medimos su movimiento">
+    <div class="haze"></div>
+    <div class="pad">
+      <figure class="r d1">
+        <div class="diffimg">
+          <!-- Resta real (ago 2026 − ago 2025, D2), pintada con el mismo mapa que la app (hacer-assets.py) -->
+          <img class="sky-img" src="assets/barnard-resta_D2_S0_S2.png" alt="Resta de dos temporadas de Barnard: azul donde estaba, ámbar donde está">
+        </div>
+        <div class="legend"><span><i class="dot b"></i>azul: donde estaba</span><span><i class="dot a"></i>ámbar: donde está</span></div>
+      </figure>
+      <div>
+        <div class="kicker r d1"><span class="n">03</span> La prueba</div>
+        <h2 class="r d2" data-edit>Restamos un año de cielo. Medimos la flecha.</h2>
+        <div class="vs">
+          <div class="meas r d3"><span class="who">Sparks</span><span class="val now"><span class="count" data-to="10.23" data-dec="2">0.00</span> <small>± 0.43 ″/año</small></span></div>
+          <div class="meas r d4"><span class="who">Gaia DR3</span><span class="val"><span class="count" data-to="10.39" data-dec="2">0.00</span> <small>″/año</small></span></div>
+        </div>
+        <!-- Escala 9.0 a 11.5 ″/año en 900 px: x = (v − 9) / 2.5 × 900 -->
+        <div class="scale r d5" style="width:900px">
+          <div class="axis"></div>
+          <div class="band" style="left:302.4px; width:309.6px"></div>
+          <div class="tick s" style="left:441.6px"></div><span class="tl now" style="left:443px">Sparks</span>
+          <div class="tick g" style="left:500.4px"></div><span class="tl" style="left:502px; top:86px">Gaia</span>
+          <span class="ax" style="left:0">9</span><span class="ax" style="left:360px">10</span><span class="ax" style="left:720px">11</span>
+        </div>
+        <p class="verdict r d6" data-edit>Coinciden: <em>0.4 σ</em> de diferencia.</p>
+        <p class="src r d7" style="margin-top:14px" data-edit>data-sample/results.json · 6 puntos en D5 y D6 · paralaje de Gaia descontada</p>
+      </div>
+    </div>
+    <!-- NOTAS: "Restamos el cielo de hace un año al de hoy. Nuestra flecha dice 10.2 segundos de arco por año. La de Gaia, el mejor catálogo de estrellas del mundo, 10.4. Coinciden." (pausa) -->
+  </section>
+
+  <!-- =========================================================
+       5 · LOS CINCO OBJETIVOS DEL RETO (1:45–2:20)
+       ========================================================= -->
+  <section class="slide s-five" aria-label="Los cinco objetivos del reto">
+    <div class="haze"></div>
+    <div class="pad">
+      <div class="kicker r d1"><span class="n">04</span> Los cinco del reto</div>
+      <h2 class="r d2" data-edit>Tres se mueven. Dos cambian de brillo.</h2>
+      <p class="lead r d3" data-edit>Y cuando no se puede medir algo, Sparks lo dice en vez de inventarlo.</p>
+      <div class="cards">
+        <article class="card r d3">
+          <span class="tag mv">se mueve</span>
+          <h3>Estrella de Barnard</h3>
+          <p class="what">Enana roja, la más rápida del cielo.</p>
+          <p class="num">10.23 <small>± 0.43 ″/año</small></p>
+          <p class="vs2">Gaia DR3: 10.39</p>
+        </article>
+        <article class="card r d4">
+          <span class="tag mv">se mueve · fría</span>
+          <h3>WISE 0855</h3>
+          <p class="what">La enana café más fría conocida. Gaia no la ve.</p>
+          <p class="num">≥ 10× <small>más luz en D6 que en D2</small></p>
+          <p class="vs2">Movimiento 6.04 ± 0.76 contra 8.09 del catálogo: 2.7 σ, lo marcamos para revisar.</p>
+        </article>
+        <article class="card r d5">
+          <span class="tag mv">se mueve</span>
+          <h3>ε Indi B</h3>
+          <p class="what">Pareja de enanas café; SPHEREx la ve como un punto.</p>
+          <p class="num">4.21 <small>± 0.28 ″/año</small></p>
+          <p class="vs2">Catálogo: 4.68 · 4 temporadas</p>
+        </article>
+        <article class="card r d6">
+          <span class="tag">cambia de brillo</span>
+          <h3>RW Aurigae</h3>
+          <p class="what">Estrellas jóvenes que se oscurecen a ratos.</p>
+          <p class="honest" data-edit>No se movió de forma medible: lo mostramos como cota superior, no como movimiento.</p>
+        </article>
+        <article class="card r d7">
+          <span class="tag">cambia de brillo</span>
+          <h3>R Draconis</h3>
+          <p class="what">Variable tipo Mira.</p>
+          <p class="honest" data-edit>Tan brillante que satura los seis detectores. Sparks explica por qué no hay medida.</p>
+        </article>
+      </div>
+      <p class="src r d8" style="margin-top:26px" data-edit>data-new/results.json (canalización propia, 14 nov 2026) · Barnard: data-sample/results.json · D6 ≈ 4.7 µm, D2 ≈ 1.35 µm</p>
+    </div>
+    <!-- NOTAS: "Probamos los cinco objetivos del reto. Tres se mueven, y lo medimos. WISE 0855, la enana café más fría que se conoce: Gaia no la ve; en infrarrojo largo brilla diez veces más que en el corto: es fría. Las dos variables no se mueven: cambian de brillo. R Draconis es tan brillante que satura la cámara, y Sparks lo dice en vez de inventar un número." -->
+  </section>
+
+  <!-- =========================================================
+       6 · CANDIDATOS, NO DESCUBRIMIENTOS (2:20–2:45)
+       ========================================================= -->
+  <section class="slide s-honest" aria-label="Candidatos, no descubrimientos">
+    <div class="haze"></div>
+    <div class="pad">
+      <div class="kicker r d1"><span class="n">05</span> Honestidad</div>
+      <h2 class="r d2" data-edit>No decimos que descubrimos nada. Damos candidatos para revisar.</h2>
+      <div class="cols">
+        <div class="col r d3">
+          <div class="k">Clasificador de clase</div>
+          <div class="big"><span class="count" data-to="78" data-dec="0">0</span><small> %</small></div>
+          <p data-edit>de aciertos en <b>69 objetos</b> con clase verificada, probando cada uno sin verlo. Separa mal las variables: eso lo decide <b>la imagen</b>, no el modelo.</p>
+        </div>
+        <div class="col r d4">
+          <div class="k">Pruebas</div>
+          <div class="big"><span class="count" data-to="64" data-dec="0">0</span><small> pruebas</small></div>
+          <p data-edit>automáticas, y los <b>cinco objetivos</b> revisados en el navegador a tamaño de computadora y de teléfono, con capturas.</p>
+        </div>
+        <div class="col r d5">
+          <div class="k">Para cualquiera</div>
+          <div class="big">0 <small>instalaciones</small></div>
+          <p data-edit>Un navegador o un teléfono. Para <b>voluntarios, escuelas y astrónomos</b> que quieren un primer vistazo.</p>
+        </div>
+      </div>
+      <p class="src r d6" style="margin-top:60px" data-edit>ml-clasificador/resultados_v2.json (exactitud dejando uno fuera: 0.7826) · npm test: 64 de 64 · docs/qa/navegador-cinco-objetivos.md</p>
+    </div>
+    <!-- NOTAS: "Sparks no dice que descubre nada: da candidatos para revisar, con su margen de error. Nuestro clasificador acierta 78 % en 69 objetos verificados, y donde falla, en las variables, dejamos que decida la imagen. Funciona en cualquier navegador, también en el teléfono." -->
+  </section>
+
+  <!-- =========================================================
+       7 · CIERRE (2:45–3:00)
+       ========================================================= -->
+  <section class="slide s-end" aria-label="Cierre">
+    <div class="haze"></div>
+    <div class="pad">
+      <div>
+        <p class="line1 r d1" data-edit>Plutón se encontró mirando dos veces.<br>Nosotros miramos en 102 colores.</p>
+        <p class="motto r d3" data-edit>Cada chispa que <span class="now">se mueve</span> tiene una huella.</p>
+        <div class="team r d5"><img src="assets/symbol.svg" alt=""><div>Cosmonautas<small>Hermosillo, Sonora · Gracias</small></div></div>
+      </div>
+      <div class="r d4">
+        <div class="qr"><div id="qr"><p class="pending">URL pública:<br>pendiente del<br>despliegue en AWS</p></div></div>
+        <p class="url" id="urlText"></p>
+      </div>
+    </div>
+    <p class="credits r d6" data-edit>Datos: NASA/IPAC IRSA · SPHEREx DR1, QR2 y QR3 · ESA Gaia DR3 · CatWISE2020 · Código: github.com/EL-CONS/SPARKS-PROJECT</p>
+    <!-- NOTAS: "Plutón se encontró mirando dos veces. Nosotros miramos en 102 colores. Cada chispa que se mueve tiene una huella. Somos Cosmonautas. Gracias." -->
+  </section>
+</main>
+</div>
+
+<div class="progress" id="progress"></div>
+<div class="edit-hotzone" id="editHotzone"></div>
+<button class="edit-toggle" id="editToggle" title="Editar textos (E)">editar · E</button>
+
+<!-- QR sin servidor: se genera en el navegador. Si no hay red, queda el texto "pendiente". -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+/* ===========================================
+   CONFIGURACIÓN: pega aquí la URL pública cuando Cons la tenga.
+   El botón "Abrir Sparks en vivo" y el QR del cierre la usan.
+   =========================================== */
+const APP_URL = '';                       // ej. 'https://sparks.ejemplo.org/'
+const LOCAL_URL = 'http://localhost:5190/?ra=269.4486&dec=4.7672&mode=blink&lang=es#explorar';
+
+/* ===========================================
+   CONTROLADOR DE DIAPOSITIVAS (escenario fijo 1920×1080)
+   Flechas, espacio, PgUp/PgDn, Inicio/Fin, rueda y deslizar.
+   =========================================== */
+class SlidePresentation {
+  constructor() {
+    this.slides = [...document.querySelectorAll('.slide')];
+    this.stage = document.getElementById('deckStage');
+    this.progress = document.getElementById('progress');
+    this.current = 0;
+    this.lock = false;
+    this.scale();
+    window.addEventListener('resize', () => this.scale());
+    document.addEventListener('keydown', e => this.onKey(e));
+    window.addEventListener('wheel', e => this.onWheel(e), { passive: true });
+    let x0 = null;
+    window.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
+    window.addEventListener('touchend', e => {
+      if (x0 === null) return;
+      const dx = e.changedTouches[0].clientX - x0;
+      if (Math.abs(dx) > 50) this.go(this.current + (dx < 0 ? 1 : -1));
+      x0 = null;
+    });
+    window.addEventListener('hashchange', () => {
+      const n = parseInt(location.hash.replace('#', ''), 10);
+      if (Number.isFinite(n) && n - 1 !== this.current) this.show(n - 1);
+    });
+    const start = parseInt(location.hash.replace('#', ''), 10);
+    this.show(Number.isFinite(start) ? start - 1 : 0);
+  }
+  scale() {
+    const f = Math.min(innerWidth / 1920, innerHeight / 1080);
+    this.stage.style.transform = `translate(${(innerWidth - 1920 * f) / 2}px, ${(innerHeight - 1080 * f) / 2}px) scale(${f})`;
+  }
+  onKey(e) {
+    if (document.body.classList.contains('editing')) return;
+    if (['ArrowRight', 'ArrowDown', ' ', 'PageDown'].includes(e.key)) { e.preventDefault(); this.go(this.current + 1); }
+    if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); this.go(this.current - 1); }
+    if (e.key === 'Home') this.go(0);
+    if (e.key === 'End') this.go(this.slides.length - 1);
+  }
+  onWheel(e) {
+    if (this.lock || Math.abs(e.deltaY) < 30) return;
+    this.lock = true;
+    this.go(this.current + (e.deltaY > 0 ? 1 : -1));
+    setTimeout(() => { this.lock = false; }, 800);
+  }
+  go(i) { this.show(Math.max(0, Math.min(i, this.slides.length - 1))); }
+  show(i) {
+    this.current = Math.max(0, Math.min(i, this.slides.length - 1));
+    this.slides.forEach((s, k) => {
+      s.classList.toggle('active', k === this.current);
+      s.classList.toggle('visible', k === this.current);
+    });
+    this.progress.style.width = `${((this.current + 1) / this.slides.length) * 100}%`;
+    history.replaceState(null, '', `#${this.current + 1}`);
+    runCounters(this.slides[this.current]);
+  }
+}
+
+/* ===========================================
+   CONTADORES: las cifras suben hasta su valor al entrar la diapositiva
+   =========================================== */
+function runCounters(slide) {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  slide.querySelectorAll('.count').forEach(el => {
+    const to = parseFloat(el.dataset.to);
+    const dec = parseInt(el.dataset.dec || '0', 10);
+    if (reduce) { el.textContent = to.toFixed(dec); return; }
+    const t0 = performance.now() + 500;
+    const dur = 1400;
+    const tick = now => {
+      const p = Math.max(0, Math.min(1, (now - t0) / dur));
+      const e = 1 - Math.pow(1 - p, 3);
+      el.textContent = (to * e).toFixed(dec);
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  });
+}
+
+/* ===========================================
+   PLACAS DE TOMBAUGH (diapositiva 2): mismas estrellas en las dos,
+   un solo punto cambia de lugar. Es un dibujo, no datos.
+   =========================================== */
+function buildPlates() {
+  const a = document.querySelector('.plate.a');
+  const b = document.querySelector('.plate.b');
+  let seed = 7;
+  const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+  for (let k = 0; k < 140; k++) {
+    const x = rnd() * 800 + 10, y = rnd() * 500 + 10, s = 2 + rnd() * rnd() * 7, o = 0.35 + rnd() * 0.65;
+    for (const p of [a, b]) {
+      const d = document.createElement('i');
+      d.className = 'st';
+      Object.assign(d.style, { left: `${x}px`, top: `${y}px`, width: `${s}px`, height: `${s}px`, opacity: o });
+      p.appendChild(d);
+    }
+  }
+  const put = (plate, x, y, color) => {
+    const d = document.createElement('i');
+    d.className = 'st mover';
+    Object.assign(d.style, { left: `${x - 7}px`, top: `${y - 7}px` });
+    plate.appendChild(d);
+    const r = document.createElement('i');
+    r.className = 'ring';
+    Object.assign(r.style, { left: `${x}px`, top: `${y}px`, borderColor: color });
+    plate.appendChild(r);
+  };
+  put(a, 430, 250, '#62b6e8');
+  put(b, 482, 236, '#ffb238');
+}
+
+/* ===========================================
+   CIELO DE FONDO: estrellas que titilan y, de vez en cuando,
+   una "chispa" que pasa de azul (antes) a ámbar (ahora)
+   =========================================== */
+function buildSky() {
+  const c = document.getElementById('sky');
+  const ctx = c.getContext('2d');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let seed = 3;
+  const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+  const stars = Array.from({ length: 360 }, () => ({ x: rnd() * 1920, y: rnd() * 1080, r: 0.4 + rnd() * rnd() * 1.8, p: rnd() * Math.PI * 2, s: 0.4 + rnd() * 1.2 }));
+  const sparks = Array.from({ length: 3 }, () => ({ x: 200 + rnd() * 1500, y: 120 + rnd() * 840, ph: rnd() * 10 }));
+  const draw = t => {
+    ctx.clearRect(0, 0, 1920, 1080);
+    for (const s of stars) {
+      const a = 0.35 + 0.35 * Math.sin(s.p + t * 0.0008 * s.s);
+      ctx.fillStyle = `rgba(241,246,255,${a})`;
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.fill();
+    }
+    for (const k of sparks) {
+      const cyc = ((t / 1000 + k.ph) % 8) / 8;       // un ciclo cada 8 s
+      const now = cyc > 0.5;
+      const glow = Math.sin(cyc * Math.PI * 2) ** 2;
+      const x = k.x + (now ? 14 : 0);
+      const g = ctx.createRadialGradient(x, k.y, 0, x, k.y, 26);
+      const col = now ? '255,178,56' : '98,182,232';
+      g.addColorStop(0, `rgba(${col},${0.55 * glow})`); g.addColorStop(1, `rgba(${col},0)`);
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, k.y, 26, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = `rgba(${col},${0.9 * glow})`; ctx.beginPath(); ctx.arc(x, k.y, 2.6, 0, Math.PI * 2); ctx.fill();
+    }
+    if (!reduce) requestAnimationFrame(draw);
+  };
+  requestAnimationFrame(draw);
+}
+
+/* ===========================================
+   ENLACE A LA APP Y QR DEL CIERRE
+   =========================================== */
+function setupLinks() {
+  const url = APP_URL || LOCAL_URL;
+  document.getElementById('goApp').href = url;
+  if (APP_URL) {
+    document.getElementById('urlText').textContent = APP_URL.replace(/^https?:\/\//, '');
+    if (window.QRCode) {
+      const box = document.getElementById('qr');
+      box.innerHTML = '';
+      new QRCode(box, { text: APP_URL, width: 360, height: 360, colorDark: '#02040a', colorLight: '#f1f6ff', correctLevel: QRCode.CorrectLevel.M });
+    }
+  }
+}
+
+/* ===========================================
+   EDICIÓN EN EL NAVEGADOR: tecla E (o esquina superior izquierda),
+   se guarda en este navegador (localStorage)
+   =========================================== */
+function setupEditing() {
+  const KEY = 'sparks-pitch-edits';
+  const nodes = [...document.querySelectorAll('[data-edit]')];
+  try {
+    const saved = JSON.parse(localStorage.getItem(KEY) || '{}');
+    nodes.forEach((n, i) => { if (saved[i] !== undefined) n.innerHTML = saved[i]; });
+  } catch { /* sin almacenamiento: no pasa nada */ }
+  const btn = document.getElementById('editToggle');
+  const hot = document.getElementById('editHotzone');
+  let on = false, hide = null;
+  const toggle = () => {
+    on = !on;
+    document.body.classList.toggle('editing', on);
+    btn.classList.toggle('active', on);
+    btn.textContent = on ? 'guardar · E' : 'editar · E';
+    nodes.forEach(n => n.setAttribute('contenteditable', on ? 'true' : 'false'));
+    if (!on) {
+      try { localStorage.setItem(KEY, JSON.stringify(nodes.map(n => n.innerHTML))); } catch { /* nada */ }
+    }
+  };
+  btn.addEventListener('click', toggle);
+  hot.addEventListener('click', toggle);
+  const show = () => { clearTimeout(hide); btn.classList.add('show'); };
+  const later = () => { hide = setTimeout(() => { if (!on) btn.classList.remove('show'); }, 400); };
+  hot.addEventListener('mouseenter', show); hot.addEventListener('mouseleave', later);
+  btn.addEventListener('mouseenter', show); btn.addEventListener('mouseleave', later);
+  document.addEventListener('keydown', e => {
+    if ((e.key === 'e' || e.key === 'E') && !e.target.isContentEditable) toggle();
+    else if (e.key === 'Escape' && on) toggle();
+  });
+}
+
+buildPlates();
+buildSky();
+setupLinks();
+setupEditing();
+new SlidePresentation();
+</script>
+</body>
+</html>
