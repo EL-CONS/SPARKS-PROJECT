@@ -5,7 +5,15 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { parseSkyQuery } from '../../core/coords';
 import { parseUrlState, writeUrlState, type UrlAppState, type ViewMode, type DetectorSelection } from '../../core/urlState';
 import { usePlayer } from '../../core/player';
-import { fetchFieldIndex, buildPlatesFromManifest, type IndexField, type PlateAsset } from '../../data/loader';
+import {
+  fetchFieldIndex,
+  buildPlatesFromManifest,
+  fetchLiveFieldStatus,
+  type IndexField,
+  type PlateAsset,
+  type LiveFieldResponse,
+} from '../../data/loader';
+import { validateManifestJson } from '../../data/contract';
 import { I18N } from '../../i18n';
 import { UI } from '../../i18n/ui';
 import { INTRO } from '../../i18n/intro';
@@ -23,7 +31,7 @@ export type FieldData =
   | { status: 'loading'; done: number; total: number }
   | { status: 'ready'; manifest: FullManifest; plates: PlateAsset[] }
   | { status: 'soon' }
-  | { status: 'error' };
+  | { status: 'error'; message?: string };
 
 export function nearestField(fields: IndexField[], ra: number, dec: number) {
   let best: IndexField | null = null;
@@ -49,7 +57,7 @@ export function useSparks() {
   const [url, setUrl] = useState<UrlAppState>(() => parseUrlState(window.location.search));
   const [tab, setTabState] = useState<Tab>(readTab);
   const [fields, setFields] = useState<IndexField[] | null>(null);
-  const [indexError, setIndexError] = useState(false);
+  const [indexError, setIndexError] = useState<string | null>(null);
   const [selected, setSelected] = useState<IndexField | null>(null);
   const [data, setData] = useState<FieldData>({ status: 'loading', done: 0, total: 0 });
   const [attempt, setAttempt] = useState(0);
@@ -61,6 +69,8 @@ export function useSparks() {
   const [query, setQuery] = useState('');
   const [searchError, setSearchError] = useState<string | null>(null);
   const [far, setFar] = useState<{ field: IndexField; deg: number } | null>(null);
+  const [liveField, setLiveField] = useState<LiveFieldResponse | null>(null);
+  const [liveLoading, setLiveLoading] = useState(false);
 
   const t = UI[url.lang];
   const core = I18N[url.lang];
@@ -109,14 +119,14 @@ export function useSparks() {
   }, [url.lang]);
 
   const loadIndex = useCallback(() => {
-    setIndexError(false);
+    setIndexError(null);
     fetchFieldIndex(BASE)
       .then(list => {
         setFields(list);
         const u = parseUrlState(window.location.search);
         setSelected(nearestField(list, u.ra, u.dec).field ?? list[0] ?? null);
       })
-      .catch(() => setIndexError(true));
+      .catch((err) => setIndexError(err instanceof Error ? err.message : 'Error desconocido al cargar index.json'));
   }, []);
   useEffect(loadIndex, [loadIndex]);
 
@@ -130,12 +140,21 @@ export function useSparks() {
     (async () => {
       const head = await fetch(`${BASE}data-sample/${selected.id}/manifest.json`).catch(() => null);
       if (!alive) return;
-      if (!head) return setData({ status: 'error' });
+      if (!head) return setData({ status: 'error', message: 'No se pudo conectar para obtener manifest.json' });
       // A missing folder is a 404, or Vite's SPA fallback (HTML with 200) in dev.
       const isJson = (head.headers.get('content-type') ?? '').includes('json');
       if (head.status === 404 || (head.ok && !isJson)) return setData({ status: 'soon' });
-      if (!head.ok) return setData({ status: 'error' });
-      const manifest = (await head.json()) as FullManifest;
+      if (!head.ok) return setData({ status: 'error', message: `HTTP ${head.status} al descargar manifest.json` });
+      const raw = await head.json();
+      const check = validateManifestJson(raw);
+      if (!check.ok) {
+        const first = check.issues[0];
+        return setData({
+          status: 'error',
+          message: `Error de contrato en manifest.json (${first.path}): ${first.message}`,
+        });
+      }
+      const manifest = check.data as unknown as FullManifest;
       const plates = buildPlatesFromManifest(selected.id, manifest, BASE);
       let done = 0;
       const total = plates.length;
@@ -159,7 +178,11 @@ export function useSparks() {
       setData({ status: 'ready', manifest, plates });
       loadCubes(BASE, selected.id).then(c => alive && setCubes(c)).catch(() => undefined);
       loadGaia(BASE, selected.id).then(g => alive && setGaia(g));
-    })().catch(() => alive && setData({ status: 'error' }));
+    })().catch((err) => {
+      if (!alive) return;
+      const message = err instanceof Error ? err.message : undefined;
+      setData({ status: 'error', message });
+    });
     return () => {
       alive = false;
     };
@@ -248,6 +271,41 @@ export function useSparks() {
     [url.mode, pair, player],
   );
 
+  const queryLiveField = useCallback(
+    async (ra: number, dec: number, apiBaseUrl = 'http://localhost:3001') => {
+      setLiveLoading(true);
+      try {
+        const initial = await fetchLiveFieldStatus(ra, dec, apiBaseUrl);
+        setLiveField(initial);
+        if (initial.status === 'en_cola' || initial.status === 'procesando') {
+          let current = initial;
+          const start = Date.now();
+          while (
+            (current.status === 'en_cola' || current.status === 'procesando') &&
+            Date.now() - start < 15000
+          ) {
+            await new Promise(r => setTimeout(r, 1000));
+            current = await fetchLiveFieldStatus(ra, dec, apiBaseUrl);
+            setLiveField(current);
+          }
+        }
+      } catch (err) {
+        setLiveField({
+          status: 'fallo',
+          error_code: 'ERROR_CONEXION',
+          mensaje: err instanceof Error ? err.message : 'No se pudo conectar con el servidor de campos en vivo',
+        });
+      } finally {
+        setLiveLoading(false);
+      }
+    },
+    []
+  );
+
+  const clearLiveField = useCallback(() => {
+    setLiveField(null);
+  }, []);
+
   return {
     url,
     t,
@@ -283,6 +341,10 @@ export function useSparks() {
     submitSearch,
     searchError,
     far,
+    liveField,
+    liveLoading,
+    queryLiveField,
+    clearLiveField,
     startWithField,
     barnard: fields?.find(f => f.id === 'barnard'),
   };

@@ -27,6 +27,10 @@ export interface I18nDict {
   expectedCatalog: string;
   framesCombined: string;
   seasonsCount: (n: number) => string;
+  statusQueued: string;
+  statusProcessing: string;
+  statusReady: string;
+  statusFailed: string;
 }
 
 export const I18N: Record<Lang, I18nDict> = {
@@ -57,6 +61,10 @@ export const I18N: Record<Lang, I18nDict> = {
     expectedCatalog: 'Catalog reference',
     framesCombined: 'Frames combined',
     seasonsCount: (n: number) => `${n} seasons`,
+    statusQueued: 'Target queued in backend pipeline…',
+    statusProcessing: 'Downloading IRSA cutouts and aligning SPHEREx frames…',
+    statusReady: 'Field cutouts ready for inspection',
+    statusFailed: 'Could not generate live cutouts for these coordinates',
   },
   es: {
     appTitle: 'Sparks · Comparador del cielo SPHEREx',
@@ -85,5 +93,9 @@ export const I18N: Record<Lang, I18nDict> = {
     expectedCatalog: 'Referencia de catálogo',
     framesCombined: 'Cuadros combinados',
     seasonsCount: (n: number) => `${n} temporadas`,
+    statusQueued: 'Objetivo en cola en la canalización del servidor…',
+    statusProcessing: 'Descargando recortes de IRSA y alineando cuadros de SPHEREx…',
+    statusReady: 'Recortes del campo listos para inspección',
+    statusFailed: 'No fue posible generar recortes en vivo para estas coordenadas',
   },
 };

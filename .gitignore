@@ -5,6 +5,7 @@ app/node_modules/
 # Production builds
 dist/
 app/dist/
+app/.vite/
 
 # Local data copy in public
 app/public/data-sample/
@@ -22,3 +23,4 @@ yarn-error.log*
 *.swo
 .vscode/
 .idea/
+__pycache__/

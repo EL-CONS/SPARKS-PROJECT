@@ -1,3 +1,5 @@
+import { validateIndexJson, validateManifestJson } from './contract';
+
 export interface IndexField {
   id: string;
   name: string;
@@ -85,8 +87,13 @@ export async function fetchFieldIndex(baseUrl = '/'): Promise<IndexField[]> {
   if (!res.ok) {
     throw new Error(`Failed to load index.json (HTTP ${res.status})`);
   }
-  const data = (await res.json()) as IndexData;
-  return data.fields ?? [];
+  const raw = await res.json();
+  const checked = validateIndexJson(raw);
+  if (!checked.ok) {
+    const first = checked.issues[0];
+    throw new Error(`Invalid index.json at ${first.path}: ${first.message}`);
+  }
+  return checked.data.fields as unknown as IndexField[];
 }
 
 export function buildPlatesFromManifest(
@@ -114,11 +121,47 @@ export async function loadFieldAssets(
   if (!res.ok) {
     throw new Error(`Failed to load manifest for ${field.id} (HTTP ${res.status})`);
   }
-  const manifest = (await res.json()) as FieldManifest;
+  const raw = await res.json();
+  const checked = validateManifestJson(raw);
+  if (!checked.ok) {
+    const first = checked.issues[0];
+    throw new Error(`Invalid manifest.json for ${field.id} at ${first.path}: ${first.message}`);
+  }
+  const manifest = checked.data as unknown as FieldManifest;
   return {
     status: 'ready',
     field,
     manifest,
     plates: buildPlatesFromManifest(field.id, manifest, baseUrl),
   };
+}
+
+export type LiveFieldStatus = 'en_cola' | 'procesando' | 'listo' | 'fallo';
+
+export interface LiveFieldResponse {
+  status: LiveFieldStatus;
+  job_id?: string;
+  field_id?: string;
+  ra?: number;
+  dec?: number;
+  posicion_en_cola?: number;
+  progreso_porcentaje?: number;
+  etapa_actual?: string;
+  estimado_segundos?: number;
+  estimado_segundos_restantes?: number;
+  manifest_url?: string;
+  data_base_url?: string;
+  error_code?: string;
+  mensaje?: string;
+}
+
+export async function fetchLiveFieldStatus(
+  ra: number,
+  dec: number,
+  apiBaseUrl = 'http://localhost:3001'
+): Promise<LiveFieldResponse> {
+  const url = `${apiBaseUrl}/api/campo?ra=${encodeURIComponent(ra)}&dec=${encodeURIComponent(dec)}`;
+  const res = await fetch(url);
+  const data = (await res.json()) as LiveFieldResponse;
+  return data;
 }

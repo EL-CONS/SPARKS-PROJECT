@@ -13,21 +13,26 @@ const MIME: Record<string, string> = {
 };
 
 function serveDataSample(): Plugin {
+  const handler = (req: any, res: any, next: any) => {
+    const rawPath = (req.url || '/').split('?')[0];
+    const safeRel = path.normalize(rawPath).replace(/^(\.\.(\/|\\|$))+/, '');
+    const fullPath = path.join(DATA_DIR, safeRel);
+    if (!fullPath.startsWith(DATA_DIR) || !fs.existsSync(fullPath) || fs.statSync(fullPath).isDirectory()) {
+      next();
+      return;
+    }
+    const ext = path.extname(fullPath).toLowerCase();
+    res.setHeader('Content-Type', MIME[ext] || 'application/octet-stream');
+    fs.createReadStream(fullPath).pipe(res);
+  };
+
   return {
     name: 'serve-data-sample',
     configureServer(server) {
-      server.middlewares.use('/data-sample', (req, res, next) => {
-        const rawPath = (req.url || '/').split('?')[0];
-        const safeRel = path.normalize(rawPath).replace(/^(\.\.(\/|\\|$))+/, '');
-        const fullPath = path.join(DATA_DIR, safeRel);
-        if (!fullPath.startsWith(DATA_DIR) || !fs.existsSync(fullPath) || fs.statSync(fullPath).isDirectory()) {
-          next();
-          return;
-        }
-        const ext = path.extname(fullPath).toLowerCase();
-        res.setHeader('Content-Type', MIME[ext] || 'application/octet-stream');
-        fs.createReadStream(fullPath).pipe(res);
-      });
+      server.middlewares.use('/data-sample', handler);
+    },
+    configurePreviewServer(server) {
+      server.middlewares.use('/data-sample', handler);
     },
   };
 }
