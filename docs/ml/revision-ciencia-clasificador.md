@@ -28,11 +28,15 @@ Revision del paquete `ml-clasificador/` (rama `joako`, commit `5a8e8f0`: `README
 
 ## 2. Etiquetas y afirmaciones que deben matizarse
 
-1. **Evaluacion en el `split_congelado_horacio` (`3 de 3`):**
-   - Los 3 objetos del conjunto `prueba` (`t452800` Lacaille 9352, `t744064` Gliese 1, `t605760` Gaia DR3 3713594960831605760) pertenecen **todos a la clase `estrella`**. No hay ni una sola enana marron, enana blanca o variable en `prueba`. Decir "3 de 3 en el split de prueba" es numericamente cierto pero no valida las otras tres clases.
-2. **Comparacion contra `regla_gaia` (`91.7 % vs 77.8 %`):**
+1. **Objeto mal etiquetado en la verdad de terreno (`t605760` = Wolf 489, `enana blanca` DZ10 etiquetada como `estrella`):**
+   - En `docs/sprint-13-30/verdad-terreno.csv`, el objeto `t605760` (`Gaia DR3 3713594960831605760`, en el split `prueba`) fue etiquetado originalmente como `estrella` con la nota *"Sin nombre comun. Clase inferida de Gaia: M_G=14.77, BP-RP=1.15 (K/M). Congelado."* porque la regla simple del prototipo corta en $BP-RP \le 0.80$.
+   - Al cruzar sus coordenadas y su `source_id` (`Gaia DR3 3713594960831605760`) en SIMBAD, este objeto es **Wolf 489** (`WD 1334+039`), una **enana blanca fria de atmosfera de helio de tipo espectral DZ10** (`otype = WD*`, $T_{\text{eff}} \approx 5030\text{ K}$, Giammichele et al. 2012, Holberg et al. 2016).
+   - En el diagrama HR de Gaia ($M_G = 14.77$, $BP-RP = 1.15$), Wolf 489 esta 6 magnitudes por debajo de la secuencia principal (una enana K/M con $BP-RP = 1.15$ tendria $M_G \approx 6.5$, mientras que una enana M con $M_G = 14.77$ tendria $BP-RP > 3.8$). Tanto `regla_gaia` ($BP-RP \le 0.8$) como el `RandomForest` entrenado solo con las 4 enanas blancas calientes/templadas originales ($BP-RP \in [-0.28, +0.60]$) la clasifican erroneamente como `estrella`. Hemos mantenido la fila `t605760` congelada por trazabilidad del split `prueba`, pero en la ampliacion a 69 objetos anadimos 6 enanas blancas adicionales que cubren desde DA calientes hasta DC/DQ frias (`WD 0009+501`, `Stein 2051 B`, `Gliese 223.2` DZ9 con $BP-RP = 1.00$, etc.).
+2. **Evaluacion en el `split_congelado_horacio` (`3 de 3`):**
+   - Los 3 objetos del conjunto `prueba` (`t452800` Lacaille 9352, `t744064` Gliese 1, `t605760` Wolf 489) tenian etiqueta nominal `estrella` (y, corrigiendo `t605760` a `enana blanca`, el modelo realmente acierta **2 de 3** en `prueba`, fallando en `t605760`). Ademas, no hay ninguna enana marron ni variable en `prueba`. Decir "3 de 3 en el split de prueba" no valida las cuatro clases y oculta el falso negativo en la enana blanca fria `t605760`.
+3. **Comparacion contra `regla_gaia` (`91.7 % vs 77.8 %`):**
    - En `entrenar.py` (lineas 54-62), `regla_gaia(x)` nunca devuelve `"variable"` (solo devuelve `"enana marron"`, `"enana blanca"` o `"estrella"`), por lo que falla por diseno en las 6 variables (`6/36 = 16.7 %` de penalizacion automatica). El propio `README.md` lo advierte en sus limites; conviene que en cualquier tabla comparativa se aclare que `regla_gaia` es una ablacion de solo 3 clases sin informacion temporal ni infrarroja.
-3. **Etiquetas astrofisicas duales en `verdad-terreno.csv`:**
+4. **Etiquetas astrofisicas duales en `verdad-terreno.csv`:**
    - **Wolf 359** (`BY*` / `Fl*`, estrella fulgurante UV Ceti), **Barnard's Star** (`BY*`), **61 Cygni A** (`BY*`) y **Epsilon Eridani** (`BY*`) tienen tipos SIMBAD de estrellas con variabilidad rotacional o fulguraciones, pero en el reto estan etiquetadas como `estrella` (movers) frente a las variables de gran amplitud (`Mi*`, `TT*`, `CV*`, `S*`). Esto es coherente con la definicion operativa del reto (fuentes cuyo residuo entre temporadas esta dominado por traslacion vs cambio de flujo), pero debe declararse como definicion cinematica/fotometrica y no como "estrellas constantes".
 
 ---
@@ -74,4 +78,4 @@ Combinando `data-new/results.json` (nuestra canalizacion `pipeline/sparkspipe` c
 | `rwaur` | RW Aurigae | `variable` | cota sup. PM | - | `lightcurve` por alas PSF | - | `1.32 +- 0.57` (no det., $<3\sigma$) |
 | `rdra` | R Draconis | `variable` | saturada | - | `lightcurve` por alas PSF | - | nulo (nucleo saturado) |
 
-Con la actualizacion del conjunto verificado (`docs/sprint-13-30/verdad-terreno.csv` y `gaia-fotometria.csv`, ampliado a mas de 60 objetos con mayor representacion de enanas marrones L/T/Y y estrellas variables de distintos tipos: Mira, T Tauri, RR Lyrae, Cefeidas, UV Ceti, BY Draconis y cataclismicas), el clasificador puede reentrenarse eliminando `g_mag` y `log10_paralaje` crudos y evaluando en un split estratificado que incluya las cuatro clases.
+Con la actualizacion del conjunto verificado (`docs/sprint-13-30/verdad-terreno.csv` y `gaia-fotometria.csv`, ampliado de 36 a **69 objetos**: `20 estrellas`, `20 enanas marrones` L/T/Y, `18 variables` de distintos tipos —Mira, T Tauri, RR Lyrae, Cefeidas, UV Ceti, BY Draconis, RV Tauri y cataclismicas— y `11 enanas blancas` DA/DC/DQ/DZ), el clasificador puede reentrenarse eliminando `g_mag` y `log10_paralaje` crudos y evaluando en un split estratificado que incluya las cuatro clases.
