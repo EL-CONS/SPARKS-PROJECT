@@ -1,0 +1,38 @@
+nombre,ra_deg,dec_deg,clase,mu_arcsec_yr,fuente_clase,enlace_fuente,en_gaia,split
+Barnard's Star,269.4486,4.7672,estrella,10.39,Gaia DR3,https://archive.stsci.edu/missions-and-data/gaia,si,desarrollo
+Teegarden's Star,41.2514,16.8994,estrella,5.08,Gaia DR3,https://archive.stsci.edu/missions-and-data/gaia,si,desarrollo
+Wolf 359,164.1203,7.0147,estrella,4.57,Gaia DR3,https://archive.stsci.edu/missions-and-data/gaia,si,desarrollo
+Kapteyn's Star,77.9190,-45.0184,estrella,8.57,Gaia DR3,https://archive.stsci.edu/missions-and-data/gaia,si,desarrollo
+Lacaille 9352,346.4668,-35.8531,estrella,6.90,Gaia DR3,https://archive.stsci.edu/missions-and-data/gaia,si,prueba
+Gliese 1,1.3475,-37.3503,estrella,6.10,Gaia DR3,https://archive.stsci.edu/missions-and-data/gaia,si,prueba
+Gaia DR3 3713594960831605760,75.8239,-15.6543,estrella,3.90,Gaia DR3,https://archive.stsci.edu/missions-and-data/gaia,si,prueba
+Gaia DR3 6281432246412503424,247.9258,-49.6201,estrella,3.51,Gaia DR3,https://archive.stsci.edu/missions-and-data/gaia,si,desarrollo
+Van Maanen's Star,12.2989,5.3878,enana blanca,2.98,Gaia DR3,https://archive.stsci.edu/missions-and-data/gaia,si,desarrollo
+WISE 0855-0714,133.7951,-7.2451,enana marron,8.09,CatWISE2020 / Luhman 2014,https://arxiv.org/abs/1405.7350,no,desarrollo
+Epsilon Indi B,330.8404,-56.7869,enana marron,4.70,Gaia DR3 / McCaughrean 2004,https://arxiv.org/abs/astro-ph/0309256,si,desarrollo
+RW Aurigae,76.9535,30.4015,variable,0.03,SIMBAD,https://simbad.cds.unistra.fr/,si,desarrollo
+R Draconis,248.3308,66.7028,variable,0.01,AAVSO / SIMBAD,https://simbad.cds.unistra.fr/,si,desarrollo
+61 Cygni A,316.7303,38.7494,estrella,5.28,Gaia DR3,https://archive.stsci.edu/missions-and-data/gaia,si,desarrollo
+Lalande 21185,165.8341,35.9699,estrella,4.80,Gaia DR3,https://archive.stsci.edu/missions-and-data/gaia,si,desarrollo
+Groombridge 1830,178.2464,37.7187,estrella,7.06,Gaia DR3,https://archive.stsci.edu/missions-and-data/gaia,si,prueba
+Epsilon Eridani,53.2327,-9.4583,estrella,0.98,Gaia DR3,https://archive.stsci.edu/missions-and-data/gaia,si,desarrollo
+Ross 128,176.9350,0.8045,estrella,1.36,Gaia DR3,https://archive.stsci.edu/missions-and-data/gaia,si,prueba
+Gliese 725 A,280.7088,59.6293,estrella,2.32,Gaia DR3,https://archive.stsci.edu/missions-and-data/gaia,si,desarrollo
+Gliese 687,262.4045,68.3400,estrella,1.30,Gaia DR3,https://archive.stsci.edu/missions-and-data/gaia,si,prueba
+Ross 154,282.4558,-23.8361,estrella,1.02,Gaia DR3,https://archive.stsci.edu/missions-and-data/gaia,si,desarrollo
+Lacaille 8760,327.3197,-38.8674,estrella,3.46,Gaia DR3,https://archive.stsci.edu/missions-and-data/gaia,si,prueba
+Luhman 16,162.2979,-53.3194,enana marron,2.78,Luhman 2013 / Gaia DR3,https://arxiv.org/abs/1303.2001,si,desarrollo
+Gliese 229 B,92.6410,-21.8340,enana marron,0.73,Nakajima et al. 1995,https://archive.stsci.edu/missions-and-data/gaia,no,desarrollo
+WISEP J1541-2250,235.4942,-22.8403,enana marron,0.89,Kirkpatrick et al. 2011 / CatWISE,https://arxiv.org/abs/1108.4677,no,prueba
+WISE 1506+7027,226.6575,70.4608,enana marron,1.63,Kirkpatrick et al. 2011 / CatWISE,https://arxiv.org/abs/1108.4677,no,prueba
+WISE J0350-5658,57.5188,-56.9767,enana marron,1.34,Kirkpatrick et al. 2012 / CatWISE,https://arxiv.org/abs/1205.2122,no,desarrollo
+WISE 0359-5401,59.9833,-54.0322,enana marron,2.05,CatWISE2020,https://arxiv.org/abs/1908.08902,no,prueba
+Sirius B,101.2872,-16.7161,enana blanca,1.34,Gaia DR3,https://archive.stsci.edu/missions-and-data/gaia,si,desarrollo
+Procyon B,114.8255,5.2250,enana blanca,1.26,Gaia DR3,https://archive.stsci.edu/missions-and-data/gaia,si,prueba
+Stein 2051 B,67.4338,58.9772,enana blanca,2.40,Gaia DR3,https://archive.stsci.edu/missions-and-data/gaia,si,desarrollo
+LP 145-141,179.8211,-64.8400,enana blanca,2.68,Gaia DR3,https://archive.stsci.edu/missions-and-data/gaia,si,prueba
+Gliese 440,176.4967,-67.4450,enana blanca,2.67,Gaia DR3,https://archive.stsci.edu/missions-and-data/gaia,si,desarrollo
+Mira,32.2298,-2.9776,variable,0.24,AAVSO / Gaia DR3,https://archive.stsci.edu/missions-and-data/gaia,si,desarrollo
+Chi Cygni,296.9038,32.9142,variable,0.01,AAVSO / Gaia DR3,https://archive.stsci.edu/missions-and-data/gaia,si,prueba
+SS Cygni,325.6798,43.5863,variable,0.12,AAVSO / Gaia DR3,https://archive.stsci.edu/missions-and-data/gaia,si,desarrollo
+U Orionis,88.9754,20.1772,variable,0.02,AAVSO / Gaia DR3,https://archive.stsci.edu/missions-and-data/gaia,si,prueba

@@ -1,12 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sparks · SPHEREx Sky Comparator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Sparks · Mira qué se mueve en el cielo</title>
+    <meta name="description" content="Sparks hace parpadear las imágenes de SPHEREx (NASA) para ver qué se mueve en el cielo. Azul: dónde estaba. Ámbar: dónde está." />
+    <meta name="theme-color" content="#02040A" />
+    <link rel="icon" type="image/svg+xml" href="/src/ui/assets/favicon.svg" />
+    <script>
+      // Set the theme before first paint so nothing flashes. Night is the
+      // default: the sky data are dark and the logo's light reads on night.
+      (function () {
+        try {
+          var q = new URLSearchParams(location.search);
+          var t = q.get('theme') || localStorage.getItem('sparks-theme');
+          if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+          var lang = q.get('lang');
+          if (lang === 'en' || lang === 'es') document.documentElement.lang = lang;
+        } catch (e) {}
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;500&family=Nunito:wght@400;700;800&family=Unbounded:wght@400;500;600;700&display=swap"
+    />
   </head>
   <body>
     <div id="root"></div>
+    <noscript>Sparks necesita JavaScript para mostrar las imágenes del cielo. Sparks needs JavaScript to show the sky images.</noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
