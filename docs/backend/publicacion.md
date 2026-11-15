@@ -1,26 +1,25 @@
 # Publicación estática de Sparks
 
-Sparks compila a archivos estáticos en `app/dist/` y consume los datos precalculados de `data-sample/` y `data-new/`.
+Sparks compila a archivos estáticos en `app/dist/`. Desde la integración del 14 de noviembre (`joako-integracion`), el build copia también los datos: `app/dist/data-sample/` y `app/dist/data-new/` (plugin `serveDataStatic` en `app/vite.config.ts`, gancho `closeBundle`). La carpeta `app/dist/` es lo único que hay que subir.
 
-## Qué se verificó en esta corrida (14 de noviembre de 2026)
+Versión anterior de este documento: Cons, `cbef27d`. Corregida por Joaquín (con Claude Code) el 14 de noviembre a las 23:15, con lo comprobado abajo. La salida completa de `curl` está en `docs/backend/curl-preview.txt`.
 
-1. **Compilación en raíz (`VITE_BASE` por omisión `/`):**
-   - Comando: `npm --prefix app run build` (`tsc && vite build`).
-   - Salida observada: `dist/index.html` (`1.59 kB`), `dist/assets/index-vO7vYyZr.css` (`32.25 kB`), `dist/assets/index-BctVQ2eU.js` (`394.23 kB`, `104.92 kB` gzip).
-2. **Previsualización local con datos (`npm run preview`):**
-   - Comando: `npm --prefix app run preview -- --port 4173 --host 127.0.0.1`.
-   - El plugin `serveDataStatic` en `app/vite.config.ts` (`configurePreviewServer`) sirve `data-sample/` y `data-new/` tanto en `/data-sample` y `/data-new` como bajo el prefijo `VITE_BASE` cuando es distinto de `/`.
-   - Respuestas comprobadas con `curl` y Chromium headless:
-     - `GET /` -> HTTP `200`
-     - `GET /data-sample/index.json` -> HTTP `200`
-     - `GET /data-new/index.json` -> HTTP `200`
-3. **Configuración de `base` en Vite para subrutas (no raíz):**
-   - `app/vite.config.ts` lee `process.env.VITE_BASE || '/'`.
-   - `app/src/ui/kit/useSparks.ts` usa `import.meta.env.BASE_URL` (`BASE`) para construir las rutas de `fetchFieldIndex(BASE)`, manifiestos, cubos y catálogo Gaia.
-   - Prueba real con subruta: `VITE_BASE=/SPARKS-PROJECT/ npm --prefix app run build` generó `dist/index.html` (`1.62 kB`) y reportó `Remote assets in dist/assets/ will be served with base: /SPARKS-PROJECT/`.
-   - **Nota importante para hosting estático en producción:** `npm run build` solo copia `app/src/` y `app/public/` a `app/dist/`; las carpetas `data-sample/` y `data-new/` viven en la raíz del repositorio y en local las sirve el middleware `serveDataStatic` de Vite (`dev` y `preview`). Al publicar `app/dist/` en un servidor estático externo, es necesario copiar o publicar `data-sample/` y `data-new/` dentro de la ruta publicada (por ejemplo `dist/data-sample/` y `dist/data-new/`), o ajustar la ruta pública correspondiente.
+## Qué se comprobó (14 de noviembre de 2026, 23:14, commit `587fe9e`)
 
-## Plataformas externas y repositorios privados
+1. **Build con subruta.** `cd app && VITE_BASE=/SPARKS-PROJECT/ npm run build`. Pasa `tsc` y `vite build`; `app/dist/` pesa 21 MB y contiene 35 archivos `.bin`.
+2. **`npm run preview` con la misma `VITE_BASE`** (puerto 4174). Todo responde `200`: la página `/SPARKS-PROJECT/` (1 645 bytes), `data-sample/index.json` (6 057), `data-new/index.json` (3 288), `data-sample/barnard/frames.bin` (2 908 160) y `data-new/wise0855/frames.bin` (1 253 376).
+   - Ojo: en `preview` (y en `dev`), los datos los sirve el middleware de Vite **desde la raíz del repositorio**, no desde `dist/`. Por eso esta prueba no basta para decir que `dist/` sirve solo.
+   - El middleware también responde en `/data-new/` sin el prefijo, y a una ruta inexistente responde `200` con `index.html` (respaldo de SPA de Vite).
+3. **`app/dist/` servido por un servidor estático simple**, sin Vite: `python3 -m http.server` sobre una carpeta con `SPARKS-PROJECT -> app/dist`, puerto 4175. Responden `200` la página, los dos `index.json`, ambos `frames.bin` y `data-new/rdra/manifest.json`. Una ruta inexistente da `404`. Abierta en el navegador, WISE 0855 carga sus 10 archivos de datos con `200` (índices, manifiesto, `coadds*.bin`, `diffs*.bin`, `catalogs.json`, `frames.bin`, `masks.bin`) y 6 PNG; el espectro al vuelo mide 127 de 153 fotos. Sin errores de consola.
+4. **Rangos de bytes.** La app no pide rangos (no hay cabeceras `Range` en `app/src/`): descarga cada `.bin` entero con `fetch`. `vite preview` responde `200` completo a una petición con `Range`.
+5. **Rutas.** La app no tiene enrutado de cliente con rutas propias: el estado va en la cadena de consulta (`?ra=&dec=&fov=&mode=&det=&lang=`) y en el ancla (`#explorar`). No hace falta un respaldo a `index.html` para rutas profundas.
 
-- No se realizó ningún despliegue real en Cloudflare Pages, Netlify, Vercel, Render ni GitHub Pages durante esta sesión, por lo que **no se afirma** soporte ni funcionamiento con repositorios privados en dichas plataformas hasta probarlo directamente en cada proveedor.
-- Para publicar en una subruta como GitHub Pages (`https://<org>.github.io/SPARKS-PROJECT/`), se requiere compilar con `VITE_BASE=/SPARKS-PROJECT/` y asegurar que `data-sample/` y `data-new/` queden accesibles bajo `/SPARKS-PROJECT/data-sample/` y `/SPARKS-PROJECT/data-new/`.
+## Qué valor de `VITE_BASE`
+
+- Sitio en la raíz de un dominio: sin `VITE_BASE` (vale `/`).
+- Sitio en una subruta, por ejemplo `/SPARKS-PROJECT/`: `VITE_BASE=/SPARKS-PROJECT/`, con barra al principio y al final. Todas las rutas de datos salen de `import.meta.env.BASE_URL` (`BASE` en `app/src/ui/kit/useSparks.ts` y `app/src/data/loader.ts`).
+
+## Plataformas externas
+
+- No se desplegó nada en ninguna plataforma (GitHub Pages, Cloudflare Pages, Netlify, Vercel, AWS) en esta sesión.
+- GitHub Pages con repositorio privado: **sin verificar**. No se consultó la documentación oficial de GitHub en esta sesión; no se afirma que funcione. El destino acordado es AWS (Cons): ver `docs/backend/despliegue-aws.md`.
