@@ -2,10 +2,11 @@
  "schema": 1,
  "pipeline_version": "0.1.0",
  "generated_utc": "2026-11-15T01:02:22Z",
- "status": "ok",
+ "status": "parcial",
  "blockers": [
   "spherex_qr2 no aparece en SIA2 para esta posicion; se usan las releases que SIA2 devuelve para este campo (ver docs/pipeline/metodo.md)",
-  "7 recortes fallaron; detalle en _work/rwaur/run.json"
+  "7 recortes fallaron; detalle en _work/rwaur/run.json",
+  "movimiento medido consistente con cero a 3 sigma; se reporta como cota superior, no como deteccion"
  ],
  "field": {
   "id": "rwaur",

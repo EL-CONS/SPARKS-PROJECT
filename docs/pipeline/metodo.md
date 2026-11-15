@@ -293,9 +293,17 @@ SIP incluyen el termino constante que hace ese desplazamiento, asi que **no hay
 que componer WCS**. Se comprobo con `world_to_pixel` sobre los recortes reales.
 
 La longitud de onda sale de la extension binaria `WCS-WAVE` en el pixel del
-objeto, interpolando bilinealmente con `CRPIX1W/CDELT1W/CRVAL1W` (y su par en
-Y). Si la tabla faltara se usa `em_min/em_max` de SIA2, y el manifiesto deja
-`lam` en el valor que se uso.
+objeto, interpolando bilinealmente. La rejilla de control esta en coordenadas
+del detector completo y el desplazamiento al recorte esta en
+`CRPIX1W/CDELT1W/CRVAL1W` del encabezado de **`IMAGE`**, no del de `WCS-WAVE`
+(que no trae esas claves). La version anterior leia el encabezado equivocado y
+usaba `CRPIX=0`, de modo que todas las bandas quedaban en su borde azul
+(D1 1.118, D2 1.655, D3 2.423, D4 3.831, D5 4.430, D6 5.012 um). Con el
+encabezado correcto, cada cuadro muestrea una longitud de onda distinta dentro
+de su banda: D1 0.75-1.09, D2 1.10-1.63, D3 1.63-2.41, D4 2.48-3.74,
+D5 3.82-4.41, D6 4.42-5.00 um. Eso es lo que permite medir el metano a 3.3 um
+dentro de D4 y el continuo a 4.0 um dentro de D5. Si la tabla faltara se usa
+`em_min/em_max` de SIA2, y el manifiesto deja `lam` en el valor que se uso.
 
 ## 6. Banderas y calidad
 
@@ -358,6 +366,17 @@ pretende ser un registro astrometrico.
 
 El metodo es simple y **no se ajusta al valor esperado**:
 
+0. **WISE 0855: solo D5 y D6.** En D1-D4 domina una estrella de fondo a ~7
+   arcsec (1.2 px). Su posicion se mide en las coadds de D1, donde WISE 0855 no
+   aparece, con un ajuste gaussiano. En D5 y D6 se enmascara un disco de 0.7 px
+   (los dos pixeles mas cercanos al pico de la estrella) y se mide el centroide
+   con el resto. A 1.2 px las dos fuentes no se pueden descomponer: un ajuste de
+   dos Gaussianas es degenerado (las amplitudes individuales tienen errores del
+   orden del valor). La mascara quita el nucleo de la estrella y tambien una
+   parte del objetivo; el resultado se declara con esa limitacion y no se
+   presenta como una separacion limpia. Para WISE 0855 se descargan **todos**
+   los cuadros de D5 y D6 (95 por SIA2, no 8 por detector), y el resto de
+   detectores se usa solo para fotometria de apoyo con tope por temporada.
 1. En cada coadd se mide el centroide en una apertura de radio 3 px sobre un
    anillo de cielo de 6 a 10 px. El anillo se recorta a 3 sigma para quitar
    estrellas de paso. El error del centroide sale de la varianza por pixel, con
@@ -390,6 +409,24 @@ La comparacion con el catalogo calcula `sigma_mu = |mu_medido - mu_esperado| / m
 usando **solo el error medido**. No se usa el error del catalogo (que en el
 index no existe) y no se toca el resultado para que cuadre. El veredicto literal
 (`acuerdo dentro de 1/2/3 sigma` o `desacuerdo mayor que 3 sigma`) va al JSON.
+
+### 9b. Indice de frio
+
+Se calcula en `photometry.py` con la definicion del procesamiento anterior
+(`docs/methods.md`):
+
+- **Cociente** `F_D6/F_D2`: media ponderada por `1/error^2` de los flujos de
+  apertura (3 px, fondo del anillo 6-10 px) de los cuadros de D6 con
+  `4.42 <= lambda <= 5.01` um y de D2 con `1.10 <= lambda <= 1.63` um. Si el
+  flujo corto no llega a 3 sigma, el cociente usa `flujo + 3*error` en el
+  denominador y se marca `ratio_kind = lower_limit`.
+- **Metano** `1 - F(3.15-3.45)/F(3.90-4.10)`: el numerador sale de los cuadros
+  de D4 y el denominador de los de D5, elegidos por su longitud de onda. El
+  error se propaga de los errores de las medias.
+- En WISE 0855 la mascara quita el nucleo de la estrella pero no sus alas; la
+  banda corta queda contaminada, asi que el cociente se marca `lower_limit`
+  aunque la apertura sea positiva. El flujo corto verdadero es menor y el
+  cociente verdadero mayor.
 
 ## 10. Formato de salida
 
@@ -456,23 +493,20 @@ Ademas, sobre datos reales:
   cerca del centro de la malla que no eran el objeto: estaban a ~14 px de su
   posicion real. Se descartan y quedan documentadas aqui para que no se
   confundan con una deteccion.
-- **WISE 0855 queda mezclado con una estrella de fondo.** En la corrida final
-  (`--cap 6`, 93 cuadros, 18 coadds) el fotocentro cae a ~1.1 px del centro en
-  todos los detectores, pero no es el objeto: en D1 (1.25 um) hay una fuente
-  puntual en (x=33.0, y=31.0), 1.5 px = 9.2" al este del centro esperado, con
-  pico 0.78 MJy/sr sobre un fondo de 0.27. WISE 0855 no se detecta en 1.25 um
-  (W1 > 16.4 mag, [3.6] = 17.44), asi que esa fuente es una estrella de fondo.
-  En D6 el maximo esta en (x=32.0, y=31.0), entre la estrella y el centro: la
-  apertura de 3 px contiene las dos fuentes y el fotocentro es una mezcla
-  (`blended=true` en 17 de 18 coadds). El ajuste da `mu = 0.49 +- 0.58 "/anio`
-  (consistente con cero, cota superior); **no se interpreta como el movimiento
-  de WISE 0855**. La comparacion con el index da 13 sigma porque mide el
-  fotocentro de la estrella, no el objeto; el veredicto literal queda en el
-  JSON pero no es atribuible al objetivo. Separar las dos fuentes requiere un
-  ajuste de dos PSF, que esta canalizacion no hace.
+- **WISE 0855: estrella de fondo enmascarada, movimiento medido en D5 y D6.**
+  La corrida final (`--cap 6`, todos los cuadros de D5 y D6) procesa 153 cuadros
+  y 18 coadds. La estrella de fondo se localiza en las coadds de D1, donde el
+  objeto no se ve: (32.72, 31.22), sigma 0.61 px. En D5 y D6 se enmascara un
+  disco de 0.7 px (los dos pixeles mas cercanos al pico) y el centroide se mide
+  con el resto: quedan 5 puntos usables (D5 S0/S1/S2 y D6 S1/S2; D6 S0 sin
+  deteccion). El ajuste da `mu = 6.044 +- 0.755 "/anio`, PA 289.1 +- 3.8. La
+  mascara quita el nucleo de la estrella y tambien una parte del objetivo; el
+  resultado se declara con esa limitacion y no se presenta como una separacion
+  limpia. Un ajuste de dos Gaussianas a 1.2 px es degenerado (se probo: los
+  errores de amplitud son del orden del valor) y no se usa.
 - `sparkspipe verify` sobre las cuatro carpetas de `data-new/` comprueba que los
   tamanos en disco coinciden con las formas del manifiesto: `all_ok = true` en
-  `wise0855` (93 cuadros, 18 coadds), `epsindib` (116, 22), `rdra` (62, 12) y
+  `wise0855` (153 cuadros, 18 coadds), `epsindib` (116, 22), `rdra` (62, 12) y
   `rwaur` (101, 18), sin problemas.
 
 ## 12. Resultados de la corrida final
@@ -484,10 +518,36 @@ git).
 
 | objetivo | cuadros | coadds | diffs | temp. obs. | det. usables | base (a) | mu medida ("/a) | PA medida (deg) | mu esperada ("/a) | PA esperada (deg) | sigma_mu | veredicto |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| `wise0855` | 93 | 18 | 18 | 3 | 17 | 1.00 | 0.492 +- 0.575 | 105.1 +- 32.3 | 8.088 | 277.4 | 13.2 | desacuerdo > 3 sigma (no atribuible: fotocentro mezclado) |
-| `epsindib` | 116 | 22 | 30 | 4 | 21 | 1.39 | 4.205 +- 0.281 | 124.9 +- 2.8 | 4.684 | 121.8 | 1.70 | acuerdo dentro de 2 sigma |
+| `wise0855` | 153 | 18 | 18 | 3 | 5 | 1.00 | 6.044 +- 0.755 | 289.1 +- 3.8 | 8.088 | 277.4 | 2.71 | acuerdo dentro de 3 sigma (D5/D6, estrella enmascarada) |
+| `epsindib` | 116 | 22 | 30 | 4 | 16 | 1.39 | 4.205 +- 0.281 | 124.9 +- 2.8 | 4.684 | 121.8 | 1.70 | acuerdo dentro de 2 sigma |
 | `rdra` | 62 | 12 | 6 | 2 | 0 | - | nulo | - | 0.022 | 286.6 | - | sin medicion: nucleo saturado y enmascarado |
-| `rwaur` | 101 | 18 | 18 | 3 | 18 | 1.03 | 1.323 +- 0.572 | 81.5 +- 15.7 | 0.028 | 174.5 | 2.27 | acuerdo dentro de 3 sigma (cota superior, no deteccion) |
+| `rwaur` | 101 | 18 | 18 | 3 | 10 | 1.03 | 1.323 +- 0.572 | 81.5 +- 15.7 | 0.028 | 174.5 | 2.27 | acuerdo dentro de 3 sigma (cota superior, no deteccion) |
+
+`status` en `manifest.json` es `ok` solo cuando hay movimiento medido y
+`mu >= 3*mu_err`. Con esa regla quedan `ok` `wise0855` y `epsindib`, y
+`parcial` `rdra` (sin deteccion) y `rwaur` (2.3 sigma, consistente con cero).
+La razon va en `blockers` y en `data-new/index.json`; no se esconde.
+
+### Indice de frio
+
+Definicion en la seccion 9b. Resultados con la corrida final:
+
+| objetivo | F(D6) mJy | F(D2) mJy | cociente | tipo | metano | error | cuadros |
+|---|---|---|---|---|---|---|---|
+| `wise0855` | 0.442 +- 0.043 (44) | 0.534 +- 0.020 (18) | 0.827 | `lower_limit` | 0.376 | 0.197 | 152 |
+| `epsindib` | 16.277 +- 0.079 (22) | 13.534 +- 0.031 (22) | 1.203 | `measured` | 0.807 | 0.002 | 115 |
+
+En `wise0855` el cociente es una cota inferior: la mascara quita el nucleo de
+la estrella de fondo pero no sus alas, y la banda corta (1.1-1.6 um) queda
+contaminada. El valor del procesamiento anterior del equipo (`ratio > 10.9`,
+`lower_limit`) usaba la banda corta casi sin flujo; aqui el flujo corto
+medido es 0.534 mJy y el cociente baja a 0.83. **No es comparable
+directamente**: son dos tratamientos distintos de la misma estrella de fondo.
+Con 0.376 de metano y 0.827 de cociente, WISE 0855 no pasaria la regla
+`CH4_MIN = 0.5` o `RATIO_MIN = 10.0` de `prototipo/veredicto.py`; se declara.
+`epsindib` da metano 0.807 +- 0.002, consistente con el 0.81 del
+procesamiento anterior, y un cociente 1.203 (antes 1.73); la diferencia esta
+en la apertura y en la correccion de longitud de onda.
 
 ### Mezcla de releases
 
@@ -526,23 +586,28 @@ declara: el ajuste conjunto es el que se reporta porque usa toda la linea base,
 pero no se presenta como si las releases fueran intercambiables. El ajuste solo
 con QR3 no tiene sentido (4 puntos en 0.01 anios de linea base).
 
-### WISE 0855: sin deteccion limpia
+### WISE 0855: movimiento medido en D5/D6 con la estrella enmascarada
 
-El ajuste da `mu = 0.492 +- 0.575` "/anio (15 de 17 puntos; el recorte sigma
-descarta 2), consistente con cero: es una **cota superior**, no una deteccion. La causa esta en los datos y se ve en los coadds:
-en D1 (1.25 um) hay una fuente puntual de SNR ~22 en (x=33.0, y=31.0), 1.5 px
-(9.2") al este del centro, con pico 0.78 MJy/sr sobre un fondo de 0.27. WISE
-0855 no se detecta a 1.25 um (W1 > 16.4 mag), asi que esa fuente es una
-estrella de fondo. En D6 el maximo esta en (x=32.0, y=31.0), entre la estrella
-y el centro. La apertura de 3 px contiene las dos fuentes
-(`blended = true` en 17 de 18 coadds) y el fotocentro no es atribuible al
-objeto. El veredicto literal del JSON (13 sigma) compara el fotocentro de la
-estrella con el PM del index; no se interpreta como desacuerdo del objeto.
+La corrida final descarga **todos** los cuadros de D5 y D6 (95 por SIA2) y
+mide el movimiento solo en esas dos bandas. La estrella de fondo se localiza en
+las coadds de D1, donde WISE 0855 no se ve: `(x, y) = (32.72, 31.22)` con
+sigma 0.61 px (3 coadds). En D5 y D6 se enmascara un disco de 0.7 px (2
+pixeles) alrededor de esa posicion y se mide el centroide con el resto.
 
-Limite de deteccion: el ruido por pixel del coadd D6 es 0.023 MJy/sr. El pico
-esperado del objeto, estimado con `W2 = 13.89 mag` y el area del pixel
-(8.88e-10 sr), es ~0.1 MJy/sr, es decir ~4 sigma por pixel y por debajo de la
-estrella de fondo. Separarlo exige un ajuste de dos PSF, que no se hizo.
+El ajuste da `mu = 6.044 +- 0.755` "/anio, PA `289.1 +- 3.8`, con 5 puntos
+usables (D5 S0/S1/S2 y D6 S1/S2; D6 S0 queda sin deteccion) y 1.00 anios de
+linea base. Frente al index (8.088 "/anio, PA 277.4): diferencia -2.04 "/anio
+= **2.71 sigma**, acuerdo dentro de 3 sigma. No se usa el valor esperado para
+nada del ajuste; la comparacion es posterior.
+
+La mascara quita el nucleo de la estrella y tambien una parte del objetivo, y
+las alas de la estrella siguen en la apertura. Por eso el resultado se declara
+con esa limitacion: no es una separacion limpia de dos fuentes. Un ajuste de
+dos Gaussianas a 1.2 px es degenerado (se probo: los errores de amplitud son
+del orden del valor, `amplitude_err` ~1.1 MJy/sr para amplitudes de 0.1), asi
+que no se usa. La mascara de 0.7 px se fija a priori y no se ajusta al
+resultado; con 1.0 px los centroides cambian menos de 0.3 px y el signo del
+movimiento no cambia.
 
 ### R Dra: nulo por saturacion
 
@@ -566,8 +631,9 @@ entre bandas dominan. Se reporta como cota superior.
 ## 13. Archivos grandes
 
 Ningun archivo de `data-new/` pasa de 25 MB: el total de las cuatro carpetas es
-10.1 MB y el archivo mayor es `epsindib/frames.bin` con 0.95 MB. Lo que si pesa
-y **no entra a git** esta en:
+10.9 MB y el archivo mayor es `wise0855/frames.bin` con 1.2 MB (153 cuadros de
+64x64 int16; WISE 0855 es el unico campo con los detectores 5 y 6 completos).
+Lo que si pesa y **no entra a git** esta en:
 
 - `pipeline/_work/<id>/sia_r0.060.xml`: respuesta SIA2, 30-66 MB por campo.
 - `pipeline/_work/<id>/cutouts/*.fits`: recortes MEF sin EPSF, ~1-4 MB cada uno.
@@ -584,12 +650,15 @@ y **no entra a git** esta en:
   DR1 y, en epsilon Indi B, R Dra y RW Aur, ademas QR3 (24, 13 y 33 cuadros).
   El manifiesto declara las releases usadas y un blocker por cada una que falta.
   Si el jurado espera QR2, esta es la diferencia.
-- **Tres de los cuatro campos no dan un movimiento propio medible.** epsilon
-  Indi B es el unico (`1.70 sigma` contra el index). WISE 0855 esta mezclado con
-  una estrella de fondo, R Dra satura y su nucleo queda enmascarado, y RW Aur da
-  una cota superior de 1.32 +- 0.57 "/anio dominada por variabilidad. Decirlo es
-  parte del resultado; los tres manifiestos llevan la razon por escrito.
-- **Fallos de descarga**: en la corrida final fallaron 5/98 recortes en WISE
+- **Dos de los cuatro campos dan un movimiento propio medible.** epsilon Indi B
+  (`1.70 sigma` contra el index, 16 puntos, seis detectores) y WISE 0855
+  (`2.71 sigma`, 5 puntos, solo D5/D6 y con la estrella de fondo enmascarada).
+  En WISE 0855 la mascara quita parte del objetivo: el valor es una medicion
+  con esa limitacion, no una separacion limpia. R Dra satura y su nucleo queda
+  enmascarado; RW Aur da una cota superior de 1.32 +- 0.57 "/anio dominada por
+  variabilidad y su `status` es `parcial`. Decirlo es parte del resultado; los
+  manifiestos llevan la razon por escrito.
+- **Fallos de descarga**: en la corrida final fallaron 7/160 recortes en WISE
   0855, 14/130 en epsilon Indi B, 10/72 en R Dra y 7/108 en RW Aur. No se
   ocultan: el manifiesto los cuenta y `_work/<id>/run.json` guarda cada intento
   con su codigo HTTP.

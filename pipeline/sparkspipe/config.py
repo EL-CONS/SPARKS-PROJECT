@@ -44,6 +44,9 @@ MJD_WISE0855_POSITION = 55320.4
 PSF_FWHM_ARCSEC = 7.45  # mediana del encabezado PSF_FWHM de los recortes DR1
 APERTURE_RADIUS_PX = 3.0
 ANNULUS_RADIUS_PX = (6.0, 10.0)
+# Radio de la mascara que quita el nucleo de una estrella de fondo a ~1.2 px.
+# Se fija a priori: cubre los dos pixeles mas cercanos al pico de la estrella.
+STAR_MASK_RADIUS_PX = 0.7
 
 # --- Descubrimiento ------------------------------------------------------
 SIA_URL = "https://irsa.ipac.caltech.edu/SIA"
@@ -139,6 +142,16 @@ class Target:
     # copian al manifiesto para que quien lea la salida sepa que limitacion
     # tiene esa medicion concreta.
     caveats: tuple[str, ...] = ()
+    # Detectores que se descargan completos (sin tope por temporada). Vacio
+    # significa que todos usan el tope comun.
+    full_detectors: tuple[int, ...] = ()
+    # Detectores que entran en el ajuste de movimiento propio. Vacio significa
+    # todos los procesados. Para WISE 0855 solo D5 y D6: en D1-D4 domina la
+    # estrella de fondo.
+    motion_detectors: tuple[int, ...] = ()
+    # Detector donde el objetivo no se ve y la estrella de fondo si. Se usa para
+    # fijar la posicion de la estrella que luego se resta en el resto de bandas.
+    star_detector: int | None = None
 
     @property
     def coord(self) -> tuple[float, float]:
@@ -200,12 +213,15 @@ TARGETS: tuple[Target, ...] = (
             "posicion y epoca confirmadas en arXiv:1404.6501"
         ),
         caveats=(
-            "El fotocentro esta mezclado con una estrella de fondo a ~9 arcsec "
-            "(1.5 px) al este: en D1 (1.25 um) hay una fuente estelar de "
-            "SNR ~22 y WISE 0855 no se detecta a esa longitud de onda. El "
-            "movimiento propio medido no es atribuible al objetivo; se "
-            "reporta como cota superior. Ver docs/pipeline/metodo.md.",
+            "Una estrella de fondo a ~7 arcsec (1.2 px) al este contamina el "
+            "fotocentro. En D1 (0.75-1.1 um) solo se ve la estrella y WISE 0855 "
+            "no aparece; por eso el movimiento se mide unicamente en D5 y D6, "
+            "restando la estrella con un ajuste de dos fuentes y su posicion "
+            "fijada desde D1. Ver docs/pipeline/metodo.md.",
         ),
+        full_detectors=(5, 6),
+        motion_detectors=(5, 6),
+        star_detector=1,
     ),
     Target(
         id="epsindib",

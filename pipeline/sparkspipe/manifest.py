@@ -213,6 +213,7 @@ def build_manifest(
     note: str,
     catalogs: dict[str, Any] | None = None,
     extras: dict[str, Any] | None = None,
+    cold: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     detectors = sorted({int(f["det"]) for f in frames})
     scales = detector_scales(frames, coadds)
@@ -275,7 +276,19 @@ def build_manifest(
         "method": motion.get("method", ""),
         "points": motion.get("points", []),
         "spectrum": [],
-        "cold": {"short_mjy": None, "short_err": None, "long_mjy": None, "long_err": None, "n_short": 0, "n_long": 0},
+        "cold": cold
+        or {
+            "short_mjy": None,
+            "short_err": None,
+            "long_mjy": None,
+            "long_err": None,
+            "n_short": 0,
+            "n_long": 0,
+            "ratio": None,
+            "ratio_kind": "sin datos",
+            "methane_depth": None,
+            "methane_err": None,
+        },
         "snr": {},
         "lightcurve": None,
         "n_refs": {"gaia": 1 if target.in_gaia else 0, "catwise": 0},

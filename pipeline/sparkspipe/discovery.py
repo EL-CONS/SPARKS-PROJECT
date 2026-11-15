@@ -174,8 +174,13 @@ def select_frames(
     records: list[ImageRecord],
     *,
     cap_per_det_season: int,
+    full_detectors: tuple[int, ...] = (),
 ) -> list[ImageRecord]:
-    """Elige hasta ``cap`` cuadros por (detector, temporada), repartidos en el tiempo."""
+    """Elige hasta ``cap`` cuadros por (detector, temporada), repartidos en el tiempo.
+
+    ``full_detectors`` se descargan completos: se usan cuando el objetivo solo es
+    medible en esas bandas y el resto solo sirve para fotometria de apoyo.
+    """
     groups: dict[tuple[int, int], list[ImageRecord]] = {}
     for r in records:
         if r.det is None or r.season is None:
@@ -184,10 +189,11 @@ def select_frames(
     selected: list[ImageRecord] = []
     for key in sorted(groups):
         items = sorted(groups[key], key=lambda x: x.mjd)
-        if len(items) <= cap_per_det_season:
+        cap = len(items) if key[0] in full_detectors else cap_per_det_season
+        if len(items) <= cap:
             selected.extend(items)
             continue
-        idx = np.linspace(0, len(items) - 1, cap_per_det_season)
+        idx = np.linspace(0, len(items) - 1, cap)
         idx = sorted({int(round(i)) for i in idx})
         selected.extend(items[i] for i in idx)
     selected.sort(key=lambda x: (x.mjd, x.det or 0))

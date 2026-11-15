@@ -11,20 +11,20 @@
    "reference_mjd": 61000.0,
    "kind": "mover",
    "note": "Enana marron T, sin contraparte Gaia. A 2.3 pc. Las coordenadas estan a la epoca WISE de 2010, no a J2000; tratarlas como J2000 desplazaba la malla ~14 px.",
-   "n_frames": 93,
+   "n_frames": 153,
    "seasons": 3,
    "releases": [
     "DR1"
    ],
-   "mu_measured": 0.49207738835525544,
-   "mu_err": 0.5753407827973804,
-   "pa": 105.1361096340761,
+   "mu_measured": 6.044035446864533,
+   "mu_err": 0.7553316917025782,
+   "pa": 289.08337676145425,
    "mu_expected": 8.087789,
    "pa_expected": 277.357342,
    "in_gaia": false,
    "thumb": "wise0855/png/coadd_D5_S0.png",
    "status": "ok",
-   "reason": "movimiento medido consistente con cero a 3 sigma; se reporta como cota superior, no como deteccion"
+   "reason": ""
   },
   {
    "id": "epsindib",
@@ -43,9 +43,9 @@
     "DR1",
     "QR3"
    ],
-   "mu_measured": 4.205409607594857,
-   "mu_err": 0.28090121194539314,
-   "pa": 124.9184545518969,
+   "mu_measured": 4.205409597275849,
+   "mu_err": 0.2809012111527352,
+   "pa": 124.91845453220645,
    "mu_expected": 4.684165,
    "pa_expected": 121.778186,
    "in_gaia": false,
@@ -104,7 +104,7 @@
    "pa_expected": 174.494704,
    "in_gaia": true,
    "thumb": "rwaur/png/coadd_D5_S0.png",
-   "status": "ok",
+   "status": "parcial",
    "reason": "movimiento medido consistente con cero a 3 sigma; se reporta como cota superior, no como deteccion"
   }
  ],
@@ -113,14 +113,20 @@
    "collection": "spherex_dr1",
    "release": "DR1",
    "doi": "10.26131/IRSA678",
-   "n_images": 72
+   "n_images": 338
+  },
+  {
+   "collection": "spherex_dr1_deep",
+   "release": "DR1",
+   "doi": "10.26131/IRSA678",
+   "n_images": 58
   },
   {
    "collection": "spherex_qr3",
    "release": "QR3",
    "doi": "10.26131/IRSA662",
-   "n_images": 36
+   "n_images": 74
   }
  ],
- "generated_utc": "2026-11-15T01:02:23Z"
+ "generated_utc": "2026-11-15T01:57:02Z"
 }

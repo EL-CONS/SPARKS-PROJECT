@@ -16,14 +16,16 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
+from astropy.coordinates import SkyCoord
 
-from . import binfmt, coadd, manifest, motion
+from . import binfmt, coadd, manifest, motion, photometry
 from .config import (
     CUTOUT_SIZE_DEG,
     FRAME_CAP_PER_DET_SEASON,
     MAX_WORKERS,
     N_PIX,
     REFERENCE_MJD,
+    STAR_MASK_RADIUS_PX,
     Target,
     data_new_root,
     repo_root,
@@ -38,7 +40,9 @@ from .quality import build_mask, estimate_quality
 # Version del recorte procesado; si cambia el metodo se sube para invalidar cache.
 # v2: centrar la malla depende de la epoca del catalogo (WISE 0855 paso de
 # J2000 a MJD 55320.4), asi que los cuadros v1 quedan invalidados.
-PROCESS_VERSION = "2"
+# v3: la longitud de onda se lee con el CRPIX del encabezado de IMAGE; antes se
+# usaba el de WCS-WAVE (ausente) y todas las bandas quedaban en su borde azul.
+PROCESS_VERSION = "3"
 
 
 def _npz_path(work: Path, record: ImageRecord) -> Path:
@@ -256,10 +260,17 @@ def run_target(
     log(f"SIA2: {len(records)} imagenes, {len(seasons)} temporadas, {discovery_s:.0f} s")
 
     # --- 2. Seleccion ------------------------------------------------------
-    selected = select_frames(records, cap_per_det_season=cap)
+    selected = select_frames(
+        records,
+        cap_per_det_season=cap,
+        full_detectors=target.full_detectors,
+    )
     if limit is not None:
         selected = selected[: int(limit)]
-    log(f"seleccionados {len(selected)} cuadros (tope {cap} por detector y temporada)")
+    log(
+        f"seleccionados {len(selected)} cuadros (tope {cap} por detector y temporada; "
+        f"completos: {list(target.full_detectors) or 'ninguno'})"
+    )
 
     # --- 3. Descarga y procesamiento ---------------------------------------
     t0 = time.time()
@@ -331,21 +342,119 @@ def run_target(
     # --- 5. Movimiento propio ---------------------------------------------
     t0 = time.time()
     wcs = target_wcs(center_ra, center_dec)
+
+    # Estrella de fondo: se localiza en el detector donde el objetivo no se ve
+    # (D1 para WISE 0855) y su posicion queda fija en todas las bandas.
+    star: dict[str, Any] | None = None
+    psf_sigma = photometry.DEFAULT_PSF_SIGMA_PX
+    if target.star_detector is not None:
+        star_coadds = [c for c in coadds if int(c.det) == int(target.star_detector)]
+        profile = photometry.fit_star_profile([c.image for c in star_coadds])
+        if profile.get("ok"):
+            star = {
+                "xy": (profile["x"], profile["y"]),
+                "sigma": profile["sigma"],
+                "mask_radius": STAR_MASK_RADIUS_PX,
+                "detectors": tuple(target.motion_detectors or (target.star_detector,)),
+                "source": f"D{target.star_detector} (donde el objetivo no se ve)",
+            }
+            psf_sigma = float(profile["sigma"])
+            log(
+                f"estrella de fondo en ({profile['x']:.2f}, {profile['y']:.2f}) "
+                f"sigma {profile['sigma']:.2f} px ({profile['n']} coadds D{target.star_detector})"
+            )
+    if star is None:
+        # Sin estrella conocida, el sigma de la PSF se mide sobre el objetivo.
+        bright = [c for c in coadds if int(c.det) in (target.motion_detectors or ())]
+        if not bright:
+            bright = coadds
+        profile = photometry.fit_star_profile([c.image for c in bright])
+        if profile.get("ok"):
+            psf_sigma = float(profile["sigma"])
+
+    motion_coadds = [
+        c for c in coadds if not target.motion_detectors or int(c.det) in target.motion_detectors
+    ]
     motion_result = motion.measure_motion(
         [
             {"det": c.det, "season": c.season, "mjd": float(np.mean([frames[i]["mjd"] for i in c.members])) if c.members else float("nan"),
              "image": c.image, "sigma": c.sigma, "mask": ~np.isfinite(c.image)}
-            for c in coadds
+            for c in motion_coadds
         ],
         wcs,
         center_ra,
         center_dec,
         target,
+        star=star,
     )
     motion_s = time.time() - t0
     if motion_result.get("measured") is None:
         blockers.append(motion_result.get("reason") or "sin movimiento propio medible")
     log(f"movimiento: {motion_result.get('measured') and motion_result['measured'].get('mu')}")
+
+    # --- 5b. Indice de frio (fotometria por cuadro) -----------------------
+    # Cada cuadro aporta un punto (lambda, flujo). La longitud de onda sale del
+    # pixel del objeto en la tabla WCS-WAVE y varia de un apuntado a otro, que es
+    # lo que permite muestrear las bandas de metano dentro de D4 y D5.
+    t0 = time.time()
+    cold_points: list[dict[str, Any]] = []
+    for fr in frames:
+        lam = fr.get("lam")
+        if lam is None:
+            continue
+        ra_mjd, dec_mjd = target.position_at(float(fr["mjd"]))
+        xp, yp = wcs.world_to_pixel(SkyCoord(ra=ra_mjd, dec=dec_mjd, unit="deg"))
+        target_xy = (float(np.ravel(xp)[0]), float(np.ravel(yp)[0]))
+        sig = np.sqrt(np.asarray(fr["variance"], dtype=float))
+        mask = np.asarray(fr["mask"], dtype=bool) > 0
+        if star:
+            mask = mask | photometry.star_mask(
+                fr["image"].shape, star["xy"], float(star["mask_radius"])
+            )
+        flux = photometry.aperture_flux(fr["image"], sig, target_xy, mask=mask)
+        if not flux.get("ok"):
+            continue
+        cold_points.append(
+            {
+                "lam": float(lam),
+                "det": int(fr["det"]),
+                "season": int(fr["season"]),
+                "mjd": float(fr["mjd"]),
+                "flux_mjy": float(flux["flux_mjy"]),
+                "flux_err_mjy": float(flux["flux_err_mjy"]),
+            }
+        )
+    cold = photometry.cold_index(cold_points)
+    cold["n_points"] = len(cold_points)
+    cold["method"] = (
+        "apertura de 3 px con fondo del anillo 6-10 px en cada cuadro"
+        + (
+            ", con el nucleo de la estrella de fondo enmascarado"
+            if star
+            else ""
+        )
+        + "; media ponderada por 1/error^2 en cada banda de docs/methods.md"
+    )
+    cold["psf_sigma_px"] = float(psf_sigma)
+    cold["star_subtracted"] = bool(star)
+    if star and cold.get("ratio") is not None:
+        # La mascara quita el nucleo de la estrella, no sus alas. La banda corta
+        # queda contaminada, asi que el cociente solo puede ser una cota
+        # inferior: el flujo corto verdadero es menor y el cociente mayor.
+        cold["ratio_kind"] = "lower_limit"
+        cold["ratio_note"] = (
+            "la banda corta incluye las alas de la estrella de fondo; el cociente "
+            "es una cota inferior"
+        )
+    cold_s = time.time() - t0
+    log(
+        f"frio: D6/D2={cold.get('ratio')} ({cold.get('ratio_kind')}), "
+        f"metano={cold.get('methane_depth')} con {len(cold_points)} cuadros"
+    )
+    if cold_points:
+        (work / "cold_points.json").write_text(
+            json.dumps(cold_points, indent=1, ensure_ascii=False), encoding="utf-8"
+        )
 
     # --- 6. Manifiesto y archivos -----------------------------------------
     if not any(r["release"] == "QR2" for r in release_summary(selected)):
@@ -358,7 +467,21 @@ def run_target(
             "spherex_qr3 no aparece en SIA2 para esta posicion; se usan las "
             "releases que SIA2 devuelve para este campo (ver docs/pipeline/metodo.md)"
         )
-    status = "ok" if motion_result.get("measured") is not None else "parcial"
+    measured = motion_result.get("measured")
+    is_limit = bool(
+        measured is not None
+        and measured.get("mu") is not None
+        and measured.get("mu_err")
+        and measured["mu"] < 3.0 * measured["mu_err"]
+    )
+    if measured is None:
+        status = "parcial"
+    elif is_limit:
+        status = "parcial"
+        if motion_result.get("reason"):
+            blockers.append(motion_result["reason"])
+    else:
+        status = "ok"
     if failures:
         blockers.append(f"{len(failures)} recortes fallaron; detalle en _work/{target.id}/run.json")
 
@@ -391,9 +514,15 @@ def run_target(
         flag_bits=flag_bits,
         status=status,
         blockers=blockers,
-        timings={"discovery_s": discovery_s, "download_s": download_s, "analysis_s": analysis_s},
+        timings={
+            "discovery_s": discovery_s,
+            "download_s": download_s,
+            "analysis_s": analysis_s,
+            "cold_s": cold_s,
+        },
         note=target.note,
         catalogs=catalogs,
+        cold=cold,
         extras={
             "discovery": {
                 "service": "IRSA SIA2",
@@ -404,6 +533,18 @@ def run_target(
                 "n_images_selected": len(selected),
                 "seasons_total": len(seasons),
                 "frame_cap_per_det_season": cap,
+                "full_detectors": list(target.full_detectors),
+                "motion_detectors": list(target.motion_detectors),
+                "star_subtraction": (
+                    {
+                        "xy": [float(star["xy"][0]), float(star["xy"][1])],
+                        "sigma_px": float(star.get("sigma") or psf_sigma),
+                        "detectors": list(star["detectors"]),
+                        "source": star.get("source"),
+                    }
+                    if star
+                    else None
+                ),
                 "trace": trace,
             },
             "processing": {

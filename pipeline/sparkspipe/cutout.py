@@ -117,12 +117,19 @@ def trim_mef(src: Path, dst: Path) -> Path:
     return dst
 
 
-def wave_at_pixel(hdul: fits.HDUList, x: float, y: float) -> tuple[float | None, float | None]:
+def wave_at_pixel(
+    hdul: fits.HDUList,
+    x: float,
+    y: float,
+    image_header: fits.Header | None = None,
+) -> tuple[float | None, float | None]:
     """Longitud de onda y ancho de banda en el pixel (0-based) del recorte.
 
-    La tabla WCS-WAVE guarda una rejilla de control en coordenadas FITS 1-based
-    del detector completo. La relacion con el recorte esta en CRPIX1W/CRVAL1W
-    (y equivalentes en Y). Se interpola bilinealmente.
+    La tabla WCS-WAVE guarda una rejilla de control en coordenadas del detector
+    completo. La relacion entre el pixel del recorte y esa rejilla esta en
+    ``CRPIX1W``/``CRVAL1W`` del encabezado de IMAGE (no del de WCS-WAVE, que no
+    los trae). Usar el encabezado equivocado dejaba todas las longitudes de onda
+    en el borde azul de cada detector. Se interpola bilinealmente.
     """
     try:
         hdu = hdul["WCS-WAVE"]
@@ -138,11 +145,12 @@ def wave_at_pixel(hdul: fits.HDUList, x: float, y: float) -> tuple[float | None,
     if values.ndim != 3 or values.shape[2] < 2:
         return None, None
     header = hdu.header
-    x_raw = (x - float(header.get("CRPIX1W", 0.0))) * float(header.get("CDELT1W", 1.0)) + float(
-        header.get("CRVAL1W", 1.0)
+    source = image_header if image_header is not None else header
+    x_raw = (x - float(source.get("CRPIX1W", 0.0))) * float(source.get("CDELT1W", 1.0)) + float(
+        source.get("CRVAL1W", 1.0)
     )
-    y_raw = (y - float(header.get("CRPIX2W", 0.0))) * float(header.get("CDELT2W", 1.0)) + float(
-        header.get("CRVAL2W", 1.0)
+    y_raw = (y - float(source.get("CRPIX2W", 0.0))) * float(source.get("CDELT2W", 1.0)) + float(
+        source.get("CRVAL2W", 1.0)
     )
     try:
         interp_wl = RegularGridInterpolator((ygrid, xgrid), values[:, :, 0], bounds_error=False, fill_value=np.nan)
@@ -171,7 +179,7 @@ def extract_frame(path: Path, ra: float, dec: float, record: ImageRecord) -> Cut
         x = float(np.asarray(x).ravel()[0])
         y = float(np.asarray(y).ravel()[0])
 
-        wl, bw = wave_at_pixel(hdul, x, y)
+        wl, bw = wave_at_pixel(hdul, x, y, header)
         if wl is None and record.lam_um is not None:
             wl = record.lam_um
         if bw is None and record.dlam_um is not None:

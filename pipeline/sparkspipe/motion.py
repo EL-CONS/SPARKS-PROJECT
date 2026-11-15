@@ -33,6 +33,7 @@ from .config import (
     MIN_SEASONS_FOR_PM,
     PIXEL_ARCSEC,
 )
+from . import photometry
 
 DAYS_PER_YEAR = 365.25
 SNR_MIN = 3.0
@@ -420,18 +421,36 @@ def measure_motion(
     target: Any,
     *,
     expected_center: tuple[float, float] = (31.5, 31.5),
+    star: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """``per_coadd``: dicts con det, season, mjd, image, sigma, mask.
+
+    ``star`` fija la estrella de fondo: ``{"xy": (x, y), "sigma": px,
+    "detectors": (5, 6)}``. En esos detectores se ajusta un modelo de dos
+    Gaussianas con la estrella en posicion fija, en lugar del centroide de
+    apertura que mezclaba las dos fuentes.
 
     Devuelve el bloque ``target`` del manifiesto: puntos, medicion combinada,
     medicion por detector y comparacion con el valor esperado.
     """
     detections: list[Detection] = []
+    star_dets = tuple(int(d) for d in (star or {}).get("detectors", ()))
     for item in per_coadd:
+        item_mask = item.get("mask")
+        if star and int(item["det"]) in star_dets:
+            # Enmascarar el nucleo de la estrella de fondo. A 1.2 px no se puede
+            # separar en dos fuentes; la mascara quita la estrella y una parte
+            # del objetivo, y eso se declara en el manifiesto.
+            disk = photometry.star_mask(
+                np.asarray(item["image"]).shape,
+                tuple(star["xy"]),
+                float(star.get("mask_radius") or 0.7),
+            )
+            item_mask = disk if item_mask is None else (np.asarray(item_mask, dtype=bool) | disk)
         result = centroid_in_image(
             item["image"],
             item.get("sigma"),
-            item.get("mask"),
+            item_mask,
             expected_center,
         )
         detections.append(
@@ -466,8 +485,25 @@ def measure_motion(
         "method": (
             "centroide en apertura de 3 px con anillo 6-10 px; recta ponderada "
             "por 1/error^2 sobre las coadds por detector y temporada"
+            + (
+                "; en D5/D6 se enmascara el nucleo de la estrella de fondo con "
+                "posicion fija desde D1"
+                if star
+                else ""
+            )
         ),
     }
+    if star:
+        result["star_subtraction"] = {
+            "xy": [float(star["xy"][0]), float(star["xy"][1])],
+            "mask_radius_px": float(star.get("mask_radius") or 0.7),
+            "detectors": list(star_dets),
+            "source": star.get("source", "D1 (donde el objetivo no se ve)"),
+            "note": (
+                "a 1.2 px las dos fuentes no se resuelven; la mascara quita el "
+                "nucleo de la estrella y tambien una parte del objetivo"
+            ),
+        }
     if len(used) < 3:
         result["reason"] = (
             f"detecciones utilizables {len(used)} < 3; no se mide movimiento propio"
