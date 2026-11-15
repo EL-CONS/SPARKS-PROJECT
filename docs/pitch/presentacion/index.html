@@ -124,7 +124,7 @@ h2 { font-size: 84px; }
 .s-twice h2 { font-size: 66px; }
 .s-twice .lead { margin-top: 34px; font-size: 36px; }
 .facts { margin-top: 54px; display: grid; gap: 26px; }
-.fact { display: grid; grid-template-columns: 210px 1fr; align-items: baseline; gap: 26px; border-top: 1px solid var(--rule); padding-top: 22px; }
+.fact { display: grid; grid-template-columns: 330px 1fr; align-items: baseline; gap: 26px; border-top: 1px solid var(--rule); padding-top: 22px; }
 .fact .big { font-family: var(--font-display); font-size: 64px; font-weight: 600; color: var(--text); }
 .fact .txt { font-size: 28px; color: var(--text-2); line-height: 1.35; }
 
@@ -145,7 +145,8 @@ h2 { font-size: 84px; }
 @keyframes plateBlinkInv { 0%, 49.99% { opacity: 1; } 50%, 100% { opacity: 0; } }
 .dot { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
 .dot.b { background: var(--before); } .dot.a { background: var(--now); }
-.s-app h2 { font-size: 72px; }
+.s-app h2 { font-size: 64px; }
+.s-app .lead { margin-top: 30px; }
 .steps { margin-top: 48px; display: grid; gap: 30px; }
 .step { display: grid; grid-template-columns: 74px 1fr; gap: 26px; align-items: start; }
 .step .num { width: 62px; height: 62px; border-radius: 50%; border: 2px solid var(--rule-strong); display: grid; place-items: center; font-family: var(--font-display); font-size: 26px; }
@@ -230,6 +231,61 @@ h2 { font-size: 84px; }
 .url { margin-top: 18px; font-family: var(--font-data); font-size: 19px; color: var(--text-2); text-align: center; word-break: break-all; }
 .credits { position: absolute; left: var(--pad); right: var(--pad); bottom: 50px; font-family: var(--font-data); font-size: 17px; color: var(--text-3); letter-spacing: 0.02em; }
 
+
+/* ===========================================
+   3 · LAS LUCES (azul = antes, ámbar = ahora)
+   =========================================== */
+.s-app .pad { grid-template-columns: 760px 1fr; }
+.lights { position: relative; width: 760px; height: 760px; }
+.lights .field { position: absolute; inset: 60px; border-radius: 50%; border: 1px solid var(--rule); background: radial-gradient(closest-side, rgb(16 24 36 / 0.6), transparent); }
+.lights .field::after { content: ''; position: absolute; inset: 120px; border-radius: 50%; border: 1px dashed var(--rule); }
+.orb { position: absolute; width: 150px; height: 150px; border-radius: 50%; transform: translate(-50%, -50%); }
+.orb-b { left: 300px; top: 450px; background: radial-gradient(circle at 40% 40%, #bfe4fa, var(--before) 55%, rgb(98 182 232 / 0) 72%); box-shadow: 0 0 120px 30px rgb(98 182 232 / 0.35); opacity: 0; }
+.orb-a { left: 470px; top: 290px; width: 190px; height: 190px; background: radial-gradient(circle at 40% 40%, var(--lens), var(--now) 55%, rgb(255 178 56 / 0) 72%); box-shadow: 0 0 160px 40px rgb(255 178 56 / 0.4); opacity: 0; }
+.trail { position: absolute; left: 300px; top: 450px; width: 234px; height: 3px; transform-origin: 0 50%; transform: rotate(-43deg) scaleX(0); background: repeating-linear-gradient(90deg, var(--text-2) 0 12px, transparent 12px 22px); opacity: 0.8; }
+.lights .lbl-b, .lights .lbl-a { position: absolute; font-family: var(--font-data); font-size: 24px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0; }
+.lights .lbl-b { left: 200px; top: 560px; color: var(--before); }
+.lights .lbl-a { left: 560px; top: 160px; color: var(--now-ink); }
+.slide.visible .orb-b { animation: orbIn 1s var(--ease) 0.4s forwards, pulse 4s ease-in-out 1.4s infinite; }
+.slide.visible .lbl-b { animation: fadeIn 0.8s var(--ease) 0.9s forwards; }
+.slide.visible .trail { animation: trailIn 1.2s var(--ease) 1.5s forwards; }
+.slide.visible .orb-a { animation: orbIn 1s var(--ease) 2.4s forwards, pulse 4s ease-in-out 3.4s infinite; }
+.slide.visible .lbl-a { animation: fadeIn 0.8s var(--ease) 2.9s forwards; }
+@keyframes orbIn { from { opacity: 0; transform: translate(-50%, -50%) scale(0.4); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+@keyframes fadeIn { to { opacity: 1; } }
+@keyframes trailIn { to { transform: rotate(-43deg) scaleX(1); } }
+@keyframes pulse { 50% { filter: brightness(1.15); } }
+.legend2 { margin-top: 40px; display: grid; gap: 16px; font-size: 32px; color: var(--text-2); }
+.legend2 > span { display: flex; align-items: center; gap: 16px; }
+.legend2 .dot { width: 22px; height: 22px; }
+.legend2 .dot.b { box-shadow: 0 0 24px var(--before); } .legend2 .dot.a { box-shadow: 0 0 24px var(--now); }
+.legend2 b { color: var(--text); }
+
+/* 4 · secuencia: parpadeo y luego la resta */
+.diffimg.seq img { position: absolute; inset: 0; }
+.diffimg.seq .f2 { opacity: 0; }
+.diffimg.seq .rest, .diffimg.seq .m2 { opacity: 0; }
+.slide.visible .diffimg.seq .f2 { animation: plateBlink 2s steps(1) 0.6s 3; }
+.slide.visible .diffimg.seq .rest { animation: fadeIn 1s var(--ease) 6.6s forwards; }
+.slide.visible .diffimg.seq .m1 { animation: fadeOut 0.6s 6.4s forwards; }
+.slide.visible .diffimg.seq .m2 { animation: fadeIn 0.6s 6.8s forwards; }
+@keyframes fadeOut { to { opacity: 0; } }
+.diffimg .mode { position: absolute; left: 18px; top: 18px; font-family: var(--font-data); font-size: 21px; padding: 8px 16px; border-radius: 999px; background: rgb(2 4 10 / 0.78); color: var(--text); }
+
+/* 6 · franja hoy / lo que sigue / siempre */
+.s-honest h2 { font-size: 72px; }
+.s-honest .cols { margin-top: 54px; }
+.s-honest .col .big small { display: block; margin-top: 10px; font-size: 30px; }
+.s-honest .col p { font-size: 26px; }
+.s-honest .col .big { font-size: 80px; }
+.strip { margin-top: 40px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; padding: 26px 32px; border-radius: 18px; border: 1px solid var(--rule); background: var(--surface); font-size: 25px; color: var(--text-2); line-height: 1.4; }
+.strip b { color: var(--now-ink); font-weight: 700; }
+
+/* 7 · cierre */
+.s-end .line1 { font-size: 42px; }
+.s-end .motto { font-size: 96px; }
+.s-end .line2 { margin-top: 34px; font-size: 34px; color: var(--text-2); font-weight: 600; }
+
 /* ===========================================
    CONTROLES FUERA DEL ESCENARIO (barra de progreso)
    =========================================== */
@@ -284,10 +340,10 @@ body.editing [data-edit] { outline: 1px dashed rgb(255 178 56 / 0.5); outline-of
         <h2 class="r d2" data-edit>En 1930, Plutón apareció al comparar dos fotos.</h2>
         <p class="lead r d3" data-edit>Clyde Tombaugh alternó dos placas del mismo cielo. Lo que saltó, se había movido.</p>
         <div class="facts">
-          <div class="fact r d4"><span class="big" data-edit>102</span><span class="txt" data-edit>colores: así fotografía SPHEREx el cielo entero, cada seis meses.</span></div>
+          <div class="fact r d4"><span class="big" data-edit>+1 000 M</span><span class="txt" data-edit>de objetos: SPHEREx fotografía el cielo entero cada seis meses, en 102 colores.</span></div>
           <div class="fact r d5"><span class="big" data-edit>1.7 px</span><span class="txt" data-edit>lo que avanza en un año la estrella más rápida del cielo. Nadie puede revisar eso a mano.</span></div>
         </div>
-        <p class="src r d6" style="margin-top:34px" data-edit>Placas de Tombaugh: 23 y 29 de enero de 1930. Barnard: 10.39″/año (Gaia DR3) ÷ 6.15″ por píxel de SPHEREx.</p>
+        <p class="src r d6" style="margin-top:34px" data-edit>Placas de Tombaugh: 23 y 29 de enero de 1930. SPHEREx: texto del reto (NASA). Barnard: 10.39″/año (Gaia DR3) ÷ 6.15″ por píxel de SPHEREx.</p>
       </div>
     </div>
     <!-- NOTAS: "En 1930, un muchacho de Kansas tomó dos fotos del mismo cielo con seis días de diferencia, las alternó y algo saltó: Plutón. Hoy SPHEREx fotografía todo el cielo en 102 colores. La estrella más rápida avanza apenas píxel y medio por año. Nadie puede revisar eso a mano." -->
@@ -296,38 +352,31 @@ body.editing [data-edit] { outline: 1px dashed rgb(255 178 56 / 0.5); outline-of
   <!-- =========================================================
        3 · SPARKS: ESCRIBES COORDENADAS Y EL CIELO PARPADEA (0:45–1:15)
        ========================================================= -->
-  <section class="slide s-app" aria-label="Qué hace Sparks">
+  <section class="slide s-app" aria-label="Qué es Sparks">
     <div class="haze"></div>
     <div class="pad">
-      <figure class="blink r d1">
-        <div class="frame">
-          <!-- Fotos reales de SPHEREx: Barnard, detector D2, sumas de ago 2025 y ago 2026, tal como las muestra la app -->
-          <img class="sky-img f1" src="assets/barnard-coadd_D2_S0.png" alt="Estrella de Barnard en agosto de 2025, detector D2 de SPHEREx">
-          <img class="sky-img f2" src="assets/barnard-coadd_D2_S2.png" alt="Estrella de Barnard en agosto de 2026, detector D2 de SPHEREx">
-          <!-- Capa de marcas aparte (dibujo): posición medida en cada temporada -->
-          <svg class="marks" viewBox="0 0 700 700" aria-hidden="true">
-            <circle cx="369.5" cy="347.0" r="46" fill="none" stroke="#62b6e8" stroke-width="4"/>
-            <circle cx="369.3" cy="334.8" r="46" fill="none" stroke="#ffb238" stroke-width="4" class="f2"/>
-          </svg>
-          <div class="when"><span class="b"><i class="dot b"></i>ago 2025</span><span class="a"><i class="dot a"></i>ago 2026</span></div>
-        </div>
-        <figcaption class="cap"><span>Estrella de Barnard · SPHEREx D2</span><span>parpadeo real, 1 cambio/s</span></figcaption>
-      </figure>
+      <!-- Las luces de Sparks: azul (antes) y ámbar (ahora). Dibujo animado, no datos. -->
+      <div class="lights r d1" aria-hidden="true">
+        <div class="field"></div>
+        <span class="orb orb-b"></span>
+        <span class="trail"></span>
+        <span class="orb orb-a"></span>
+        <span class="lbl-b">antes</span>
+        <span class="lbl-a">ahora</span>
+      </div>
       <div>
         <div class="kicker r d1"><span class="n">02</span> Sparks</div>
-        <h2 class="r d2" data-edit>Escribes coordenadas. El cielo parpadea.</h2>
-        <div class="steps">
-          <div class="step r d3"><span class="num">1</span><div><b data-edit>Apuntas</b><span data-edit>Ascensión recta y declinación, o uno de los cinco objetivos del reto.</span></div></div>
-          <div class="step r d4"><span class="num">2</span><div><b data-edit>Miras</b><span data-edit>Parpadeo, suma y resta en los seis detectores de SPHEREx.</span></div></div>
-          <div class="step r d5"><span class="num">3</span><div><b data-edit>¿Qué pasó?</b><span data-edit>Cuánto se movió, con su margen de error y su fuente.</span></div></div>
+        <h2 class="r d2" data-edit>Una chispa es una luz que cambió de lugar.</h2>
+        <p class="lead r d3" data-edit>Sparks toma fotos de SPHEREx de distintos meses y las hace parpadear. Lo que no se movió se queda quieto. Lo que se movió, salta.</p>
+        <div class="legend2 r d4">
+          <span><i class="dot b"></i><span><b>Azul</b>: donde estaba</span></span>
+          <span><i class="dot a"></i><span><b>Ámbar</b>: donde está ahora</span></span>
         </div>
-        <div class="chips r d6">
-          <span class="chip">campo de visión</span><span class="chip">Gaia y CatWISE encima</span><span class="chip">espectro al vuelo</span><span class="chip">enlace con coordenadas</span><span class="chip">español · English</span>
-        </div>
-        <a class="go r d7" id="goApp" href="#" target="_blank" rel="noopener"><i class="dot"></i>Abrir Sparks en vivo</a>
+        <p class="lead r d5" style="margin-top:34px; font-size:32px" data-edit>Eliges un pedazo de cielo, o escribes sus coordenadas. Desde un navegador o un teléfono.</p>
+        <a class="go r d6" id="goApp" href="#" target="_blank" rel="noopener"><i class="dot"></i>Abrir Sparks en vivo</a>
       </div>
     </div>
-    <!-- NOTAS: "Esto es Sparks. Escribes coordenadas y el cielo parpadea. Azul es donde estaba, ámbar donde está. Aquí la estrella de Barnard, con un año de diferencia." Si da tiempo: clic en "Abrir Sparks en vivo". -->
+    <!-- NOTAS: "Así nació Sparks. Una chispa es una luz que cambió de lugar. Sparks toma fotos de SPHEREx de distintos meses y las hace parpadear: lo quieto se queda quieto, lo que se movió salta. Azul es donde estaba; ámbar, donde está. Lo abres en el navegador o en tu teléfono." -->
   </section>
 
   <!-- =========================================================
@@ -337,15 +386,19 @@ body.editing [data-edit] { outline: 1px dashed rgb(255 178 56 / 0.5); outline-of
     <div class="haze"></div>
     <div class="pad">
       <figure class="r d1">
-        <div class="diffimg">
-          <!-- Resta real (ago 2026 − ago 2025, D2), pintada con el mismo mapa que la app (hacer-assets.py) -->
-          <img class="sky-img" src="assets/barnard-resta_D2_S0_S2.png" alt="Resta de dos temporadas de Barnard: azul donde estaba, ámbar donde está">
+        <!-- Primero parpadea (fotos reales, D2, ago 2025 / ago 2026); a los 6 s entra la resta real -->
+        <div class="diffimg seq">
+          <img class="sky-img f1" src="assets/barnard-coadd_D2_S0.png" alt="Estrella de Barnard en agosto de 2025, SPHEREx D2">
+          <img class="sky-img f2" src="assets/barnard-coadd_D2_S2.png" alt="Estrella de Barnard en agosto de 2026, SPHEREx D2">
+          <img class="sky-img rest" src="assets/barnard-resta_D2_S0_S2.png" alt="Resta de las dos temporadas: azul donde estaba, ámbar donde está">
+          <span class="mode m1">parpadeo · ago 2025 ↔ ago 2026</span>
+          <span class="mode m2">resta · ago 2026 − ago 2025</span>
         </div>
         <div class="legend"><span><i class="dot b"></i>azul: donde estaba</span><span><i class="dot a"></i>ámbar: donde está</span></div>
       </figure>
       <div>
-        <div class="kicker r d1"><span class="n">03</span> La prueba</div>
-        <h2 class="r d2" data-edit>Restamos un año de cielo. Medimos la flecha.</h2>
+        <div class="kicker r d1"><span class="n">03</span> La prueba · Estrella de Barnard</div>
+        <h2 class="r d2" data-edit>Parpadea. Restamos. Medimos la flecha.</h2>
         <div class="vs">
           <div class="meas r d3"><span class="who">Sparks</span><span class="val now"><span class="count" data-to="10.23" data-dec="2">0.00</span> <small>± 0.43 ″/año</small></span></div>
           <div class="meas r d4"><span class="who">Gaia DR3</span><span class="val"><span class="count" data-to="10.39" data-dec="2">0.00</span> <small>″/año</small></span></div>
@@ -362,7 +415,7 @@ body.editing [data-edit] { outline: 1px dashed rgb(255 178 56 / 0.5); outline-of
         <p class="src r d7" style="margin-top:14px" data-edit>data-sample/results.json · 6 puntos en D5 y D6 · paralaje de Gaia descontada</p>
       </div>
     </div>
-    <!-- NOTAS: "Restamos el cielo de hace un año al de hoy. Nuestra flecha dice 10.2 segundos de arco por año. La de Gaia, el mejor catálogo de estrellas del mundo, 10.4. Coinciden." (pausa) -->
+    <!-- NOTAS: "Esta es la estrella de Barnard. Parpadea: un año de diferencia. Restamos una foto de la otra: lo quieto desaparece, queda la huella del movimiento. Nuestra flecha dice 10.2 segundos de arco por año. Gaia, el mejor catálogo del mundo, 10.4. Coinciden." -->
   </section>
 
   <!-- =========================================================
@@ -417,31 +470,36 @@ body.editing [data-edit] { outline: 1px dashed rgb(255 178 56 / 0.5); outline-of
   <!-- =========================================================
        6 · CANDIDATOS, NO DESCUBRIMIENTOS (2:20–2:45)
        ========================================================= -->
-  <section class="slide s-honest" aria-label="Candidatos, no descubrimientos">
+  <section class="slide s-honest" aria-label="A escala">
     <div class="haze"></div>
     <div class="pad">
-      <div class="kicker r d1"><span class="n">05</span> Honestidad</div>
-      <h2 class="r d2" data-edit>No decimos que descubrimos nada. Damos candidatos para revisar.</h2>
+      <div class="kicker r d1"><span class="n">05</span> A escala</div>
+      <h2 class="r d2" data-edit>Si Sparks recorre el cielo entero, cualquiera puede mirar dos veces.</h2>
       <div class="cols">
         <div class="col r d3">
-          <div class="k">Clasificador de clase</div>
-          <div class="big"><span class="count" data-to="78" data-dec="0">0</span><small> %</small></div>
-          <p data-edit>de aciertos en <b>69 objetos</b> con clase verificada, probando cada uno sin verlo. Separa mal las variables: eso lo decide <b>la imagen</b>, no el modelo.</p>
+          <div class="k">El cielo de SPHEREx</div>
+          <div class="big">+1 000 <small>millones de objetos</small></div>
+          <p data-edit>Todo el cielo cada seis meses. <b>Ninguna persona puede revisarlo sola</b>, ni un programa entenderlo del todo.</p>
         </div>
         <div class="col r d4">
-          <div class="k">Pruebas</div>
-          <div class="big"><span class="count" data-to="64" data-dec="0">0</span><small> pruebas</small></div>
-          <p data-edit>automáticas, y los <b>cinco objetivos</b> revisados en el navegador a tamaño de computadora y de teléfono, con capturas.</p>
+          <div class="k">Ya funcionó antes</div>
+          <div class="big">cientos <small>de miles</small></div>
+          <p data-edit>de voluntarios han encontrado asteroides, cometas y enanas cafés comparando imágenes. <b>La mayoría de las enanas cafés conocidas</b> se encontraron así.</p>
         </div>
         <div class="col r d5">
-          <div class="k">Para cualquiera</div>
-          <div class="big">0 <small>instalaciones</small></div>
-          <p data-edit>Un navegador o un teléfono. Para <b>voluntarios, escuelas y astrónomos</b> que quieren un primer vistazo.</p>
+          <div class="k">Lo que cuesta un campo</div>
+          <div class="big">≈ <span class="count" data-to="4" data-dec="0">0</span> <small>MB por pedazo de cielo</small></div>
+          <p data-edit>Sparks corre entero en el navegador, servido como sitio estático. <b>Un pedazo de cielo más es un archivo más</b>, no un servidor más.</p>
         </div>
       </div>
-      <p class="src r d6" style="margin-top:60px" data-edit>ml-clasificador/resultados_v2.json (exactitud dejando uno fuera: 0.7826) · npm test: 64 de 64 · docs/qa/navegador-cinco-objetivos.md</p>
+      <div class="strip r d6">
+        <span><b>Hoy</b> · los 5 objetivos del reto, procesados y revisados.</span>
+        <span><b>Lo que sigue</b> · el cielo por pedazos, con la misma canalización.</span>
+        <span><b>Siempre</b> · candidatos para revisar: el clasificador acierta 78 % en 69 objetos verificados.</span>
+      </div>
+      <p class="src r d7" style="margin-top:20px" data-edit>NASA, texto del reto (backyardworlds.org) · los 5 campos: de 1.8 a 7.9 MB cada uno · resultados_v2.json: 0.7826</p>
     </div>
-    <!-- NOTAS: "Sparks no dice que descubre nada: da candidatos para revisar, con su margen de error. Nuestro clasificador acierta 78 % en 69 objetos verificados, y donde falla, en las variables, dejamos que decida la imagen. Funciona en cualquier navegador, también en el teléfono." -->
+    <!-- NOTAS: "Pensemos en grande. SPHEREx ve más de mil millones de objetos, todo el cielo cada seis meses: nadie puede revisarlo solo. Pero esto ya funcionó: cientos de miles de voluntarios han encontrado asteroides, cometas y enanas cafés comparando imágenes; la mayoría de las enanas cafés conocidas se encontraron así. Sparks corre en el navegador: cada pedazo de cielo nuevo es un archivo de unos megas, no un servidor. Hoy son los cinco objetivos del reto; lo que sigue es el cielo entero. Y siempre como candidatos para revisar." -->
   </section>
 
   <!-- =========================================================
@@ -451,17 +509,18 @@ body.editing [data-edit] { outline: 1px dashed rgb(255 178 56 / 0.5); outline-of
     <div class="haze"></div>
     <div class="pad">
       <div>
-        <p class="line1 r d1" data-edit>Plutón se encontró mirando dos veces.<br>Nosotros miramos en 102 colores.</p>
-        <p class="motto r d3" data-edit>Cada chispa que <span class="now">se mueve</span> tiene una huella.</p>
+        <p class="line1 r d1" data-edit>A Plutón lo encontró un joven granjero de Kansas, mirando dos veces.</p>
+        <p class="motto r d3" data-edit>Con Sparks, el siguiente lo puedes <span class="now">encontrar tú</span>.</p>
+        <p class="line2 r d4" data-edit>Cada chispa que se mueve tiene una huella.</p>
         <div class="team r d5"><img src="assets/symbol.svg" alt=""><div>Cosmonautas<small>Hermosillo, Sonora · Gracias</small></div></div>
       </div>
       <div class="r d4">
-        <div class="qr"><div id="qr"><p class="pending">URL pública:<br>pendiente del<br>despliegue en AWS</p></div></div>
+        <div class="qr"><div id="qr"><p class="pending">Abre Sparks:<br>d3hfqg5g7frqp1<br>.cloudfront.net</p></div></div>
         <p class="url" id="urlText"></p>
       </div>
     </div>
     <p class="credits r d6" data-edit>Datos: NASA/IPAC IRSA · SPHEREx DR1, QR2 y QR3 · ESA Gaia DR3 · CatWISE2020 · Código: github.com/EL-CONS/SPARKS-PROJECT</p>
-    <!-- NOTAS: "Plutón se encontró mirando dos veces. Nosotros miramos en 102 colores. Cada chispa que se mueve tiene una huella. Somos Cosmonautas. Gracias." -->
+    <!-- NOTAS: "A Plutón lo encontró un joven granjero de Kansas, mirando dos veces. Con Sparks, el siguiente lo puedes encontrar tú. (pausa) Cada chispa que se mueve tiene una huella. Somos Cosmonautas. Gracias." -->
   </section>
 </main>
 </div>
@@ -477,8 +536,9 @@ body.editing [data-edit] { outline: 1px dashed rgb(255 178 56 / 0.5); outline-of
    CONFIGURACIÓN: pega aquí la URL pública cuando Cons la tenga.
    El botón "Abrir Sparks en vivo" y el QR del cierre la usan.
    =========================================== */
-const APP_URL = '';                       // ej. 'https://sparks.ejemplo.org/'
+const APP_URL = 'https://d3hfqg5g7frqp1.cloudfront.net/';   // despliegue de Cons en AWS (CloudFront)
 const LOCAL_URL = 'http://localhost:5190/?ra=269.4486&dec=4.7672&mode=blink&lang=es#explorar';
+const LIVE_DEMO = 'https://d3hfqg5g7frqp1.cloudfront.net/?ra=133.7602&dec=-7.2407&lang=es#inicio';
 
 /* ===========================================
    CONTROLADOR DE DIAPOSITIVAS (escenario fijo 1920×1080)
@@ -632,7 +692,7 @@ function buildSky() {
    ENLACE A LA APP Y QR DEL CIERRE
    =========================================== */
 function setupLinks() {
-  const url = APP_URL || LOCAL_URL;
+  const url = APP_URL ? LIVE_DEMO : LOCAL_URL;
   document.getElementById('goApp').href = url;
   if (APP_URL) {
     document.getElementById('urlText').textContent = APP_URL.replace(/^https?:\/\//, '');
