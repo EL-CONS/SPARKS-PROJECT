@@ -8,7 +8,7 @@ Las normas del NASA Space Apps Challenge 2026 piden que la entrega describa cóm
 
 Claude, de Anthropic, a través de Claude Code (asistente de programación). Los commits llevan la marca `Co-Authored-By` con el modelo usado: Claude Sonnet 5.5, Claude Opus 5.5 y Claude Fable 5.2.
 
-Al 14 de noviembre a las 20:40, 47 de los 90 commits del repositorio llevan esa marca. Todos son de la cuenta de Joaquín. Los commits de las otras tres cuentas (39) no la llevan; eso no prueba que no usaran SI. [CONFIRMAR con Cons, Horacio y Carlos si usaron algún asistente y para qué.]
+Al 14 de noviembre a las 23:45, en la historia de la rama de entrega (`joako-integracion`), 49 de 74 commits llevan esa marca; todos son de la cuenta de Joaquín (52 commits). Los 22 de la cuenta de Cons no la llevan; eso no prueba que no usara SI. (A las 20:40, en todas las ramas, eran 47 de 90.) [CONFIRMAR con Cons, Horacio y Carlos si usaron algún asistente y para qué.]
 
 ## Para qué se usó
 
@@ -16,7 +16,7 @@ Al 14 de noviembre a las 20:40, 47 de los 90 commits del repositorio llevan esa 
 |---|---|---|
 | Interfaz web (`app/src/ui/`, `app/src/styles/`) | El asistente escribió la mayor parte del código de las tres iteraciones de diseño y de la elegida ("Constelación") | Joaquín dio la dirección, eligió entre iteraciones y revisó el resultado en el navegador. Cons integra y mantiene la rama |
 | Lógica de la app (`app/src/core/`: coordenadas, URL, reproductor, campo de visión, espectro) | Campo de visión y espectro al vuelo los escribió el asistente, con pruebas automáticas. [CONFIRMAR con Cons el resto] | Revisión de Joaquín; las pruebas corren con `npm test` |
-| Clasificador de tipo de objeto (`ml-clasificador/`) | El asistente escribió el entrenamiento y la inferencia en JavaScript | Joaquín eligió los 36 objetos y revisó la evaluación dejando uno fuera |
+| Clasificador de tipo de objeto (`ml-clasificador/`) | El asistente escribió el entrenamiento, el reentrenamiento de la v2 y la inferencia en JavaScript | Horacio revisó la ciencia (encontró la fuga de la v1 y la etiqueta de Wolf 489) y armó el catálogo verificado de 69 objetos; Joaquín revisó la evaluación dejando uno fuera |
 | Canalización de datos (`pipeline/`, `data-new/`) | [CONFIRMAR con Horacio] | Horacio |
 | Investigación (`docs/sprint-*`, `Investigacion.md`, cobertura de IRSA) | [CONFIRMAR con Carlos y Horacio] | Carlos y Horacio |
 | Planes de trabajo y documentos (`docs/reto/`, planes de sprint, auditoría de requisitos, este documento, `README.md`) | Redactados con el asistente | Joaquín los revisa antes de usarlos |
@@ -28,11 +28,11 @@ Al 14 de noviembre a las 20:40, 47 de los 90 commits del repositorio llevan esa 
 - **Las imágenes del cielo no están generadas ni retocadas con SI.** Son datos públicos de SPHEREx bajados de NASA/IPAC IRSA y procesados con código propio.
 - **Ninguna cifra científica la produjo un modelo de lenguaje.** Los movimientos propios, el ruido, las banderas y los espectros salen de la canalización y de los archivos de datos; la app los lee de ahí.
 - La app no llama a ningún servicio de SI cuando alguien la usa.
-- El clasificador de tipo de objeto es un bosque aleatorio entrenado por el equipo con 36 objetos. Es aprendizaje automático clásico, no un modelo generativo, y se presenta con ese límite.
+- El clasificador de tipo de objeto es un bosque aleatorio entrenado por el equipo con 69 objetos de clase verificada (v2; sus cifras están en `ml-clasificador/resultados_v2.json`). Es aprendizaje automático clásico, no un modelo generativo, y se presenta como candidato a clase, con sus límites.
 - No hay música, voz ni video generados con SI en el repositorio. [CONFIRMAR para el video de 30 segundos cuando se grabe.]
 
 ## Versión en inglés (para el sitio)
 
 > **Use of SI tools.** We used Claude (Anthropic), through the Claude Code assistant, to speed up development: it wrote most of the front-end code, parts of the application logic with their automated tests, the training and inference code of our small object-class classifier, and drafts of our planning and documentation. Team members set the direction, chose between design iterations, and reviewed the code and the results in the browser. [ADD: what Cons, Horacio and Carlos used, if anything.]
 >
-> SI was not used to create or alter any sky image: every image is public SPHEREx data from NASA/IPAC IRSA processed by our own code. No scientific number in Sparks was produced by a language model: proper motions, noise, flags and spectra are computed from the data. The app calls no SI service at run time. Our classifier is a classical random forest trained on 36 objects and is presented with that limit.
+> SI was not used to create or alter any sky image: every image is public SPHEREx data from NASA/IPAC IRSA processed by our own code. No scientific number in Sparks was produced by a language model: proper motions, noise, flags and spectra are computed from the data. The app calls no SI service at run time. Our classifier is a classical random forest trained on 69 objects with a verified class; it is shown as a candidate class, with its limits.
