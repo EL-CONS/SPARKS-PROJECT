@@ -10,3 +10,4 @@
 | **Gaia DR3** (`data-sample/barnard/catalogs.json`, referencia de movimiento) | ESA/Gaia/DPAC | CC BY-SA 3.0 IGO (atribución a ESA/Gaia/DPAC) | Capa de estrellas de Gaia y movimiento esperado |
 | **Íconos y personajes de astros** (`app/src/ui/components/Icons.tsx`, `Astros.tsx`) | Dibujados a mano en SVG por el equipo | Propios | Controles e ilustraciones marcadas como "Ilustración" |
 | **Logo en la app** (`app/src/ui/assets/`) | Copias sin cambios de `Logo/` | Propio del proyecto | Encabezado y favicon |
+| **Logos de NASA Space Apps Challenge** (`app/src/ui/assets/spaceapps/`) | Kit oficial para participantes, spaceappschallenge.org/brand (copia de `assets/brand/spaceapps/logos/`) | Uso permitido a participantes según la Space Apps Brand Guide; se usan sin alterar, en las combinaciones de color provistas y sobre una banda lisa (no sobre el campo de estrellas) | Header y footer |

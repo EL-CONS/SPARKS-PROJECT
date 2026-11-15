@@ -12,6 +12,10 @@ import { IconMoon, IconNext, IconPause, IconPlay, IconPrev, IconSun } from './co
 import { seasonLabel, toDms, toHms } from './sky';
 import symbol from './assets/symbol.svg';
 import symbolLight from './assets/symbol-flat-light.svg';
+import spaceAppsWhite from './assets/spaceapps/spaceapps-color-white.svg';
+import spaceAppsBlack from './assets/spaceapps/spaceapps-color-black.svg';
+import spaceAppsSmallWhite from './assets/spaceapps/spaceapps-small-white.svg';
+import spaceAppsSmallBlack from './assets/spaceapps/spaceapps-small-black.svg';
 
 function useBodyLabels(s: Sparks) {
   return useMemo(() => {
@@ -41,10 +45,11 @@ export default function App() {
     <div className="cn">
       <Starfield theme={theme} labels={labels} quiet={s.tab === 'explorar'} />
       <a className="skip" href="#cielo">{s.t.skip}</a>
-      <header className="cn-top">
+      <header className="band band--top">
+        <div className="cn-top">
         <button type="button" className="cn-brand" onClick={() => s.setTab('inicio')}>
           <img src={theme === 'light' ? symbolLight : symbol} alt="" width={34} height={34} />
-          Sparks
+          <span className="cn-brand__name">Sparks</span>
         </button>
         <nav className="cn-nav" aria-label={es ? 'Secciones' : 'Sections'}>
           <button type="button" aria-current={s.tab === 'inicio' ? 'page' : undefined} onClick={() => s.setTab('inicio')}>{s.intro.tabs.start}</button>
@@ -56,14 +61,69 @@ export default function App() {
             {theme === 'light' ? <IconSun /> : <IconMoon />}
           </button>
         </span>
+        <a className="cn-spaceapps" href="https://www.spaceappschallenge.org/" target="_blank" rel="noreferrer" aria-label="NASA Space Apps Challenge 2026">
+          <img className="cn-spaceapps__full" src={theme === 'light' ? spaceAppsBlack : spaceAppsWhite} alt="NASA Space Apps Challenge" width={112} height={44} />
+          <img className="cn-spaceapps__small" src={theme === 'light' ? spaceAppsSmallBlack : spaceAppsSmallWhite} alt="" width={34} height={34} />
+        </a>
+        </div>
       </header>
       <main id="cielo">{s.tab === 'inicio' ? <Start s={s} theme={theme} onGo={() => setStep(1)} /> : <Route s={s} step={step} setStep={setStep} />}</main>
-      <footer className="cn-foot">
-        <p>{s.t.footer.honest}</p>
-        <p>{es ? 'Los astros que cruzan el fondo son ilustraciones de los objetivos del reto; las fotos de SPHEREx están solo en el escenario.' : 'The bodies crossing the background are illustrations of the challenge targets; SPHEREx photos appear only on the stage.'}</p>
-        <p>{s.t.footer.data} {s.t.footer.built} · {s.t.footer.team}</p>
+      <footer className="band band--foot">
+        <div className="foot">
+          <a className="foot__logo" href="https://www.spaceappschallenge.org/" target="_blank" rel="noreferrer">
+            <img src={theme === 'light' ? spaceAppsBlack : spaceAppsWhite} alt="NASA Space Apps Challenge" width={224} height={88} />
+          </a>
+          <div className="foot__text">
+            <p className="foot__who">
+              <b>Sparks</b> · {es ? 'Equipo Cosmonautas · NASA Space Apps Challenge 2026, Hermosillo · reto “Planet X and SPHEREx”.' : 'Team Cosmonautas · NASA Space Apps Challenge 2026, Hermosillo · “Planet X and SPHEREx” challenge.'}
+            </p>
+            <p className="foot__honest">{s.t.footer.honest}</p>
+            <p>
+              {es
+                ? 'Proyecto independiente, no afiliado ni respaldado por la NASA. Datos: SPHEREx, NASA/IPAC IRSA, CatWISE2020, ESA/Gaia/DPAC. Herramientas: Astropy, Aladin Lite (CDS).'
+                : 'Independent project, not affiliated with or endorsed by NASA. Data: SPHEREx, NASA/IPAC IRSA, CatWISE2020, ESA/Gaia/DPAC. Tools: Astropy, Aladin Lite (CDS).'}
+            </p>
+            <p className="foot__fine">
+              {es ? 'Los astros que cruzan el fondo son ilustraciones de los objetivos del reto; las fotos de SPHEREx están solo en el escenario.' : 'The bodies crossing the background are illustrations of the challenge targets; SPHEREx photos appear only on the stage.'}
+            </p>
+          </div>
+        </div>
       </footer>
+      <ScrollHint es={es} />
     </div>
+  );
+}
+
+/** A round button at the bottom centre while there is more page below. */
+function ScrollHint({ es }: { es: boolean }) {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const check = () => setShow(window.scrollY + window.innerHeight < document.documentElement.scrollHeight - 160);
+    check();
+    window.addEventListener('scroll', check, { passive: true });
+    window.addEventListener('resize', check);
+    const ro = new ResizeObserver(check);
+    ro.observe(document.body);
+    return () => {
+      window.removeEventListener('scroll', check);
+      window.removeEventListener('resize', check);
+      ro.disconnect();
+    };
+  }, []);
+  return (
+    <button
+      type="button"
+      className={`scrollhint${show ? ' is-on' : ''}`}
+      aria-label={es ? 'Bajar para ver más' : 'Scroll down for more'}
+      tabIndex={show ? 0 : -1}
+      aria-hidden={!show}
+      onClick={() => window.scrollBy({ top: window.innerHeight * 0.75, behavior: 'smooth' })}
+    >
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M6 9l6 6 6-6" />
+      </svg>
+      <span>{es ? 'Más abajo' : 'More below'}</span>
+    </button>
   );
 }
 
@@ -189,6 +249,16 @@ function Route({ s, step, setStep }: { s: Sparks; step: number; setStep: (n: num
 
   return (
     <div className="route" ref={top}>
+      <div className="edges">
+        <button type="button" className={`edge edge--prev${canGo(step - 1) ? ' is-on' : ''}`} onClick={() => go(step - 1)} disabled={!canGo(step - 1)} aria-label={canGo(step - 1) ? `${es ? 'Paso anterior' : 'Previous step'}: ${titles[step - 1]}` : undefined}>
+          <IconPrev />
+          {canGo(step - 1) && <span className="edge__tip">{titles[step - 1]}</span>}
+        </button>
+        <button type="button" className={`edge edge--next${canGo(step + 1) ? ' is-on' : ''}`} onClick={() => go(step + 1)} disabled={!canGo(step + 1)} aria-label={canGo(step + 1) ? `${es ? 'Paso siguiente' : 'Next step'}: ${titles[step + 1]}` : undefined}>
+          <IconNext />
+          {canGo(step + 1) && <span className="edge__tip">{titles[step + 1]}</span>}
+        </button>
+      </div>
       <nav className="trail" aria-label={es ? 'Pasos' : 'Steps'}>
         <ol className="trail__list" style={{ ['--progress' as string]: step / (STEPS - 1) }}>
           {titles.map((title, n) => (

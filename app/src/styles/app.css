@@ -206,7 +206,7 @@ ul {
   gap: 24px;
   max-width: 1320px;
   margin: 0 auto;
-  padding: 16px var(--gutter);
+  padding: 12px var(--gutter);
 }
 .cn-brand {
   display: inline-flex;
@@ -476,7 +476,8 @@ ul {
 
 /* the steps sit side by side; the track slides left to move on */
 .steps {
-  overflow-x: clip;
+  /* clip both ways: a taller hidden step must not lengthen the page */
+  overflow: clip;
   transition: height 450ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .steps__track {
@@ -1071,20 +1072,6 @@ ul {
   margin-top: 40px;
 }
 
-.cn-foot {
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 0 var(--gutter) 56px;
-  text-align: center;
-  font-size: 0.82rem;
-  color: var(--text-3);
-}
-.cn-foot p:first-child {
-  font-family: var(--font-display);
-  font-size: 0.9rem;
-  color: var(--text-2);
-}
-
 @media (max-width: 760px) {
   .cn-nav {
     gap: 16px;
@@ -1176,5 +1163,258 @@ ul {
   .spark--primary {
     width: 100%;
     justify-content: center;
+  }
+}
+
+/* ---------------------------------------------------------------- Space Apps bands
+   Header and footer sit on the official Space Apps gradient (Electric Blue
+   #0042A6 to Deep Blue #07173F, 45°) as a calm solid band, so the official
+   logo is never placed over the busy starfield and is used unaltered. */
+.band {
+  position: relative;
+  z-index: 5;
+  background: linear-gradient(135deg, #0042a6 0%, #07173f 55%);
+  color: #ffffff;
+  --text: #ffffff;
+  --text-2: #d6e2ff;
+  --text-3: #a9bbe6;
+  --rule: rgb(255 255 255 / 0.16);
+  --rule-strong: rgb(255 255 255 / 0.32);
+}
+:root[data-theme='light'] .band {
+  background: #ffffff;
+  color: #07173f;
+  --text: #07173f;
+  --text-2: #22345e;
+  --text-3: #44557c;
+  --rule: rgb(7 23 63 / 0.12);
+  --rule-strong: rgb(7 23 63 / 0.28);
+}
+.band--top {
+  box-shadow: 0 1px 0 var(--rule), 0 18px 40px -24px rgb(0 0 0 / 0.7);
+}
+:root[data-theme='light'] .band--top {
+  box-shadow: 0 1px 0 var(--rule), 0 12px 30px -24px rgb(7 23 63 / 0.4);
+}
+.band--foot {
+  margin-top: 40px;
+}
+.cn-spaceapps {
+  display: grid;
+  place-items: center;
+  height: 44px;
+  padding-left: 18px;
+  border-left: 1px solid var(--rule-strong);
+}
+.cn-spaceapps__full {
+  width: 112px;
+  height: auto;
+}
+.cn-spaceapps__small {
+  display: none;
+  width: 34px;
+  height: 34px;
+}
+.foot {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 24px 48px;
+  align-items: center;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 40px var(--gutter) 48px;
+}
+.foot__logo {
+  display: block;
+  /* clear space around the lockup, per the Space Apps guide */
+  padding: 16px;
+}
+.foot__logo img {
+  display: block;
+  width: 224px;
+  height: auto;
+}
+.foot__text {
+  display: grid;
+  gap: 6px;
+  font-size: 0.86rem;
+  color: var(--text-2);
+}
+.foot__who {
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  color: var(--text);
+}
+.foot__who b {
+  font-weight: 600;
+}
+.foot__honest {
+  font-weight: 800;
+  color: var(--text);
+}
+.foot__fine {
+  font-size: 0.78rem;
+  color: var(--text-3);
+}
+
+/* ---------------------------------------------------------------- edge arrows */
+.edge {
+  position: fixed;
+  top: 50%;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border: 1px solid var(--rule-strong);
+  border-radius: 50%;
+  background: rgb(4 8 16 / 0.7);
+  color: var(--text);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transform: translateY(-50%) scale(0.85);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 250ms ease, transform 250ms cubic-bezier(0.16, 1, 0.3, 1), border-color 200ms ease, box-shadow 200ms ease;
+}
+:root[data-theme='light'] .edge {
+  background: rgb(255 255 255 / 0.8);
+}
+.edge.is-on {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(-50%);
+}
+.edge svg {
+  width: 26px;
+  height: 26px;
+}
+.edge--prev {
+  left: max(12px, calc(50vw - 700px));
+}
+.edge--next {
+  right: max(12px, calc(50vw - 700px));
+  border-color: rgb(255 178 56 / 0.6);
+  box-shadow: 0 0 24px -6px rgb(255 178 56 / 0.6);
+}
+.edge.is-on:hover {
+  border-color: var(--now);
+  box-shadow: 0 0 30px -4px rgb(255 178 56 / 0.7);
+}
+.edge__tip {
+  position: absolute;
+  top: calc(100% + 8px);
+  white-space: nowrap;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  color: var(--text-2);
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+.edge:hover .edge__tip,
+.edge:focus-visible .edge__tip {
+  opacity: 1;
+}
+
+/* ---------------------------------------------------------------- scroll hint */
+.scrollhint {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  z-index: 25;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 18px 0 12px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 999px;
+  background: rgb(4 8 16 / 0.72);
+  color: var(--text);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  transform: translate(-50%, 12px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 300ms ease, transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+:root[data-theme='light'] .scrollhint {
+  background: rgb(255 255 255 / 0.85);
+}
+.scrollhint.is-on {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
+}
+.scrollhint:hover {
+  border-color: var(--now);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .scrollhint.is-on svg {
+    animation: nudge 2.4s ease-in-out infinite;
+  }
+}
+@keyframes nudge {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(4px);
+  }
+}
+
+@media (max-width: 760px) {
+  .cn-spaceapps {
+    padding-left: 10px;
+  }
+  .cn-spaceapps__full,
+  .cn-brand__name {
+    display: none;
+  }
+  .cn-spaceapps__small {
+    display: block;
+  }
+  .cn-top {
+    gap: 10px;
+  }
+  .cn-nav {
+    gap: 12px;
+  }
+  .cn-tools button {
+    width: 40px;
+    height: 40px;
+  }
+  .foot {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: start;
+  }
+  .foot__logo img {
+    width: 180px;
+  }
+  .edge {
+    width: 40px;
+    height: 40px;
+  }
+  .edge svg {
+    width: 20px;
+    height: 20px;
+  }
+  .edge--prev {
+    left: 4px;
+  }
+  .edge--next {
+    right: 4px;
+  }
+  .edge__tip {
+    display: none;
+  }
+  /* above the sticky player and step buttons on phones */
+  body:has(.stepnav) .scrollhint {
+    bottom: 200px;
   }
 }
