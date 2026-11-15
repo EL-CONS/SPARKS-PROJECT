@@ -2,7 +2,7 @@
 
 Hecho el sábado 14 de noviembre de 2026, 19:40–20:40 (hora de Hermosillo), con `git fetch --all`. Todo el historial de Git empieza el 14 de noviembre a las 10:58; las fechas anteriores solo aparecen dentro de los archivos (ver `procedencia.md`).
 
-## Actualización: 14 de noviembre, 23:40 (`joako-integracion`)
+## Actualización: 14 de noviembre, 23:16 (`joako-integracion`)
 
 | Rama | Último commit | Estado |
 |---|---|---|

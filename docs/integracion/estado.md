@@ -2,7 +2,7 @@
 
 Rama de trabajo: `joako-integracion` (worktree `sparks-integracion/`, parte de `origin/frontend-del-cons`). Se actualiza después de cada paso. Hora local (MST, Hermosillo).
 
-## Ramas al empezar (sábado 14 de noviembre, 22:52, tras `git fetch --all --prune`)
+## Ramas al empezar (sábado 14 de noviembre, 22:51, tras `git fetch --all --prune`)
 
 | Rama | Último commit | Novedad desde las 22:10 |
 |---|---|---|
@@ -50,12 +50,12 @@ Fuente: `docs/reto/reto.md` y `docs/reto/normas.md` (rama `joako`) y los planes 
 ## Bitácora
 
 - 22:55 `dff3c68`: unión de `joako-requisitos`; `npm ci` en limpio pasa.
-- 23:05 `93f88fc`, `5261b36`: tres fallos vistos en el navegador, arreglados con prueba.
-- 23:12 `0d5eb3b`: QA de los cinco objetivos (`docs/qa/navegador-cinco-objetivos.md`).
-- 23:20 `0d87293`: tema solo oscuro (opción b, provisional; sin respuesta en el paso C).
-- 23:25 `74e6f5e`: clasificador v2 reentrenado en la app, cifras de `resultados_v2.json`.
-- 23:35 `587fe9e`: "variable" por la imagen (kind o indicio de dipolo).
-- 23:40 `8c39463`: publicación comprobada con `curl`.
+- 23:03 y 23:04 `93f88fc`, `5261b36`: tres fallos vistos en el navegador, arreglados con prueba.
+- 23:10 `0d5eb3b`: QA de los cinco objetivos (`docs/qa/navegador-cinco-objetivos.md`).
+- 23:10 `0d87293`: tema solo oscuro (opción b, provisional; sin respuesta en el paso C).
+- 23:12 `74e6f5e`: clasificador v2 reentrenado en la app, cifras de `resultados_v2.json`.
+- 23:13 `587fe9e`: "variable" por la imagen (kind o indicio de dipolo).
+- 23:14 `8c39463`: publicación comprobada con `curl`.
 
 - 22:52 `1cf9546`: se une `origin/frontend-del-cons` (`cbef27d`); en `ml-clasificador/` se conserva la v2 reentrenada.
 

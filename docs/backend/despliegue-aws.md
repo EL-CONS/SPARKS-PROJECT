@@ -1,6 +1,6 @@
 # Despliegue de Sparks en AWS (relevo para Cons)
 
-Escrito el 14 de noviembre de 2026, a las 23:55, desde `joako-integracion`. Aquí no se creó nada en AWS ni se consultaron precios: el despliegue lo decide y lo hace Cons. Lo que dice "comprobado" se probó en esta máquina (salida en `docs/backend/curl-preview.txt`); lo demás va marcado "sin verificar".
+Escrito el 14 de noviembre de 2026, a las 23:18, desde `joako-integracion`. Aquí no se creó nada en AWS ni se consultaron precios: el despliegue lo decide y lo hace Cons. Lo que dice "comprobado" se probó en esta máquina (salida en `docs/backend/curl-preview.txt`); lo demás va marcado "sin verificar".
 
 ## 1. Build
 

@@ -2,7 +2,7 @@
 
 Sparks compila a archivos estáticos en `app/dist/`. Desde la integración del 14 de noviembre (`joako-integracion`), el build copia también los datos: `app/dist/data-sample/` y `app/dist/data-new/` (plugin `serveDataStatic` en `app/vite.config.ts`, gancho `closeBundle`). La carpeta `app/dist/` es lo único que hay que subir.
 
-Versión anterior de este documento: Cons, `cbef27d`. Corregida por Joaquín (con Claude Code) el 14 de noviembre a las 23:15, con lo comprobado abajo. La salida completa de `curl` está en `docs/backend/curl-preview.txt`.
+Versión anterior de este documento: Cons, `cbef27d`. Corregida por Joaquín (con Claude Code) el 14 de noviembre a las 23:14, con lo comprobado abajo. La salida completa de `curl` está en `docs/backend/curl-preview.txt`.
 
 ## Qué se comprobó (14 de noviembre de 2026, 23:14, commit `587fe9e`)
 

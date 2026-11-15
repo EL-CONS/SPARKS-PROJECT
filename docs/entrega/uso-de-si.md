@@ -8,7 +8,7 @@ Las normas del NASA Space Apps Challenge 2026 piden que la entrega describa cóm
 
 Claude, de Anthropic, a través de Claude Code (asistente de programación). Los commits llevan la marca `Co-Authored-By` con el modelo usado: Claude Sonnet 5.5, Claude Opus 5.5 y Claude Fable 5.2.
 
-Al 14 de noviembre a las 23:45, en la historia de la rama de entrega (`joako-integracion`), 49 de 74 commits llevan esa marca; todos son de la cuenta de Joaquín (52 commits). Los 22 de la cuenta de Cons no la llevan; eso no prueba que no usara SI. (A las 20:40, en todas las ramas, eran 47 de 90.) [CONFIRMAR con Cons, Horacio y Carlos si usaron algún asistente y para qué.]
+Al 14 de noviembre a las 23:17, en la historia de la rama de entrega (`joako-integracion`), 49 de 74 commits llevan esa marca; todos son de la cuenta de Joaquín (52 commits). Los 22 de la cuenta de Cons no la llevan; eso no prueba que no usara SI. (A las 20:40, en todas las ramas, eran 47 de 90.) [CONFIRMAR con Cons, Horacio y Carlos si usaron algún asistente y para qué.]
 
 ## Para qué se usó
 

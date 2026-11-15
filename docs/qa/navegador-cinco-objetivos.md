@@ -1,6 +1,6 @@
 # Los cinco objetivos en el navegador
 
-Sábado 14 de noviembre de 2026, 23:00 a 23:15. Rama `joako-integracion` (commits `dff3c68` a `5261b36`). App en `npm run dev` (puerto 5190), abierta en el navegador integrado de la sesión de Claude Code, con viewport emulado de 1440 × 900 y de 390 × 844, en español y tema oscuro (único tema; ver paso C en `docs/integracion/estado.md`).
+Sábado 14 de noviembre de 2026, 22:56 a 23:10. Rama `joako-integracion` (commits `dff3c68` a `5261b36`). App en `npm run dev` (puerto 5190), abierta en el navegador integrado de la sesión de Claude Code, con viewport emulado de 1440 × 900 y de 390 × 844, en español y tema oscuro (único tema; ver paso C en `docs/integracion/estado.md`).
 
 **Cómo se revisó.** Para cada objetivo, un guion en la página (JavaScript en la consola) recorre la interfaz real con clics: elige el objetivo en la mira, pasa al paso 2, prueba parpadeo (reproducir y comprobar que cambia la imagen), suma y resta (cuenta los píxeles no negros de cada lienzo), pulsa cada par de la resta, cambia el campo de visión a 3.28′, 1.64′ y 6.56′ (lee `fov` de la URL y la escala aplicada), lee las casillas de Gaia y CatWISE, pulsa "Medir el objetivo" del espectro y lee el paso 3. Las capturas se tomaron aparte. Sin `console.error` ni errores no capturados en una corrida limpia de los cinco a 390 px, con escucha instalada antes de empezar (resultado: lista vacía). La corrida a 1440 px encontró los tres fallos de abajo.
 
