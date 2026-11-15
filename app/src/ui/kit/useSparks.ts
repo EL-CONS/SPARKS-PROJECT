@@ -57,9 +57,7 @@ export function nearestField(fields: IndexField[], ra: number, dec: number) {
 
 function readTab(): Tab {
   const h = window.location.hash.replace('#', '');
-  if (h === 'inicio' || h === 'explorar') return h;
-  // A shared link with coordinates opens straight on the tool.
-  return new URLSearchParams(window.location.search).has('ra') ? 'explorar' : 'inicio';
+  return h === 'explorar' ? 'explorar' : 'inicio';
 }
 
 export function useSparks() {

@@ -59,7 +59,7 @@ export default function App() {
           <button type="button" aria-current={s.tab === 'explorar' ? 'page' : undefined} onClick={() => s.setTab('explorar')}>{s.intro.tabs.explore}</button>
         </nav>
         <span className="cn-tools">
-          <button type="button" onClick={() => s.setLang(es ? 'en' : 'es')} lang={es ? 'en' : 'es'} aria-label={`${s.t.nav.lang}: ${s.t.nav.langName}`}>{sh.langButton}</button>
+          <button type="button" onClick={() => s.setLang(es ? 'en' : 'es')} lang={s.url.lang} aria-label={`${s.t.nav.lang}: ${s.t.nav.langName}`}>{sh.langButton}</button>
         </span>
         <a className="cn-spaceapps" href="https://www.spaceappschallenge.org/" target="_blank" rel="noreferrer" aria-label="NASA Space Apps Challenge 2026">
           <img className="cn-spaceapps__full" src={spaceAppsWhite} alt="NASA Space Apps Challenge" width={112} height={44} />

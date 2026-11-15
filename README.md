@@ -6,6 +6,8 @@ Enter a sky position and Sparks blinks the images NASA's SPHEREx telescope captu
 
 Sparks surfaces **candidates to review**, never discovery claims. It is an independent project, not affiliated with or endorsed by NASA.
 
+**Live demo (AWS S3 + CloudFront):** https://d3hfqg5g7frqp1.cloudfront.net/
+
 ## What it does
 
 - Accepts coordinates in degrees (`269.4486 4.7672`), in hours and degrees (`08h55m10.831s -7d14m42.53s`, `17:57:48.5 +04:41:36`), or by selecting a challenge target name.
@@ -14,8 +16,8 @@ Sparks surfaces **candidates to review**, never discovery claims. It is an indep
 - **On-the-fly spectrum**: click any point and Sparks measures it across every individual exposure.
 - **Gaia DR3** and **CatWISE2020** catalog overlays on top of the image.
 - NASA quality flags, per-detector noise levels, and source attribution for every measurement.
-- Full state encoded in the URL for sharing or embedding: `?ra=269.4486&dec=4.7672&fov=3.28&mode=diff&det=all&lang=en#explorar`.
-- English and Spanish support. Single dark theme (team decision, November 14).
+- Full state encoded in the URL for sharing or embedding: `?ra=269.4486&dec=4.7672&fov=3.28&mode=diff&det=all&lang=en#explorar` (defaults to the intro view unless `#explorar` is present).
+- English and Spanish support (the `ES`/`EN` button displays the active language). Single dark theme.
 
 Challenge requirements checklist and evidence: [`docs/auditoria/requisitos.md`](docs/auditoria/requisitos.md).
 
@@ -43,7 +45,7 @@ Other commands inside `app/`:
 
 `npm run build` outputs a complete static site in `app/dist/` (around 21 MB with data). It works on any free static hosting provider.
 
-- **At a domain root** (Netlify, Cloudflare Pages, Vercel): run `npm run build` and deploy `app/dist/`.
+- **At a domain root** (AWS S3 + CloudFront, Netlify, Cloudflare Pages, Vercel): run `npm run build` and deploy `app/dist/`. See [`docs/backend/despliegue-aws.md`](docs/backend/despliegue-aws.md) for the AWS S3 + CloudFront setup and post-deploy checks.
 - **In a subfolder**, such as GitHub Pages at `https://<user>.github.io/SPARKS-PROJECT/`: set the base path to the repository name.
 
 ```bash

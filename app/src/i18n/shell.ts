@@ -66,7 +66,7 @@ export interface ShellDict {
 export const SHELL: Record<Lang, ShellDict> = {
   es: {
     sections: 'Secciones',
-    langButton: 'EN',
+    langButton: 'ES',
     steps: ['Apunta el telescopio', 'Mira el cielo', '¿Qué pasó?'],
     stepsLabel: 'Pasos',
     stepPrev: 'Paso anterior',
@@ -154,7 +154,7 @@ export const SHELL: Record<Lang, ShellDict> = {
   },
   en: {
     sections: 'Sections',
-    langButton: 'ES',
+    langButton: 'EN',
     steps: ['Aim the telescope', 'Watch the sky', 'What happened?'],
     stepsLabel: 'Steps',
     stepPrev: 'Previous step',
