@@ -28,26 +28,39 @@ function createStaticDirHandler(baseDir: string) {
   };
 }
 
-function serveDataStatic(): Plugin {
+function serveDataStatic(base: string): Plugin {
   const sampleHandler = createStaticDirHandler(DATA_SAMPLE_DIR);
   const newHandler = createStaticDirHandler(DATA_NEW_DIR);
+  const normalizedBase = base.endsWith('/') ? base.slice(0, -1) : base;
+  const sampleMount = `${normalizedBase}/data-sample`;
+  const newMount = `${normalizedBase}/data-new`;
 
   return {
     name: 'serve-data-static',
     configureServer(server) {
       server.middlewares.use('/data-sample', sampleHandler);
       server.middlewares.use('/data-new', newHandler);
+      if (normalizedBase) {
+        server.middlewares.use(sampleMount, sampleHandler);
+        server.middlewares.use(newMount, newHandler);
+      }
     },
     configurePreviewServer(server) {
       server.middlewares.use('/data-sample', sampleHandler);
       server.middlewares.use('/data-new', newHandler);
+      if (normalizedBase) {
+        server.middlewares.use(sampleMount, sampleHandler);
+        server.middlewares.use(newMount, newHandler);
+      }
     },
   };
 }
 
+const BASE = process.env.VITE_BASE || '/';
+
 export default defineConfig({
-  base: process.env.VITE_BASE || '/',
-  plugins: [react(), serveDataStatic()],
+  base: BASE,
+  plugins: [react(), serveDataStatic(BASE)],
   server: {
     port: 5173,
     host: true,

@@ -19,14 +19,6 @@ import { UI } from '../../i18n/ui';
 import { INTRO } from '../../i18n/intro';
 import { angularDistanceDeg, loadCubes, loadGaia, type Cubes, type FullManifest, type GaiaSource } from '../sky';
 
-function readFlag(key: string): boolean {
-  try {
-    return localStorage.getItem(key) === '1';
-  } catch {
-    return false;
-  }
-}
-
 function writeFlag(key: string) {
   try {
     localStorage.setItem(key, '1');

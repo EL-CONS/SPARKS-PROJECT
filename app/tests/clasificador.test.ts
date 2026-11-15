@@ -10,10 +10,10 @@ import {
 } from '../src/core/clasificador';
 import type { IndexField } from '../src/data/loader';
 
-const PARIDAD_PATH = path.resolve(__dirname, '../../ml-clasificador/paridad.json');
+const PARIDAD_PATH = path.resolve(__dirname, '../../ml-clasificador/paridad_v2.json');
 
-describe('ML Random Forest Classifier', () => {
-  it('achieves exact parity with scikit-learn across all 36 test objects in paridad.json', () => {
+describe('ML Random Forest Classifier v2', () => {
+  it('achieves exact parity with scikit-learn across all 69 test objects in paridad_v2.json', () => {
     const raw = JSON.parse(fs.readFileSync(PARIDAD_PATH, 'utf-8'));
     const { clases, ejemplos } = raw as {
       clases: string[];
@@ -25,7 +25,7 @@ describe('ML Random Forest Classifier', () => {
       }>;
     };
 
-    expect(ejemplos.length).toBe(36);
+    expect(ejemplos.length).toBe(69);
 
     let mismatches = 0;
     let maxDiff = 0;
@@ -64,23 +64,22 @@ describe('ML Random Forest Classifier', () => {
     };
 
     const feats = featuresDeCampo(barnardField);
-    expect(feats).toHaveLength(6);
-    expect(feats[0]).toBe(1.0); // in_gaia
-    expect(feats[1]).toBeCloseTo(Math.log10(546.9759), 2); // log10(plx)
+    expect(feats).toHaveLength(4);
+    expect(feats[0]).toBe(1.0); // en_gaia
+    expect(feats[1]).toBe(1.0); // tiene_fotometria
     expect(feats[2]).toBeCloseTo(11.884, 1); // mg_gaia
     expect(feats[3]).toBeCloseTo(2.8337, 2); // bp_rp
-    expect(feats[4]).toBeCloseTo(8.194, 2); // g_mag
-    expect(feats[5]).toBeCloseTo(Math.log10(10.23), 2); // log10(mu)
 
     const claseRes = useClase(barnardField, 'es');
     expect(claseRes).not.toBeNull();
+    expect(claseRes!.decididoPorImagen).toBe(false);
     expect(claseRes!.claseML).toBe('estrella');
     expect(claseRes!.coinciden).toBe(true);
-    expect(claseRes!.disclaimer).toContain('candidato a clase, entrenado con 36 objetos');
+    expect(Object.keys(claseRes!.probabilidades)).toEqual(['estrella', 'enana marron', 'enana blanca']);
+    expect(claseRes!.disclaimer).toBe('candidato a clase; acierta 75 % en 69 objetos con clase verificada; separa mal las variables');
   });
 
-  it('flags discrepancies between ML prediction and physical two-step rule', () => {
-    // Epsilon Indi B is a brown dwarf that might match or differ depending on rule/features
+  it('decides variable from the image (kind) while ML only separates non-variable classes', () => {
     const mockVar: IndexField = {
       id: 'rdra',
       name: 'R Draconis',
@@ -100,8 +99,10 @@ describe('ML Random Forest Classifier', () => {
 
     const res = useClase(mockVar, 'es');
     expect(res).not.toBeNull();
+    expect(res!.decididoPorImagen).toBe(true);
     expect(res!.claseRegla).toBe('variable');
     expect(res!.claseML).toBe('variable');
     expect(res!.coinciden).toBe(true);
+    expect(Object.keys(res!.probabilidades)).toEqual(['estrella', 'enana marron', 'enana blanca']);
   });
 });

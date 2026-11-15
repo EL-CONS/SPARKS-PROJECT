@@ -1282,7 +1282,7 @@ html {
 /* ---------------------------------------------------------------- scroll hint */
 .scrollhint {
   position: fixed;
-  left: 50%;
+  right: 24px;
   bottom: 20px;
   z-index: 25;
   display: inline-flex;
@@ -1298,7 +1298,7 @@ html {
   backdrop-filter: blur(6px);
   font-family: var(--font-display);
   font-size: 0.75rem;
-  transform: translate(-50%, 12px);
+  transform: translateY(12px);
   opacity: 0;
   pointer-events: none;
   transition: opacity 300ms ease, transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -1306,7 +1306,7 @@ html {
 .scrollhint.is-on {
   opacity: 1;
   pointer-events: auto;
-  transform: translate(-50%, 0);
+  transform: translateY(0);
 }
 .scrollhint:hover {
   border-color: var(--now);
@@ -1372,8 +1372,7 @@ html {
   .edge__tip {
     display: none;
   }
-  /* above the sticky player and step buttons on phones */
-  body:has(.stepnav) .scrollhint {
-    bottom: 200px;
+  .scrollhint {
+    display: none;
   }
 }

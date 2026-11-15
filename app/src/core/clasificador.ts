@@ -26,10 +26,13 @@ export interface PrediccionML {
   mejorProbabilidad: number;
 }
 
+export const CLASES_ESTELARES = ['estrella', 'enana marron', 'enana blanca'] as const;
+
 export interface ClaseResultado {
   claseML: string;
   claseRegla: string;
   coinciden: boolean;
+  decididoPorImagen: boolean;
   probabilidades: Record<string, number>;
   mejorProbabilidad: number;
   features: number[];
@@ -41,7 +44,7 @@ export const MODELO_ML: ModeloBosque = modeloJson as ModeloBosque;
 
 /**
  * Inferencia pura de Random Forest (árboles de decisión en ensamble).
- * x = [en_gaia, log10_paralaje, mg_gaia, bp_rp, g_mag, log10_mu]
+ * x = [en_gaia, tiene_fotometria, mg_gaia, bp_rp]
  */
 export function predecir(modelo: ModeloBosque, x: number[]): PrediccionML {
   const k = modelo.clases.length;
@@ -68,9 +71,9 @@ export function predecir(modelo: ModeloBosque, x: number[]): PrediccionML {
 }
 
 /**
- * Extrae el vector de 6 variables normalizadas para el modelo de ML:
- * [en_gaia, log10_paralaje, mg_gaia, bp_rp, g_mag, log10_mu]
- * con valor FALTA = -999.0 donde no haya dato disponible.
+ * Extrae el vector de 4 variables para el modelo v2 de ML:
+ * [en_gaia, tiene_fotometria, mg_gaia, bp_rp]
+ * con valor FALTA = -999.0 donde falte mg_gaia o bp_rp.
  */
 export function featuresDeCampo(campo: IndexField): number[] {
   const slug = (campo.name || '').toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -80,8 +83,6 @@ export function featuresDeCampo(campo: IndexField): number[] {
   const en_gaia = inGaia ? 1.0 : 0.0;
 
   const plx = rec?.parallax_mas;
-  const log10_paralaje = plx !== null && plx !== undefined && plx > 0 ? Math.log10(plx) : FALTA;
-
   let mg = rec?.mg_gaia;
   if ((mg === null || mg === undefined) && rec?.phot_g_mean_mag && plx && plx > 0) {
     mg = rec.phot_g_mean_mag + 5.0 + 5.0 * Math.log10(plx / 1000.0);
@@ -91,19 +92,17 @@ export function featuresDeCampo(campo: IndexField): number[] {
   const bprp = rec?.bp_rp;
   const bp_rp = bprp !== null && bprp !== undefined && Number.isFinite(bprp) ? bprp : FALTA;
 
-  const gm = rec?.phot_g_mean_mag;
-  const g_mag = gm !== null && gm !== undefined && Number.isFinite(gm) ? gm : FALTA;
+  const tiene_fotometria = mg_gaia !== FALTA && bp_rp !== FALTA ? 1.0 : 0.0;
 
-  const mu = campo.mu_measured ?? campo.mu_expected ?? null;
-  const log10_mu = mu !== null && mu !== undefined && Math.abs(mu) > 0 ? Math.log10(Math.abs(mu)) : FALTA;
-
-  return [en_gaia, log10_paralaje, mg_gaia, bp_rp, g_mag, log10_mu];
+  return [en_gaia, tiene_fotometria, mg_gaia, bp_rp];
 }
 
 /**
- * Hook/función de clasificación: devuelve la clase predicha por el bosque aleatorio,
- * sus probabilidades, y el veredicto de la regla física de dos pasos,
- * señalando discrepancias metodológicas.
+ * Hook/función de clasificación:
+ * - La decisión de "variable" sale de la imagen (campo `kind` / dipolo en el manifiesto),
+ *   porque el modelo ML con Gaia separa mal las variables.
+ * - Cuando la imagen indica movimiento (no variable), el ML decide solo entre
+ *   estrella, enana marrón y enana blanca.
  */
 export function useClase(
   campo: IndexField | null | undefined,
@@ -121,27 +120,54 @@ export function useClase(
   };
   const reg = veredicto(feat, campo.id);
   const claseRegla = reg.clase;
-  const claseML = pred.clase;
+
+  const decididoPorImagen = campo.kind === 'variable';
+
+  // Filtrar probabilidades a las 3 clases no variables cuando la imagen no es variable
+  const sumaNoVar = CLASES_ESTELARES.reduce((acc, c) => acc + (pred.probabilidad[c] ?? 0), 0);
+  const probabilidades: Record<string, number> = {};
+  for (const c of CLASES_ESTELARES) {
+    const raw = pred.probabilidad[c] ?? 0;
+    probabilidades[c] = sumaNoVar > 0 ? raw / sumaNoVar : 1 / CLASES_ESTELARES.length;
+  }
+
+  let claseML: string;
+  let mejorProbabilidad: number;
+  if (decididoPorImagen) {
+    claseML = 'variable';
+    mejorProbabilidad = 1.0;
+  } else {
+    claseML = CLASES_ESTELARES[0];
+    mejorProbabilidad = probabilidades[claseML];
+    for (const c of CLASES_ESTELARES) {
+      if (probabilidades[c] > mejorProbabilidad) {
+        claseML = c;
+        mejorProbabilidad = probabilidades[c];
+      }
+    }
+  }
+
   const coinciden = claseML === claseRegla;
 
   const es = lang === 'es';
   const disclaimer = es
-    ? 'candidato a clase, entrenado con 36 objetos (33 de 36 al dejar uno fuera)'
-    : 'candidate class, trained on 36 objects (33 of 36 leave-one-out)';
+    ? 'candidato a clase; acierta 75 % en 69 objetos con clase verificada; separa mal las variables'
+    : 'candidate class; 75% accuracy on 69 verified objects; separates variables poorly';
 
   let discrepanciaNota: string | undefined;
   if (!coinciden) {
     discrepanciaNota = es
-      ? `Discrepancia metodológica: el clasificador ML predice "${claseML}" (${(pred.mejorProbabilidad * 100).toFixed(1)}%), mientras que la regla física deduce "${claseRegla}".`
-      : `Methodological discrepancy: ML classifier predicts "${claseML}" (${(pred.mejorProbabilidad * 100).toFixed(1)}%), while physical rule deduces "${claseRegla}".`;
+      ? `Discrepancia metodológica: el clasificador ML predice "${claseML}" (${(mejorProbabilidad * 100).toFixed(1)}%), mientras que la regla física deduce "${claseRegla}".`
+      : `Methodological discrepancy: ML classifier predicts "${claseML}" (${(mejorProbabilidad * 100).toFixed(1)}%), while physical rule deduces "${claseRegla}".`;
   }
 
   return {
     claseML,
     claseRegla,
     coinciden,
-    probabilidades: pred.probabilidad,
-    mejorProbabilidad: pred.mejorProbabilidad,
+    decididoPorImagen,
+    probabilidades,
+    mejorProbabilidad,
     features,
     discrepanciaNota,
     disclaimer,
