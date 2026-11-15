@@ -317,3 +317,14 @@ export function angularDistanceDeg(ra1: number, dec1: number, ra2: number, dec2:
     Math.sin(dec1 * r) * Math.sin(dec2 * r) + Math.cos(dec1 * r) * Math.cos(dec2 * r) * Math.cos((ra1 - ra2) * r);
   return Math.acos(Math.max(-1, Math.min(1, c))) / r;
 }
+
+/**
+ * Pares de temporadas con resta en al menos un detector, ordenados. Antes se
+ * tomaban solo los de D1, y en ε Indi B (D1 sin la cuarta temporada) se perdían
+ * los pares con septiembre de 2026.
+ */
+export function diffPairs(diffs: { det: number; a: number; b: number }[]): [number, number][] {
+  const seen = new Map<string, [number, number]>();
+  for (const d of diffs) seen.set(`${d.a}-${d.b}`, [d.a, d.b]);
+  return [...seen.values()].sort((p, q) => p[0] - q[0] || p[1] - q[1]);
+}

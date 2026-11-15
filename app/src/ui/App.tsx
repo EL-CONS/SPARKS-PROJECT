@@ -9,7 +9,7 @@ import { Insights } from './kit/Insights';
 import { Stage, MAX_CATALOG_MARKS } from './components/Stage';
 import { Term } from './components/Term';
 import { IconNext, IconPause, IconPlay, IconPrev } from './components/Icons';
-import { seasonLabel, toDms, toHms } from './sky';
+import { diffPairs, seasonLabel, toDms, toHms } from './sky';
 import { Spectrum } from './components/Spectrum';
 import { tieneFotos } from '../data/loader';
 import { BASE } from './kit/useSparks';
@@ -665,9 +665,9 @@ function Watch({ s }: { s: Sparks }) {
         )}
         {s.mode === 'diff' ? (
           <span className="chips" role="group" aria-label={t.transport.pairLabel}>
-            {m.diffs.filter(d => d.det === 1).map(d => (
-              <button key={`${d.a}${d.b}`} type="button" className="chip" aria-pressed={s.pair[0] === d.a && s.pair[1] === d.b} onClick={() => s.setPair([d.a, d.b])}>
-                <i className="dot dot--b" />{seasonLabel(m.seasons[d.a].start, t.months)} → <i className="dot dot--a" />{seasonLabel(m.seasons[d.b].start, t.months)}
+            {diffPairs(m.diffs).map(([a, b]) => (
+              <button key={`${a}-${b}`} type="button" className="chip" aria-pressed={s.pair[0] === a && s.pair[1] === b} onClick={() => s.setPair([a, b])}>
+                <i className="dot dot--b" />{seasonLabel(m.seasons[a].start, t.months)} → <i className="dot dot--a" />{seasonLabel(m.seasons[b].start, t.months)}
               </button>
             ))}
           </span>

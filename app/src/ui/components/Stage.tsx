@@ -177,7 +177,14 @@ export function Stage(props: StageProps) {
                     : undefined
                 }
               >
-                {pixels ?? <div className="panel__pixels panel__pixels--wait" aria-hidden="true" />}
+                {pixels ??
+                  (mode === 'diff' && cubes ? (
+                    <div className="panel__pixels panel__pixels--wait panel__nodiff" role="img" aria-label={shell.noDiff(d)}>
+                      <span>{shell.noDiff(d)}</span>
+                    </div>
+                  ) : (
+                    <div className="panel__pixels panel__pixels--wait" aria-hidden="true" />
+                  ))}
                 <Marks manifest={manifest} det={d} mode={mode} frame={frame} pair={pair} showGaia={showGaia} gaia={gaia} showWise={showWise} catwise={catwise} pick={pick} zoom={zoom} showTarget={showMarks} />
                 <button
                   type="button"

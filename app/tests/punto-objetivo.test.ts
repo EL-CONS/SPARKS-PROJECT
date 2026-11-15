@@ -27,3 +27,15 @@ describe('posición del objetivo', () => {
     expect(targetPixel(pts, 1)).toEqual({ x: 10, y: 11, measured: true });
   });
 });
+
+import { diffPairs } from '../src/ui/sky';
+import fs from 'node:fs';
+import path from 'node:path';
+
+describe('pares de la resta', () => {
+  it('ε Indi B ofrece los 6 pares de sus 4 temporadas aunque D1 solo tenga 3', () => {
+    const m = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../data-new/epsindib/manifest.json'), 'utf-8'));
+    expect(m.seasons).toHaveLength(4);
+    expect(diffPairs(m.diffs)).toEqual([[0, 1], [0, 2], [0, 3], [1, 2], [1, 3], [2, 3]]);
+  });
+});

@@ -36,6 +36,8 @@ export interface ShellDict {
   far: { title: (ra: string, dec: string) => string; body: (name: string, deg: string) => string; go: (name: string) => string };
   fov: { label: string; option: (arcmin: string) => string; full: string; note: (arcmin: string) => string };
   gray: { low: string; high: string; unit: string; blink: string; stack: (n: number) => string; perDetector: string };
+  /** Panel de resta sin datos: ese detector no tiene alguna de las dos temporadas del par */
+  noDiff: (det: number) => string;
   layers: { label: string; gaia: (n: number) => string; catwise: (n: number) => string; key: (max: number) => string; none: string };
   spec: {
     title: string;
@@ -110,6 +112,7 @@ export const SHELL: Record<Lang, ShellDict> = {
       note: arcmin =>
         `El recorte que bajamos mide ${arcmin}′ de lado. Los campos menores son su parte central, ampliada sin suavizar. Un campo mayor pide bajar más datos de IRSA.`,
     },
+    noDiff: det => `D${det} no tiene fotos en una de las dos temporadas de este par: no hay resta.`,
     gray: {
       low: 'negro',
       high: 'blanco',
@@ -197,6 +200,7 @@ export const SHELL: Record<Lang, ShellDict> = {
       note: arcmin =>
         `The cutout we downloaded is ${arcmin}′ on a side. Smaller fields are its central part, enlarged without smoothing. A larger field means downloading more data from IRSA.`,
     },
+    noDiff: det => `D${det} has no photos in one of the two seasons of this pair: no difference.`,
     gray: {
       low: 'black',
       high: 'white',
