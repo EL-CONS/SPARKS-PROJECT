@@ -67,7 +67,7 @@ export default function App() {
         </a>
         </div>
       </header>
-      <main id="cielo">{s.tab === 'inicio' ? <Start s={s} onGo={() => setStep(1)} /> : <Route s={s} step={step} setStep={setStep} />}</main>
+      <main id="cielo">{s.tab === 'inicio' ? <Start s={s} onGo={() => setStep(0)} /> : <Route s={s} step={step} setStep={setStep} />}</main>
       <footer className="band band--foot">
         <div className="foot">
           <a className="foot__logo" href="https://www.spaceappschallenge.org/" target="_blank" rel="noreferrer">
