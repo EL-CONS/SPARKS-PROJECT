@@ -2,6 +2,7 @@
 // mission. No cards: content floats on the sky. Targets are picked on a map
 // of the whole sky at their real RA/Dec. Buttons carry a spark dot.
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { parseSkyQuery } from '../core/coords';
 import { useSparks, SPEEDS, type Sparks } from './kit/useSparks';
 import { Starfield } from './kit/Starfield';
 import { Insights } from './kit/Insights';
@@ -299,10 +300,72 @@ function Route({ s, step, setStep }: { s: Sparks; step: number; setStep: (n: num
               <p id="q-hint" className="hint">{t.search.hint} <Term id="radec" t={t} /></p>
               {s.searchError && <p className="err" role="alert">{s.searchError}</p>}
               {s.far && (
-                <p className="hint" role="status">
-                  {t.search.noField(t.targets[s.far.field.id]?.short ?? s.far.field.name, s.far.deg.toFixed(1))}{' '}
-                  <button type="button" className="tlink" onClick={() => s.pickField(s.far!.field)}>{t.search.nearest}</button>
-                </p>
+                <div className="far-box" style={{ marginTop: '0.75rem' }}>
+                  <p className="hint" role="status">
+                    {t.search.noField(t.targets[s.far.field.id]?.short ?? s.far.field.name, s.far.deg.toFixed(1))}{' '}
+                    <button type="button" className="tlink" onClick={() => s.pickField(s.far!.field)}>{t.search.nearest}</button>
+                  </p>
+                  {!s.liveField && (
+                    <Spark
+                      style={{ marginTop: '0.5rem' }}
+                      disabled={s.liveLoading}
+                      onClick={() => {
+                        const parsed = parseSkyQuery(s.query);
+                        if (parsed.ok) s.queryLiveField(parsed.ra, parsed.dec);
+                      }}
+                    >
+                      {s.liveLoading ? (es ? 'Consultando…' : 'Querying…') : (es ? 'Consultar campo en vivo' : 'Query live field')}
+                    </Spark>
+                  )}
+                </div>
+              )}
+              {s.liveField && (
+                <div style={{ marginTop: '0.75rem' }}>
+                  {s.liveField.status === 'en_cola' && (
+                    <div className="note" role="status">
+                      <p><b>{es ? 'En cola' : 'Queued'}:</b> {s.core.statusQueued}</p>
+                      <p className="hint" style={{ marginTop: '0.25rem' }}>
+                        {es
+                          ? `Posición #${s.liveField.posicion_en_cola ?? 1} · Estimado: ~${s.liveField.estimado_segundos ?? 8} s`
+                          : `Queue position #${s.liveField.posicion_en_cola ?? 1} · Est: ~${s.liveField.estimado_segundos ?? 8} s`}
+                      </p>
+                    </div>
+                  )}
+                  {s.liveField.status === 'procesando' && (
+                    <div className="note" role="status">
+                      <p><b>{es ? 'Procesando' : 'Processing'}:</b> {s.core.statusProcessing}</p>
+                      <span className="meter" aria-hidden="true" style={{ marginTop: '0.4rem' }}>
+                        <span style={{ width: `${s.liveField.progreso_porcentaje ?? 45}%` }} />
+                      </span>
+                      <p className="hint" style={{ marginTop: '0.25rem' }}>
+                        {s.liveField.etapa_actual || (es ? 'Descargando y reevaluando recortes de IRSA' : 'Downloading and evaluating IRSA cutouts')} ({s.liveField.progreso_porcentaje ?? 0}%)
+                      </p>
+                    </div>
+                  )}
+                  {s.liveField.status === 'listo' && (
+                    <div className="note" role="status">
+                      <p><b>{es ? 'Listo' : 'Ready'}:</b> {s.core.statusReady}</p>
+                      {s.liveField.field_id && s.fields?.find(f => f.id === s.liveField!.field_id) && (
+                        <Spark
+                          primary
+                          style={{ marginTop: '0.4rem' }}
+                          onClick={() => {
+                            const found = s.fields!.find(f => f.id === s.liveField!.field_id);
+                            if (found) s.pickField(found);
+                          }}
+                        >
+                          {es ? 'Inspeccionar campo' : 'Inspect field'}
+                        </Spark>
+                      )}
+                    </div>
+                  )}
+                  {s.liveField.status === 'fallo' && (
+                    <div className="note note--err" role="alert">
+                      <p><b>{es ? 'Fallo' : 'Failed'}:</b> {s.liveField.mensaje || s.core.statusFailed}</p>
+                      {s.liveField.error_code && <p className="hint">{s.liveField.error_code}</p>}
+                    </div>
+                  )}
+                </div>
               )}
             </form>
           </Leg>
@@ -310,7 +373,7 @@ function Route({ s, step, setStep }: { s: Sparks; step: number; setStep: (n: num
           <Leg n={2} id="l2" title={titles[1]} active={step === 1} panelRef={el => (panels.current[1] = el)}>
             {s.indexError && (
               <div className="note note--err" role="alert">
-                <p>{s.core.loadError}</p>
+                <p>{s.indexError || s.core.loadError}</p>
                 <Spark onClick={s.retryIndex}>{t.stage.retry}</Spark>
               </div>
             )}
@@ -328,7 +391,7 @@ function Route({ s, step, setStep }: { s: Sparks; step: number; setStep: (n: num
             )}
             {s.data.status === 'error' && (
               <div className="note note--err" role="alert">
-                <p>{t.stage.loadFailed}</p>
+                <p>{s.data.message || t.stage.loadFailed}</p>
                 <Spark onClick={s.retryField}>{t.stage.retry}</Spark>
               </div>
             )}

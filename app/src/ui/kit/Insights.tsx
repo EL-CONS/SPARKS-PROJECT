@@ -6,6 +6,7 @@ import type { UiDict } from '../../i18n/ui';
 import { INSIGHTS } from '../../i18n/insights';
 import { Term } from '../components/Term';
 import type { FullManifest } from '../sky';
+import { useVeredicto } from './useVeredicto';
 
 interface Props {
   lang: Lang;
@@ -28,6 +29,7 @@ export function Insights({ lang, t, manifest: m, field, det, season }: Props) {
     <section className="insights" aria-labelledby="ins-title">
       <h2 id="ins-title" className="insights__title">{L.title}</h2>
       <div className="insights__grid">
+        <Verdict field={field} lang={lang} t={t} />
         {fit && exp && <Motion L={L} mu={fit.mu} err={fit.mu_err} exp={exp.mu} cat={exp.catalog} px={fit.mu / m.field.pixel_arcsec} t={t} />}
         {fit && <Direction L={L} pa={fit.pa_deg} paErr={fit.pa_err_deg} t={t} />}
         <Noise L={L} m={m} t={t} />
@@ -55,6 +57,33 @@ export function Insights({ lang, t, manifest: m, field, det, season }: Props) {
 }
 
 type L = (typeof INSIGHTS)['es'];
+
+function Verdict({ field, lang, t }: { field: IndexField; lang: Lang; t: UiDict }) {
+  const v = useVeredicto(field, lang);
+  if (!v) return null;
+  const es = lang === 'es';
+  return (
+    <figure className="insight insight--wide insight--verdict">
+      <figcaption className="insight__say">
+        <span>{t.verdict.title}:</span> <b>{v.clase}</b>
+      </figcaption>
+      <p className="insight__body" style={{ marginTop: '0.4rem', lineHeight: '1.4' }}>
+        {v.razon}
+      </p>
+      {v.faltan.length > 0 && (
+        <div style={{ marginTop: '0.5rem', fontSize: '0.88rem', opacity: 0.9 }}>
+          <span style={{ fontWeight: 600 }}>{es ? 'Datos pendientes:' : 'Pending data:'}</span>
+          <ul style={{ margin: '0.25rem 0 0 1.2rem', padding: 0 }}>
+            {v.faltan.map((item, idx) => (
+              <li key={idx}>{item}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+      <p className="insight__src">{t.verdict.ruleNote}</p>
+    </figure>
+  );
+}
 
 function Motion({ L, mu, err, exp, cat, px, t }: { L: L; mu: number; err: number; exp: number; cat: string; px: number; t: UiDict }) {
   const max = Math.ceil(Math.max(mu + err, exp) + 1);
