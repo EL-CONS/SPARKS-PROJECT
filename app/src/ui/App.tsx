@@ -40,7 +40,7 @@ function Spark({ children, primary, className, ...rest }: React.ButtonHTMLAttrib
 
 const TEAM_INSTAGRAM = [
   { handle: '@jqnx.24', url: 'https://www.instagram.com/jqnx.24/' },
-  { handle: '@el_cons', url: 'https://www.instagram.com/el_cons/' },
+  { handle: '@el__cons', url: 'https://www.instagram.com/el__cons/' },
   { handle: '@nerux23', url: 'https://www.instagram.com/nerux23/' },
   { handle: '@carlos.notok', url: 'https://www.instagram.com/carlos.notok/' },
 ];

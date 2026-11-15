@@ -1219,7 +1219,7 @@ html {
 .foot__social {
   display: grid;
   gap: 6px;
-  justify-items: end;
+  justify-items: center;
 }
 .foot__social a {
   display: inline-flex;
