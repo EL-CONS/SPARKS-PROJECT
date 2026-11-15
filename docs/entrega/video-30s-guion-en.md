@@ -1,0 +1,15 @@
+# 30-Second Video Script (English)
+
+Total runtime: **30 seconds** (5 shots). Tone: humble, clear, zero jargon. Never say "discovered"; always say "candidates to review".
+
+**Compliance rule (Space Apps 2026, `docs/reto/normas.md` on `origin/joako`):** Do **not** include photos, video clips, voices, or likenesses of anyone under 18 years old (team members or others). Confirm with Joaquin that the narrator and any visible person are 18+ before recording.
+
+**Sources:** `origin/cons:data-sample/results.json` and `origin/Horacio:data-new/results.json` (neither file is merged into `carlos` yet, so figures from both are marked `unverified on carlos`); narrative structure follows `docs/pitch/pitch-3min-es.md` and `CONTEXTO.md`. Target coordinates for epsilon Indi B (`331.044 / -56.783`, `331.0441 / -56.7828` J2000) and A (`330.84 / -56.786`, `330.8404 / -56.7869`) match the verified sprint list.
+
+| Shot | Time | Duration | On Screen | Narration (English) |
+|---|---|---|---|---|
+| 1 | 0:00–0:06 | 6 s | Black screen fading into the two 1930 Pluto photographic plates blinking side by side (with credit), then transitioning to the Sparks logo (blue outline square + amber square). No member photos or under-18 imagery. | "In 1930, Clyde Tombaugh blinked two photos of the same sky, six days apart, and spotted Pluto. Looking twice was enough." |
+| 2 | 0:06–0:12 | 6 s | Big counter: `1,607,473` SPHEREx science images (`origin/cons:data-sample/results.json` [unverified on `carlos`], `docs/pitch/pitch-3min-es.md`), splitting into 6 infrared detector panels across 102 colors. | "Today, NASA's SPHEREx telescope has over 1.6 million images in 102 infrared colors. Nobody can blink them by hand." |
+| 3 | 0:12–0:19 | 7 s | Sparks web app on Barnard's Star (`Subtract B-A` view): **blue** where it was, **amber** where it is now, plus the measured arrow (`10.23 ± 0.43″/yr` vs. Gaia DR3 `10.39″/yr`, `origin/cons:data-sample/results.json` [unverified on `carlos`]). | "Sparks makes the sky blink. Blue is where an object was; amber is where it is now. Our arrow on Barnard's Star matches Gaia." |
+| 4 | 0:19–0:25 | 6 s | Switch to WISE 0855 (`D5`/`D6` detector panels): "Not in Gaia DR3" badge, and the 102-color fingerprint dark at short wavelengths and bright at 4–5 µm (`D6/D2 >= 10.09` and `6.04 ± 0.76″/yr` in `origin/Horacio:data-new/results.json`; `7.91 ± 1.35″/yr` in `origin/cons:data-sample/results.json` [both unverified on `carlos`]). | "For WISE 0855, invisible to Gaia, Sparks reveals both its motion and its 102-color coldness fingerprint." |
+| 5 | 0:25–0:30 | 5 s | Coordinate search bar, mobile QR code, and final line: **"Every spark that moves has a fingerprint."** — Team Cosmonautas. (Narrated by an 18+ voice.) | "Type any coordinate to surface candidates to review. Every spark that moves has a fingerprint. We are Cosmonautas." |

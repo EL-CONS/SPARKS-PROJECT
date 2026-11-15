@@ -2,7 +2,22 @@
 
 Hecho el sábado 14 de noviembre de 2026, 19:40–20:40 (hora de Hermosillo), con `git fetch --all`. Todo el historial de Git empieza el 14 de noviembre a las 10:58; las fechas anteriores solo aparecen dentro de los archivos (ver `procedencia.md`).
 
-## Ramas
+## Actualización: 14 de noviembre, 23:40 (`joako-integracion`)
+
+| Rama | Último commit | Estado |
+|---|---|---|
+| `origin/main` | `dbdfc97`, 14:47 | Sin cambios; sigue sin `app/` |
+| `origin/frontend-del-cons` | `cbef27d`, Cons, 22:49 | Unida en `joako-integracion` (`1cf9546`) |
+| `origin/joako` | `da9bb1c`, 22:04 | `ml-clasificador/` v2 traído en `ea4e82c` y reentrenado en `3174434` |
+| `origin/Horacio` | `f7878e4`, 22:10 | `data-new/` completo (`git diff origin/Horacio -- data-new` vacío); `verdad-terreno.csv` corregido traído en `ea4e82c`; `pipeline/dipole_features.py` portado a `app/src/core/dipolo.ts` |
+| `origin/carlos` | `3f77eec`, 22:29 | Trae `docs/entrega/` (6 piezas). No unida: se usa como fuente de la entrega (ver `docs/integracion/estado.md`) |
+| `origin/cons` | `abda4fa`, 22:04 | Solo el plan; su código ya estaba en `frontend-del-cons` |
+| `joako-requisitos` (local) | `de9eea8`, 22:04 | Unida en `joako-integracion` (`dff3c68`) |
+| **`joako-integracion`** (local) | ver `git log` | Rama de entrega: front de Cons + auditoría + `data-new/` de Horacio + clasificador v2 reentrenado. Worktree `../sparks-integracion` |
+
+Lo que cambió en "Dónde vive cada requisito": A3, B2, B4, B5, D7 y C1 están completos en `joako-integracion`. Los puntos 1, 2 y 3 de "Trabajo duplicado" quedaron resueltos: hay un solo cargador de dos carpetas, el clasificador de la interfaz es el de `ml-clasificador/` (v2), y `data-new/` es la de Horacio. El punto 4 sigue: los textos del pitch citan cifras viejas (ver `docs/integracion/estado.md`, tabla de cifras).
+
+## Ramas a las 19:40
 
 | Rama | Último commit | Quién la usa | Qué aporta que `main` no tiene | Estado |
 |---|---|---|---|---|

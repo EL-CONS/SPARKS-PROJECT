@@ -1,0 +1,16 @@
+# Guion de diapositivas (entrega del domingo)
+
+Una diapositiva por idea: título y una frase. Basado en `sparks-en-breve.md`, `CONTEXTO.md`, `docs/pitch/pitch-3min-es.md` y `docs/pitch/slides-outline.md`.
+
+Nota sobre fuentes: `data-sample/results.json` (en `origin/cons`) y `data-new/results.json` (en `origin/Horacio`) aún **no** están fusionados en la rama `carlos`; por ello, sus cifras se marcan como **sin verificar en `carlos`**. La cobertura de 36 objetos (`docs/sprint-13-30/cobertura-y-acceso.md`) y los 578 recortes (`docs/sprint-13-30/recortes-lugar.md`) sí están verificados en `carlos`. Coordenadas vigentes: ε Indi B `331.044 / −56.783` (`331.0441 / −56.7828`, J2000), ε Indi A `330.84 / −56.786` (`330.8404 / −56.7869`). Nunca se dice "descubrimos", sino "candidatos a revisar".
+
+1. **Sparks** — Somos Cosmonautas, estudiantes de Ciencias de la Computación en Hermosillo, y construimos Sparks: cada chispa que se mueve tiene una huella (`CONTEXTO.md`, `docs/pitch/pitch-3min-es.md`).
+2. **Mirar dos veces** — En 1930, Clyde Tombaugh encontró a Plutón alternando dos fotos del mismo cielo tomadas con seis días de diferencia en un comparador de parpadeo (`sparks-en-breve.md`).
+3. **El cielo en 102 colores** — Hoy SPHEREx acumula `1,607,473` imágenes científicas en 102 bandas de infrarrojo, imposibles de revisar a ojo (`origin/cons:data-sample/results.json` [sin verificar en `carlos`], `docs/pitch/pitch-3min-es.md`).
+4. **Por qué es difícil** — Una fuente rápida apenas se mueve unos píxeles al año entre imágenes tomadas en distinto color y con ruido propio de cada detector (`docs/pitch/pitch-3min-es.md`).
+5. **Hacemos parpadear el cielo** — Escribes unas coordenadas y Sparks alinea las épocas para mostrarte en azul donde estaba, en ámbar donde está ahora y una flecha hacia donde va (`sparks-en-breve.md`).
+6. **Barnard coincide con Gaia** — En la estrella de Barnard la corrida de referencia midió `10.23 ± 0.43″/año` frente a `10.39″/año` de Gaia DR3 (`origin/cons:data-sample/results.json`, acuerdo de `0.4σ` [sin verificar en `carlos`]).
+7. **WISE 0855, invisible para Gaia** — Sparks mide la enana café más fría conocida (`6.04 ± 0.76″/año` y cociente `D6/D2 >= 10.09` en `origin/Horacio:data-new/results.json`; `7.91 ± 1.35″/año` en `origin/cons:data-sample/results.json` [sin verificar en `carlos`]) y muestra su huella fría apagada en longitudes cortas y encendida en 4–5 µm (`CONTEXTO.md`).
+8. **Validación honesta** — En una prueba previa corrida una sola vez sobre 9 estrellas rápidas nunca vistas, la regla física encontró `8/9` con `0` falsas alarmas sobre `541` candidatos, por encima del modelo LightGBM (`6/9` con `10` falsas alarmas; `origin/cons:data-sample/results.json` [sin verificar en `carlos`]).
+9. **Datos reales y cobertura** — De `36` objetos de prueba, `35` tienen al menos dos temporadas separadas por más de 60 días en `spherex_dr1` + `spherex_qr3` (Gliese 687 tiene 1 temporada con 965 imágenes en 17 meses) y los `36` tienen cobertura en DR1 (`221–965` imágenes por objeto; `docs/sprint-13-30/cobertura-y-acceso.md`).
+10. **Candidatos a revisar, para todos** — Sparks no afirma descubrimientos: entrega candidatos a revisar desde cualquier navegador o teléfono para voluntarios, escuelas y astrónomos (`CONTEXTO.md`, `docs/pitch/pitch-3min-es.md`).
