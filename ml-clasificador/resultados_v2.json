@@ -1,0 +1,143 @@
+{
+ "version": "v2",
+ "n_objetos": 69,
+ "clases": {
+  "estrella": 20,
+  "enana blanca": 11,
+  "variable": 18,
+  "enana marron": 20
+ },
+ "validacion": "dejar uno fuera (LOO)",
+ "exactitud_ml_loo": 0.7536,
+ "linea_base_clase_mayoritaria": 0.2899,
+ "prueba_permutacion": {
+  "repeticiones": 30,
+  "p_valor": 0.0323
+ },
+ "matriz_confusion_loo": {
+  "estrella": {
+   "estrella": 15,
+   "enana marron": 0,
+   "enana blanca": 1,
+   "variable": 4
+  },
+  "enana marron": {
+   "estrella": 1,
+   "enana marron": 18,
+   "enana blanca": 0,
+   "variable": 1
+  },
+  "enana blanca": {
+   "estrella": 1,
+   "enana marron": 1,
+   "enana blanca": 9,
+   "variable": 0
+  },
+  "variable": {
+   "estrella": 5,
+   "enana marron": 2,
+   "enana blanca": 1,
+   "variable": 10
+  }
+ },
+ "recall_por_clase": {
+  "estrella": 0.75,
+  "enana marron": 0.9,
+  "enana blanca": 0.818,
+  "variable": 0.556
+ },
+ "fallos_loo": [
+  {
+   "nombre": "Gaia DR3 3713594960831605760",
+   "verdad": "estrella",
+   "ml": "enana blanca"
+  },
+  {
+   "nombre": "RW Aurigae",
+   "verdad": "variable",
+   "ml": "estrella"
+  },
+  {
+   "nombre": "Mira",
+   "verdad": "variable",
+   "ml": "enana marron"
+  },
+  {
+   "nombre": "SS Cygni",
+   "verdad": "variable",
+   "ml": "estrella"
+  },
+  {
+   "nombre": "Luhman 16",
+   "verdad": "enana marron",
+   "ml": "variable"
+  },
+  {
+   "nombre": "Procyon B",
+   "verdad": "enana blanca",
+   "ml": "enana marron"
+  },
+  {
+   "nombre": "61 Cygni A",
+   "verdad": "estrella",
+   "ml": "variable"
+  },
+  {
+   "nombre": "Epsilon Eridani",
+   "verdad": "estrella",
+   "ml": "variable"
+  },
+  {
+   "nombre": "LHS 2065",
+   "verdad": "enana marron",
+   "ml": "estrella"
+  },
+  {
+   "nombre": "TW Hydrae",
+   "verdad": "variable",
+   "ml": "estrella"
+  },
+  {
+   "nombre": "RR Lyrae",
+   "verdad": "variable",
+   "ml": "enana blanca"
+  },
+  {
+   "nombre": "R Leonis",
+   "verdad": "variable",
+   "ml": "enana marron"
+  },
+  {
+   "nombre": "U Geminorum",
+   "verdad": "variable",
+   "ml": "estrella"
+  },
+  {
+   "nombre": "Z Camelopardalis",
+   "verdad": "variable",
+   "ml": "estrella"
+  },
+  {
+   "nombre": "G 240-72",
+   "verdad": "enana blanca",
+   "ml": "estrella"
+  },
+  {
+   "nombre": "Delta Pavonis",
+   "verdad": "estrella",
+   "ml": "variable"
+  },
+  {
+   "nombre": "82 G. Eridani",
+   "verdad": "estrella",
+   "ml": "variable"
+  }
+ ],
+ "importancia_variables": {
+  "en_gaia": 0.0829,
+  "tiene_fotometria": 0.0568,
+  "mg_gaia": 0.4273,
+  "bp_rp": 0.4329
+ },
+ "semilla": 42
+}
