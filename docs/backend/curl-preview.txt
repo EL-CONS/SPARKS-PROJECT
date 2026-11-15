@@ -20,3 +20,15 @@ HTTP/1.1 200 OK
 200 1253376 bytes  application/octet-stream  http://127.0.0.1:4175/SPARKS-PROJECT/data-new/wise0855/frames.bin
 200 65777 bytes  application/json  http://127.0.0.1:4175/SPARKS-PROJECT/data-new/rdra/manifest.json
 404 460 bytes  text/html;charset=utf-8  http://127.0.0.1:4175/SPARKS-PROJECT/no-existe.json
+
+# Repeticion final: VITE_BASE=/SPARKS-PROJECT/ npm run build y vite preview, 23:19, commit 47e1715
+200 1645 bytes  text/html  http://127.0.0.1:4174/SPARKS-PROJECT/
+200 6057 bytes  application/json; charset=utf-8  http://127.0.0.1:4174/SPARKS-PROJECT/data-sample/index.json
+200 3288 bytes  application/json; charset=utf-8  http://127.0.0.1:4174/SPARKS-PROJECT/data-new/index.json
+200 2908160 bytes  application/octet-stream  http://127.0.0.1:4174/SPARKS-PROJECT/data-sample/barnard/frames.bin
+200 1253376 bytes  application/octet-stream  http://127.0.0.1:4174/SPARKS-PROJECT/data-new/wise0855/frames.bin
+# mismo dist/ por servidor estatico simple
+200 1645 bytes  text/html  http://127.0.0.1:4175/SPARKS-PROJECT/
+200 6057 bytes  application/json  http://127.0.0.1:4175/SPARKS-PROJECT/data-sample/index.json
+200 3288 bytes  application/json  http://127.0.0.1:4175/SPARKS-PROJECT/data-new/index.json
+200 1253376 bytes  application/octet-stream  http://127.0.0.1:4175/SPARKS-PROJECT/data-new/wise0855/frames.bin

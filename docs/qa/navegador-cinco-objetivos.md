@@ -86,3 +86,17 @@ Los cuatro manifiestos de `data-new/` declaran `frames_encoding`: `int16 little-
 - En R Draconis, la tarjeta de color dice "No pudimos medir su color: 0 de 0 fotos salieron saturadas" y la de banderas termina con "Aquí casi todo está bien" aunque el 100 % de lo marcado son problemas reales. Son textos fijos de `app/src/i18n/insights.ts` que no contemplan un campo sin espectro.
 - El valor esperado de los objetivos de `data-new/` se rotula "data-sample/index.json (valor del reto; fuente primaria sin verificar salvo Gaia DR3)": es el texto de `expected.catalog` del manifiesto.
 - Las capturas a 1440 px son del panel del navegador, reducido a 800 px de ancho.
+
+## Pasada final sobre el sitio construido (23:20, commit `47e1715`)
+
+`app/dist/` construido con `VITE_BASE=/SPARKS-PROJECT/` y servido por `python3 -m http.server` (sin Vite), en `http://127.0.0.1:4175/SPARKS-PROJECT/`. Mismo guion, con escucha de `error`, `unhandledrejection` y `console.error` desde el inicio. Resultado: **cero errores** en los diez recorridos.
+
+| Objetivo | 1440 px: parpadeo / suma / resta / pares / espectro | 390 px: igual, sin scroll horizontal | Paso 3 |
+|---|---|---|---|
+| Barnard | 6 / 6 / 6 / 3 / 0 de 355 (saturadas) | 6 / 6 / 6 / 3 / 0 de 355; ancho 390 | "Se mueve 10.23 ± 0.43"; clasificador "acierta 78 % en 69 objetos"; variable: no, por `kind` |
+| WISE 0855 | 6 / 6 / 6 / 3 / 126 de 153 | igual | "Se mueve 6.04 ± 0.76"; variable: no, por `kind` |
+| ε Indi B | 6 / 6 / 4 + 2 paneles que explican la falta de resta / 6 / 5 de 116 | igual | "Se mueve 4.21 ± 0.28"; variable: no, por `kind` |
+| RW Aurigae | 6 / 6 / 6 / 3 / 0 de 101 | igual | parcial; "Aquí no se midió movimiento […] cota superior"; variable: sí, por `kind` |
+| R Draconis | 6 / 6 / 6 / 1 / 0 de 62 | igual | parcial; sin frase de movimiento; variable: sí, por `kind` |
+
+Capas de Gaia y CatWISE: habilitadas en Barnard (943 y 692) y deshabilitadas con "(0)" en los otros cuatro. Campo de visión: 3.28′, 1.64′ y 6.56′ cambian `fov` en la URL en los cinco.

@@ -84,3 +84,31 @@ La interfaz ya no tiene cifras escritas a mano del clasificador (`74e6f5e`). Las
 ## Aviso para Carlos
 
 > Carlos: en `joako-integracion` (la rama que va a `main`) ya hay un `README.md` y un `docs/entrega/uso-de-si.md` de Joaquín. Por favor no los dupliques: toma tu `docs/entrega/README-borrador.md` y tu `uso-de-si.md` de `origin/carlos` y pasa lo que les falte a esos dos archivos, y luego borra tus copias. Tus otras cuatro piezas (página del equipo, guion, diapositivas, checklist) ya están en la rama tal cual. Corrige en ellas las cifras de la tabla "Cifras de los textos" de `docs/integracion/estado.md` (v2: 78.3 %, 54 de 69; WISE 0855 6.04 ± 0.76) y la sección 2 de `checklist-qa.md`: ya no hay modo claro.
+
+## Definición de listo (23:21, commit `47e1715` más este)
+
+| # | Condición | Cumple | Evidencia |
+|---|---|---|---|
+| 1 | `npm ci`, `typecheck`, `test`, `check-data`, `build` en limpio; `dist/data-sample/index.json` y `dist/data-new/index.json` | Sí | `docs/integracion/verificacion.txt` (23:18, sin `node_modules` ni `dist` previos): exit 0 en los cinco, 64 de 64 pruebas, 15 archivos de prueba |
+| 2 | `preview` con `VITE_BASE` responde 200 en página, ambos `index.json` y un `frames.bin` | Sí | `docs/backend/curl-preview.txt`, repetición final de las 23:19: 200 en los cinco, y también con un servidor estático simple sobre `dist/` |
+| 3 | Cinco objetivos vistos a 1440 y 390 px, capturas, sin errores de consola; R Draconis y RW Aurigae explican `parcial` | Sí | `docs/qa/navegador-cinco-objetivos.md` (tablas por objetivo y pasada final con cero errores), 11 capturas en `docs/qa/capturas/` |
+| 4 | Clasificador v2 con cifras del archivo; sin "36 objetos" ni "91.7 %" | Sí (hubo reentrenamiento, `3174434`) | `74e6f5e`, `587fe9e`; `git grep -F -e '36 objetos' -e '36 objects' -e '91.7' -e '33 de 36' -- app ':!*.svg' ':!app/package-lock.json'` sale vacío |
+| 5 | `git diff origin/Horacio -- data-new` y `git diff origin/main -- Logo/` vacíos | Sí | 0 líneas cada uno (23:20) |
+| 6 | Entregables del reto en el repositorio, sin secretos; existen `README.md`, `docs/entrega/uso-de-si.md`, `docs/backend/despliegue-aws.md` | Sí | `git grep` de claves, tokens, llaves privadas y `.env`: sin hallazgos (solo el nombre de variable `token` en `coords.ts`). Los tres archivos existen. La URL pública depende del despliegue de Cons (no es condición de esta subida) |
+| 7 | Ninguna cifra de la interfaz o del pitch contradice los resultados; las que no coinciden, listadas con dueño | Sí | Interfaz: cifras del clasificador leídas del archivo; movimiento y estado de `data-new/`. Pitch: 13 cifras listadas en la tabla de arriba con quién avisa |
+| 8 | `git status` limpio; `origin/main` no avanzó; `main..joako-integracion` solo trae commits de Joaquín y de ramas integradas | Sí | `origin/main` sigue en `dbdfc97` y es ancestro (avance rápido). Autores en `origin/main..HEAD`: Joaco2025 y EL-CONS (Cons, vía `frontend-del-cons`). `git status` limpio tras este commit |
+
+## Pendiente, con dueño (no bloquea la subida)
+
+| Qué | Dueño | ¿Bloquea "listo"? |
+|---|---|---|
+| Desplegar en AWS y probar la URL en un teléfono (`docs/backend/despliegue-aws.md`) | Cons | No (es el paso siguiente a la subida) |
+| Confirmar o revertir la decisión provisional del tema (solo oscuro) | Joaquín | No |
+| Procedencia del material previo al 14 de noviembre (Barnard de `data-sample/`, `docs/auditoria/procedencia.md`) | Joaquín | No para la subida; sí antes de enviar |
+| Corregir cifras de la página del equipo, guion y diapositivas (tabla de cifras); fundir su `README-borrador.md` y `uso-de-si.md` en los de esta rama; quitar el modo claro de `checklist-qa.md` | Carlos | No |
+| Grabar el video y hacer las diapositivas | Carlos | No para la subida; sí antes de enviar |
+| Declarar uso de SI de Cons y Horacio | Cons, Horacio | No |
+| Motivos de `parcial` y salvedades del manifiesto solo en español y sin acentos (se ven así en la interfaz en inglés) | Horacio (datos) | No |
+| Catálogos Gaia y CatWISE en `data-new/` (hoy vacíos) | Horacio | No |
+| Fuente al lado de las cifras de las notas de objetivos (`app/src/i18n/ui.ts`) | Horacio | No |
+| Leer la Project Submission Guide y la Judging and Awards Guide | Joaquín | No para la subida; sí antes de enviar |
