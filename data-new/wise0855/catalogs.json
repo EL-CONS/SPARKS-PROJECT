@@ -1,0 +1,9 @@
+{
+ "gaia": {
+  "epoch_mjd": 57388.5,
+  "service": "Gaia DR3 (docs/sprint-13-30/gaia-fotometria.csv)",
+  "queried": "2026-11-15T01:54:20Z",
+  "error": "sin contraparte Gaia DR3 conocida",
+  "sources": []
+ }
+}

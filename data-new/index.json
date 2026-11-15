@@ -1,0 +1,132 @@
+{
+ "fields": [
+  {
+   "id": "wise0855",
+   "name": "WISE 0855-0714",
+   "ra": 133.7602032390507,
+   "dec": -7.2406733812190565,
+   "catalog_ra": 133.795129,
+   "catalog_dec": -7.245147,
+   "catalog_epoch": "MJD 55320.4 (epoca WISE, Luhman & Esplin 2014)",
+   "reference_mjd": 61000.0,
+   "kind": "mover",
+   "note": "Enana marron T, sin contraparte Gaia. A 2.3 pc. Las coordenadas estan a la epoca WISE de 2010, no a J2000; tratarlas como J2000 desplazaba la malla ~14 px.",
+   "n_frames": 153,
+   "seasons": 3,
+   "releases": [
+    "DR1"
+   ],
+   "mu_measured": 6.044035446864533,
+   "mu_err": 0.7553316917025782,
+   "pa": 289.08337676145425,
+   "mu_expected": 8.087789,
+   "pa_expected": 277.357342,
+   "in_gaia": false,
+   "thumb": "wise0855/png/coadd_D5_S0.png",
+   "status": "ok",
+   "reason": ""
+  },
+  {
+   "id": "epsindib",
+   "name": "epsilon Indi B",
+   "ra": 331.09607055261125,
+   "dec": -56.80053909062217,
+   "catalog_ra": 331.0438,
+   "catalog_dec": -56.7828,
+   "catalog_epoch": "J2000",
+   "reference_mjd": 61000.0,
+   "kind": "mover",
+   "note": "Par T1+T6 (Ba+Bb) con separacion 0.732 arcsec: no resuelto por SPHEREx (6.15 arcsec/pixel). epsilon Indi A queda a 402.3 arcsec (6.70 arcmin), fuera de la malla de 6.56 arcmin.",
+   "n_frames": 116,
+   "seasons": 4,
+   "releases": [
+    "DR1",
+    "QR3"
+   ],
+   "mu_measured": 4.205409597275849,
+   "mu_err": 0.2809012111527352,
+   "pa": 124.91845453220645,
+   "mu_expected": 4.684165,
+   "pa_expected": 121.778186,
+   "in_gaia": false,
+   "thumb": "epsindib/png/coadd_D5_S0.png",
+   "status": "ok",
+   "reason": ""
+  },
+  {
+   "id": "rdra",
+   "name": "R Draconis",
+   "ra": 248.1673563405534,
+   "dec": 66.75501688823226,
+   "catalog_ra": 248.1675,
+   "catalog_dec": 66.755,
+   "catalog_epoch": "J2016.0 (Gaia DR3)",
+   "reference_mjd": 61000.0,
+   "kind": "variable",
+   "note": "Mira, periodo ~246 dias.",
+   "n_frames": 62,
+   "seasons": 2,
+   "releases": [
+    "DR1",
+    "QR3"
+   ],
+   "mu_measured": null,
+   "mu_err": null,
+   "pa": null,
+   "mu_expected": 0.021539,
+   "pa_expected": 286.587074,
+   "in_gaia": true,
+   "thumb": "rdra/png/coadd_D5_S0.png",
+   "status": "parcial",
+   "reason": "detecciones utilizables 0 < 3; no se mide movimiento propio"
+  },
+  {
+   "id": "rwaur",
+   "name": "RW Aurigae",
+   "ra": 76.9564084091487,
+   "dec": 30.401324748643678,
+   "catalog_ra": 76.9564,
+   "catalog_dec": 30.4014,
+   "catalog_epoch": "J2016.0 (Gaia DR3)",
+   "reference_mjd": 61000.0,
+   "kind": "variable",
+   "note": "T Tauri con atenuaciones; no se espera movimiento medible.",
+   "n_frames": 101,
+   "seasons": 3,
+   "releases": [
+    "DR1",
+    "QR3"
+   ],
+   "mu_measured": 1.3229283592367185,
+   "mu_err": 0.5717248416831711,
+   "pa": 81.50905273673214,
+   "mu_expected": 0.027525,
+   "pa_expected": 174.494704,
+   "in_gaia": true,
+   "thumb": "rwaur/png/coadd_D5_S0.png",
+   "status": "parcial",
+   "reason": "movimiento medido consistente con cero a 3 sigma; se reporta como cota superior, no como deteccion"
+  }
+ ],
+ "collections": [
+  {
+   "collection": "spherex_dr1",
+   "release": "DR1",
+   "doi": "10.26131/IRSA678",
+   "n_images": 338
+  },
+  {
+   "collection": "spherex_dr1_deep",
+   "release": "DR1",
+   "doi": "10.26131/IRSA678",
+   "n_images": 58
+  },
+  {
+   "collection": "spherex_qr3",
+   "release": "QR3",
+   "doi": "10.26131/IRSA662",
+   "n_images": 74
+  }
+ ],
+ "generated_utc": "2026-11-15T01:57:02Z"
+}
