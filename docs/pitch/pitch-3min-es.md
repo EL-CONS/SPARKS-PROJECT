@@ -93,3 +93,10 @@ Luego se sigue el guion igual, señalando las capturas `v1-barnard-sub-1440.png`
 1. **"Every spark that moves has a fingerprint."** ← elegido: junta las dos ideas del producto (se mueve + huella de colores) y suena bien en inglés y en español ("Cada chispa que se mueve tiene una huella").
 2. "Look twice. In 102 colors."
 3. "The coldest sparks glow in infrared."
+
+---
+
+## Respaldo técnico (si el jurado pregunta)
+
+- **ε Indi B: DR1 sola vs DR1+QR3.** Con solo DR1 (3 temporadas, 10 puntos, 0.97 años de línea base) nuestra canalización mide `4.42 ± 0.43 ″/año` con `PA = 109.7 ± 4.3°`. Al incorporar la cuarta temporada en QR3 (16 puntos, 1.39 años) el ajuste pasa a `4.21 ± 0.28 ″/año` con `PA = 124.9 ± 2.8°` (acuerdo a `1.70 σ` con Gaia/index `4.684 ″/año`, `PA 121.8°`). Las dos PA difieren `15°` porque QR3 extiende la línea base un 43 % y no hay un intercepto separado por release; la diferencia se declara explícitamente en `caveats` y `docs/pipeline/metodo.md`.
+- **WISE 0855 en `data-new/`.** Con la estrella de fondo enmascarada (radio `0.7 px` fijado desde D1) y todos los cuadros de D5 y D6, se mide `6.04 ± 0.76 ″/año` (`PA 289.1 ± 3.8°`, `2.71 σ` respecto al index). Las alas de la estrella siguen contaminando la banda corta (1.1–1.6 µm), por lo que `F_D6/F_D2 = 0.83` se reporta como `lower_limit` y se declara la limitación.
